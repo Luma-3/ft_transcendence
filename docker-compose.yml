@@ -1,0 +1,14 @@
+services:
+  node:
+    image: node:22-alpine
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=dev
+    volumes:
+      - ./srcs/node:/home/node/app
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    command: "npm start"
