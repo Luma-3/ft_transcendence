@@ -1,0 +1,13 @@
+FROM node:22-alpine
+
+RUN mkdir -p /home/node/node_modules
+
+RUN chown -R node:node /home/node/node_modules && chmod -R 755 /home/node/node_modules
+
+WORKDIR /home/node
+
+COPY ./files/package.json .
+
+RUN npm install
+
+CMD ["npm", "run", "dev"]

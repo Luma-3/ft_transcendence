@@ -1,0 +1,19 @@
+{
+	"name": "transcenduck-front",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+	  "dev": "vite --host",
+	  "build": "tsc && vite build",
+	  "preview": "vite preview"
+	},
+	"devDependencies": {
+	  "typescript": "~5.7.2",
+	  "vite": "^6.1.0"
+	},
+	"dependencies": {
+	  "@tailwindcss/vite": "^4.0.6",
+	  "tailwindcss": "^4.0.6"
+	}
+  }

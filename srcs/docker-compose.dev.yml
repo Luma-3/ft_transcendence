@@ -1,0 +1,45 @@
+services:
+
+  vite:
+    container_name: vite
+    build:
+      context: ./frontend/dev/
+      dockerfile: Dockerfile.dev
+    user: 'node'
+    environment:
+      - NODE_ENV=dev
+    volumes:
+      - ./frontend/dev/files/:/home/node
+      - /home/node/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - front
+
+# APIS
+
+  user_api:
+    container_name: user_api
+    build:
+      context: ./backend/apis/User
+      dockerfile: Dockerfile.dev
+    user: "node"
+    environment:
+      - NODE_ENV=dev
+    volumes:
+      - ./backend/apis/User/app:/home/node/app
+    ports:
+      - '3000:3000'
+      - '9229:9229'
+    networks: 
+      - api
+      - front
+
+
+networks:
+  api:
+    name: api
+    driver: bridge
+  front:
+    name: front
+    driver : bridge

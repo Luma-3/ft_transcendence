@@ -1,12 +1,12 @@
-COMPOSE = docker-compose
+COMPOSE = docker compose
 
-build: 
-	$(COMPOSE) -f docker-compose.yml build
+dev:
+	$(COMPOSE) -f ./srcs/docker-compose.dev.yml up --build 
 
-dev: 
-	$(COMPOSE) -f docker-compose.yml  up -d
 
-down: 
-	$(COMPOSE) -f docker-compose.yml down -v
+down-dev:
+	$(COMPOSE) -f ./srcs/docker-compose.dev.yml down --volumes
 
-re : down build dev
+re : down-dev dev
+
+PHONY: dev down-dev re
