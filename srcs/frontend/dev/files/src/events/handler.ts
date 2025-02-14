@@ -1,32 +1,25 @@
 import { changeLanguage, saveLanguage } from '../i18n/translate'
 import { renderPage } from '../main'
-
-async function testAPI() {
-	try {
-        const response = await fetch('http://user_api:3000/api/user');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        console.log('fin testAPI', data);
-    } catch (error) {
-        console.error('Fetch error:', error);
-    }
-}  // CORS BlocK API Proxy
+import { verifPasswordAndRegisterUser } from './userSession/userRegister'
+import { loginUser } from './userSession/userLogIn'
 
 export function addAllEventListenOnPage(container : HTMLDivElement) {
 	container.addEventListener('click', (event) => {
 		const target = event.target as HTMLElement;
 		
-		if (target.id === 'save_lang') {
-			saveLanguage();
-		} else if (target.id === 'loadLogin') {
-			renderPage('login');
-		} else if (target.id === 'loadHome') {
-			renderPage('home');
-		} else if (target.id === 'testAPI') {
-			console.log('testAPI');
-			testAPI();
+		switch(target.id) {
+			case 'loadLogin':
+				renderPage('login');
+				break;
+			case 'loadHome':
+				renderPage('home');
+				break;
+			case 'loadRegister':
+				renderPage('register');
+				break
+			case 'save_lang':
+				saveLanguage();
+				break;
 		}
 	});
 	
@@ -36,4 +29,18 @@ export function addAllEventListenOnPage(container : HTMLDivElement) {
 			changeLanguage();
 		}
 	});
+
+	container.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const target = event.target as HTMLElement;
+
+		switch(target.id) {
+			case 'registerForm':
+				verifPasswordAndRegisterUser();
+				break;
+			case 'loginForm':
+				loginUser();
+				break;
+		}
+	})
 }

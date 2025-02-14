@@ -16,7 +16,6 @@ export function renderHomePage() {
     </div>
   <button class="overflow-hidden rounded-full">
   <img src='/duck_enter2.png' id="loadLogin" class="brightness-0 w-110 h-100 hover:brightness-100 cursor-pointer" alt='Transcenduck Logo' />
-  <button class="bg-white text-black p-3 rounded-md hover:cursor-pointer" id="testAPI" translate="test_api">Test API</button>
   </div>
       `
 }
