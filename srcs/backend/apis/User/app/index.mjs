@@ -1,10 +1,17 @@
 import Fastify from 'fastify'
+import cors from '@fastify/cors'
 
 const fastify = Fastify({
 	logger: true
 });
 
+fastify.register(cors, {
+	origin: '*'
+});
+
+
 fastify.get('/api/user', async function(request, reply) {
+	console.log('GET /api/user');
 	return reply.send({ hello: 'world'});
 });
 
