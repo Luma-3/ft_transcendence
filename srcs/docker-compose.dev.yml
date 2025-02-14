@@ -25,7 +25,7 @@ services:
       dockerfile: Dockerfile.dev
     user: "node"
     environment:
-      - NODE_ENV=dev
+      - NODE_ENV=development
     volumes:
       - ./backend/apis/User/app:/home/node/app
     ports:

@@ -1,5 +1,7 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
+import knex from '../plugins/Knex.mjs'
+import config_knex from '../config/knex.config.mjs'
 
 const fastify = Fastify({
 	logger: true
@@ -9,10 +11,13 @@ fastify.register(cors, {
 	origin: '*'
 });
 
+fastify.register(knex, config_knex);
+
 
 fastify.get('/api/user', async function(request, reply) {
 	console.log('GET /api/user');
-	return reply.send({ hello: 'world'});
+	const users = fastify.models.user.getAllUsers()
+	return reply.send(users);
 });
 
 const start = async () => {
