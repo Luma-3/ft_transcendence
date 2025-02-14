@@ -2,6 +2,7 @@
 
 import { renderHomePage } from './pages/home'
 import { renderLoginPage } from './pages/login'
+import { renderRegister } from './pages/register'
 import { translatePage } from './i18n/translate'
 import { addAllEventListenOnPage } from './events/handler'
 import { initGoogleClient , setupGoogleButton } from './components/google/google_init'
@@ -10,7 +11,7 @@ const main_container = document.querySelector<HTMLDivElement>('#app')!
 
 function addToHistory(page: string, updateHistory: boolean = true) {
 	
-	// localStorage.setItem('current_page', page)
+	localStorage.setItem('current_page', page)
 	if (updateHistory)
 		history.pushState({ page }, '', `/${page}`)
 }
@@ -26,6 +27,9 @@ export function renderPage(page: string, updateHistory: boolean = true) {
 		case 'login':
 			page_content = renderLoginPage();
 			break;
+		case 'register':
+			page_content = renderRegister();
+			break;
 		default:
 			page_content = renderHomePage();
 			break;
@@ -37,7 +41,7 @@ export function renderPage(page: string, updateHistory: boolean = true) {
 	main_container.innerHTML = page_content;
 	
 	//Seulement sur le login page
-	setupGoogleButton()
+	// setupGoogleButton()
 	//Add function pour mettre la bonne value sur le select
 
 	translatePage(localStorage.getItem('lang') || 'en')
@@ -50,7 +54,9 @@ export function renderPage(page: string, updateHistory: boolean = true) {
 addAllEventListenOnPage(main_container);
 
 document.addEventListener('DOMContentLoaded', () => {
-	initGoogleClient();
+	
+	// initGoogleClient();
+	console.log('DOMContentLoaded')	
 	const page = localStorage.getItem('current_page') || 'home'
 	renderPage(page, false)
 });
