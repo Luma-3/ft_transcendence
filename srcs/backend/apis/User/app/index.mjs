@@ -3,6 +3,8 @@ import cors from '@fastify/cors'
 import knex from '../plugins/Knex.mjs'
 import config_knex from '../config/knex.config.mjs'
 
+import UserRoutes from './routes/UserInfo.mjs'
+
 const fastify = Fastify({
 	logger: true
 });
@@ -14,11 +16,7 @@ fastify.register(cors, {
 fastify.register(knex, config_knex);
 
 
-fastify.get('/api/user', async function(request, reply) {
-	console.log('GET /api/user');
-	const users = fastify.models.user.getAllUsers()
-	return reply.send(users);
-});
+fastify.register(UserRoutes);
 
 const start = async () => {
 	try {

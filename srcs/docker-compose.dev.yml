@@ -27,7 +27,7 @@ services:
     environment:
       - NODE_ENV=development
     volumes:
-      - ./backend/apis/User/app:/home/node/app
+      - ./backend/apis/User/:/home/node/
     ports:
       - '3000:3000'
       - '9229:9229'
