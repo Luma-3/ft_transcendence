@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.mjs",
   "scripts": {
-    "dev": "node --watch app/index.mjs",
-    "start": "node app/index.mjs"
+    "dev": "node --watch src/index.mjs",
+    "start": "node src/index.mjs"
   },
   "repository": {
     "type": "git",

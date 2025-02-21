@@ -21,13 +21,13 @@ services:
   user_api:
     container_name: user_api
     build:
-      context: ./backend/apis/User
+      context: ./backend/UserAPI
       dockerfile: Dockerfile.dev
     user: "node"
     environment:
       - NODE_ENV=development
     volumes:
-      - ./backend/apis/User/:/home/node/
+      - ./backend/UserAPI/src:/home/node/src
     ports:
       - '3000:3000'
       - '9229:9229'

@@ -1,6 +1,6 @@
 import fp from 'fastify-plugin'
 import Knex from 'knex'
-import { UserModel } from '../app/Models/UserModel.mjs';
+import UserModel from '../src/Models/UserModel.mjs';
 
 function knexPlugin(fastify, options, done) {
 	if (!fastify.knex) {

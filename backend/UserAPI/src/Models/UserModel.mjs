@@ -1,4 +1,4 @@
-export class UserModel {
+export default class UserModel {
 	constructor(knex) {
 		this.knex = knex
 	}
@@ -30,5 +30,3 @@ export class UserModel {
 			.first();
 	}
 }
-
-export default UserModel

@@ -1,11 +1,11 @@
 COMPOSE = docker compose
 
 dev:
-	$(COMPOSE) -f ./srcs/docker-compose.dev.yml up --build 
+	$(COMPOSE) -f ./docker-compose.dev.yml up --build 
 
 
 down-dev:
-	$(COMPOSE) -f ./srcs/docker-compose.dev.yml down --volumes
+	$(COMPOSE) -f ./docker-compose.dev.yml down --volumes
 
 re : down-dev dev
 
