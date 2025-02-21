@@ -1,3 +1,15 @@
+
+const UserSchema = {
+	body: {
+		type: 'object',
+		required: ['username', 'email'],
+		properties: {
+			name: { type: 'string', minLength: 2, maxLength: 32},
+			email: {type: 'string', format: 'email', maxLength: 255}
+		}
+	}
+}
+
 export default class UserModel {
 	constructor(knex) {
 		this.knex = knex
@@ -29,4 +41,10 @@ export default class UserModel {
 			.where(ID, userId)
 			.first();
 	}
+
+	async insert(username, email) {
+		return this.knex('users').insert({username, email});
+	}
 }
+
+export { UserSchema };

@@ -7,7 +7,7 @@ const config = {
 	development: {
 		client: 'sqlite3',
 		connection: {
-			filename: './src/data/User.db',
+			filename: './src/data/User.sql',
 
 		},
 		migrations: {
