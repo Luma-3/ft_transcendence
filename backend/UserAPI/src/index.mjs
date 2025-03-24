@@ -2,8 +2,8 @@ import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import knex from '../plugins/Knex.mjs'
 import config_knex from '../config/knex.config.mjs'
-
-import UserRoutes from './routes/UserInfo.mjs'
+import bcrypt from 'fastify-bcrypt'
+import UserRoutes from './routes/UserRoutes.mjs'
 
 const fastify = Fastify({
 	logger: true
@@ -14,6 +14,11 @@ fastify.register(cors, {
 });
 
 fastify.register(knex, config_knex);
+
+fastify.register(bcrypt, {
+	saltWorkFactor: 12
+});
+  
 
 
 fastify.register(UserRoutes);

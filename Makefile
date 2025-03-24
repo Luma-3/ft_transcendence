@@ -1,4 +1,4 @@
-COMPOSE = docker compose
+COMPOSE = docker-compose
 
 dev:
 	$(COMPOSE) -f ./docker-compose.dev.yml up --build 

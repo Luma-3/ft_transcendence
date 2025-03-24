@@ -34,6 +34,14 @@ export function changeLanguage() {
 }
 
 export function saveLanguage() {
-	console.log('saveLanguage')
+	const choice = (document.getElementById('save_lang') as HTMLInputElement).checked
+	if (choice == true) {
+	console.log('save')
 	localStorage.setItem('lang', sessionStorage.getItem('lang') || 'en')
+	}
+}
+
+export function initLanguage() {
+	localStorage.removeItem('lang')
+	sessionStorage.removeItem('lang')
 }

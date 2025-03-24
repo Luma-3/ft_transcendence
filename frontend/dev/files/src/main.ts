@@ -3,7 +3,7 @@
 import { renderHomePage } from './pages/home'
 import { renderLoginPage } from './pages/login'
 import { renderRegister } from './pages/register'
-import { translatePage } from './i18n/translate'
+import { initLanguage, translatePage } from './i18n/translate'
 import { addAllEventListenOnPage } from './events/handler'
 import { initGoogleClient , setupGoogleButton } from './components/google/google_init'
 
@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	// initGoogleClient();
 	console.log('DOMContentLoaded')	
 	const page = localStorage.getItem('current_page') || 'home'
+	if (page == 'home')
+		initLanguage()
 	renderPage(page, false)
 });
 

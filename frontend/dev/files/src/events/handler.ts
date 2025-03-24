@@ -1,4 +1,4 @@
-import { changeLanguage, saveLanguage } from '../i18n/translate'
+import { changeLanguage, saveLanguage, initLanguage } from '../i18n/translate'
 import { renderPage } from '../main'
 import { verifPasswordAndRegisterUser } from './userSession/userRegister'
 import { loginUser } from './userSession/userLogIn'
@@ -9,6 +9,7 @@ export function addAllEventListenOnPage(container : HTMLDivElement) {
 		
 		switch(target.id) {
 			case 'loadLogin':
+				saveLanguage();
 				renderPage('login');
 				break;
 			case 'loadHome':
@@ -16,9 +17,6 @@ export function addAllEventListenOnPage(container : HTMLDivElement) {
 				break;
 			case 'loadRegister':
 				renderPage('register');
-				break
-			case 'save_lang':
-				saveLanguage();
 				break;
 		}
 	});

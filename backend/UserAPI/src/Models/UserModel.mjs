@@ -1,11 +1,24 @@
+import fastify from "fastify";
 
-const UserSchema = {
+const NewUserSchema = {
 	body: {
 		type: 'object',
 		required: ['username', 'email'],
 		properties: {
-			name: { type: 'string', minLength: 2, maxLength: 32},
+			username: { type: 'string', minLength: 2, maxLength: 32},
+			password: { type: 'string', minLength: 8, maxLength: 255},
 			email: {type: 'string', format: 'email', maxLength: 255}
+		}
+	}
+}
+
+const LoginUserSchema = {
+	body: {
+		type: 'object',
+		required: ['username', 'password'],
+		properties: {
+			username: { type: 'string', minLength: 2, maxLength: 32},
+			password: { type: 'string', minLength: 8, maxLength: 255}
 		}
 	}
 }
@@ -22,29 +35,27 @@ export default class UserModel {
 	 * @var email
 	 */
 
-	static COLUMNS = {
-		ID: 'id',
-		USERNAME: 'username',
-		PASSWORD: 'password',
-		EMAIL: 'email',
-	}
-
 	async findAll() {
 		return await this.knex('users')
 			.select('*')
 		
 	}
-
-	// 
 	async findByID(ID) {
 		return this.knex('users')
 			.where(ID, userId)
 			.first();
 	}
 
-	async insert(username, email) {
-		return this.knex('users').insert({username, email});
+	async findByUsername(username)
+	{
+		return this.knex('users')
+			.where('username', username)
+			.first();
+	}
+
+	async insert(username, password, email) {
+		return this.knex('users').insert({username, password, email, created_at: this.knex.fn.now()});
 	}
 }
 
-export { UserSchema };
+export { NewUserSchema , LoginUserSchema };
