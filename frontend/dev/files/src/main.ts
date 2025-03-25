@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	
 	// initGoogleClient();
 	console.log('DOMContentLoaded')	
-	const page = localStorage.getItem('current_page') || 'home'
+	const page =  window.location.pathname.substring(1) || 'home'
 	if (page == 'home')
 		initLanguage()
 	renderPage(page, false)

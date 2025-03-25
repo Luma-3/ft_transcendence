@@ -3,11 +3,10 @@ import fastify from "fastify";
 const NewUserSchema = {
 	body: {
 		type: 'object',
-		required: ['username', 'email'],
+		required: ['username', 'password'],
 		properties: {
 			username: { type: 'string', minLength: 2, maxLength: 32},
 			password: { type: 'string', minLength: 8, maxLength: 255},
-			email: {type: 'string', format: 'email', maxLength: 255}
 		}
 	}
 }
@@ -53,8 +52,8 @@ export default class UserModel {
 			.first();
 	}
 
-	async insert(username, password, email) {
-		return this.knex('users').insert({username, password, email, created_at: this.knex.fn.now()});
+	async insert(username, password) {
+		return this.knex('users').insert({username, password, created_at: this.knex.fn.now()});
 	}
 }
 

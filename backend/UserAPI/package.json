@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
   "dependencies": {
     "@fastify/cors": "^10.0.2",
+    "@fastify/jwt": "^9.1.0",
     "dotenv": "^16.4.7",
     "fastify": "^5.2.1",
     "fastify-bcrypt": "^1.0.1",

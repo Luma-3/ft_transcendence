@@ -1,38 +1,65 @@
 import { renderPage } from '../../main'
+import { fetchApi } from '../../api'
+import { API_ROUTES } from '../../routes';
+
+interface Token {
+	token: string;
+}
+interface User {
+	id: number;
+	username: string;
+	token: string; //JWT token
+}
 
 export async function verifPasswordAndRegisterUser() {
-	const username = document.forms["registerForm"]["newUsername"].value;
-	const password = document.forms["registerForm"]["newPassword"].value;
-	const passwordVerif = document.forms["registerForm"]["newPasswordVerif"].value;
+	const form = document.forms.namedItem("registerForm") as HTMLFormElement; 
+	const formData = new FormData(form);
+	const userdata = Object.fromEntries(formData) as Record<string, string>;
 
+	console.log('formData: ', formData);
+	console.log('userdata: ', userdata.password);
 	//requete verif username existe ou pas
-	if (username === "")		{ renderPage('register') } // TODO : redirection page d'erreur et/ou page de redirection (tenter de modifier le code style "you have been hacked")
-	if (password === "")		{ renderPage('register') }
-	if (passwordVerif === "")	{ renderPage('register') }
+	if (!userdata.username || !userdata.password || !userdata.passwordVerif) {
+		 renderPage('register');
+		 return;
+	} // TODO : redirection page d'erreur et/ou page de redirection (tenter de modifier le code style "you have been hacked")
 
-	if (password !== passwordVerif) { 
+	if (userdata.password !== userdata.passwordVerif) { 
 		renderPage('register'); 
-		document.forms["registerForm"]["newUsername"].value = username;
-		return ; 
+		form["newUsername"].value = userdata.username;
+		return ;
 	}
 
-	//requete vers backend
-	let data = null;
-	try {
-		const response = await fetch('http://localhost:3000/api/user', {
-			method: "POST",
-			body: JSON.stringify({
-				username: username,
-				password: password
-			}),
-			headers: {
-				"Content-type": "application/json"
-			  }
-		})
-		data = await response.json();
-	} catch (error) {
-		console.error('Fetch error:', error);
+	const newToken = await fetchApi<Token>(API_ROUTES.USERS.REGISTER, {method: "POST", body: JSON.stringify(userdata)});
+	if (newToken.success) {
+		if (newToken.data)
+			localStorage.setItem('token', newToken.data.token);
 	}
-	console.log('fin du post', data);
-	renderPage('home');
+	else {
+		window.alert(newToken.error?.details);
+		renderPage('home');
+	}
+	const token = localStorage.getItem('token');
+	const response = await fetchApi<User>(API_ROUTES.USERS.DECODE, {
+																	method: "GET",
+																	headers: { "Authorization": `Bearer ${token}`}});
+	if (response.data) {
+		window.alert(`Welcome ${response.data.username}!`);
+	}
+	else {
+		window.alert("coucou " + response.error?.details);
+		renderPage('register');
+	}
 }
+
+// const response = await fetch(getRoute('login'), {
+// 	method: "POST",
+// 	body: JSON.stringify({
+// 		username: username,
+// 		password: password
+// 	}),
+// 	headers: {
+// 		"Content-type": "application/json"
+// 	  }
+// })
+// data = await response.json();
