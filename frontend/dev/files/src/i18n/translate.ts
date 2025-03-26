@@ -1,3 +1,4 @@
+// * Chargement des traductions
 export async function loadTranslation() {
 	const reponse = await fetch('/translation.json')
 	return reponse.json()
@@ -17,16 +18,20 @@ export async function translatePage(lang : string = 'en') {
 
 	elements.forEach(element => {
 		const key = element.getAttribute('translate')
-		if (key && translations[lang] && translations[lang][key]) {
-			if (element.tagName === 'INPUT') {
+		if (key && translations[lang] && translations[lang][key])
+		{
+			if (element.tagName === 'INPUT')
+			{
 				(element as HTMLInputElement).placeholder = translations[lang][key]
-			} else {
+			}
+			else {
 				element.innerHTML = translations[lang][key]
 			}
 		}
 	})
 }
 
+// * Changement de langue sur la Home page
 export function changeLanguage() {
 	const language = (document.getElementById('language') as HTMLSelectElement).value
 	sessionStorage.setItem('lang', language);
@@ -34,14 +39,9 @@ export function changeLanguage() {
 }
 
 export function saveLanguage() {
-	const choice = (document.getElementById('save_lang') as HTMLInputElement).checked
-	if (choice == true) {
-	console.log('save')
-	localStorage.setItem('lang', sessionStorage.getItem('lang') || 'en')
+	const choice = (document.getElementById('save_lang') as HTMLInputElement)
+	if (choice && choice.checked == true)
+	{
+		localStorage.setItem('lang', sessionStorage.getItem('lang') || 'en')
 	}
-}
-
-export function initLanguage() {
-	localStorage.removeItem('lang')
-	sessionStorage.removeItem('lang')
 }

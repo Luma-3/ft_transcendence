@@ -1,4 +1,4 @@
-import { renderPage } from '../../main'
+import { renderPage } from '../../renderer/rendererPage'
 import { fetchApi } from '../../api'
 import { API_ROUTES } from '../../routes';
 

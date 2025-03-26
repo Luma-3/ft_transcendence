@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Chillax';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./font/Chillax-Variable.ttf') format('truetype');
+}

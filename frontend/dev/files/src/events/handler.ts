@@ -1,30 +1,39 @@
-import { changeLanguage, saveLanguage, initLanguage } from '../i18n/translate'
-import { renderPage } from '../main'
+import { changeLanguage } from '../i18n/translate'
+import { renderPage } from '../renderer/rendererPage'
 import { verifPasswordAndRegisterUser } from './userSession/userRegister'
 import { loginUser } from './userSession/userLogIn'
+
+const clickEvent: {[key: string]: () => void } = {
+	'loadLogin': () => renderPage('login'),
+	'loadHome': () => renderPage('home'),
+	'loadRegister': () => renderPage('register'),
+};
+
+const changeEvent: {[key: string]: () => void } = {
+	'language': changeLanguage,
+};
+
+const submitEvent: {[key: string]: () => void } = {
+	'registerForm': verifPasswordAndRegisterUser,
+	'loginForm': loginUser,
+};
+
 
 export function addAllEventListenOnPage(container : HTMLDivElement) {
 	container.addEventListener('click', (event) => {
 		const target = event.target as HTMLElement;
 		
-		switch(target.id) {
-			case 'loadLogin':
-				saveLanguage();
-				renderPage('login');
-				break;
-			case 'loadHome':
-				renderPage('home');
-				break;
-			case 'loadRegister':
-				renderPage('register');
-				break;
+		if (target.id in clickEvent) {
+			clickEvent[target.id]();
 		}
+		
 	});
 	
 	container.addEventListener('change', (event) => {
 		const target = event.target as HTMLElement;
-		if (target.id === 'language') {
-			changeLanguage();
+		
+		if (target.id in changeEvent) {
+			changeEvent[target.id]();
 		}
 	});
 
@@ -32,13 +41,8 @@ export function addAllEventListenOnPage(container : HTMLDivElement) {
 		event.preventDefault();
 		const target = event.target as HTMLElement;
 
-		switch(target.id) {
-			case 'registerForm':
-				verifPasswordAndRegisterUser();
-				break;
-			case 'loginForm':
-				loginUser();
-				break;
+		if (target.id in submitEvent) {
+			submitEvent[target.id]();
 		}
 	})
 }
