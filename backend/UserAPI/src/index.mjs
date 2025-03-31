@@ -62,6 +62,12 @@ fastify.addHook("onRequest", async (request, reply) => {
 	}
 })
 
+// fastify.decorate("authenticate", async function (request, reply) {
+// 	try {
+// 		a
+// 	}
+// })
+
 
 const start = async () => {
 	try {

@@ -1,0 +1,9 @@
+
+> transcenduck@0.0.1 dev
+> node --watch src/index.mjs
+
+(node:35392) ExperimentalWarning: Watch mode is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"level":30,"time":1743419938036,"pid":35411,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743419938036,"pid":35411,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}

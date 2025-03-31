@@ -1,0 +1,12 @@
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+Port 5173 is in use, trying another one...
+Port 5174 is in use, trying another one...
+Port 5175 is in use, trying another one...
+
+  VITE v6.2.3  ready in 346 ms
+
+  ➜  Local:   http://localhost:5176/
+  ➜  Network: http://192.168.1.59:5176/

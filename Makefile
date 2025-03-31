@@ -1,11 +1,16 @@
 COMPOSE = docker-compose
 
-dev:
-	$(COMPOSE) -f ./docker-compose.dev.yml up --build 
+SH_DEV = launch.dev.sh
 
-down-dev:
-	$(COMPOSE) -f ./docker-compose.dev.yml down --volumes
+dev-install:
+	@bash $(SH_DEV) install
 
-re : down-dev dev
+dev-run:
+	@bash $(SH_DEV) run
 
-PHONY: dev down-dev re
+dev-stop: 
+	@bash $(SH_DEV) stop
+
+dev-restart: stop run
+
+PHONY: dev-install dev-run dev-stop dev-restart

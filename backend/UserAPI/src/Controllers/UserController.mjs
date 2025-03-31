@@ -14,6 +14,8 @@ function getAllUser(fastify, userModel) {
 
 function decode(fastify, userModel) {
 	return async (request, reply) => {
+		const user = request.jwt
+		fastify.log.info("User: " + user);
 
   // // We clone the global signing options before modifying them
   // let altSignOptions = Object.assign({}, fastify.jwt.options.sign)
@@ -24,36 +26,36 @@ function decode(fastify, userModel) {
   // // We generate a token using overrided options
   // const tokenAlt = await reply.jwtSign({ foo: 'bar' }, altSignOptions)
 
-	let token = request.headers['authorization'];
-	fastify.log.info("token: " + token);
-	fastify.log.info("token: KKJEFHKJFHEKJHFKJFHKJEHFKJHFEKJ");
+// 	let token = request.headers['authorization'];
+// 	fastify.log.info("token: " + token);
+// 	fastify.log.info("token: KKJEFHKJFHEKJHFKJFHKJEHFKJHFEKJ");
 
-	token = token.replace("Bearer ", "");
-  // We decode the token using the default options
-  const decodedToken = fastify.jwt.decode(token)
+// 	token = token.replace("Bearer ", "");
+//   // We decode the token using the default options
+//   const decodedToken = fastify.jwt.decode(token)
 
-  // // We decode the token using completely overided the default options
-  // const decodedTokenAlt = fastify.jwt.decode(tokenAlt, { complete: false })
+//   // // We decode the token using completely overided the default options
+//   // const decodedTokenAlt = fastify.jwt.decode(tokenAlt, { complete: false })
 
-  fastify.log.info("decode: " + decodedToken.payload.username);
-  /**
-   * Will return:
-   *
-   * {
-   *   "decodedToken": {
-   *     "header": {
-   *       "alg": "ES256",
-   *       "typ": "JWT"
-   *     },
-   *     "payload": {
-   *       "foo": "bar",
-   *       "iat": 1540305336
-   *       "iss": "api.example.tld"
-   *     },
-   *     "signature": "gVf5bzROYB4nPgQC0nbJTWCiJ3Ya51cyuP-N50cidYo"
-   *   },
-   * }
-   */
+//   fastify.log.info("decode: " + decodedToken.payload.username);
+//   /**
+//    * Will return:
+//    *
+//    * {
+//    *   "decodedToken": {
+//    *     "header": {
+//    *       "alg": "ES256",
+//    *       "typ": "JWT"
+//    *     },
+//    *     "payload": {
+//    *       "foo": "bar",
+//    *       "iat": 1540305336
+//    *       "iss": "api.example.tld"
+//    *     },
+//    *     "signature": "gVf5bzROYB4nPgQC0nbJTWCiJ3Ya51cyuP-N50cidYo"
+//    *   },
+//    * }
+//    */
 }}
 
 function loginUser(fastify, userModel) {
