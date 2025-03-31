@@ -55,7 +55,7 @@ stop() {
 		if [ -f "$pid" ]; then
 			echo "➡️ Stopping $(basename $pid) $(cat "$pid")"
 			child_pid=$(cat "$pid")
-			kill_child $child_pid
+			pkill -TERM -P $(cat "$pid") || echo "No process found for $(basename $pid)"
 			rm -f "$pid"
 		fi
 	done
@@ -69,14 +69,6 @@ stop() {
 	echo "✅ All dev servers stopped!"
 }
 
-kill_child() {
-	local pid=$1
-	for child in $(pgrep -P $pid); do
-		kill_child $child
-	done
-
-	kill -TERM $pid
-}
 
 case $ARG in
 	install) install ;;
