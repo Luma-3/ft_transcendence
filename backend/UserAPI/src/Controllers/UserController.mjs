@@ -1,90 +1,64 @@
-import { replyApi } from "../utils/responseApi.mjs";
+import { createError } from "../utils/errors.mjs";
 
-function getAllUser(fastify, userModel) {
+
+function getUser(fastify, userModel) {
 	return async (request, reply) => {
-		try {
-			const users = await userModel.findAll()
-			return reply.send(users)
+		const { userId } = request.params;
+		fastify.log.error("ID: " + userId);
+
+		const user = request.user.payload;
+		if (user.id == userId) {
+
+			try {
+				const db_user = await userModel.findByID(userId);
+				if (! db_user) {
+					return reply.code(404).send(createError("user ID not found"));
+				}
+				fastify.log.error("PROUT: " + db_user.username);
+				return reply.code(200).send(db_user);
+			}
+			catch (err) {
+				fastify.log.error("YO")
+				throw Error("Error on retrieve User", { cause: err });
+			}	
 		}
-		catch (err) {
-			return reply.send(err);
-		}
+		return reply.code(401).send(createError("Unauthorized"))
 	}
 }
 
-function decode(fastify, userModel) {
-	return async (request, reply) => {
-		const user = request.jwt
-		fastify.log.info("User: " + user);
 
-  // // We clone the global signing options before modifying them
-  // let altSignOptions = Object.assign({}, fastify.jwt.options.sign)
-  // altSignOptions.iss = 'another.example.tld'
-
-  // // We generate a token using the default sign options
-  // const token = await reply.jwtSign({ foo: 'bar' })
-  // // We generate a token using overrided options
-  // const tokenAlt = await reply.jwtSign({ foo: 'bar' }, altSignOptions)
-
-// 	let token = request.headers['authorization'];
-// 	fastify.log.info("token: " + token);
-// 	fastify.log.info("token: KKJEFHKJFHEKJHFKJFHKJEHFKJHFEKJ");
-
-// 	token = token.replace("Bearer ", "");
-//   // We decode the token using the default options
-//   const decodedToken = fastify.jwt.decode(token)
-
-//   // // We decode the token using completely overided the default options
-//   // const decodedTokenAlt = fastify.jwt.decode(tokenAlt, { complete: false })
-
-//   fastify.log.info("decode: " + decodedToken.payload.username);
-//   /**
-//    * Will return:
-//    *
-//    * {
-//    *   "decodedToken": {
-//    *     "header": {
-//    *       "alg": "ES256",
-//    *       "typ": "JWT"
-//    *     },
-//    *     "payload": {
-//    *       "foo": "bar",
-//    *       "iat": 1540305336
-//    *       "iss": "api.example.tld"
-//    *     },
-//    *     "signature": "gVf5bzROYB4nPgQC0nbJTWCiJ3Ya51cyuP-N50cidYo"
-//    *   },
-//    * }
-//    */
-}}
-
-function loginUser(fastify, userModel) {
+function login(fastify, userModel) {
 	return async (request, reply) => {
 		const {username, password} = request.body;
 		try {
-			const user = await userModel.findByUsername(username);
-			if (user) {
-				const isMatch = fastify.bcrypt.compare(password, user.password);
-				if (isMatch) {
-					const payload = {
-						id : user.id,
-						username: user.username,
-						iat: Date.now()
-					}
-					const token = fastify.jwt.sign({payload});
-					return new replyApi().sendData(reply, 200, {token});
-				}
+
+			const user = await userModel.findByUsername(username, ['id', 'username', 'password']);
+			if (! user) {
+				return reply.code(401).send(createError("Login or password incorrect"))
 			}
-			return new replyApi().sendError(reply, 401, {status: 401, message:"Login or password incorrect"});
+
+			const isMatch = fastify.bcrypt.compare(password, user.password);
+			if (!isMatch) {
+				return reply.code(401).send(createError("Login or password incorrect"))
+			}
+
+			const payload = {
+				id : user.id,
+				username: user.username,
+				iat: Date.now()
+			}
+			const token = fastify.jwt.sign({payload});
+
+			return replyApi.sendData(reply, 200, {token});
 		}
 		catch (err) {
-			return new replyApi().sendError(reply, 500, {status: 500, message:"Erreur lors de la connexion"});
+			throw Error("Error on Login", { cause: err });
 		}	
 	}
 }
 
 
-function addUser(fastify, userModel) {
+function add(fastify, userModel) {
 	return async (request, reply) => {
 		const {username, password} = request.body;
 		
@@ -96,23 +70,23 @@ function addUser(fastify, userModel) {
 
 			let altSignOptions = Object.assign({}, fastify.jwt.options.sign)
 			altSignOptions.iss = '127.0.0.1:3000'
+			altSignOptions.expiresIn = '1m'
 			const payload = {
 				id : id,
 				username: username,
 			}
 			const token = fastify.jwt.sign({payload}, altSignOptions);
-			return new replyApi().sendData(reply, 201, {token});
+			return reply.code(201).send({token});
 
 		}
 		catch (err) {
-			return new replyApi().sendError(reply, 500, {status: 500, message: "insertion Error"});
+			throw Error("Error on Register", { cause: err });
 		}
 	}
 }
 
 export default {
-	getAllUser,
-	addUser,
-	loginUser,
-	decode
+	add,
+	login,
+	getUser
 };

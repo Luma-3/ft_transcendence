@@ -22,6 +22,8 @@ const LoginUserSchema = {
 	}
 }
 
+const Base_Schema = ['id', 'username', 'created_at']
+
 export default class UserModel {
 	constructor(knex) {
 		this.knex = knex
@@ -34,20 +36,24 @@ export default class UserModel {
 	 * @var email
 	 */
 
-	async findAll() {
+
+	async findAll(schema = Base_Schema) {
 		return await this.knex('users')
-			.select('*')
+			.select(schema)
 		
 	}
-	async findByID(ID) {
-		return this.knex('users')
-			.where(ID, userId)
-			.first();
+
+	async findByID(ID , schema = Base_Schema) {
+		return await this.knex('users')
+			.select(schema)
+			.where('id', ID)
 	}
 
-	async findByUsername(username)
+	async findByUsername(username, schema = Base_Schema)
 	{
+
 		return this.knex('users')
+			.select(schema)
 			.where('username', username)
 			.first();
 	}

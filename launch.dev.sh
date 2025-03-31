@@ -27,53 +27,58 @@ run() {
 	mkdir -p pids logs
 
 	cd frontend/dev 
-	npm run dev > ../../logs/frontend.log 2>&1 & echo $! > ../../pids/frontend.pid
+	npm run dev 2>&1 | tee -a ../../logs/frontend.log &
 	cd ../..
-	echo "  ➡️ Frontend started with PID $(cat ./pids/frontend.pid)"
+	echo "➡️ Frontend started"
 
-	# for service in backend/*/; do
-	# # Skip if not a directory
-	# if [ ! -d "$service" ]; then
-	# 	continue
-	# fi
-	# 	echo "➡️ Backend: - $(basename $service)"
-	# 	cd "$service" && nohup npm run dev > ../../logs/$(basename $service).log 2>&1 & echo $! > pids/$(basename $service).pid && disown 
-	# 	echo "  ➡️ $(basename $service) started with PID $(cat pids/$(basename $service).pid)"
-	# done
-
-	echo "✅ All dev servers running!"
-}
-
-stop() {
-	echo "🛑 Stopping dev servers..."
-	if [ ! -d pids ]; then
-		echo "No dev servers are running."
-		exit 0
+	for service in backend/*/; do
+	# Skip if not a directory
+	if [ ! -d "$service" ]; then
+		continue
 	fi
-
-	for pid in pids/*.pid; do
-		if [ -f "$pid" ]; then
-			echo "➡️ Stopping $(basename $pid) $(cat "$pid")"
-			child_pid=$(cat "$pid")
-			pkill -TERM -P $(cat "$pid") || echo "No process found for $(basename $pid)"
-			rm -f "$pid"
-		fi
+		cd "$service"
+		npm run dev 2>&1 | tee -a ../../logs/$(basename $service).log &
+		echo "➡️ Backend: - $(basename $service) started"
+		cd ../..
 	done
 
-	rm -rf pids
-	if [ -d pids ]; then
-		echo "Failed to remove pids directory."
-		exit 1
-	fi
+	echo "✅ All dev servers running!"
+	echo "📝 Logs are available in the logs directory."
+	echo "📝 To stop the servers, CTRL+C"
 
+	wait
 	echo "✅ All dev servers stopped!"
 }
+
+# stop() {
+# 	echo "🛑 Stopping dev servers..."
+# 	if [ ! -d pids ]; then
+# 		echo "No dev servers are running."
+# 		exit 0
+# 	fi
+
+# 	for pid in pids/*.pid; do
+# 		if [ -f "$pid" ]; then
+# 			echo "➡️ Stopping $(basename $pid) $(cat "$pid")"
+# 			pkill -INT -P $(cat "$pid") || echo "No process found for $(basename $pid)"
+# 			rm -f "$pid"
+# 		fi
+# 	done
+
+# 	rm -rf pids
+# 	if [ -d pids ]; then
+# 		echo "Failed to remove pids directory."
+# 		exit 1
+# 	fi
+
+# 	echo "✅ All dev servers stopped!"
+# }
 
 
 case $ARG in
 	install) install ;;
 	run) run ;;
-	stop) stop ;;
+	# stop) stop ;;
 	*)
 		echo "Usage: $0 {install|run|stop}"
 		exit 1

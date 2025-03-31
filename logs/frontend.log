@@ -1,12 +1,50 @@
+nohup: ignoring input
 
 > transcenduck-front@0.0.1 dev
 > vite --host
 
 
-  VITE v6.2.3  ready in 364 ms
+  VITE v6.2.3  ready in 339 ms
 
   ➜  Local:   http://localhost:5173/
-  ➜  Network: http://192.168.56.1:5173/
-  ➜  Network: http://26.235.30.113:5173/
-  ➜  Network: http://172.17.128.1:5173/
-  ➜  Network: http://192.168.1.21:5173/
+  ➜  Network: http://192.168.1.59:5173/
+nohup: ignoring input
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 334 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.1.59:5173/
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 331 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.1.59:5173/
+  ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 322 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.1.59:5173/
+  ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 331 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.1.59:5173/
+  ➜  press h + enter to show help

@@ -5,7 +5,8 @@ import config_knex from '../config/knex.config.mjs'
 import bcrypt from 'fastify-bcrypt'
 import UserRoutes from './routes/UserRoutes.mjs'
 import jwt from '@fastify/jwt'
-import { replyApi } from './utils/responseApi.mjs'
+import { createError } from './utils/errors.mjs'
+
 
 const fastify = Fastify({
 	logger: true
@@ -25,23 +26,40 @@ fastify.register(bcrypt, {
 fastify.setErrorHandler((error, request, reply) => {
 	if (error.validation) {
 		reply.status(400).send({
-			success: false,
-			error: {
-				status: 400,
-				message: "Validation Error",
-				details: error.validation
-			}
+			status: 'error',
+			status: 400,
+			message: "Validation Error",
+			details: error.validation
 		});
 	}
 	else {
 		reply.status(error.statusCode || 500).send({
-			success: false,
-			error: {
-				status: error.statusCode || 500,
-				message: error.message || "Internal Server Error"
-			}
+			status: 'error',
+			message: error.message || "Internal Server Error",
+			details: error.details
 		});
 	}
+})
+
+fastify.addHook("preSerialization", async (request, reply, payload) => {
+	fastify.log.error("COCUCOCUCUC");
+	if (payload && typeof(payload) === 'object' && "status" in payload) {
+		return payload;
+	}
+
+  if (reply.statusCode >= 400) {
+    return {
+      status: "error",
+      message: payload?.message || "",
+      details: payload?.details || {},
+    };
+  }
+
+  return {
+    status: "success",
+		message: "Ok",
+    data: payload
+  };
 })
 
 fastify.register(UserRoutes);
@@ -57,16 +75,12 @@ fastify.addHook("onRequest", async (request, reply) => {
 			await request.jwtVerify();
 		}
 		catch (error) {
-				new replyApi().sendError(reply, 401, {status: 401, message: error.message });
+			reply.code(error.statusCode).send(createError(error.message, error))
 		}
 	}
 })
 
-// fastify.decorate("authenticate", async function (request, reply) {
-// 	try {
-// 		a
-// 	}
-// })
+
 
 
 const start = async () => {
