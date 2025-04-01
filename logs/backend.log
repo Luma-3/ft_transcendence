@@ -1,0 +1,1336 @@
+
+> transcenduck@0.0.1 dev
+> node --watch src/index.mjs
+
+node:internal/modules/cjs/loader:1228
+  throw err;
+  ^
+
+Error: Cannot find module '/home/luma/Documents/Project/ft_transcendence/backend/src/index.mjs'
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)
+    at Function._load (node:internal/modules/cjs/loader:1055:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+    at node:internal/main/run_main_module:36:49 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v22.14.0
+Failed running 'src/index.mjs'
+
+> transcenduck@0.0.1 dev
+> node --watch main.mjs
+
+node:internal/modules/package_json_reader:268
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@fastify/http-proxy' imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:268:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+> transcenduck@0.0.1 dev
+> node --watch main.mjs
+
+node:internal/modules/package_json_reader:268
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@fastify/http-proxy' imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:268:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+> transcenduck@0.0.1 dev
+> node --watch main.mjs
+
+node:internal/modules/package_json_reader:268
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@fastify/http-proxy' imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:268:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+> transcenduck@0.0.1 dev
+> node --watch main.mjs
+
+
+> transcenduck@0.0.1 dev
+> node --watch main.mjs
+
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+[1] node: --watch requires specifying a file
+[1] node --watch -r UserAPI/main.js exited with code 9
+[0] node:internal/modules/cjs/loader:1228
+[0]   throw err;
+[0]   ^
+[0] 
+[0] Error: Cannot find module '/home/luma/Documents/Project/ft_transcendence/backend/main.js'
+[0]     at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)
+[0]     at Function._load (node:internal/modules/cjs/loader:1055:27)
+[0]     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+[0]     at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+[0]     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+[0]     at node:internal/main/run_main_module:36:49 {
+[0]   code: 'MODULE_NOT_FOUND',
+[0]   requireStack: []
+[0] }
+[0] 
+[0] Node.js v22.14.0
+[0] Failed running 'main.js'
+[0] node --watch main.js exited with code 0
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+[1] node: --watch requires specifying a file
+[1] node --watch -r UserAPI/main.mjs exited with code 9
+[0] node --watch main.mjs exited with code SIGINT
+./start-API.sh: line 6: unexpected EOF while looking for matching `"'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+[1] node: --watch requires specifying a file
+[1] node --watch -r UserAPI/index.mjs exited with code 9
+[0] node --watch main.mjs exited with code SIGINT
+./start-API.sh: line 6: unexpected EOF while looking for matching `"'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+node: --watch requires specifying a file
+./start-API.sh: line 6: unexpected EOF while looking for matching `"'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+node:internal/modules/cjs/loader:1228
+  throw err;
+  ^
+
+Error: Cannot find module 'UserAPI/'
+Require stack:
+- internal/preload
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1225:15)
+    at Function._load (node:internal/modules/cjs/loader:1055:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Module.require (node:internal/modules/cjs/loader:1311:12)
+    at node:internal/modules/cjs/loader:1856:12
+    at loadPreloadModules (node:internal/process/pre_execution:734:5)
+    at setupUserModules (node:internal/process/pre_execution:206:5)
+    at prepareExecution (node:internal/process/pre_execution:159:5)
+    at prepareMainThreadExecution (node:internal/process/pre_execution:54:10) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ 'internal/preload' ]
+}
+
+Node.js v22.14.0
+Failed running 'index.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/luma/Documents/Project/ft_transcendence/backend/UserAPI/utils/errors.mjs' imported from /home/luma/Documents/Project/ft_transcendence/backend/UserAPI/Controllers/UserController.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/utils/errors.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15
+await config.registerPlugins(fastify);
+             ^
+
+TypeError: config.registerPlugins is not a function
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15:14
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15
+await config.registerPlugins(fastify);
+             ^
+
+TypeError: config.registerPlugins is not a function
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15:14
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15
+await config.registerPlugins(fastify);
+             ^
+
+TypeError: config.registerPlugins is not a function
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15:14
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15
+await config.registerPlugins(fastify);
+             ^
+
+TypeError: config.registerPlugins is not a function
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15:14
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15
+await config.registerPlugins(fastify);
+             ^
+
+TypeError: config.registerPlugins is not a function
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15:14
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15
+await config.registerPlugins(fastify);
+             ^
+
+TypeError: config.registerPlugins is not a function
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15:14
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15
+await config.registerPlugins(fastify);
+             ^
+
+TypeError: config.registerPlugins is not a function
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15:14
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15
+await config.registerPlugins(fastify);
+             ^
+
+TypeError: config.registerPlugins is not a function
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15:14
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fas.config.mjs' imported from /home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fas.config.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/luma/Documents/Project/ft_transcendence/backend/UserAPI/plugins/Knex.mjs' imported from /home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/plugins/Knex.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/luma/Documents/Project/ft_transcendence/backend/plugins/Knex.mjs' imported from /home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/Knex.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/luma/Documents/Project/ft_transcendence/backend/src/Models/UserModel.mjs' imported from /home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/backend/src/Models/UserModel.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20
+    (!parsedConfig.client && !parsedConfig.dialect)
+                   ^
+
+TypeError: Cannot read properties of undefined (reading 'client')
+    at resolveConfig (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20:20)
+    at knex (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/Knex.js:14:39)
+    at knexPlugin (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:6:16)
+    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)
+    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20
+    (!parsedConfig.client && !parsedConfig.dialect)
+                   ^
+
+TypeError: Cannot read properties of undefined (reading 'client')
+    at resolveConfig (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20:20)
+    at knex (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/Knex.js:14:39)
+    at knexPlugin (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:6:16)
+    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)
+    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20
+    (!parsedConfig.client && !parsedConfig.dialect)
+                   ^
+
+TypeError: Cannot read properties of undefined (reading 'client')
+    at resolveConfig (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20:20)
+    at knex (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/Knex.js:14:39)
+    at knexPlugin (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:6:16)
+    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)
+    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20
+    (!parsedConfig.client && !parsedConfig.dialect)
+                   ^
+
+TypeError: Cannot read properties of undefined (reading 'client')
+    at resolveConfig (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20:20)
+    at knex (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/Knex.js:14:39)
+    at knexPlugin (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:6:16)
+    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)
+    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20
+    (!parsedConfig.client && !parsedConfig.dialect)
+                   ^
+
+TypeError: Cannot read properties of undefined (reading 'client')
+    at resolveConfig (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20:20)
+    at knex (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/Knex.js:14:39)
+    at knexPlugin (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:6:16)
+    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)
+    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20
+    (!parsedConfig.client && !parsedConfig.dialect)
+                   ^
+
+TypeError: Cannot read properties of undefined (reading 'client')
+    at resolveConfig (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20:20)
+    at knex (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/Knex.js:14:39)
+    at knexPlugin (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:6:16)
+    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)
+    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:6
+export default {
+^^^^^^
+
+SyntaxError: Unexpected token 'export'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:6
+export default {
+^^^^^^
+
+SyntaxError: Unexpected token 'export'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:6
+export default {
+^^^^^^
+
+SyntaxError: Unexpected token 'export'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:6
+export default {
+^^^^^^
+
+SyntaxError: Unexpected token 'export'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20
+    (!parsedConfig.client && !parsedConfig.dialect)
+                   ^
+
+TypeError: Cannot read properties of undefined (reading 'client')
+    at resolveConfig (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20:20)
+    at knex (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/Knex.js:14:39)
+    at knexPlugin (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:6:16)
+    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)
+    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:9
+		await fastify.register(knex, ())
+		                              ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20
+    (!parsedConfig.client && !parsedConfig.dialect)
+                   ^
+
+TypeError: Cannot read properties of undefined (reading 'client')
+    at resolveConfig (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/internal/config-resolver.js:20:20)
+    at knex (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/knex/lib/knex-builder/Knex.js:14:39)
+    at knexPlugin (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:6:16)
+    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)
+    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:9
+		await fastify.register(knex, ken)
+		                             ^
+
+ReferenceError: ken is not defined
+    at Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:9:32)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:15:14
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743523059096,"pid":53785,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743523059096,"pid":53785,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+{"level":30,"time":1743523075452,"pid":53949,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743523075452,"pid":53949,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+{"level":30,"time":1743523118749,"pid":54148,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743523118749,"pid":54148,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743523124620,"pid":54148,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/","host":"127.0.0.1:3001","remoteAddress":"127.0.0.1","remotePort":46310},"msg":"incoming request"}
+{"level":30,"time":1743523124621,"pid":54148,"hostname":"luma-pc","msg":"/"}
+{"level":30,"time":1743523124624,"pid":54148,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":500},"responseTime":4.447882000356913,"msg":"request completed"}
+{"level":30,"time":1743523124672,"pid":54148,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/favicon.ico","host":"127.0.0.1:3001","remoteAddress":"127.0.0.1","remotePort":46322},"msg":"incoming request"}
+{"level":30,"time":1743523124672,"pid":54148,"hostname":"luma-pc","msg":"/favicon.ico"}
+{"level":30,"time":1743523124673,"pid":54148,"hostname":"luma-pc","reqId":"req-2","res":{"statusCode":500},"responseTime":0.7909549996256828,"msg":"request completed"}
+{"level":30,"time":1743523222455,"pid":54148,"hostname":"luma-pc","reqId":"req-3","req":{"method":"GET","url":"/user/","host":"127.0.0.1:3001","remoteAddress":"127.0.0.1","remotePort":37994},"msg":"incoming request"}
+{"level":30,"time":1743523222456,"pid":54148,"hostname":"luma-pc","reqId":"req-3","msg":"Route GET:/user/ not found"}
+{"level":30,"time":1743523222456,"pid":54148,"hostname":"luma-pc","reqId":"req-3","res":{"statusCode":404},"responseTime":0.6139679998159409,"msg":"request completed"}
+{"level":30,"time":1743523222475,"pid":54148,"hostname":"luma-pc","reqId":"req-4","req":{"method":"GET","url":"/favicon.ico","host":"127.0.0.1:3001","remoteAddress":"127.0.0.1","remotePort":38000},"msg":"incoming request"}
+{"level":30,"time":1743523222475,"pid":54148,"hostname":"luma-pc","msg":"/favicon.ico"}
+{"level":30,"time":1743523222475,"pid":54148,"hostname":"luma-pc","reqId":"req-4","res":{"statusCode":500},"responseTime":0.4338640011847019,"msg":"request completed"}
+{"level":30,"time":1743523227778,"pid":54148,"hostname":"luma-pc","reqId":"req-5","req":{"method":"GET","url":"/user/new","host":"127.0.0.1:3001","remoteAddress":"127.0.0.1","remotePort":37994},"msg":"incoming request"}
+{"level":30,"time":1743523227778,"pid":54148,"hostname":"luma-pc","reqId":"req-5","msg":"Route GET:/user/new not found"}
+{"level":30,"time":1743523227778,"pid":54148,"hostname":"luma-pc","reqId":"req-5","res":{"statusCode":404},"responseTime":0.5073090009391308,"msg":"request completed"}
+{"level":30,"time":1743523227798,"pid":54148,"hostname":"luma-pc","reqId":"req-6","req":{"method":"GET","url":"/favicon.ico","host":"127.0.0.1:3001","remoteAddress":"127.0.0.1","remotePort":38000},"msg":"incoming request"}
+{"level":30,"time":1743523227798,"pid":54148,"hostname":"luma-pc","msg":"/favicon.ico"}
+{"level":30,"time":1743523227799,"pid":54148,"hostname":"luma-pc","reqId":"req-6","res":{"statusCode":500},"responseTime":0.6575550027191639,"msg":"request completed"}
+{"level":30,"time":1743523315728,"pid":54148,"hostname":"luma-pc","reqId":"req-7","req":{"method":"GET","url":"/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":57540},"msg":"incoming request"}
+{"level":30,"time":1743523315728,"pid":54148,"hostname":"luma-pc","msg":"/"}
+{"level":30,"time":1743523315730,"pid":54148,"hostname":"luma-pc","reqId":"req-7","res":{"statusCode":500},"responseTime":1.6249510012567043,"msg":"request completed"}
+{"level":30,"time":1743523315758,"pid":54148,"hostname":"luma-pc","reqId":"req-8","req":{"method":"GET","url":"/favicon.ico","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":57550},"msg":"incoming request"}
+{"level":30,"time":1743523315759,"pid":54148,"hostname":"luma-pc","msg":"/favicon.ico"}
+{"level":30,"time":1743523315759,"pid":54148,"hostname":"luma-pc","reqId":"req-8","res":{"statusCode":500},"responseTime":0.4622809998691082,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/routes/index.mjs:13
+				reply.code(error.statusCode).send({}createError(error.message, error))
+				                                   ^
+
+SyntaxError: missing ) after argument list
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/routes/index.mjs:13
+				reply.code(error.statusCode).send({message: error.message, }createError(error.message, error))
+				                                                           ^
+
+SyntaxError: missing ) after argument list
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/routes/index.mjs:13
+				reply.code(error.statusCode).send({message: error.message, details: error}createError(error.message, error))
+				                                                                         ^
+
+SyntaxError: missing ) after argument list
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743523410128,"pid":55046,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743523410128,"pid":55046,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743523413090,"pid":55046,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":44210},"msg":"incoming request"}
+{"level":30,"time":1743523413091,"pid":55046,"hostname":"luma-pc","msg":"/"}
+{"level":30,"time":1743523413094,"pid":55046,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":401},"responseTime":3.848783999681473,"msg":"request completed"}
+{"level":30,"time":1743523413112,"pid":55046,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/favicon.ico","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":44216},"msg":"incoming request"}
+{"level":30,"time":1743523413112,"pid":55046,"hostname":"luma-pc","msg":"/favicon.ico"}
+{"level":30,"time":1743523413113,"pid":55046,"hostname":"luma-pc","reqId":"req-2","res":{"statusCode":401},"responseTime":0.35699600353837013,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743523841618,"pid":55769,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743523841618,"pid":55769,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743523859047,"pid":55814,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743523859047,"pid":55814,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743523951252,"pid":56037,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743523951253,"pid":56037,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/config/fastify_commun.config.mjs:14
+	async regist
+	^^^^^
+
+SyntaxError: Unexpected token 'async'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/config/fastify_commun.config.mjs:14
+	async 
+	^^^^^
+
+SyntaxError: Unexpected token 'async'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/config/fastify_commun.config.mjs:14
+	async format
+	^^^^^
+
+SyntaxError: Unexpected token 'async'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/config/fastify_commun.config.mjs:14
+	async for
+	^^^^^
+
+SyntaxError: Unexpected token 'async'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743523976600,"pid":56154,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743523976600,"pid":56154,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743523978904,"pid":56173,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743523978904,"pid":56173,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:6
+import routes from './routes/index.mjs'
+^^^^^^
+
+SyntaxError: Unexpected token 'import'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:6
+import routes from './routes/index.mjs'
+^^^^^^
+
+SyntaxError: Unexpected token 'import'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:6
+import routes from './routes/index.mjs'
+^^^^^^
+
+SyntaxError: Unexpected token 'import'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:6
+import routes from './routes/index.mjs'
+^^^^^^
+
+SyntaxError: Unexpected token 'import'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:6
+import routes from './routes/index.mjs'
+^^^^^^
+
+SyntaxError: Unexpected token 'import'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743524054696,"pid":56441,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743524054697,"pid":56441,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743524060710,"pid":56464,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743524060710,"pid":56464,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743524066937,"pid":56488,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743524066938,"pid":56488,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:21
+await Models(fastify);
+^^^^^
+
+SyntaxError: await is only valid in async functions and the top level bodies of modules
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743524072017,"pid":56523,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743524072017,"pid":56523,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:656
+      throw new errorCodes.FST_ERR_HOOK_INVALID_HANDLER(name, fn)
+            ^
+FastifyError [Error]: preSerialization hook should be a function, instead got undefined
+    at Object.addHook (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:656:13)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:19:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'FST_ERR_HOOK_INVALID_HANDLER',
+  statusCode: 500
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:656
+      throw new errorCodes.FST_ERR_HOOK_INVALID_HANDLER(name, fn)
+            ^
+FastifyError [Error]: preSerialization hook should be a function, instead got undefined
+    at Object.addHook (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:656:13)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:19:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'FST_ERR_HOOK_INVALID_HANDLER',
+  statusCode: 500
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:656
+      throw new errorCodes.FST_ERR_HOOK_INVALID_HANDLER(name, fn)
+            ^
+FastifyError [Error]: preSerialization hook should be a function, instead got undefined
+    at Object.addHook (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:656:13)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:19:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'FST_ERR_HOOK_INVALID_HANDLER',
+  statusCode: 500
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:19
+fastify.addHook("preSerialization", fro)
+                                    ^
+
+ReferenceError: fro is not defined
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:19:37
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:19
+fastify.addHook("preSerialization", formatJSON.)
+                                               ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743524088394,"pid":56631,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743524088395,"pid":56631,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:16
+		fastify.log.error(err)
+		^
+
+ReferenceError: fastify is not defined
+    at start (file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:16:3)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:21:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:16
+		fastify.log.error(err)
+		^
+
+ReferenceError: fastify is not defined
+    at start (file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:16:3)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:21:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:16
+		fastify.log.error(err)
+		^
+
+ReferenceError: fastify is not defined
+    at start (file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:16:3)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:21:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+{"level":30,"time":1743524633880,"pid":58014,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743524633881,"pid":58014,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:16
+		fastify.log.error(err)
+		^
+
+ReferenceError: fastify is not defined
+    at start (file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:16:3)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:21:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:16
+		fastify.log.error(err)
+		^
+
+ReferenceError: fastify is not defined
+    at start (file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:16:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743524679562,"pid":58014,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":40056},"msg":"incoming request"}
+{"level":30,"time":1743524679562,"pid":58014,"hostname":"luma-pc","msg":"/"}
+{"level":30,"time":1743524704854,"pid":58014,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":34476},"msg":"incoming request"}
+{"level":30,"time":1743524704854,"pid":58014,"hostname":"luma-pc","msg":"/"}
+{"level":30,"time":1743524756801,"pid":58014,"hostname":"luma-pc","reqId":"req-3","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":37532},"msg":"incoming request"}
+{"level":30,"time":1743524756802,"pid":58014,"hostname":"luma-pc","msg":"/1"}
+{"level":30,"time":1743524806879,"pid":58014,"hostname":"luma-pc","reqId":"req-4","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":44074},"msg":"incoming request"}
+{"level":30,"time":1743524806880,"pid":58014,"hostname":"luma-pc","msg":"/1"}
+Restarting 'main.mjs'
+Completed running 'main.mjs'
+Restarting 'main.mjs'
+Completed running 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'main.mjs'
+{"level":30,"time":1743524887811,"pid":58014,"hostname":"luma-pc","reqId":"req-5","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":39766},"msg":"incoming request"}
+{"level":30,"time":1743524887811,"pid":58014,"hostname":"luma-pc","msg":"/1"}
+Restarting 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:10
+});
+^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'main.mjs'
+{"level":30,"time":1743524986145,"pid":58014,"hostname":"luma-pc","reqId":"req-6","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":37744},"msg":"incoming request"}
+{"level":30,"time":1743524986145,"pid":58014,"hostname":"luma-pc","msg":"/1"}
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+{"level":30,"time":1743524996450,"pid":58986,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743524996450,"pid":58986,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743524999635,"pid":58986,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52100},"msg":"incoming request"}
+{"level":30,"time":1743524999635,"pid":58986,"hostname":"luma-pc","msg":"/1"}
+Restarting 'main.mjs'
+Completed running 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:29
+gateway.listen({ port: 3000, host: '0.0.0.0
+                                   ^^^^^^^^
+
+SyntaxError: Invalid or unexpected token
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Completed running 'main.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+Restarting 'main.mjs'
+Gateway listening on 3000
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Gateway listening on 3000
+{"level":30,"time":1743525113231,"pid":59443,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525113231,"pid":59443,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743525129297,"pid":59443,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":46338},"msg":"incoming request"}
+{"level":30,"time":1743525129298,"pid":59443,"hostname":"luma-pc","msg":"/1"}
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Gateway listening on 3000
+{"level":30,"time":1743525404612,"pid":60269,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525404612,"pid":60269,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743525406557,"pid":60269,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":50114},"msg":"incoming request"}
+{"level":30,"time":1743525406557,"pid":60269,"hostname":"luma-pc","msg":"/1"}
+{"level":30,"time":1743525448920,"pid":60269,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":46016},"msg":"incoming request"}
+{"level":30,"time":1743525448920,"pid":60269,"hostname":"luma-pc","msg":"/1"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743525573056,"pid":60615,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525573056,"pid":60615,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:26
+const start = async () => {
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743525584803,"pid":60704,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525584803,"pid":60704,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743525587067,"pid":60704,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":32870},"msg":"incoming request"}
+{"level":30,"time":1743525587068,"pid":60704,"hostname":"luma-pc","msg":"/1"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743525605764,"pid":60759,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525605764,"pid":60759,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743525607446,"pid":60759,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":37316},"msg":"incoming request"}
+{"level":30,"time":1743525607447,"pid":60759,"hostname":"luma-pc","msg":"/1"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743525663393,"pid":60854,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525663393,"pid":60854,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743525664300,"pid":60854,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49106},"msg":"incoming request"}
+{"level":30,"time":1743525664301,"pid":60854,"hostname":"luma-pc","msg":"/1"}
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/Controllers/UserController.mjs:4
+		/
+		^
+
+SyntaxError: Invalid regular expression: missing /
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743525830737,"pid":61138,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525830737,"pid":61138,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743525832614,"pid":61161,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525832615,"pid":61161,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743525837475,"pid":61185,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525837475,"pid":61185,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743525845177,"pid":61185,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":41592},"msg":"incoming request"}
+{"level":30,"time":1743525845177,"pid":61185,"hostname":"luma-pc","msg":"/1"}
+{"level":50,"time":1743525845179,"pid":61185,"hostname":"luma-pc","msg":"YO0000000000"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743525882192,"pid":61268,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525882192,"pid":61268,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743525885028,"pid":61268,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":34730},"msg":"incoming request"}
+{"level":30,"time":1743525885029,"pid":61268,"hostname":"luma-pc","msg":"/1"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743525967100,"pid":61430,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525967100,"pid":61430,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743525970855,"pid":61459,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743525970855,"pid":61459,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743525972357,"pid":61459,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52330},"msg":"incoming request"}
+{"level":30,"time":1743525972358,"pid":61459,"hostname":"luma-pc","msg":"/1"}
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/Models/index.mjs:5
+	fastify.decorate('models', {
+	        ^
+
+TypeError: Cannot read properties of undefined (reading 'decorate')
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/Models/index.mjs:5:10)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:21:1
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526001560,"pid":61549,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526001560,"pid":61549,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743526005214,"pid":61572,"hostname":"luma-pc","msg":"coucou"}
+Server listening on 3001
+{"level":30,"time":1743526005239,"pid":61572,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+{"level":30,"time":1743526005239,"pid":61572,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526013320,"pid":61596,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526013320,"pid":61596,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526223037,"pid":61897,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526223037,"pid":61897,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526442255,"pid":62193,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526442255,"pid":62193,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526451238,"pid":62224,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526451238,"pid":62224,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526455176,"pid":62241,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526455176,"pid":62241,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:10
+			user: new UserModel(fastify.knex)
+			          ^
+
+ReferenceError: UserModel is not defined
+    at knexPlugin (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:10:14)
+    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)
+    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:10
+			user: new UserModel(fastify.knex)
+			          ^
+
+ReferenceError: UserModel is not defined
+    at knexPlugin (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/knex.mjs:10:14)
+    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)
+    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526510829,"pid":62375,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526510829,"pid":62375,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743526513981,"pid":62375,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":60912},"msg":"incoming request"}
+{"level":30,"time":1743526513982,"pid":62375,"hostname":"luma-pc","msg":"/1"}
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743526537295,"pid":62446,"hostname":"luma-pc","err":{"type":"TypeError","message":"Cannot read properties of undefined (reading 'user')","stack":"TypeError: Cannot read properties of undefined (reading 'user')\n    at UserRoutes (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/routes/UserRoutes.mjs:6:91)\n    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"Cannot read properties of undefined (reading 'user')"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526538721,"pid":62461,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526538721,"pid":62461,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526543402,"pid":62485,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526543402,"pid":62485,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526761149,"pid":62834,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526761149,"pid":62834,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526763789,"pid":62854,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526763789,"pid":62854,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526765935,"pid":62873,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526765935,"pid":62873,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Gateway listening on 3000
+{"level":30,"time":1743526769408,"pid":63012,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526769408,"pid":63012,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743526771471,"pid":63012,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":34202},"msg":"incoming request"}
+{"level":30,"time":1743526771472,"pid":63012,"hostname":"luma-pc","msg":"/1"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526835526,"pid":63146,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526835526,"pid":63146,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743526836865,"pid":63175,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743526836866,"pid":63175,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743526839638,"pid":63175,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":37338},"msg":"incoming request"}
+{"level":30,"time":1743526839639,"pid":63175,"hostname":"luma-pc","msg":"/1"}
+{"level":30,"time":1743526880422,"pid":63175,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/new","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":59160},"msg":"incoming request"}
+{"level":30,"time":1743526880422,"pid":63175,"hostname":"luma-pc","msg":"/new"}
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/Controllers/UserController.mjs:62
+		let hash_pass = await fastify.bcrypt.hash(password);
+		    ^^^^^^^^^
+
+SyntaxError: Unexpected identifier 'hash_pass'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743527013149,"pid":63461,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743527013149,"pid":63461,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743527014230,"pid":63474,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743527014230,"pid":63474,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743527016836,"pid":63496,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743527016836,"pid":63496,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743527027860,"pid":63496,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/new","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":35744},"msg":"incoming request"}
+{"level":30,"time":1743527027860,"pid":63496,"hostname":"luma-pc","msg":"/new"}
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Gateway listening on 3000
+{"level":30,"time":1743527048104,"pid":63662,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743527048104,"pid":63662,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743527050807,"pid":63662,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/new","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":45038},"msg":"incoming request"}
+{"level":30,"time":1743527050807,"pid":63662,"hostname":"luma-pc","msg":"/new"}
+{"level":30,"time":1743527088369,"pid":63662,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/new","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":38358},"msg":"incoming request"}
+{"level":30,"time":1743527088369,"pid":63662,"hostname":"luma-pc","msg":"/new"}
+{"level":30,"time":1743527160383,"pid":63662,"hostname":"luma-pc","reqId":"req-3","req":{"method":"GET","url":"/new","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":48536},"msg":"incoming request"}
+{"level":30,"time":1743527160384,"pid":63662,"hostname":"luma-pc","msg":"/new"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743527269238,"pid":64038,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743527269239,"pid":64038,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743527271401,"pid":64038,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/new","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":39290},"msg":"incoming request"}
+{"level":30,"time":1743527271402,"pid":64038,"hostname":"luma-pc","msg":"/new"}
+{"level":30,"time":1743527294535,"pid":64038,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/new","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52810},"msg":"incoming request"}
+{"level":30,"time":1743527294535,"pid":64038,"hostname":"luma-pc","msg":"/new"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743527354635,"pid":64276,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743527354635,"pid":64276,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743527364170,"pid":64276,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/1","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52116},"msg":"incoming request"}
+{"level":30,"time":1743527364171,"pid":64276,"hostname":"luma-pc","msg":"/1"}
+{"level":50,"time":1743527364172,"pid":64276,"hostname":"luma-pc","msg":"YO0000000000"}

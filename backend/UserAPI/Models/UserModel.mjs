@@ -1,4 +1,3 @@
-import fastify from "fastify";
 
 const NewUserSchema = {
 	body: {

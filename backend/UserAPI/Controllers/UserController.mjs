@@ -1,17 +1,16 @@
-import { createError } from "../utils/errors.mjs";
-
 
 function getUser(fastify, userModel) {
 	return async (request, reply) => {
 		const { userId } = request.params;
-
+		fastify.log.error("YO0000000000")
+		
 		const user = request.user.payload;
 		if (user.id == userId) {
-
+			
 			try {
 				const db_user = await userModel.findByID(userId);
 				if (! db_user) {
-					return reply.code(404).send(createError("user ID not found"));
+					return reply.code(404).send({message: "user ID not found"});
 				}
 				return reply.code(200).send({data: db_user});
 			}
@@ -31,7 +30,7 @@ function login(fastify, userModel) {
 
 			const user = await userModel.findByUsername(username, ['id', 'username', 'password']);
 			if (! user) {
-				return reply.code(401).send(createError("Login or password incorrect"))
+				return reply.code(401).send({message: "Login or password incorrect"})
 			}
 
 			const isMatch = fastify.bcrypt.compare(password, user.password);
@@ -58,8 +57,8 @@ function login(fastify, userModel) {
 
 function add(fastify, userModel) {
 	return async (request, reply) => {
+		fastify.log.error("SALUT");
 		const {username, password} = request.body;
-		
 		let hash_pass = await fastify.bcrypt.hash(password);
 		fastify.log.error(hash_pass);
 
