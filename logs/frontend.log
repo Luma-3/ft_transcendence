@@ -48,3 +48,13 @@ nohup: ignoring input
   ➜  Local:   http://localhost:5173/
   ➜  Network: http://192.168.1.59:5173/
   ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 888 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.1.59:5173/
+  ➜  press h + enter to show help

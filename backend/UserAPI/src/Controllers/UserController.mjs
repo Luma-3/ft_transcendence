@@ -4,7 +4,6 @@ import { createError } from "../utils/errors.mjs";
 function getUser(fastify, userModel) {
 	return async (request, reply) => {
 		const { userId } = request.params;
-		fastify.log.error("ID: " + userId);
 
 		const user = request.user.payload;
 		if (user.id == userId) {
@@ -14,15 +13,13 @@ function getUser(fastify, userModel) {
 				if (! db_user) {
 					return reply.code(404).send(createError("user ID not found"));
 				}
-				fastify.log.error("PROUT: " + db_user.username);
-				return reply.code(200).send(db_user);
+				return reply.code(200).send({data: db_user});
 			}
 			catch (err) {
-				fastify.log.error("YO")
 				throw Error("Error on retrieve User", { cause: err });
 			}	
 		}
-		return reply.code(401).send(createError("Unauthorized"))
+		return reply.code(401).send({message: "Unauthorized"})
 	}
 }
 
@@ -39,7 +36,7 @@ function login(fastify, userModel) {
 
 			const isMatch = fastify.bcrypt.compare(password, user.password);
 			if (!isMatch) {
-				return reply.code(401).send(createError("Login or password incorrect"))
+				return reply.code(401).send({})
 			}
 
 			const payload = {
@@ -49,11 +46,12 @@ function login(fastify, userModel) {
 			}
 			const token = fastify.jwt.sign({payload});
 
-			return replyApi.sendData(reply, 200, {token});
+			return reply.code(200).send({token});
+
 		}
 		catch (err) {
 			throw Error("Error on Login", { cause: err });
-		}	
+		}
 	}
 }
 
@@ -70,7 +68,7 @@ function add(fastify, userModel) {
 
 			let altSignOptions = Object.assign({}, fastify.jwt.options.sign)
 			altSignOptions.iss = '127.0.0.1:3000'
-			altSignOptions.expiresIn = '1m'
+			altSignOptions.expiresIn = '1d'
 			const payload = {
 				id : id,
 				username: username,

@@ -42,7 +42,6 @@ fastify.setErrorHandler((error, request, reply) => {
 })
 
 fastify.addHook("preSerialization", async (request, reply, payload) => {
-	fastify.log.error("COCUCOCUCUC");
 	if (payload && typeof(payload) === 'object' && "status" in payload) {
 		return payload;
 	}
@@ -57,8 +56,8 @@ fastify.addHook("preSerialization", async (request, reply, payload) => {
 
   return {
     status: "success",
-		message: "Ok",
-    data: payload
+		message: payload?.message || "Ok",
+    data: payload?.data || {},
   };
 })
 

@@ -5183,3 +5183,207 @@ Server listening on 3000
 {"level":30,"time":1743441879883,"pid":49502,"hostname":"luma-pc","msg":"/user/27"}
 {"level":50,"time":1743441879885,"pid":49502,"hostname":"luma-pc","msg":"COCUCOCUCUC"}
 {"level":30,"time":1743441879888,"pid":49502,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":401},"responseTime":4.476365998387337,"msg":"request completed"}
+
+> transcenduck@0.0.1 dev
+> node --watch src/index.mjs
+
+(node:15486) ExperimentalWarning: Watch mode is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"level":30,"time":1743508612340,"pid":15505,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508612341,"pid":15505,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+{"level":30,"time":1743508619049,"pid":15505,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/user/27","host":"127.0.0.1:3000","remoteAddress":"127.0.0.1","remotePort":52106},"msg":"incoming request"}
+{"level":30,"time":1743508619050,"pid":15505,"hostname":"luma-pc","msg":"/user/27"}
+{"level":30,"time":1743508619073,"pid":15505,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":401},"responseTime":22.720323999412358,"msg":"request completed"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508636204,"pid":15582,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508636205,"pid":15582,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+{"level":30,"time":1743508644145,"pid":15582,"hostname":"luma-pc","reqId":"req-1","req":{"method":"POST","url":"/user/new","host":"127.0.0.1:3000","remoteAddress":"127.0.0.1","remotePort":35688},"msg":"incoming request"}
+{"level":30,"time":1743508644146,"pid":15582,"hostname":"luma-pc","msg":"/user/new"}
+{"level":50,"time":1743508644830,"pid":15582,"hostname":"luma-pc","msg":"$2a$12$HUDvlOp1CbJlDfdIfWyEU.4C3O6HFDGL7OQqT.OTet96oMQIkjfSK"}
+{"level":30,"time":1743508644873,"pid":15582,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":201},"responseTime":727.6201659999788,"msg":"request completed"}
+{"level":30,"time":1743508666643,"pid":15582,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/user/28","host":"127.0.0.1:3000","remoteAddress":"127.0.0.1","remotePort":35688},"msg":"incoming request"}
+{"level":30,"time":1743508666643,"pid":15582,"hostname":"luma-pc","msg":"/user/28"}
+{"level":50,"time":1743508666650,"pid":15582,"hostname":"luma-pc","msg":"ID: 28"}
+{"level":50,"time":1743508666653,"pid":15582,"hostname":"luma-pc","msg":"PROUT: undefined"}
+{"level":30,"time":1743508666654,"pid":15582,"hostname":"luma-pc","reqId":"req-2","res":{"statusCode":200},"responseTime":11.33086199965328,"msg":"request completed"}
+{"level":30,"time":1743508697517,"pid":15582,"hostname":"luma-pc","reqId":"req-3","req":{"method":"GET","url":"/user/27","host":"127.0.0.1:3000","remoteAddress":"127.0.0.1","remotePort":35688},"msg":"incoming request"}
+{"level":30,"time":1743508697518,"pid":15582,"hostname":"luma-pc","msg":"/user/27"}
+{"level":50,"time":1743508697519,"pid":15582,"hostname":"luma-pc","msg":"ID: 27"}
+{"level":30,"time":1743508697520,"pid":15582,"hostname":"luma-pc","reqId":"req-3","res":{"statusCode":401},"responseTime":2.888596000149846,"msg":"request completed"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508717425,"pid":15739,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508717426,"pid":15739,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+{"level":30,"time":1743508718813,"pid":15739,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/user/27","host":"127.0.0.1:3000","remoteAddress":"127.0.0.1","remotePort":55530},"msg":"incoming request"}
+{"level":30,"time":1743508718814,"pid":15739,"hostname":"luma-pc","msg":"/user/27"}
+{"level":50,"time":1743508718819,"pid":15739,"hostname":"luma-pc","msg":"ID: 27"}
+{"level":30,"time":1743508718826,"pid":15739,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":401},"responseTime":12.211613000370562,"msg":"request completed"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508733107,"pid":15783,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508733108,"pid":15783,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508740142,"pid":15809,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508740143,"pid":15809,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508742041,"pid":15823,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508742042,"pid":15823,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+{"level":30,"time":1743508747878,"pid":15823,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/user/27","host":"127.0.0.1:3000","remoteAddress":"127.0.0.1","remotePort":45498},"msg":"incoming request"}
+{"level":30,"time":1743508747880,"pid":15823,"hostname":"luma-pc","msg":"/user/27"}
+{"level":50,"time":1743508747888,"pid":15823,"hostname":"luma-pc","msg":"ID: 27"}
+{"level":30,"time":1743508747897,"pid":15823,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":401},"responseTime":17.95679000020027,"msg":"request completed"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508771615,"pid":15886,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508771616,"pid":15886,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508773743,"pid":15908,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508773744,"pid":15908,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/src/index.mjs:59
+		message: payload.,
+		                 ^
+
+SyntaxError: Unexpected token ','
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:152:18)
+    at ModuleLoader.moduleProvider (node:internal/modules/esm/loader:298:14)
+    at async link (node:internal/modules/esm/module_job:67:21)
+
+Node.js v18.19.1
+Failed running 'src/index.mjs'
+Restarting 'src/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/src/index.mjs:59
+		message: payload?.,
+		                  ^
+
+SyntaxError: Unexpected token ','
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:152:18)
+    at ModuleLoader.moduleProvider (node:internal/modules/esm/loader:298:14)
+    at async link (node:internal/modules/esm/module_job:67:21)
+
+Node.js v18.19.1
+Failed running 'src/index.mjs'
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508834699,"pid":16047,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508834699,"pid":16047,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/src/index.mjs:61
+  };
+  ^
+
+SyntaxError: Unexpected token '}'
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:152:18)
+    at ModuleLoader.moduleProvider (node:internal/modules/esm/loader:298:14)
+    at async link (node:internal/modules/esm/module_job:67:21)
+
+Node.js v18.19.1
+Failed running 'src/index.mjs'
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508859595,"pid":16117,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508859596,"pid":16117,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508866708,"pid":16146,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508866709,"pid":16146,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508956542,"pid":16302,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508956543,"pid":16302,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508959525,"pid":16327,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508959526,"pid":16327,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508963788,"pid":16348,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508963789,"pid":16348,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508967220,"pid":16364,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508967221,"pid":16364,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743508989321,"pid":16422,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743508989322,"pid":16422,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509011349,"pid":16479,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509011350,"pid":16479,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509017636,"pid":16507,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509017638,"pid":16507,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509044613,"pid":16565,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509044614,"pid":16565,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509048980,"pid":16590,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509048981,"pid":16590,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509050809,"pid":16604,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509050810,"pid":16604,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509055227,"pid":16629,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509055227,"pid":16629,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509073125,"pid":16678,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509073126,"pid":16678,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509074322,"pid":16695,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509074323,"pid":16695,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509077226,"pid":16713,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509077228,"pid":16713,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+{"level":30,"time":1743509106149,"pid":16713,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/user/28","host":"127.0.0.1:3000","remoteAddress":"127.0.0.1","remotePort":43644},"msg":"incoming request"}
+{"level":30,"time":1743509106150,"pid":16713,"hostname":"luma-pc","msg":"/user/28"}
+{"level":30,"time":1743509106174,"pid":16713,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":200},"responseTime":24.90555000025779,"msg":"request completed"}
+{"level":30,"time":1743509112268,"pid":16713,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/user/29","host":"127.0.0.1:3000","remoteAddress":"127.0.0.1","remotePort":43644},"msg":"incoming request"}
+{"level":30,"time":1743509112268,"pid":16713,"hostname":"luma-pc","msg":"/user/29"}
+{"level":30,"time":1743509112271,"pid":16713,"hostname":"luma-pc","reqId":"req-2","res":{"statusCode":401},"responseTime":2.5100530004128814,"msg":"request completed"}
+{"level":30,"time":1743509114358,"pid":16713,"hostname":"luma-pc","reqId":"req-3","req":{"method":"GET","url":"/user/28","host":"127.0.0.1:3000","remoteAddress":"127.0.0.1","remotePort":43644},"msg":"incoming request"}
+{"level":30,"time":1743509114358,"pid":16713,"hostname":"luma-pc","msg":"/user/28"}
+{"level":30,"time":1743509114362,"pid":16713,"hostname":"luma-pc","reqId":"req-3","res":{"statusCode":200},"responseTime":3.9316680002957582,"msg":"request completed"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509130100,"pid":16838,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509130101,"pid":16838,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509131928,"pid":16852,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509131929,"pid":16852,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/src/Controllers/UserController.mjs:16
+				return reply.code(200).send({data:});
+				                                  ^
+
+SyntaxError: Unexpected token '}'
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:152:18)
+    at ModuleLoader.moduleProvider (node:internal/modules/esm/loader:298:14)
+
+Node.js v18.19.1
+Failed running 'src/index.mjs'
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509137455,"pid":16889,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509137456,"pid":16889,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+Restarting 'src/index.mjs'
+{"level":30,"time":1743509140684,"pid":16915,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3000"}
+Server listening on 3000
+{"level":30,"time":1743509140685,"pid":16915,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3000"}
+{"level":30,"time":1743509154694,"pid":16915,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/user/28","host":"127.0.0.1:3000","remoteAddress":"127.0.0.1","remotePort":59466},"msg":"incoming request"}
+{"level":30,"time":1743509154695,"pid":16915,"hostname":"luma-pc","msg":"/user/28"}
+{"level":30,"time":1743509154716,"pid":16915,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":200},"responseTime":21.9735350003466,"msg":"request completed"}

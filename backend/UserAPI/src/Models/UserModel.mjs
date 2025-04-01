@@ -30,10 +30,10 @@ export default class UserModel {
 	}
 
 	/**
-	 * @var ID
-	 * @var Username
-	 * @var HashPassword
-	 * @var email
+	 * @var id
+	 * @var username
+	 * @var password
+	 * @var created_at
 	 */
 
 
