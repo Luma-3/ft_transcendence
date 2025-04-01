@@ -1,9 +1,10 @@
 import { changeLanguage } from '../i18n/translate'
-import { renderPage } from '../renderer/rendererPage'
+import { renderPage } from '../components/RenderPage'
 import { verifPasswordAndRegisterUser } from './userSession/userRegister'
 import { loginUser } from './userSession/userLogIn'
 
 const clickEvent: {[key: string]: () => void } = {
+	'loadBackPage': () => window.history.back(),
 	'loadLogin': () => renderPage('login'),
 	'loadHome': () => renderPage('home'),
 	'loadRegister': () => renderPage('register'),

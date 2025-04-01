@@ -1,0 +1,13 @@
+{
+	"lang_choice": "Choose your language: ",
+	"save_choice": "Save choice",
+	"username": "Username",
+	"password": "Password",
+	"verif_password": "Repeat password",
+	"register": "Register",
+	"no_account": "Don't have an account yet?",
+	"create_account": "Create an account",
+	"back-link": "Back",
+	"login": "Login",
+	"google_login": "Login with Google"
+}

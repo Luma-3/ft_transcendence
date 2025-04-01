@@ -26,6 +26,12 @@ function waitForGoogle() {
 	});
 }
 
+export function renderButtonGoogle() {
+	return `
+	<button id="google_login" class="items-center justify-center p-2 hover:cursor-pointer">
+	</button>
+	`;
+}
 
 export function setupGoogleButton() {
 	waitForGoogle().then(() => {	

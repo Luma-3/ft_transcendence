@@ -1,5 +1,5 @@
-import { renderPage } from '../../renderer/rendererPage'
-import { fetchApi } from '../../api'
+import { renderPage } from '../../components/RenderPage'
+import { fetchApi } from '../../components/Api'
 import { API_ROUTES } from '../../routes';
 
 interface Token {

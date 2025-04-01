@@ -1,0 +1,13 @@
+{
+	"lang_choice": "Elige tu idioma: ",
+	"save_choice": "Guardar elección",
+	"username": "Nombre de usuario",
+	"password": "Contraseña",
+	"verif_password": "Repetir contraseña",
+	"register": "Registrarse",
+	"no_account": "¿No tienes una cuenta?",
+	"create_account": "Crear una cuenta",
+	"back-link": "Atrás",
+	"login": "Iniciar sesión",
+	"google_login": "Iniciar sesión con Google"
+}

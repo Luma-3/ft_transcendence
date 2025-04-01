@@ -1,31 +1,32 @@
 // * Chargement des traductions
-export async function loadTranslation() {
-	const reponse = await fetch('/translation.json')
+export async function loadTranslation(lang: string) {
+	const reponse = await fetch(`languages/${lang}.json`)
 	return reponse.json()
 	
 }
 
 export async function translatePage(lang : string = 'en') {
+
+	if (lang !== 'en' && lang != 'fr' && lang != 'es') {
+		return;
+	}
 	
 	const container = document.querySelector<HTMLDivElement>('#app')!
 	
-	const translations = await loadTranslation()
-	if (!translations[lang]) {
-		return
-	}
+	const translations = await loadTranslation(lang)
 
 	const elements = container.querySelectorAll('[translate]')
 
 	elements.forEach(element => {
 		const key = element.getAttribute('translate')
-		if (key && translations[lang] && translations[lang][key])
+		if (key && translations[key])
 		{
 			if (element.tagName === 'INPUT')
 			{
-				(element as HTMLInputElement).placeholder = translations[lang][key]
+				(element as HTMLInputElement).placeholder = translations[key]
 			}
 			else {
-				element.innerHTML = translations[lang][key]
+				element.innerHTML = translations[key]
 			}
 		}
 	})
