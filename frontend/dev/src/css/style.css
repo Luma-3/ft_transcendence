@@ -6,3 +6,12 @@
   font-weight: 400;
   src: url('./font/Chillax-Variable.ttf') format('truetype');
 }
+
+@theme {
+  --font-title: 'Chillax', sans-serif;
+  --font-text: 'Merriweather', sans-serif;
+  --color-primary: #744FAC;
+  --color-primary-light: #E5D8FF;
+  --color-secondary: #FF8904;
+  --color-grey: #E5D8FF;
+}

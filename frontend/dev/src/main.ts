@@ -2,7 +2,7 @@
 
 import { renderPage } from './renderer/rendererPage'
 import { addAllEventListenOnPage } from './events/handler'
-import { initGoogleClient , setupGoogleButton } from './components/google/google_init'
+import { initGoogleClient } from './components/google/google_init'
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 

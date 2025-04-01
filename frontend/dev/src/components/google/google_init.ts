@@ -34,7 +34,7 @@ export function setupGoogleButton() {
 		const container = document.getElementById('google_login')!
 		
 		google.accounts.id.renderButton(container, {
-			theme: `filled_black`,
+			theme: `outlined`,
 			size: 'large',
 			shape: 'square',
 			locale: localisation,

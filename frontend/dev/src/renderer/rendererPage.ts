@@ -19,18 +19,24 @@ export function renderPage(page: string, updateHistory: boolean = true) {
 	const rendererFunction = rendererPage[page] || homePage;
 	const page_content = rendererFunction();
 	
-	addToHistory(page, updateHistory);
-			
-	main_container.style.visibility = 'hidden';
+	main_container.classList.add('transition-opacity', 'duration-1500', 'ease-in-out');
+	main_container.style.opacity = '0';
+	
 	main_container.innerHTML = page_content;
 	
-	if (page === 'login' || page === 'register') {
-		setupGoogleButton()
-	}
-
-	translatePage(localStorage.getItem('lang') || 'en')
+	translatePage(localStorage.getItem('lang') || 'en');
 	
-	setTimeout(() => {
-		main_container.style.visibility = 'visible';
-	  }, 10);
+	if (page === 'login' || page === 'register') {
+		setupGoogleButton();
+	}
+	if (updateHistory) {
+		addToHistory(page, updateHistory);
+	}
+	
+	void main_container.offsetWidth;
+
+	main_container.style.opacity = '1';
+
+	// main_container.classList.remove('opacity-0');
+	// main_container.classList.add('opacity-100');
 }
