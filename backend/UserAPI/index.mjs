@@ -3,12 +3,11 @@ import common_config from '../config/fastify_commun.config.mjs'
 import config from './config/fastify.config.mjs'
 import errorHandler from '../middlewares/errorHandler.mjs'
 import formatJSON from '../middlewares/formatJSON.mjs'
-import routes from './routes/index.mjs'
+import UserRoutes from './routes/UserRoutes.mjs'
 import Models from './Models/index.mjs'
 
 // import swagger_ui from '@fastify/swagger-ui'
 // import swagger from '@fastify/swagger'
-
 
 const fastify = Fastify(common_config.fastifyOptions);
 
@@ -19,9 +18,7 @@ fastify.setErrorHandler(errorHandler)
 fastify.addHook("preSerialization", formatJSON)
 
 Models(fastify);
-
-routes(fastify)
-
+fastify.register(UserRoutes);
 
 const start = async () => {
 	try {

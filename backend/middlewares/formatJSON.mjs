@@ -1,5 +1,13 @@
 
-export default function formatJSON(request, reply, payload) {
+export default async function formatJSON(request, reply, payload) {
+	if (payload == null) {
+		return {
+			status: "error",
+			message: "",
+			details: {},
+		}
+	}
+
 	if (payload && typeof(payload) === 'object' && "status" in payload) {
 		return payload;
 	}

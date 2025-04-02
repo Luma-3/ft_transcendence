@@ -21,12 +21,14 @@ const LoginUserSchema = {
 	}
 }
 
-const Base_Schema = ['id', 'username', 'created_at']
 
-export default class UserModel {
+
+export class UserModel {
 	constructor(knex) {
 		this.knex = knex
 	}
+
+	static Base_Schema = ['id', 'username', 'created_at']
 
 	/**
 	 * @var id
@@ -50,7 +52,6 @@ export default class UserModel {
 
 	async findByUsername(username, schema = Base_Schema)
 	{
-
 		return this.knex('users')
 			.select(schema)
 			.where('username', username)

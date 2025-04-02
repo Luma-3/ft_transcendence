@@ -238,3 +238,95 @@
   ➜  Local:   http://localhost:5173/
   ➜  Network: http://192.168.1.59:5173/
   ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 730 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://10.25.106.4:5173/
+  ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 803 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://10.25.106.4:5173/
+  ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 653 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://10.25.106.4:5173/
+  ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 871 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://10.25.106.4:5173/
+  ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+Port 5173 is in use, trying another one...
+
+  VITE v6.2.3  ready in 748 ms
+
+  ➜  Local:   http://localhost:5174/
+  ➜  Network: http://10.25.106.4:5174/
+  ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+Port 5173 is in use, trying another one...
+
+  VITE v6.2.3  ready in 649 ms
+
+  ➜  Local:   http://localhost:5174/
+  ➜  Network: http://10.25.106.4:5174/
+  ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 591 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://10.25.106.4:5173/
+  ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 678 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://10.25.106.4:5173/
+  ➜  press h + enter to show help
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 700 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://10.25.106.4:5173/
+  ➜  press h + enter to show help
