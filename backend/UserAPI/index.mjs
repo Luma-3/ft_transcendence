@@ -6,8 +6,6 @@ import formatJSON from '../middlewares/formatJSON.mjs'
 import UserRoutes from './routes/UserRoutes.mjs'
 import Models from './Models/index.mjs'
 
-// import swagger_ui from '@fastify/swagger-ui'
-// import swagger from '@fastify/swagger'
 
 const fastify = Fastify(common_config.fastifyOptions);
 

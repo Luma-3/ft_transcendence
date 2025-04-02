@@ -1,5 +1,6 @@
 import jwt from "../plugins/jwt.mjs";
 import cors from "../plugins/cors.mjs";
+import swagger from "../plugins/swagger.mjs";
 
 export default {
 	fastifyOptions : {
