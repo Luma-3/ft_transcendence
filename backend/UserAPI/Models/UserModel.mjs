@@ -1,5 +1,5 @@
 
-const NewUserSchema = {
+const registerValidationSchema = {
 	body: {
 		type: 'object',
 		required: ['username', 'password'],
@@ -10,7 +10,7 @@ const NewUserSchema = {
 	}
 }
 
-const LoginUserSchema = {
+const loginValidationSchema = {
 	body: {
 		type: 'object',
 		required: ['username', 'password'],
@@ -63,4 +63,4 @@ export class UserModel {
 	}
 }
 
-export { NewUserSchema , LoginUserSchema };
+export { registerValidationSchema, loginValidationSchema };

@@ -57,12 +57,14 @@ export const login = async (req, rep) => {
 
 
 export const register = async (req, rep) => {
-	const fastify = req.fastify;
-	const userModel = req.fastify.userModel;
+	const fastify = req.server;
+	const userModel = req.server.userModel;
 
 	const {username, password} = req.body;
 	
 	let hash_pass = await fastify.bcrypt.hash(password);
+
+	// TODO verif Username if is alrady taken
 
 	try {
 		const [id] = await userModel.insert(username, hash_pass);

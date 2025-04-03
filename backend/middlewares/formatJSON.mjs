@@ -8,6 +8,10 @@ export default async function formatJSON(request, reply, payload) {
 		}
 	}
 
+	if (payload && typeof(payload) === 'object' && 'swagger' in payload) {
+		return payload;
+	}
+
 	if (payload && typeof(payload) === 'object' && 'status' in payload) {
 		return payload;
 	}

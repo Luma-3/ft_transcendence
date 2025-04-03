@@ -10,6 +10,6 @@ export default function errorHandler(error, request, reply) {
 	return reply.status(error.statusCode || 500).send({
 		status: 'error',
 		message: error.message || "Internal Server Error",
-		details: error.details
+		details: error.cause
 	});
 }

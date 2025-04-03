@@ -14,7 +14,7 @@ export default {
 		await swagger(fastify, {
 			title: 'User Service API',
 			description: 'Endpoints for user management',
-			route: '/api/user/doc/json'
+			route: '/doc/json'
 		})
 	}
 };
