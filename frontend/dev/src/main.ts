@@ -1,14 +1,13 @@
-// import './style.css'
-
-import { renderPage } from './components/RenderPage'
-import { addAllEventListenOnPage } from './events/handler'
+import { renderPage } from './components/renderPage'
+import { addAllEventListenOnPage } from './events/Handler'
 import { initGoogleClient } from './components/Google'
+import { fadeIn } from './components/utils/fade'
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 
 export function addToHistory(page: string, updateHistory: boolean = true) {
 	localStorage.setItem('current_page', page)
-	if (updateHistory) {
+	if (updateHistory && page !== history.state?.page) {
 		history.pushState({ page }, '', `/${page}`)
 	}
 }
@@ -16,17 +15,18 @@ export function addToHistory(page: string, updateHistory: boolean = true) {
 addAllEventListenOnPage(main_container);
 
 // * Au chargement initial ou refresh de la page
+// * On initialise le client Google
+// * On affiche la page courante ou la page d'accueil par défaut avec un leger delai
 document.addEventListener('DOMContentLoaded', () => {
 	
-	initGoogleClient();
-	console.log('DOMContentLoaded')
 	const page =  window.location.pathname.substring(1) || 'home'
+	
+	initGoogleClient();
 	renderPage(page, false)
+	
 	setTimeout(() => {
-		main_container.classList.remove('opacity-0')
-		main_container.classList.add('opacity-100')
-	}
-	, 900);	
+		fadeIn(main_container)
+	}, 1900);
 });
 
 // * Au changement de page lors de l'utilisation du bouton back/forward

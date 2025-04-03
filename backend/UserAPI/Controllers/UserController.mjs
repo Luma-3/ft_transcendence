@@ -57,14 +57,14 @@ export const login = async (req, rep) => {
 
 
 export const register = async (req, rep) => {
-	const fastify = req.fastify;
-	const userModel = req.fastify.userModel;
+	const fastify = req.server;
+	const userModel = req.server.userModel;
 
 	const {username, password} = req.body;
-	
+
 	let hash_pass = await fastify.bcrypt.hash(password);
 
-	try {
+	// try {
 		const [id] = await userModel.insert(username, hash_pass);
 
 		let altSignOptions = Object.assign({}, fastify.jwt.options.sign)
@@ -75,10 +75,10 @@ export const register = async (req, rep) => {
 			username: username,
 		}
 		const token = fastify.jwt.sign({payload}, altSignOptions);
-		return rep.code(201).send({token});
+		return rep.code(201).send({data: {token, id}});
 
-	}
-	catch (err) {
-		throw Error("Error on Register", { cause: err });
-	}
+	// }
+	// catch (err) {
+	// 	throw Error("Error on Register", { cause: err });
+	// }
 }

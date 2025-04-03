@@ -1,10 +1,11 @@
-import { renderPage } from '../../components/RenderPage'
-import { fetchApi } from '../../components/Api'
-import { API_ROUTES } from '../../routes';
-
+import { renderPage } from '../../components/renderPage'
+import { fetchApi } from '../../components/api/api'
+import { API_ROUTES } from '../../components/api/routes';
+import { alertError } from '../../components/ui/alertError';
 interface Token {
 	token: string;
 }
+
 interface User {
 	id: number;
 	username: string;
@@ -12,54 +13,30 @@ interface User {
 }
 
 export async function verifPasswordAndRegisterUser() {
-	const form = document.forms.namedItem("registerForm") as HTMLFormElement; 
+	
+	const form = document.forms.namedItem("registerForm") as HTMLFormElement;
 	const formData = new FormData(form);
 	const userdata = Object.fromEntries(formData) as Record<string, string>;
 
-	console.log('formData: ', formData);
-	console.log('userdata: ', userdata.password);
-	//requete verif username existe ou pas
 	if (!userdata.username || !userdata.password || !userdata.passwordVerif) {
-		 renderPage('register');
+		 renderPage('hacked');
 		 return;
-	} // TODO : redirection page d'erreur et/ou page de redirection (tenter de modifier le code style "you have been hacked")
+	}
 
 	if (userdata.password !== userdata.passwordVerif) { 
-		renderPage('register'); 
-		form["newUsername"].value = userdata.username;
-		return ;
+		renderPage('register');
+		alertError("passwords_dont_match");
+		return;
 	}
 
-	const newToken = await fetchApi<Token>(API_ROUTES.USERS.REGISTER, {method: "POST", body: JSON.stringify(userdata)});
-	if (newToken.success) {
-		if (newToken.data)
-			localStorage.setItem('token', newToken.data.token);
-	}
-	else {
-		window.alert(newToken.error?.details);
-		renderPage('home');
-	}
+	const newToken = await fetchApi<Token>(API_ROUTES.USERS.REGISTER,
+		{method: "POST", body: JSON.stringify(userdata)});	
+	
+	if (newToken.data)
+		localStorage.setItem('token', newToken.data.token);
+	
 	const token = localStorage.getItem('token');
 	const response = await fetchApi<User>(API_ROUTES.USERS.DECODE, {
 																	method: "GET",
 																	headers: { "Authorization": `Bearer ${token}`}});
-	if (response.data) {
-		window.alert(`Welcome ${response.data.username}!`);
-	}
-	else {
-		window.alert("coucou " + response.error?.details);
-		renderPage('register');
-	}
 }
-
-// const response = await fetch(getRoute('login'), {
-// 	method: "POST",
-// 	body: JSON.stringify({
-// 		username: username,
-// 		password: password
-// 	}),
-// 	headers: {
-// 		"Content-type": "application/json"
-// 	  }
-// })
-// data = await response.json();

@@ -9,5 +9,8 @@
 	"create_account": "Create an account",
 	"back-link": "Back",
 	"login": "Login",
-	"google_login": "Login with Google"
+	"get_started": "Get started !",
+	"google_login": "Login with Google",
+	"passwords_dont_match": "Passwords do not match",
+	"welcome": "Welcome"
 }

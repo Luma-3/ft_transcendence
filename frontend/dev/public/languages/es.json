@@ -9,5 +9,8 @@
 	"create_account": "Crear una cuenta",
 	"back-link": "Atrás",
 	"login": "Iniciar sesión",
-	"google_login": "Iniciar sesión con Google"
+	"get_started": "¡Comienza!",
+	"google_login": "Iniciar sesión con Google",
+	"passwords_dont_match": "Las contraseñas no coinciden",
+	"welcome": "Bienvenido"
 }

@@ -12218,3 +12218,567 @@ Server listening on 3001
 {"level":30,"time":1743674712831,"pid":28352,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/info/2","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":56974},"msg":"incoming request"}
 {"level":50,"time":1743674712832,"pid":28352,"hostname":"luma-pc","msg":"YO"}
 {"level":30,"time":1743674712834,"pid":28352,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":401},"responseTime":2.6300849989056587,"msg":"request completed"}
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+./start-API.sh: line 3: concurrently: command not found
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Gateway listening on 3000
+{"level":30,"time":1743685682531,"pid":20905,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743685682531,"pid":20905,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743685682531,"pid":20905,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743685682531,"pid":20905,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743685682531,"pid":20905,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Gateway listening on 3000
+{"level":30,"time":1743686611343,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743686611343,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743686611343,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743686611343,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743686611343,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+{"level":30,"time":1743687833700,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":30,"time":1743687833703,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","res":{"statusCode":204},"responseTime":2.2895999997854233,"msg":"request completed"}
+{"level":30,"time":1743687833707,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":30,"time":1743687833710,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","res":{"statusCode":400},"responseTime":2.546500001102686,"msg":"request completed"}
+{"level":30,"time":1743687836909,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":30,"time":1743687836909,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","res":{"statusCode":204},"responseTime":0.43780000135302544,"msg":"request completed"}
+{"level":30,"time":1743687836911,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":50,"time":1743687836911,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743687836912,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","res":{"statusCode":401},"responseTime":0.7998999990522861,"msg":"request completed"}
+{"level":30,"time":1743687855941,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-5","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":30,"time":1743687855941,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-5","res":{"statusCode":204},"responseTime":0.32760000228881836,"msg":"request completed"}
+{"level":30,"time":1743687855943,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-6","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":30,"time":1743687855944,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-6","res":{"statusCode":500},"responseTime":1.2042999975383282,"msg":"request completed"}
+{"level":30,"time":1743687872553,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-7","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":30,"time":1743687872554,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-7","res":{"statusCode":204},"responseTime":0.6751999966800213,"msg":"request completed"}
+{"level":30,"time":1743687872556,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-8","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":50,"time":1743687872556,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743687872557,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-8","res":{"statusCode":401},"responseTime":0.8141999989748001,"msg":"request completed"}
+{"level":30,"time":1743687912278,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-9","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":30,"time":1743687912279,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-9","res":{"statusCode":204},"responseTime":0.6051000021398067,"msg":"request completed"}
+{"level":30,"time":1743687912280,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-a","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":30,"time":1743687912281,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-a","res":{"statusCode":500},"responseTime":0.7907999977469444,"msg":"request completed"}
+{"level":30,"time":1743687977548,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-b","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":30,"time":1743687977548,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-b","res":{"statusCode":204},"responseTime":0.3247999995946884,"msg":"request completed"}
+{"level":30,"time":1743687977550,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-c","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":50,"time":1743687977550,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743687977550,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-c","res":{"statusCode":401},"responseTime":0.4479999989271164,"msg":"request completed"}
+{"level":30,"time":1743688000037,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-d","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":30,"time":1743688000037,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-d","res":{"statusCode":204},"responseTime":0.27160000056028366,"msg":"request completed"}
+{"level":30,"time":1743688000038,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-e","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52671},"msg":"incoming request"}
+{"level":30,"time":1743688000039,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-e","res":{"statusCode":500},"responseTime":0.5912999995052814,"msg":"request completed"}
+{"level":30,"time":1743688197005,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-f","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":55622},"msg":"incoming request"}
+{"level":30,"time":1743688197005,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-f","res":{"statusCode":204},"responseTime":0.26909999921917915,"msg":"request completed"}
+{"level":30,"time":1743688197006,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-g","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":55622},"msg":"incoming request"}
+{"level":50,"time":1743688197007,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688197007,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-g","res":{"statusCode":401},"responseTime":0.29419999942183495,"msg":"request completed"}
+{"level":30,"time":1743688205339,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-h","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":55622},"msg":"incoming request"}
+{"level":30,"time":1743688205339,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-h","res":{"statusCode":204},"responseTime":0.30880000069737434,"msg":"request completed"}
+{"level":30,"time":1743688205340,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-i","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":55622},"msg":"incoming request"}
+{"level":30,"time":1743688205341,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-i","res":{"statusCode":500},"responseTime":0.5258000008761883,"msg":"request completed"}
+{"level":30,"time":1743688207630,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-j","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":55622},"msg":"incoming request"}
+{"level":30,"time":1743688207630,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-j","res":{"statusCode":204},"responseTime":0.32349999994039536,"msg":"request completed"}
+{"level":30,"time":1743688207631,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-k","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":55622},"msg":"incoming request"}
+{"level":50,"time":1743688207631,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688207632,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-k","res":{"statusCode":401},"responseTime":0.2866999991238117,"msg":"request completed"}
+{"level":30,"time":1743688326376,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-l","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52570},"msg":"incoming request"}
+{"level":30,"time":1743688326377,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-l","res":{"statusCode":204},"responseTime":0.2094999998807907,"msg":"request completed"}
+{"level":30,"time":1743688326378,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-m","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52570},"msg":"incoming request"}
+{"level":30,"time":1743688326378,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-m","res":{"statusCode":500},"responseTime":0.4651999995112419,"msg":"request completed"}
+{"level":30,"time":1743688329106,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-n","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52570},"msg":"incoming request"}
+{"level":30,"time":1743688329106,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-n","res":{"statusCode":204},"responseTime":0.32739999890327454,"msg":"request completed"}
+{"level":30,"time":1743688329107,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-o","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52570},"msg":"incoming request"}
+{"level":50,"time":1743688329107,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688329108,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-o","res":{"statusCode":401},"responseTime":0.2891000024974346,"msg":"request completed"}
+{"level":30,"time":1743688365337,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-p","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52570},"msg":"incoming request"}
+{"level":30,"time":1743688365337,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-p","res":{"statusCode":204},"responseTime":0.3627000004053116,"msg":"request completed"}
+{"level":30,"time":1743688365339,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-q","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52570},"msg":"incoming request"}
+{"level":30,"time":1743688365339,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-q","res":{"statusCode":500},"responseTime":0.43229999765753746,"msg":"request completed"}
+{"level":30,"time":1743688368249,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-r","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52570},"msg":"incoming request"}
+{"level":30,"time":1743688368250,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-r","res":{"statusCode":204},"responseTime":0.2531999982893467,"msg":"request completed"}
+{"level":30,"time":1743688368251,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-s","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52570},"msg":"incoming request"}
+{"level":50,"time":1743688368251,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688368251,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-s","res":{"statusCode":401},"responseTime":0.297800000756979,"msg":"request completed"}
+{"level":30,"time":1743688479926,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-t","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":53925},"msg":"incoming request"}
+{"level":30,"time":1743688479926,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-t","res":{"statusCode":204},"responseTime":0.19440000131726265,"msg":"request completed"}
+{"level":30,"time":1743688479928,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-u","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":53925},"msg":"incoming request"}
+{"level":30,"time":1743688479928,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-u","res":{"statusCode":500},"responseTime":0.5097000002861023,"msg":"request completed"}
+{"level":30,"time":1743688597657,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-v","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688597657,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-v","res":{"statusCode":204},"responseTime":0.22129999846220016,"msg":"request completed"}
+{"level":30,"time":1743688597659,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-w","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":50,"time":1743688597659,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688597659,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-w","res":{"statusCode":401},"responseTime":0.26820000261068344,"msg":"request completed"}
+{"level":30,"time":1743688601210,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-x","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688601211,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-x","res":{"statusCode":204},"responseTime":0.30800000205636024,"msg":"request completed"}
+{"level":30,"time":1743688601212,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-y","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688601213,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-y","res":{"statusCode":500},"responseTime":0.8273999989032745,"msg":"request completed"}
+{"level":30,"time":1743688602979,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-z","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688602979,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-z","res":{"statusCode":204},"responseTime":0.2972999997437,"msg":"request completed"}
+{"level":30,"time":1743688602981,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-10","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":50,"time":1743688602981,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688602981,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-10","res":{"statusCode":401},"responseTime":0.4082000032067299,"msg":"request completed"}
+{"level":30,"time":1743688607769,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-11","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688607769,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-11","res":{"statusCode":204},"responseTime":0.26270000264048576,"msg":"request completed"}
+{"level":30,"time":1743688607770,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-12","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688607771,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-12","res":{"statusCode":500},"responseTime":0.6081999987363815,"msg":"request completed"}
+{"level":30,"time":1743688619268,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-13","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688619268,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-13","res":{"statusCode":204},"responseTime":0.26159999892115593,"msg":"request completed"}
+{"level":30,"time":1743688619270,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-14","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":50,"time":1743688619270,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688619270,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-14","res":{"statusCode":401},"responseTime":0.33739999681711197,"msg":"request completed"}
+{"level":30,"time":1743688623910,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-15","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688623910,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-15","res":{"statusCode":204},"responseTime":0.3427000008523464,"msg":"request completed"}
+{"level":30,"time":1743688623912,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-16","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688623912,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-16","res":{"statusCode":500},"responseTime":0.4657000005245209,"msg":"request completed"}
+{"level":30,"time":1743688643656,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-17","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688643657,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-17","res":{"statusCode":204},"responseTime":0.2558999992907047,"msg":"request completed"}
+{"level":30,"time":1743688643658,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-18","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":50,"time":1743688643658,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688643659,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-18","res":{"statusCode":401},"responseTime":0.3326000012457371,"msg":"request completed"}
+{"level":30,"time":1743688647978,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-19","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688647978,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-19","res":{"statusCode":204},"responseTime":0.22520000115036964,"msg":"request completed"}
+{"level":30,"time":1743688647980,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1a","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688647980,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1a","res":{"statusCode":500},"responseTime":0.4935999996960163,"msg":"request completed"}
+{"level":30,"time":1743688694183,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1b","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688694183,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1b","res":{"statusCode":204},"responseTime":0.3311999998986721,"msg":"request completed"}
+{"level":30,"time":1743688694185,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1c","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":50,"time":1743688694185,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688694186,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1c","res":{"statusCode":401},"responseTime":0.7725000008940697,"msg":"request completed"}
+{"level":30,"time":1743688698131,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1d","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688698131,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1d","res":{"statusCode":204},"responseTime":0.22789999842643738,"msg":"request completed"}
+{"level":30,"time":1743688698132,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1e","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54063},"msg":"incoming request"}
+{"level":30,"time":1743688698133,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1e","res":{"statusCode":500},"responseTime":0.43780000135302544,"msg":"request completed"}
+{"level":30,"time":1743688770727,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1f","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":62250},"msg":"incoming request"}
+{"level":30,"time":1743688770727,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1f","res":{"statusCode":204},"responseTime":0.21040000021457672,"msg":"request completed"}
+{"level":30,"time":1743688770729,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1g","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":62250},"msg":"incoming request"}
+{"level":50,"time":1743688770729,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688770729,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1g","res":{"statusCode":401},"responseTime":0.2785999998450279,"msg":"request completed"}
+{"level":30,"time":1743688776398,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1h","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":62250},"msg":"incoming request"}
+{"level":30,"time":1743688776398,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1h","res":{"statusCode":204},"responseTime":0.3540000021457672,"msg":"request completed"}
+{"level":30,"time":1743688776400,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1i","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":62250},"msg":"incoming request"}
+{"level":30,"time":1743688776401,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1i","res":{"statusCode":500},"responseTime":0.42000000178813934,"msg":"request completed"}
+{"level":30,"time":1743688835700,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1j","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":62250},"msg":"incoming request"}
+{"level":30,"time":1743688835700,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1j","res":{"statusCode":204},"responseTime":0.2661999985575676,"msg":"request completed"}
+{"level":30,"time":1743688835702,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1k","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":62250},"msg":"incoming request"}
+{"level":50,"time":1743688835702,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688835703,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1k","res":{"statusCode":401},"responseTime":0.35770000144839287,"msg":"request completed"}
+{"level":30,"time":1743688984444,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1l","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":56279},"msg":"incoming request"}
+{"level":30,"time":1743688984445,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1l","res":{"statusCode":204},"responseTime":0.2289000004529953,"msg":"request completed"}
+{"level":30,"time":1743688984447,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1m","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":56279},"msg":"incoming request"}
+{"level":30,"time":1743688984447,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1m","res":{"statusCode":400},"responseTime":0.4490000009536743,"msg":"request completed"}
+{"level":30,"time":1743688986968,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1n","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":56279},"msg":"incoming request"}
+{"level":30,"time":1743688986968,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1n","res":{"statusCode":204},"responseTime":0.2767000012099743,"msg":"request completed"}
+{"level":30,"time":1743688986970,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1o","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":56279},"msg":"incoming request"}
+{"level":50,"time":1743688986970,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743688986970,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1o","res":{"statusCode":401},"responseTime":0.263799998909235,"msg":"request completed"}
+{"level":30,"time":1743689280407,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1p","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52515},"msg":"incoming request"}
+{"level":30,"time":1743689280407,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1p","res":{"statusCode":204},"responseTime":0.4203999973833561,"msg":"request completed"}
+{"level":30,"time":1743689280409,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1q","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52515},"msg":"incoming request"}
+{"level":30,"time":1743689280410,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1q","res":{"statusCode":500},"responseTime":0.46969999745488167,"msg":"request completed"}
+{"level":30,"time":1743689285911,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1r","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52515},"msg":"incoming request"}
+{"level":30,"time":1743689285912,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1r","res":{"statusCode":204},"responseTime":0.33980000019073486,"msg":"request completed"}
+{"level":30,"time":1743689285913,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1s","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52515},"msg":"incoming request"}
+{"level":50,"time":1743689285913,"pid":22005,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743689285913,"pid":22005,"hostname":"DESKTOP-0QU0H72","reqId":"req-1s","res":{"statusCode":401},"responseTime":0.3198000006377697,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743689490701,"pid":24714,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743689490702,"pid":24714,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743689490702,"pid":24714,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743689490702,"pid":24714,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743689490702,"pid":24714,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+{"level":30,"time":1743689537181,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":63291},"msg":"incoming request"}
+{"level":30,"time":1743689537185,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","res":{"statusCode":204},"responseTime":3.122800000011921,"msg":"request completed"}
+{"level":30,"time":1743689537186,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":63291},"msg":"incoming request"}
+{"level":30,"time":1743689537189,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","res":{"statusCode":500},"responseTime":2.7278000004589558,"msg":"request completed"}
+{"level":30,"time":1743689538938,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":63291},"msg":"incoming request"}
+{"level":30,"time":1743689538939,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","res":{"statusCode":204},"responseTime":0.7247999981045723,"msg":"request completed"}
+{"level":30,"time":1743689538941,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":63291},"msg":"incoming request"}
+{"level":50,"time":1743689538941,"pid":24714,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743689538942,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","res":{"statusCode":401},"responseTime":0.9244000017642975,"msg":"request completed"}
+{"level":30,"time":1743689618789,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-5","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":58969},"msg":"incoming request"}
+{"level":30,"time":1743689618789,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-5","res":{"statusCode":204},"responseTime":0.3086000010371208,"msg":"request completed"}
+{"level":30,"time":1743689618791,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-6","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":58969},"msg":"incoming request"}
+{"level":30,"time":1743689618792,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-6","res":{"statusCode":500},"responseTime":1.2768999971449375,"msg":"request completed"}
+{"level":30,"time":1743689619957,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-7","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":58969},"msg":"incoming request"}
+{"level":30,"time":1743689619958,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-7","res":{"statusCode":204},"responseTime":0.5278000012040138,"msg":"request completed"}
+{"level":30,"time":1743689619960,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-8","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":58969},"msg":"incoming request"}
+{"level":50,"time":1743689619960,"pid":24714,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743689619960,"pid":24714,"hostname":"DESKTOP-0QU0H72","reqId":"req-8","res":{"statusCode":401},"responseTime":0.516100000590086,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690292725,"pid":25330,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690292725,"pid":25330,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690292725,"pid":25330,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690292725,"pid":25330,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690292725,"pid":25330,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690295881,"pid":25351,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690295881,"pid":25351,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690295881,"pid":25351,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690295881,"pid":25351,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690295881,"pid":25351,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690297138,"pid":25364,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690297139,"pid":25364,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690297139,"pid":25364,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690297139,"pid":25364,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690297139,"pid":25364,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690302449,"pid":25392,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690302449,"pid":25392,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690302449,"pid":25392,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690302449,"pid":25392,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690302449,"pid":25392,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690303429,"pid":25405,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690303429,"pid":25405,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690303429,"pid":25405,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690303429,"pid":25405,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690303429,"pid":25405,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690310346,"pid":25433,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690310346,"pid":25433,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690310346,"pid":25433,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690310346,"pid":25433,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690310346,"pid":25433,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+{"level":30,"time":1743690325758,"pid":25433,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52749},"msg":"incoming request"}
+{"level":30,"time":1743690325762,"pid":25433,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","res":{"statusCode":204},"responseTime":2.982300002127886,"msg":"request completed"}
+{"level":30,"time":1743690325763,"pid":25433,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52749},"msg":"incoming request"}
+{"level":30,"time":1743690326018,"pid":25433,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","res":{"statusCode":500},"responseTime":255.12979999929667,"msg":"request completed"}
+{"level":30,"time":1743690329082,"pid":25433,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52749},"msg":"incoming request"}
+{"level":30,"time":1743690329084,"pid":25433,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","res":{"statusCode":204},"responseTime":1.2801000028848648,"msg":"request completed"}
+{"level":30,"time":1743690329086,"pid":25433,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52749},"msg":"incoming request"}
+{"level":50,"time":1743690329086,"pid":25433,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743690329087,"pid":25433,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","res":{"statusCode":401},"responseTime":0.9275000020861626,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+file:///home/anthony/Documents/42/Transcendence_git/backend/UserAPI/Controllers/UserController.mjs:84
+}
+^
+
+SyntaxError: Missing catch or finally after try
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690394475,"pid":25531,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690394475,"pid":25531,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690394475,"pid":25531,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690394475,"pid":25531,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690394475,"pid":25531,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690396827,"pid":25551,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690396827,"pid":25551,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690396827,"pid":25551,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690396827,"pid":25551,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690396827,"pid":25551,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+{"level":30,"time":1743690402857,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52844},"msg":"incoming request"}
+{"level":30,"time":1743690402862,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","res":{"statusCode":204},"responseTime":3.9081999994814396,"msg":"request completed"}
+{"level":30,"time":1743690402862,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52844},"msg":"incoming request"}
+{"level":30,"time":1743690403106,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","res":{"statusCode":500},"responseTime":244.16440000012517,"msg":"request completed"}
+{"level":30,"time":1743690404525,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52844},"msg":"incoming request"}
+{"level":30,"time":1743690404526,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","res":{"statusCode":204},"responseTime":0.5075000002980232,"msg":"request completed"}
+{"level":30,"time":1743690404527,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52844},"msg":"incoming request"}
+{"level":50,"time":1743690404527,"pid":25551,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743690404528,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","res":{"statusCode":401},"responseTime":0.844700001180172,"msg":"request completed"}
+{"level":30,"time":1743690605100,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-5","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":53053},"msg":"incoming request"}
+{"level":30,"time":1743690605101,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-5","res":{"statusCode":204},"responseTime":0.7439999990165234,"msg":"request completed"}
+{"level":30,"time":1743690605103,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-6","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":53053},"msg":"incoming request"}
+{"level":30,"time":1743690605330,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-6","res":{"statusCode":500},"responseTime":227.10310000181198,"msg":"request completed"}
+{"level":30,"time":1743690607368,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-7","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":53053},"msg":"incoming request"}
+{"level":30,"time":1743690607368,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-7","res":{"statusCode":204},"responseTime":0.41940000280737877,"msg":"request completed"}
+{"level":30,"time":1743690607369,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-8","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":53053},"msg":"incoming request"}
+{"level":50,"time":1743690607370,"pid":25551,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743690607370,"pid":25551,"hostname":"DESKTOP-0QU0H72","reqId":"req-8","res":{"statusCode":401},"responseTime":0.5190999992191792,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690845797,"pid":26451,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690845797,"pid":26451,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690845797,"pid":26451,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690845797,"pid":26451,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690845797,"pid":26451,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'UserAPI/index.mjs'
+file:///home/anthony/Documents/42/Transcendence_git/backend/UserAPI/Models/UserModel.mjs:62
+		console.log(;)
+		            ^
+
+SyntaxError: Unexpected token ';'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690851148,"pid":26492,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690851148,"pid":26492,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690851148,"pid":26492,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690851148,"pid":26492,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690851148,"pid":26492,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690854083,"pid":26512,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690854083,"pid":26512,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690854083,"pid":26512,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690854083,"pid":26512,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690854083,"pid":26512,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743690855730,"pid":26529,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743690855730,"pid":26529,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743690855730,"pid":26529,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743690855730,"pid":26529,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743690855730,"pid":26529,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+{"level":30,"time":1743690869593,"pid":26529,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":64814},"msg":"incoming request"}
+{"level":30,"time":1743690869596,"pid":26529,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","res":{"statusCode":204},"responseTime":2.7083000019192696,"msg":"request completed"}
+{"level":30,"time":1743690869597,"pid":26529,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":64814},"msg":"incoming request"}
+COUCOUCOUCOUCOu
+{"level":30,"time":1743690869834,"pid":26529,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","res":{"statusCode":500},"responseTime":236.0126000009477,"msg":"request completed"}
+{"level":30,"time":1743690870807,"pid":26529,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":64814},"msg":"incoming request"}
+{"level":30,"time":1743690870808,"pid":26529,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","res":{"statusCode":204},"responseTime":0.5765000022947788,"msg":"request completed"}
+{"level":30,"time":1743690870809,"pid":26529,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":64814},"msg":"incoming request"}
+{"level":50,"time":1743690870809,"pid":26529,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743690870810,"pid":26529,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","res":{"statusCode":401},"responseTime":0.826699998229742,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743691048662,"pid":26672,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743691048662,"pid":26672,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743691048662,"pid":26672,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743691048662,"pid":26672,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743691048662,"pid":26672,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743691234650,"pid":26837,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743691234650,"pid":26837,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743691234650,"pid":26837,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743691234650,"pid":26837,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743691234650,"pid":26837,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+{"level":30,"time":1743691239476,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49194},"msg":"incoming request"}
+{"level":30,"time":1743691239479,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","res":{"statusCode":204},"responseTime":2.4527000002563,"msg":"request completed"}
+{"level":30,"time":1743691239481,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49194},"msg":"incoming request"}
+{"level":30,"time":1743691239731,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","res":{"statusCode":500},"responseTime":249.90819999948144,"msg":"request completed"}
+{"level":30,"time":1743691242283,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49194},"msg":"incoming request"}
+{"level":30,"time":1743691242284,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","res":{"statusCode":204},"responseTime":0.5213999971747398,"msg":"request completed"}
+{"level":30,"time":1743691242285,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49194},"msg":"incoming request"}
+{"level":50,"time":1743691242285,"pid":26837,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743691242286,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","res":{"statusCode":401},"responseTime":0.9204000011086464,"msg":"request completed"}
+{"level":30,"time":1743691302500,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-5","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49194},"msg":"incoming request"}
+{"level":30,"time":1743691302500,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-5","res":{"statusCode":204},"responseTime":0.465999998152256,"msg":"request completed"}
+{"level":30,"time":1743691302502,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-6","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49194},"msg":"incoming request"}
+{"level":30,"time":1743691302734,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-6","res":{"statusCode":500},"responseTime":232.37490000203252,"msg":"request completed"}
+{"level":30,"time":1743691304711,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-7","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49194},"msg":"incoming request"}
+{"level":30,"time":1743691304711,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-7","res":{"statusCode":204},"responseTime":0.455400001257658,"msg":"request completed"}
+{"level":30,"time":1743691304712,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-8","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49194},"msg":"incoming request"}
+{"level":50,"time":1743691304712,"pid":26837,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743691304713,"pid":26837,"hostname":"DESKTOP-0QU0H72","reqId":"req-8","res":{"statusCode":401},"responseTime":0.4464999996125698,"msg":"request completed"}
+./start-API.sh: line 6: unexpected EOF while looking for matching `"'
+./start-API.sh: line 7: syntax error: unexpected end of file
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Gateway listening on 3000
+{"level":30,"time":1743691556493,"pid":27260,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743691556493,"pid":27260,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743691556493,"pid":27260,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743691556493,"pid":27260,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743691556493,"pid":27260,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+{"level":30,"time":1743691563443,"pid":27260,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49523},"msg":"incoming request"}
+{"level":30,"time":1743691563445,"pid":27260,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","res":{"statusCode":204},"responseTime":2.4287999980151653,"msg":"request completed"}
+{"level":30,"time":1743691563451,"pid":27260,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49523},"msg":"incoming request"}
+{"level":30,"time":1743691563721,"pid":27260,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","res":{"statusCode":201},"responseTime":269.7614999972284,"msg":"request completed"}
+{"level":30,"time":1743691566859,"pid":27260,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49523},"msg":"incoming request"}
+{"level":30,"time":1743691566859,"pid":27260,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","res":{"statusCode":204},"responseTime":0.4092000015079975,"msg":"request completed"}
+{"level":30,"time":1743691566861,"pid":27260,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49523},"msg":"incoming request"}
+{"level":50,"time":1743691566861,"pid":27260,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743691566862,"pid":27260,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","res":{"statusCode":401},"responseTime":0.8168000020086765,"msg":"request completed"}
+Restarting 'index.mjs'
+{"level":30,"time":1743691711190,"pid":27461,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743691711190,"pid":27461,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743691711190,"pid":27461,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743691711190,"pid":27461,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743691711190,"pid":27461,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'index.mjs'
+{"level":30,"time":1743691713663,"pid":27480,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743691713663,"pid":27480,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743691713663,"pid":27480,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743691713663,"pid":27480,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743691713663,"pid":27480,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'index.mjs'
+{"level":30,"time":1743691716226,"pid":27502,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743691716226,"pid":27502,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743691716226,"pid":27502,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743691716226,"pid":27502,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743691716226,"pid":27502,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+{"level":30,"time":1743691725550,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49682},"msg":"incoming request"}
+{"level":30,"time":1743691725553,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-1","res":{"statusCode":204},"responseTime":3.091099999845028,"msg":"request completed"}
+{"level":30,"time":1743691725554,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49682},"msg":"incoming request"}
+{"level":30,"time":1743691725819,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-2","res":{"statusCode":500},"responseTime":264.47360000014305,"msg":"request completed"}
+{"level":30,"time":1743691727950,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49682},"msg":"incoming request"}
+{"level":30,"time":1743691727950,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-3","res":{"statusCode":204},"responseTime":0.5071999989449978,"msg":"request completed"}
+{"level":30,"time":1743691727952,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49682},"msg":"incoming request"}
+{"level":50,"time":1743691727952,"pid":27502,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743691727953,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-4","res":{"statusCode":401},"responseTime":0.9589000009000301,"msg":"request completed"}
+{"level":30,"time":1743691740514,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-5","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49682},"msg":"incoming request"}
+{"level":30,"time":1743691740514,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-5","res":{"statusCode":204},"responseTime":0.33889999985694885,"msg":"request completed"}
+{"level":30,"time":1743691740516,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-6","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49682},"msg":"incoming request"}
+{"level":30,"time":1743691740758,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-6","res":{"statusCode":201},"responseTime":242.10029999911785,"msg":"request completed"}
+{"level":30,"time":1743691742285,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-7","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49682},"msg":"incoming request"}
+{"level":30,"time":1743691742285,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-7","res":{"statusCode":204},"responseTime":0.3541000001132488,"msg":"request completed"}
+{"level":30,"time":1743691742287,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-8","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49682},"msg":"incoming request"}
+{"level":50,"time":1743691742287,"pid":27502,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743691742287,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-8","res":{"statusCode":401},"responseTime":0.4901999980211258,"msg":"request completed"}
+{"level":30,"time":1743694919611,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-9","req":{"method":"OPTIONS","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54273},"msg":"incoming request"}
+{"level":30,"time":1743694919611,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-9","res":{"statusCode":204},"responseTime":0.7226999998092651,"msg":"request completed"}
+{"level":30,"time":1743694919613,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-a","req":{"method":"POST","url":"/register","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54273},"msg":"incoming request"}
+{"level":30,"time":1743694919862,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-a","res":{"statusCode":201},"responseTime":248.03899999707937,"msg":"request completed"}
+{"level":30,"time":1743694924789,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-b","req":{"method":"OPTIONS","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54273},"msg":"incoming request"}
+{"level":30,"time":1743694924789,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-b","res":{"statusCode":204},"responseTime":0.37529999762773514,"msg":"request completed"}
+{"level":30,"time":1743694924790,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-c","req":{"method":"GET","url":"/info/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":54273},"msg":"incoming request"}
+{"level":50,"time":1743694924790,"pid":27502,"hostname":"DESKTOP-0QU0H72","msg":"YO"}
+{"level":30,"time":1743694924791,"pid":27502,"hostname":"DESKTOP-0QU0H72","reqId":"req-c","res":{"statusCode":401},"responseTime":0.36079999804496765,"msg":"request completed"}
+Restarting 'index.mjs'
+{"level":30,"time":1743695134383,"pid":31579,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743695134383,"pid":31579,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743695134383,"pid":31579,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743695134383,"pid":31579,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743695134383,"pid":31579,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'index.mjs'
+{"level":30,"time":1743695136038,"pid":31596,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743695136038,"pid":31596,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743695136038,"pid":31596,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743695136038,"pid":31596,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743695136038,"pid":31596,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'index.mjs'
+{"level":30,"time":1743695140791,"pid":31620,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743695140792,"pid":31620,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743695140792,"pid":31620,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743695140792,"pid":31620,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743695140792,"pid":31620,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'index.mjs'
+{"level":30,"time":1743695142437,"pid":31637,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743695142437,"pid":31637,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743695142437,"pid":31637,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743695142437,"pid":31637,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743695142437,"pid":31637,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'index.mjs'
+file:///home/anthony/Documents/42/Transcendence_git/backend/UserAPI/Controllers/UserController.mjs:78
+		return rep.code(201).send({data: token id});
+		                                       ^^
+
+SyntaxError: Unexpected identifier 'id'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'index.mjs'
+Restarting 'index.mjs'
+file:///home/anthony/Documents/42/Transcendence_git/backend/UserAPI/Controllers/UserController.mjs:78
+		return rep.code(201).send({data: {token id});
+		                                        ^^
+
+SyntaxError: Unexpected identifier 'id'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'index.mjs'
+Restarting 'index.mjs'
+file:///home/anthony/Documents/42/Transcendence_git/backend/UserAPI/Controllers/UserController.mjs:78
+		return rep.code(201).send({data: {token id{}});
+		                                        ^^
+
+SyntaxError: Unexpected identifier 'id'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'index.mjs'
+Restarting 'index.mjs'
+file:///home/anthony/Documents/42/Transcendence_git/backend/UserAPI/Controllers/UserController.mjs:78
+		return rep.code(201).send({data: {token id});
+		                                        ^^
+
+SyntaxError: Unexpected identifier 'id'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'index.mjs'
+Restarting 'index.mjs'
+file:///home/anthony/Documents/42/Transcendence_git/backend/UserAPI/Controllers/UserController.mjs:78
+		return rep.code(201).send({data: {token id}});
+		                                        ^^
+
+SyntaxError: Unexpected identifier 'id'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'index.mjs'
+Restarting 'index.mjs'
+{"level":30,"time":1743695165530,"pid":31760,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743695165530,"pid":31760,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743695165530,"pid":31760,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743695165530,"pid":31760,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743695165530,"pid":31760,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+Restarting 'index.mjs'
+{"level":30,"time":1743695168649,"pid":31781,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743695168649,"pid":31781,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743695168649,"pid":31781,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743695168649,"pid":31781,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.25.128.1:3001"}
+{"level":30,"time":1743695168649,"pid":31781,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+/home/anthony/.nvm/versions/node/v23.10.0/bin/node: 1: Syntax error: ")" unexpected
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Gateway listening on 3000
+{"level":30,"time":1743695705985,"pid":1543,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743695705985,"pid":1543,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.56.1:3001"}
+{"level":30,"time":1743695705985,"pid":1543,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
+{"level":30,"time":1743695705985,"pid":1543,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.26.32.1:3001"}
+{"level":30,"time":1743695705985,"pid":1543,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}

@@ -1,4 +1,4 @@
-import { renderPage } from '../../components/RenderPage'
+import { renderPage } from '../../components/renderPage'
 
 export async function loginUser() {
 	const username = document.forms["loginForm"]["loginUsername"].value;
