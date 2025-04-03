@@ -1,26 +1,16 @@
 import Fastify from 'fastify'
 import http_proxy from '@fastify/http-proxy';
-import cors from '@fastify/cors';
-import swagger from './plugins/swagger.mjs';
+import common_config from './config/fastify_commun.config.mjs'
+import gateway_config from './config/gateway.config.mjs'
 
-const gateway = Fastify();
+const gateway = Fastify(common_config);
 
-
-gateway.register(cors, {
-    origin: '*'
-}); // TODO Only for dev
-
+await gateway_config.registersPlugins(gateway);
 
 gateway.register(http_proxy, {
 	upstream: 'http://localhost:3001',
 	prefix: '/api/user'
 })
-
-await swagger(gateway, {
-	title: 'General',
-	description: 'Endpoints for genral management',
-})
-
 
 const start = async () => {
 	try {

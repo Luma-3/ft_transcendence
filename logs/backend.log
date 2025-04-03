@@ -10080,3 +10080,2141 @@ Gateway listening on 3000
 {"level":30,"time":1743607636602,"pid":1151381,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
 Server listening on 3001
 {"level":30,"time":1743607636602,"pid":1151381,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+node:internal/modules/package_json_reader:268
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@fastify/swagger' imported from /home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:268:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+node:internal/modules/package_json_reader:268
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@fastify/swagger' imported from /home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:268:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Gateway listening on 3000
+{"level":30,"time":1743667572378,"pid":11263,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743667572378,"pid":11263,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743667662776,"pid":11263,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/doc","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":34698},"msg":"incoming request"}
+{"level":30,"time":1743667662780,"pid":11263,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":200},"responseTime":3.267772000283003,"msg":"request completed"}
+{"level":30,"time":1743667662930,"pid":11263,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":34698},"msg":"incoming request"}
+{"level":30,"time":1743667662933,"pid":11263,"hostname":"luma-pc","reqId":"req-2","res":{"statusCode":200},"responseTime":3.3356419997289777,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668072940,"pid":12225,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668072940,"pid":12225,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668074233,"pid":12250,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668074233,"pid":12250,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:6
+		open
+		^
+
+ReferenceError: open is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:6:3)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:7
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:6
+		open
+		^
+
+ReferenceError: open is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:6:3)
+    at Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:6
+		openapi
+		^
+
+ReferenceError: openapi is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:6:3)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:7
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:6
+		openapi
+		^
+
+ReferenceError: openapi is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:6:3)
+    at Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:7
+	});
+	^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:7
+	});
+	^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668083918,"pid":12359,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668083919,"pid":12359,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668088952,"pid":12390,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668088952,"pid":12390,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:8
+				title
+				^
+
+ReferenceError: title is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:8:5)
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:7
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:8
+				title
+				^
+
+ReferenceError: title is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:8:5)
+    at Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:9
+			}
+			^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:9
+			}
+			^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:9
+			}
+			^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:9
+			}
+			^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:9
+			}
+			^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:9
+			}
+			^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668220527,"pid":13074,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668220527,"pid":13074,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668224150,"pid":13108,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668224151,"pid":13108,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668227516,"pid":13149,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668227516,"pid":13149,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:9
+				desc
+				^^^^
+
+SyntaxError: Unexpected identifier 'desc'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:9
+				desc
+				^^^^
+
+SyntaxError: Unexpected identifier 'desc'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:9
+				description:
+				^^^^^^^^^^^
+
+SyntaxError: Unexpected identifier 'description'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:9
+				description:
+				^^^^^^^^^^^
+
+SyntaxError: Unexpected identifier 'description'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+			}
+			^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+			}
+			^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668238026,"pid":13264,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668238026,"pid":13264,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+			}
+			^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+			}
+			^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668241521,"pid":13315,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668241521,"pid":13315,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668244947,"pid":13345,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668244947,"pid":13345,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668250096,"pid":13385,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668250096,"pid":13385,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+				version:
+				^^^^^^^
+
+SyntaxError: Unexpected identifier 'version'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+				version:
+				^^^^^^^
+
+SyntaxError: Unexpected identifier 'version'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+				version: 
+				^^^^^^^
+
+SyntaxError: Unexpected identifier 'version'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+				version: 
+				^^^^^^^
+
+SyntaxError: Unexpected identifier 'version'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+				version: 0
+				^^^^^^^
+
+SyntaxError: Unexpected identifier 'version'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+				version: 0
+				^^^^^^^
+
+SyntaxError: Unexpected identifier 'version'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+				version: '0.1.0'
+				^^^^^^^
+
+SyntaxError: Unexpected identifier 'version'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:10
+				version: '0.1.0'
+				^^^^^^^
+
+SyntaxError: Unexpected identifier 'version'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668265882,"pid":13549,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668265882,"pid":13549,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:25
+		staticCSP: true,
+		^^^^^^^^^
+
+SyntaxError: Unexpected identifier 'staticCSP'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:25
+		staticCSP: true,
+		^^^^^^^^^
+
+SyntaxError: Unexpected identifier 'staticCSP'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:25
+		staticCSP: true,
+		^^^^^^^^^
+
+SyntaxError: Unexpected identifier 'staticCSP'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:25
+		staticCSP: true,
+		^^^^^^^^^
+
+SyntaxError: Unexpected identifier 'staticCSP'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:25
+		staticCSP: true,
+		         ^
+
+SyntaxError: Unexpected token ':'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:25
+		staticCSP: true,
+		         ^
+
+SyntaxError: Unexpected token ':'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668290569,"pid":13698,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668290570,"pid":13698,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668291719,"pid":13727,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668291719,"pid":13727,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668295983,"pid":13764,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668295983,"pid":13764,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743668297470,"pid":13764,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/doc","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":60082},"msg":"incoming request"}
+{"level":30,"time":1743668297474,"pid":13764,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":200},"responseTime":3.0690600001253188,"msg":"request completed"}
+{"level":30,"time":1743668297625,"pid":13764,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":60082},"msg":"incoming request"}
+{"level":30,"time":1743668297628,"pid":13764,"hostname":"luma-pc","reqId":"req-2","res":{"statusCode":200},"responseTime":3.0147230001166463,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668319594,"pid":13840,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668319594,"pid":13840,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743668328484,"pid":13840,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/doc","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":34478},"msg":"incoming request"}
+{"level":30,"time":1743668328487,"pid":13840,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":200},"responseTime":2.3671599999070168,"msg":"request completed"}
+{"level":30,"time":1743668328575,"pid":13840,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":34478},"msg":"incoming request"}
+{"level":30,"time":1743668328579,"pid":13840,"hostname":"luma-pc","reqId":"req-2","res":{"statusCode":200},"responseTime":3.263501999899745,"msg":"request completed"}
+{"level":30,"time":1743668335558,"pid":13840,"hostname":"luma-pc","reqId":"req-3","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":34478},"msg":"incoming request"}
+{"level":30,"time":1743668335558,"pid":13840,"hostname":"luma-pc","reqId":"req-3","res":{"statusCode":200},"responseTime":0.5696060000918806,"msg":"request completed"}
+{"level":30,"time":1743668413288,"pid":13840,"hostname":"luma-pc","reqId":"req-4","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":38510},"msg":"incoming request"}
+{"level":30,"time":1743668413289,"pid":13840,"hostname":"luma-pc","reqId":"req-4","res":{"statusCode":200},"responseTime":0.631273000035435,"msg":"request completed"}
+{"level":30,"time":1743668450684,"pid":13840,"hostname":"luma-pc","reqId":"req-5","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49638},"msg":"incoming request"}
+{"level":30,"time":1743668450685,"pid":13840,"hostname":"luma-pc","reqId":"req-5","res":{"statusCode":200},"responseTime":0.6000399999320507,"msg":"request completed"}
+{"level":30,"time":1743668450705,"pid":13840,"hostname":"luma-pc","reqId":"req-6","req":{"method":"GET","url":"/favicon.ico","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":49650},"msg":"incoming request"}
+{"level":30,"time":1743668450705,"pid":13840,"hostname":"luma-pc","reqId":"req-6","msg":"Route GET:/favicon.ico not found"}
+{"level":30,"time":1743668450705,"pid":13840,"hostname":"luma-pc","reqId":"req-6","res":{"statusCode":404},"responseTime":0.32615699991583824,"msg":"request completed"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743668469270,"pid":14221,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743668469271,"pid":14221,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743668470145,"pid":14221,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":51328},"msg":"incoming request"}
+{"level":30,"time":1743668470146,"pid":14221,"hostname":"luma-pc","reqId":"req-1","msg":"Route GET:/doc/json not found"}
+{"level":30,"time":1743668470149,"pid":14221,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":404},"responseTime":3.672557999845594,"msg":"request completed"}
+{"level":30,"time":1743668470163,"pid":14221,"hostname":"luma-pc","reqId":"req-2","req":{"method":"GET","url":"/favicon.ico","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":51334},"msg":"incoming request"}
+{"level":30,"time":1743668470163,"pid":14221,"hostname":"luma-pc","reqId":"req-2","msg":"Route GET:/favicon.ico not found"}
+{"level":30,"time":1743668470163,"pid":14221,"hostname":"luma-pc","reqId":"req-2","res":{"statusCode":404},"responseTime":0.3426720001734793,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:13
+	await fastify.register(swagger_ui, {
+	                       ^
+
+ReferenceError: swagger_ui is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:13:25)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:1
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:13
+	await fastify.register(swagger_ui, {
+	                       ^
+
+ReferenceError: swagger_ui is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:13:25)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:3)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743669096691,"pid":15500,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743669096691,"pid":15500,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743669178701,"pid":15658,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743669178702,"pid":15658,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:15
+}
+^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:15
+}
+^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:3)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:3)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	fastify.get(options.route, as)
+	                           ^
+
+ReferenceError: as is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:1
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	fastify.get(options.route, as)
+	                           ^
+
+ReferenceError: as is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:3)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	fastify.get(options.route, async )
+	                           ^
+
+ReferenceError: async is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:1
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	fastify.get(options.route, async )
+	                           ^
+
+ReferenceError: async is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:3)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	fastify.get(options.route, async (_, rep))
+	                    ^
+
+ReferenceError: async is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:1
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	fastify.get(options.route, async (_, rep))
+	                    ^
+
+ReferenceError: async is not defined
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:3)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	fastify.get(options.route, async (_, rep) =>)
+	                                            ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	fastify.get(options.route, async (_, rep) =>)
+	                                            ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:3)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:3)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:15
+		rep.send(fastify.)
+		                 ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:15
+		rep.send(fastify.)
+		                 ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Failed running 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:3)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:19:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:3)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+node:internal/modules/run_main:122
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The path could not be empty
+    at Router.on (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/find-my-way/index.js:117:3)
+    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:336:16)
+    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.registerPlugins (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:14:3)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/index.mjs:13:1 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743669286948,"pid":16218,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743669286948,"pid":16218,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743669320022,"pid":16279,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743669320023,"pid":16279,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:14:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:6
+const gateway = Fastify(op);
+                        ^
+
+ReferenceError: op is not defined
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:6:25
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:14:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:15:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:7
+const gateway = Fastify();
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:7
+const gateway = Fastify();
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:7
+const gateway = Fastify();
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:7
+const gateway = Fastify();
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:7
+const gateway = Fastify();
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:7
+const gateway = Fastify();
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+node:internal/modules/esm/resolve:263
+    throw new ERR_UNSUPPORTED_DIR_IMPORT(path, basePath, String(resolved));
+          ^
+
+Error [ERR_UNSUPPORTED_DIR_IMPORT]: Directory import '/home/luma/Documents/Project/ft_transcendence/backend/' is not supported resolving ES modules imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:263:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_UNSUPPORTED_DIR_IMPORT',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/backend/'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:15:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:14:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:4
+import import cors from '@fastify/cors';
+       ^^^^^^
+
+SyntaxError: Unexpected token 'import'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:4
+import import cors from '@fastify/cors';
+       ^^^^^^
+
+SyntaxError: Unexpected token 'import'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:14:1 {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/luma/Documents/Project/ft_transcendence/config/fastify_commun.config.mjs' imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/config/fastify_commun.config.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/luma/Documents/Project/ft_transcendence/config/fastify_commun.config.mjs' imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/config/fastify_commun.config.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/luma/Documents/Project/ft_transcendence/config/fastify_commun.config.mjs' imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/config/fastify_commun.config.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743670084644,"pid":18192,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670084645,"pid":18192,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/luma/Documents/Project/ft_transcendence/config/fastify_commun.config.mjs' imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/config/fastify_commun.config.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+{"level":30,"time":1743670554119,"pid":19804,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670554119,"pid":19804,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/luma/Documents/Project/ft_transcendence/config/ga.config.mjs' imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/config/ga.config.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/luma/Documents/Project/ft_transcendence/config/gateway.config.mjs' imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/config/gateway.config.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+Restarting 'main.mjs'
+Gateway listening on 3000
+{"level":30,"time":1743670616102,"pid":19804,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/doc","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":41582},"msg":"incoming request"}
+{"level":30,"time":1743670616103,"pid":19804,"hostname":"luma-pc","reqId":"req-1","msg":"Route GET:/doc not found"}
+{"level":30,"time":1743670616105,"pid":19804,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":404},"responseTime":2.6700299996882677,"msg":"request completed"}
+Restarting 'main.mjs'
+Gateway listening on 3000
+Restarting 'main.mjs'
+Gateway listening on 3000
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:4
+impo
+^
+
+ReferenceError: impo is not defined
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:4:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:6
+const gateway = Fastify(common_config);
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:6
+const gateway = Fastify(common_config);
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:6
+const gateway = Fastify(common_config);
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+node:internal/modules/esm/resolve:263
+    throw new ERR_UNSUPPORTED_DIR_IMPORT(path, basePath, String(resolved));
+          ^
+
+Error [ERR_UNSUPPORTED_DIR_IMPORT]: Directory import '/home/luma/Documents/Project/ft_transcendence/backend/' is not supported resolving ES modules imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:263:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_UNSUPPORTED_DIR_IMPORT',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/backend/'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+node:internal/modules/esm/resolve:263
+    throw new ERR_UNSUPPORTED_DIR_IMPORT(path, basePath, String(resolved));
+          ^
+
+Error [ERR_UNSUPPORTED_DIR_IMPORT]: Directory import '/home/luma/Documents/Project/ft_transcendence/backend/config/' is not supported resolving ES modules imported from /home/luma/Documents/Project/ft_transcendence/backend/main.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:263:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_UNSUPPORTED_DIR_IMPORT',
+  url: 'file:///home/luma/Documents/Project/ft_transcendence/backend/config/'
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+Restarting 'main.mjs'
+Gateway listening on 3000
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:8
+await ga
+^
+
+ReferenceError: ga is not defined
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:8:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:12
+gateway.register(http_proxy, {
+        ^
+
+TypeError: Cannot read properties of undefined (reading 'register')
+    at file:///home/luma/Documents/Project/ft_transcendence/backend/main.mjs:12:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:343
+            throw new FST_ERR_DUPLICATED_ROUTE(opts.method, opts.url)
+                  ^
+FastifyError [Error]: Method 'GET' already declared for route '/api/doc'
+    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:343:19)
+    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'FST_ERR_DUPLICATED_ROUTE',
+  statusCode: 500
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:343
+            throw new FST_ERR_DUPLICATED_ROUTE(opts.method, opts.url)
+                  ^
+FastifyError [Error]: Method 'GET' already declared for route '/api/doc'
+    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:343:19)
+    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'FST_ERR_DUPLICATED_ROUTE',
+  statusCode: 500
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:343
+            throw new FST_ERR_DUPLICATED_ROUTE(opts.method, opts.url)
+                  ^
+FastifyError [Error]: Method 'GET' already declared for route '/api/doc'
+    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:343:19)
+    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'FST_ERR_DUPLICATED_ROUTE',
+  statusCode: 500
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+{"level":30,"time":1743670715786,"pid":20574,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670715786,"pid":20574,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+AssertionError [ERR_ASSERTION]: The path could not be empty
+    at Router.on (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/find-my-way/index.js:117:3)
+    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:336:16)
+    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+AssertionError [ERR_ASSERTION]: The path could not be empty
+    at Router.on (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/find-my-way/index.js:117:3)
+    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:336:16)
+    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	if ()
+	    ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	if ()
+	    ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+Completed running 'main.mjs'
+{"level":30,"time":1743670814066,"pid":20883,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670814066,"pid":20883,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Completed running 'main.mjs'
+{"level":30,"time":1743670818973,"pid":20926,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670818973,"pid":20926,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+AssertionError [ERR_ASSERTION]: The path could not be empty
+    at Router.on (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/find-my-way/index.js:117:3)
+    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:336:16)
+    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:15:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+{"level":30,"time":1743670820734,"pid":20950,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670820735,"pid":20950,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	if (options.route !==) {}
+	                     ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	if (options.route !==) {}
+	                     ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Failed running 'main.mjs'
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	if (options.route !== ) {}
+	                      ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:14
+	if (options.route !== ) {}
+	                      ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+AssertionError [ERR_ASSERTION]: The path could not be empty
+    at Router.on (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/find-my-way/index.js:117:3)
+    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:336:16)
+    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:15:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+{"level":30,"time":1743670831128,"pid":21042,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670831128,"pid":21042,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+AssertionError [ERR_ASSERTION]: The path could not be empty
+    at Router.on (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/find-my-way/index.js:117:3)
+    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:336:16)
+    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:15:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+{"level":30,"time":1743670833468,"pid":21079,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670833468,"pid":21079,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:18
+}
+ 
+
+SyntaxError: Unexpected end of input
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:18
+}
+ 
+
+SyntaxError: Unexpected end of input
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+Restarting 'main.mjs'
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+AssertionError [ERR_ASSERTION]: The path could not be empty
+    at Router.on (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/find-my-way/index.js:117:3)
+    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:336:16)
+    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:15:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '=='
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+{"level":30,"time":1743670837404,"pid":21132,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670837404,"pid":21132,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:15:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+
+/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122
+      throw new FST_ERR_INVALID_URL(typeof url)
+            ^
+FastifyError [Error]: URL must be a string. Received 'undefined'
+    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:122:13)
+    at Object._get [as get] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:261:34)
+    at default (file:///home/luma/Documents/Project/ft_transcendence/backend/plugins/swagger.mjs:15:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  code: 'FST_ERR_INVALID_URL',
+  statusCode: 400
+}
+
+Node.js v22.14.0
+Failed running 'main.mjs'
+{"level":30,"time":1743670859985,"pid":21336,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670859985,"pid":21336,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+Completed running 'main.mjs'
+{"level":30,"time":1743670873500,"pid":21396,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670873500,"pid":21396,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743670885708,"pid":21450,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743670885708,"pid":21450,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Completed running 'main.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Completed running 'main.mjs'
+{"level":30,"time":1743671226405,"pid":22134,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743671226405,"pid":22134,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Completed running 'main.mjs'
+Restarting 'main.mjs'
+Gateway listening on 3000
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Gateway listening on 3000
+{"level":30,"time":1743671547649,"pid":23026,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743671547649,"pid":23026,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'main.mjs'
+Gateway listening on 3000
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743671915974,"pid":23771,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743671915974,"pid":23771,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743671924407,"pid":23803,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743671924407,"pid":23803,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743671948124,"pid":23850,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743671948124,"pid":23850,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743671950287,"pid":23874,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743671950288,"pid":23874,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743671987412,"pid":23945,"hostname":"luma-pc","err":{"type":"TypeError","message":"opts.handler.bind is not a function","stack":"TypeError: opts.handler.bind is not a function\n    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:314:31)\n    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)\n    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)\n    at Object._post [as post] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:273:34)\n    at UserRoutes (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/routes/UserRoutes.mjs:6:10)\n    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"opts.handler.bind is not a function"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743671990646,"pid":23968,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743671990647,"pid":23968,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743671998540,"pid":23998,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743671998540,"pid":23998,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743672000576,"pid":24022,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743672000577,"pid":24022,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743672034747,"pid":24091,"hostname":"luma-pc","err":{"type":"TypeError","message":"opts.handler.bind is not a function","stack":"TypeError: opts.handler.bind is not a function\n    at Object.addNewRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:314:31)\n    at Object.route (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:247:19)\n    at Object.prepareRoute (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/lib/route.js:147:18)\n    at Object._post [as post] (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/fastify/fastify.js:273:34)\n    at UserRoutes (file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/routes/UserRoutes.mjs:5:10)\n    at Plugin.exec (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/luma/Documents/Project/ft_transcendence/backend/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"opts.handler.bind is not a function"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743672038656,"pid":24110,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743672038656,"pid":24110,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:18
+		}
+		^
+
+SyntaxError: missing ) after argument list
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:18
+		}
+		^
+
+SyntaxError: missing ) after argument list
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:18
+		}
+		^
+
+SyntaxError: missing ) after argument list
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/UserAPI/config/fastify.config.mjs:18
+		};
+		^
+
+SyntaxError: missing ) after argument list
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743672525017,"pid":25123,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743672525017,"pid":25123,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743674547592,"pid":25123,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":52804},"msg":"incoming request"}
+{"level":30,"time":1743674547592,"pid":25123,"hostname":"luma-pc","reqId":"req-1","msg":"Route GET:/ not found"}
+{"level":30,"time":1743674547595,"pid":25123,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":404},"responseTime":2.7971740011125803,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/middlewares/formatJSON.mjs:6
+			message: ',
+			         ^^
+
+SyntaxError: Invalid or unexpected token
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/luma/Documents/Project/ft_transcendence/backend/middlewares/formatJSON.mjs:6
+			message: ',
+			         ^^
+
+SyntaxError: Invalid or unexpected token
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+file:///home/luma/Documents/Project/ft_transcendence/backend/middlewares/formatJSON.mjs:6
+			message: ',
+			         ^^
+
+SyntaxError: Invalid or unexpected token
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Gateway listening on 3000
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743674707969,"pid":28352,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743674707969,"pid":28352,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+{"level":30,"time":1743674712831,"pid":28352,"hostname":"luma-pc","reqId":"req-1","req":{"method":"GET","url":"/info/2","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":56974},"msg":"incoming request"}
+{"level":50,"time":1743674712832,"pid":28352,"hostname":"luma-pc","msg":"YO"}
+{"level":30,"time":1743674712834,"pid":28352,"hostname":"luma-pc","reqId":"req-1","res":{"statusCode":401},"responseTime":2.6300849989056587,"msg":"request completed"}
