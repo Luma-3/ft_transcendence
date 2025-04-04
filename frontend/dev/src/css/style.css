@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @font-face {
   font-family: 'Chillax';
   font-style: normal;
@@ -10,7 +12,16 @@
 @theme {
   --font-title: 'Chillax', sans-serif;
   --font-text: 'Merriweather', sans-serif;
-  --color-primary: #744FAC;
+  
+  /* White mode */
+  --color-primary: #F8E9E9;
   --color-secondary: #FF8904;
-  --color-tertiary: #F8E9E9;
+  --color-tertiary: #744FAC;
+
+  /* Dark mode */
+  --color-dprimary: #744FAC;
+  --color-dsecondary: #FF8904;
+  --color-dtertiary: #F8E9E9;
+
+  --color-myblack: #000000;
 }
