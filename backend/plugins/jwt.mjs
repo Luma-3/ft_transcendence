@@ -3,12 +3,15 @@ import jwt from '@fastify/jwt'
 export default async function (fastify) {
 	await fastify.register(jwt, { secret: 'duckdev' });
 
-	await fastify.decorate('authenticate', async function(request, reply) {
+	await fastify.decorate('authenticate', async function(req, rep) {
 		try {
-			await request.jwtVerify();
+			const token = req.cookies.csrftoken
+			console.log(req.cookies);
+			req.data = await fastify.jwt.verify(token);
 		}
 		catch (error) {
-			reply.code(error.statusCode).send({message: error.message, details: error})
+			console.log(error);
+			rep.code(error.statusCode).send({message: error.message, details: error})
 		}
 	});
 }

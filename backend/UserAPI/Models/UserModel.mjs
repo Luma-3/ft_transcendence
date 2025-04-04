@@ -1,9 +1,10 @@
+const  Base_Schema = ['id', 'username', 'created_at']
+
 export class UserModel {
 	constructor(knex) {
 		this.knex = knex
 	}
 
-	static Base_Schema = ['id', 'username', 'created_at']
 
 	/**
 	 * @var id

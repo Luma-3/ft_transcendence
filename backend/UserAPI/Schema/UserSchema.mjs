@@ -20,7 +20,7 @@ export const userSchema= {
 	type: 'object',
 	properties: {
 		id: { type: 'integer' },
-		name: { type: 'string' },
+		username: { type: 'string' },
 		created_at: {type: 'string'}
 	}
 };

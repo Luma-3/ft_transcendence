@@ -61,27 +61,35 @@ export const register = async (req, rep) => {
 	const userModel = req.server.userModel;
 
 	const {username, password} = req.body;
-	if (userModel.findByUsername(username)) {
+	if (userModel.findByUsername(username) === null) {
 		return rep.code(403).send({message: 'User Already Exist'})
 	}
 
 	let hash_pass = await fastify.bcrypt.hash(password);
 
-	const newUser = await userModel.insert(username, hash_pass);
+	const [newUsername] = await userModel.insert(username, hash_pass);
+	console.log("POST creationb" + newUsername.id + newUsername.username);
 
 	let altSignOptions = Object.assign({}, fastify.jwt.options.sign)
 	altSignOptions.iss = '127.0.0.1:3000'
 	altSignOptions.expiresIn = '1d'
 
-	const token = fastify.jwt.sign(newUser, altSignOptions);
+	const token = fastify.jwt.sign(newUsername, altSignOptions);
 	
-	rep.setCookie("token", token, {
+	// rep.setCookie("token", token, {
+	// 	httpOnly: true,
+	// 	secure: false,
+	// 	sameSite: "strict",
+	// 	path: "/",
+	// 	maxAge: 60 * 60 * 24, // 1 jour
+	// });
+
+	console.log("AVANT LE REPLY" + newUsername.id + newUsername.username);
+	return rep.code(201).setCookie("token", token, {
 		httpOnly: true,
-		secure: false,
-		// sameSite: "strict",
+		secure: true,
+		SameSite: "none",
 		path: "/",
 		maxAge: 60 * 60 * 24, // 1 jour
-	});
-
-	return rep.code(201).send({data: newUser});
+	}).send({data: newUsername});
 }

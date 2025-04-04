@@ -2,14 +2,11 @@ import { renderPage } from '../../components/renderPage'
 import { fetchApi } from '../../components/api/api'
 import { API_ROUTES } from '../../components/api/routes';
 import { alertError } from '../../components/ui/alertError';
-interface Token {
-	token: string;
-}
 
 interface User {
 	id: number;
 	username: string;
-	token: string; //JWT token
+	created_at: string;
 }
 
 export async function verifPasswordAndRegisterUser() {
@@ -29,14 +26,13 @@ export async function verifPasswordAndRegisterUser() {
 		return;
 	}
 
-	const newToken = await fetchApi<Token>(API_ROUTES.USERS.REGISTER,
-		{method: "POST", body: JSON.stringify(userdata)});	
+	const user = await fetchApi<User>(API_ROUTES.USERS.REGISTER,
+		{method: "POST", credentials: "include", body: JSON.stringify(userdata)});	
 	
-	if (newToken.data)
-		localStorage.setItem('token', newToken.data.token);
-	
-	const token = localStorage.getItem('token');
-	const response = await fetchApi<User>(API_ROUTES.USERS.DECODE, {
-																	method: "GET",
-																	headers: { "Authorization": `Bearer ${token}`}});
+		console.log(user);
+
+	const userinfo = await fetchApi<User>(API_ROUTES.USERS.DECODE + `${user.data?.id}`,
+		{method: "GET", credentials: "include"});	
+
+		console.log(userinfo);
 }
