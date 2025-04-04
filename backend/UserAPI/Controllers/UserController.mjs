@@ -61,12 +61,11 @@ export const register = async (req, rep) => {
 	const userModel = req.server.userModel;
 
 	const {username, password} = req.body;
-	
-	let hash_pass = await fastify.bcrypt.hash(password);
+	// try {
+		// if (userModel.findByUsername(u))
 
-	// TODO verif Username if is alrady taken
+		let hash_pass = await fastify.bcrypt.hash(password);
 
-	try {
 		const [id] = await userModel.insert(username, hash_pass);
 
 		let altSignOptions = Object.assign({}, fastify.jwt.options.sign)
@@ -79,8 +78,8 @@ export const register = async (req, rep) => {
 		const token = fastify.jwt.sign({payload}, altSignOptions);
 		return rep.code(201).send({token});
 
-	}
-	catch (err) {
-		throw Error("Error on Register", { cause: err });
-	}
+	// }
+	// catch (err) {
+	// 	throw Error("Error on Register", { cause: err });
+	// }
 }

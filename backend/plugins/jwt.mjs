@@ -4,7 +4,6 @@ export default async function (fastify) {
 	await fastify.register(jwt, { secret: 'duckdev' });
 
 	await fastify.decorate('authenticate', async function(request, reply) {
-		fastify.log.error("YO");
 		try {
 			await request.jwtVerify();
 		}

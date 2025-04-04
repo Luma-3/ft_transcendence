@@ -2,7 +2,6 @@ import Fastify from 'fastify'
 import http_proxy from '@fastify/http-proxy';
 import common_config from './config/fastify_commun.config.mjs'
 import gateway_config from './config/gateway.config.mjs'
-import axios from 'axios';
 
 const gateway = Fastify(common_config);
 

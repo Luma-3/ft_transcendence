@@ -2,4 +2,4 @@
 
 concurrently --raw  \
 	"node --watch main.mjs" \
-	"node --watch UserAPI/index.mjs "
+	"cd UserAPI && node --watch index.mjs && cd .."
