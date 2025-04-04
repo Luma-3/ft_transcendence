@@ -61,25 +61,27 @@ export const register = async (req, rep) => {
 	const userModel = req.server.userModel;
 
 	const {username, password} = req.body;
-	// try {
-		// if (userModel.findByUsername(u))
+	if (userModel.findByUsername(username)) {
+		return rep.code(403).send({message: 'User Already Exist'})
+	}
 
-		let hash_pass = await fastify.bcrypt.hash(password);
+	let hash_pass = await fastify.bcrypt.hash(password);
 
-		const [id] = await userModel.insert(username, hash_pass);
+	const newUser = await userModel.insert(username, hash_pass);
 
-		let altSignOptions = Object.assign({}, fastify.jwt.options.sign)
-		altSignOptions.iss = '127.0.0.1:3000'
-		altSignOptions.expiresIn = '1d'
-		const payload = {
-			id : id,
-			username: username,
-		}
-		const token = fastify.jwt.sign({payload}, altSignOptions);
-		return rep.code(201).send({token});
+	let altSignOptions = Object.assign({}, fastify.jwt.options.sign)
+	altSignOptions.iss = '127.0.0.1:3000'
+	altSignOptions.expiresIn = '1d'
 
-	// }
-	// catch (err) {
-	// 	throw Error("Error on Register", { cause: err });
-	// }
+	const token = fastify.jwt.sign(newUser, altSignOptions);
+	
+	rep.setCookie("token", token, {
+		httpOnly: true,
+		secure: false,
+		// sameSite: "strict",
+		path: "/",
+		maxAge: 60 * 60 * 24, // 1 jour
+	});
+
+	return rep.code(201).send({data: newUser});
 }
