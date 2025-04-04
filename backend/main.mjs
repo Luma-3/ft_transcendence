@@ -13,47 +13,6 @@ gateway.register(http_proxy, {
 	prefix: '/api/user'
 })
 
-// gateway.get('/docs/json', async (_, rep) => {
-// 	// try {
-// 		const services = [
-// 			{name: "users", url: 'http://localhost:3001/doc/json'}
-// 		];
-
-// 		const schemas = await Promise.all(
-// 			services.map(async (services) => {
-// 				const res = await axios.get(services.url);
-// 				return {[services.name]: res.data};
-// 			}) 
-// 		);
-
-// 		const aggregatedDocs = {
-// 			swagger: {
-// 				info: {
-// 					title: 'API Gateway Docs',
-// 					description: 'All doc\'s Services of transcenduck',
-// 					version: '0.0.1'
-// 				},
-// 			}
-// 		};
-
-// 		schemas.forEach((schema) => {
-// 			const key = Object.keys(schema)[0];
-// 			const doc = schema[key];
-
-// 			Object.keys(doc.paths).forEach((route) => {
-// 				aggregatedDocs.paths[`/${key}`] = doc.paths[route];
-// 			});
-// 		});
-
-
-// 		rep.send(aggregatedDocs);
-// 	// }
-// 	// catch (err) {
-// 	// 	throw Error('Aggregate Docs fail', {cause: err});
-// 	// }
-// });
-
-
 const start = async () => {
 	try {
 		await gateway.listen({ port: 3000, host: '0.0.0.0'})

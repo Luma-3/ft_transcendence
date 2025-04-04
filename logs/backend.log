@@ -16966,3 +16966,535 @@ Restarting 'UserAPI/index.mjs'
 {"level":30,"time":1743711797010,"pid":97905,"hostname":"luma-pc","msg":"Server listening at http://127.0.0.1:3001"}
 Server listening on 3001
 {"level":30,"time":1743711797010,"pid":97905,"hostname":"luma-pc","msg":"Server listening at http://192.168.1.59:3001"}
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/routes/UserRoutes.mjs' imported from /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/index.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:860:10)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:685:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:634:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:617:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:273:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:135:49) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/routes/UserRoutes.mjs'
+}
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Gateway listening on 3000
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/index.mjs:7
+import UserModel from './Models/UserModel.mjs'
+       ^^^^^^^^^
+SyntaxError: The requested module './Models/UserModel.mjs' does not provide an export named 'default'
+    at ModuleJob._instantiate (node:internal/modules/esm/module_job:180:21)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:263:5)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754460459,"pid":1313265,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"registerValidationSchema is not defined","stack":"ReferenceError: registerValidationSchema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7:10)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"registerValidationSchema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754464817,"pid":1313305,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"registerValidationSchema is not defined","stack":"ReferenceError: registerValidationSchema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7:10)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"registerValidationSchema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754465486,"pid":1313324,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"registerValidationSchema is not defined","stack":"ReferenceError: registerValidationSchema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7:10)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"registerValidationSchema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754467005,"pid":1313345,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"registerValidationSchema is not defined","stack":"ReferenceError: registerValidationSchema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7:10)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"registerValidationSchema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/index.mjs:10
+const fastify = Fastify(common_config.fastifyOptions);
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/index.mjs:10
+const fastify = Fastify(common_config.fastifyOptions);
+^^^^^
+
+SyntaxError: Unexpected token 'const'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+    at async ModuleJob._link (node:internal/modules/esm/module_job:115:19)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754516729,"pid":1313687,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"registerValidationSchema is not defined","stack":"ReferenceError: registerValidationSchema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7:10)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"registerValidationSchema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754522786,"pid":1313735,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"registerValidationSchema is not defined","stack":"ReferenceError: registerValidationSchema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7:10)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"registerValidationSchema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/index.mjs:19
+reg
+^
+
+ReferenceError: reg is not defined
+    at file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/index.mjs:19:1
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754528346,"pid":1313797,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"registerValidationSchema is not defined","stack":"ReferenceError: registerValidationSchema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7:10)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"registerValidationSchema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754531014,"pid":1313825,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"registerValidationSchema is not defined","stack":"ReferenceError: registerValidationSchema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7:10)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"registerValidationSchema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754542454,"pid":1313909,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"registerValidationSchema is not defined","stack":"ReferenceError: registerValidationSchema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7:10)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"registerValidationSchema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754591650,"pid":1314215,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"loginValidationSchema is not defined","stack":"ReferenceError: loginValidationSchema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:20:33)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"loginValidationSchema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:8
+			response: {
+			^^^^^^^^
+
+SyntaxError: Unexpected identifier 'response'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:8
+			response: {
+			^^^^^^^^
+
+SyntaxError: Unexpected identifier 'response'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:8
+			response: {
+			        ^
+
+SyntaxError: Unexpected token ':'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:8
+			response: {
+			^^^^^^^^
+
+SyntaxError: Unexpected identifier 'response'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:8
+			response: {
+			^^^^^^^^
+
+SyntaxError: Unexpected identifier 'response'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7
+			body : {$ref ''}
+			             ^^
+
+SyntaxError: Unexpected string
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7
+			body : {$ref 'registerV'}
+			             ^^^^^^^^^^^
+
+SyntaxError: Unexpected string
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7
+			body : {$ref 'registerValidationSchema'}
+			             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+SyntaxError: Unexpected string
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7
+			body : {$ref 'registerValidationSchema'}
+			             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+SyntaxError: Unexpected string
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7
+			body : {$ref 'registerValidationSchema'}
+			             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+SyntaxError: Unexpected string
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7
+			body : {$ref 'registerValidationSchema'}
+			             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+SyntaxError: Unexpected string
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7
+			body : {$ref 'registerValidationSchema'}
+			             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+SyntaxError: Unexpected string
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:7
+			body : {$ref 'registerValidationSchema'},
+			             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+SyntaxError: Unexpected string
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754645329,"pid":1314742,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"loginValidationSchema is not defined","stack":"ReferenceError: loginValidationSchema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:20:33)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"loginValidationSchema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754653608,"pid":1314808,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"Error","message":"schema is invalid: data/properties/created_at/type must be equal to one of the allowed values, data/properties/created_at/type must be array, data/properties/created_at/type must match a schema in anyOf","stack":"Error: schema is invalid: data/properties/created_at/type must be equal to one of the allowed values, data/properties/created_at/type must be array, data/properties/created_at/type must match a schema in anyOf\n    at Ajv.validateSchema (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/ajv/dist/core.js:267:23)\n    at Ajv._addSchema (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/ajv/dist/core.js:461:18)\n    at Ajv.addSchema (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/ajv/dist/core.js:235:34)\n    at new ValidatorCompiler (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/@fastify/ajv-compiler/lib/validator-compiler.js:39:16)\n    at buildCompilerFromPool (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/@fastify/ajv-compiler/index.js:32:22)\n    at SchemaController.setupValidator (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/fastify/lib/schema-controller.js:145:56)\n    at Boot.<anonymous> (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/fastify/lib/route.js:386:32)\n    at Object.onceWrapper (node:events:632:28)\n    at Boot.emit (node:events:530:35)\n    at /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:102:12"},"msg":"schema is invalid: data/properties/created_at/type must be equal to one of the allowed values, data/properties/created_at/type must be array, data/properties/created_at/type must match a schema in anyOf"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754860045,"pid":1316029,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"Error","message":"schema is invalid: data/properties/created_at/type must be equal to one of the allowed values, data/properties/created_at/type must be array, data/properties/created_at/type must match a schema in anyOf","stack":"Error: schema is invalid: data/properties/created_at/type must be equal to one of the allowed values, data/properties/created_at/type must be array, data/properties/created_at/type must match a schema in anyOf\n    at Ajv.validateSchema (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/ajv/dist/core.js:267:23)\n    at Ajv._addSchema (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/ajv/dist/core.js:461:18)\n    at Ajv.addSchema (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/ajv/dist/core.js:235:34)\n    at new ValidatorCompiler (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/@fastify/ajv-compiler/lib/validator-compiler.js:39:16)\n    at buildCompilerFromPool (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/@fastify/ajv-compiler/index.js:32:22)\n    at SchemaController.setupValidator (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/fastify/lib/schema-controller.js:145:56)\n    at Boot.<anonymous> (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/fastify/lib/route.js:386:32)\n    at Object.onceWrapper (node:events:632:28)\n    at Boot.emit (node:events:530:35)\n    at /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:102:12"},"msg":"schema is invalid: data/properties/created_at/type must be equal to one of the allowed values, data/properties/created_at/type must be array, data/properties/created_at/type must match a schema in anyOf"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754861790,"pid":1316055,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"FastifyError","message":"Failed building the validation schema for POST: /register, due to error strict mode: unknown keyword: \"body\"","stack":"FastifyError: Failed building the validation schema for POST: /register, due to error strict mode: unknown keyword: \"body\"\n    at Boot.<anonymous> (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/fastify/lib/route.js:392:21)\n    at Object.onceWrapper (node:events:632:28)\n    at Boot.emit (node:events:530:35)\n    at /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:102:12\n    at /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:437:7\n    at done (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:228:5)\n    at check (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:252:9)\n    at node:internal/process/task_queues:151:7\n    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)\n    at AsyncResource.runMicrotask (node:internal/process/task_queues:148:8)","code":"FST_ERR_SCH_VALIDATION_BUILD","name":"FastifyError","statusCode":500},"msg":"Failed building the validation schema for POST: /register, due to error strict mode: unknown keyword: \"body\""}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Schema/UserSchema.mjs:9
+};
+^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743754919088,"pid":1316427,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743754919089,"pid":1316427,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743754924274,"pid":1316468,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743754924275,"pid":1316468,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Schema/UserSchema.mjs:18
+};
+^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743754927549,"pid":1316514,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743754927549,"pid":1316514,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743754929149,"pid":1316538,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743754929150,"pid":1316538,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+{"level":30,"time":1743754938860,"pid":1316538,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-1","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":59422},"msg":"incoming request"}
+swagger
+{"level":30,"time":1743754938874,"pid":1316538,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-1","res":{"statusCode":200},"responseTime":12.955796957015991,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743754958741,"pid":1316755,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"Error","message":"schema is invalid: data/properties/created_at/type must be equal to one of the allowed values, data/properties/created_at/type must be array, data/properties/created_at/type must match a schema in anyOf","stack":"Error: schema is invalid: data/properties/created_at/type must be equal to one of the allowed values, data/properties/created_at/type must be array, data/properties/created_at/type must match a schema in anyOf\n    at Ajv.validateSchema (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/ajv/dist/core.js:267:23)\n    at Ajv._addSchema (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/ajv/dist/core.js:461:18)\n    at Ajv.addSchema (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/ajv/dist/core.js:235:34)\n    at new ValidatorCompiler (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/@fastify/ajv-compiler/lib/validator-compiler.js:39:16)\n    at buildCompilerFromPool (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/@fastify/ajv-compiler/index.js:32:22)\n    at SchemaController.setupValidator (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/fastify/lib/schema-controller.js:145:56)\n    at Boot.<anonymous> (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/fastify/lib/route.js:386:32)\n    at Object.onceWrapper (node:events:632:28)\n    at Boot.emit (node:events:530:35)\n    at /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:102:12"},"msg":"schema is invalid: data/properties/created_at/type must be equal to one of the allowed values, data/properties/created_at/type must be array, data/properties/created_at/type must match a schema in anyOf"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755010067,"pid":1317189,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755010067,"pid":1317189,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755017337,"pid":1317243,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755017338,"pid":1317243,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:22
+	} UserController.login);
+	^
+
+SyntaxError: missing ) after argument list
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755024676,"pid":1317318,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755024676,"pid":1317318,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755051822,"pid":1317493,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755051823,"pid":1317493,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755055551,"pid":1317527,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755055552,"pid":1317527,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743755057308,"pid":1317555,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"schema is not defined","stack":"ReferenceError: schema is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:21:3)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"schema is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:21
+		schema ;
+		       ^
+
+SyntaxError: Unexpected token ';'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755061424,"pid":1317599,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755061424,"pid":1317599,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755065912,"pid":1317641,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755065912,"pid":1317641,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755069313,"pid":1317681,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755069314,"pid":1317681,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755169434,"pid":1318284,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755169434,"pid":1318284,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755171057,"pid":1318306,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755171058,"pid":1318306,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755174847,"pid":1318346,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755174848,"pid":1318346,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743755179785,"pid":1318395,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"bdoy is not defined","stack":"ReferenceError: bdoy is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:23:4)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"bdoy is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:24
+		}
+		^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755186706,"pid":1318463,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755186706,"pid":1318463,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:23
+			body: {$ref: }
+			             ^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743755192214,"pid":1318522,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"FastifyError","message":"Failed building the validation schema for POST: /login, due to error can't resolve reference  from id #","stack":"FastifyError: Failed building the validation schema for POST: /login, due to error can't resolve reference  from id #\n    at Boot.<anonymous> (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/fastify/lib/route.js:392:21)\n    at Object.onceWrapper (node:events:632:28)\n    at Boot.emit (node:events:530:35)\n    at /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:102:12\n    at /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:437:7\n    at done (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:228:5)\n    at check (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:252:9)\n    at node:internal/process/task_queues:151:7\n    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)\n    at AsyncResource.runMicrotask (node:internal/process/task_queues:148:8)","code":"FST_ERR_SCH_VALIDATION_BUILD","name":"FastifyError","statusCode":500},"msg":"Failed building the validation schema for POST: /login, due to error can't resolve reference  from id #"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743755195592,"pid":1318546,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"FastifyError","message":"Failed building the validation schema for POST: /login, due to error can't resolve reference logi from id #","stack":"FastifyError: Failed building the validation schema for POST: /login, due to error can't resolve reference logi from id #\n    at Boot.<anonymous> (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/fastify/lib/route.js:392:21)\n    at Object.onceWrapper (node:events:632:28)\n    at Boot.emit (node:events:530:35)\n    at /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:102:12\n    at /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:437:7\n    at done (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:228:5)\n    at check (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:252:9)\n    at node:internal/process/task_queues:151:7\n    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)\n    at AsyncResource.runMicrotask (node:internal/process/task_queues:148:8)","code":"FST_ERR_SCH_VALIDATION_BUILD","name":"FastifyError","statusCode":500},"msg":"Failed building the validation schema for POST: /login, due to error can't resolve reference logi from id #"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743755198555,"pid":1318584,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"FastifyError","message":"Failed building the validation schema for POST: /login, due to error can't resolve reference loginValida from id #","stack":"FastifyError: Failed building the validation schema for POST: /login, due to error can't resolve reference loginValida from id #\n    at Boot.<anonymous> (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/fastify/lib/route.js:392:21)\n    at Object.onceWrapper (node:events:632:28)\n    at Boot.emit (node:events:530:35)\n    at /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:102:12\n    at /home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:437:7\n    at done (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:228:5)\n    at check (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:252:9)\n    at node:internal/process/task_queues:151:7\n    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)\n    at AsyncResource.runMicrotask (node:internal/process/task_queues:148:8)","code":"FST_ERR_SCH_VALIDATION_BUILD","name":"FastifyError","statusCode":500},"msg":"Failed building the validation schema for POST: /login, due to error can't resolve reference loginValida from id #"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755203206,"pid":1318627,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755203207,"pid":1318627,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743755241891,"pid":1318877,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"respon is not defined","stack":"ReferenceError: respon is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:24:4)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"respon is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":50,"time":1743755243565,"pid":1318901,"hostname":"paul-f5Br6s4.clusters.42paris.fr","err":{"type":"ReferenceError","message":"response is not defined","stack":"ReferenceError: response is not defined\n    at UserRoutes (file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:24:4)\n    at Plugin.exec (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/lib/plugin.js:125:28)\n    at Boot._loadPlugin (/home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/node_modules/avvio/boot.js:432:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)"},"msg":"response is not defined"}
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Routes/UserRoutes.mjs:33
+	}, UserController.login);
+	                 ^
+
+SyntaxError: Unexpected token '.'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755261372,"pid":1319031,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755261372,"pid":1319031,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+{"level":30,"time":1743755316241,"pid":1319031,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-1","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":37158},"msg":"incoming request"}
+swagger
+{"level":30,"time":1743755316254,"pid":1319031,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-1","res":{"statusCode":200},"responseTime":12.269426107406616,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755364773,"pid":1319656,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755364773,"pid":1319656,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+{"level":30,"time":1743755366669,"pid":1319656,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-1","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":38184},"msg":"incoming request"}
+swagger
+{"level":30,"time":1743755366682,"pid":1319656,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-1","res":{"statusCode":200},"responseTime":11.755311965942383,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755383496,"pid":1319782,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755383496,"pid":1319782,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755389255,"pid":1319829,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755389255,"pid":1319829,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755396886,"pid":1319895,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755396886,"pid":1319895,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755397544,"pid":1319906,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755397545,"pid":1319906,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755436217,"pid":1320236,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755436217,"pid":1320236,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}
+{"level":30,"time":1743755445365,"pid":1320236,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-1","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":55960},"msg":"incoming request"}
+swagger
+{"level":30,"time":1743755445386,"pid":1320236,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-1","res":{"statusCode":200},"responseTime":20.231410026550293,"msg":"request completed"}
+{"level":30,"time":1743755460512,"pid":1320236,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-2","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":55960},"msg":"incoming request"}
+swagger
+{"level":30,"time":1743755460513,"pid":1320236,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-2","res":{"statusCode":200},"responseTime":0.7599118947982788,"msg":"request completed"}
+{"level":30,"time":1743755487519,"pid":1320236,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-3","req":{"method":"GET","url":"/doc/json","host":"localhost:3001","remoteAddress":"127.0.0.1","remotePort":50146},"msg":"incoming request"}
+swagger
+{"level":30,"time":1743755487520,"pid":1320236,"hostname":"paul-f5Br6s4.clusters.42paris.fr","reqId":"req-3","res":{"statusCode":200},"responseTime":1.4800819158554077,"msg":"request completed"}
+Restarting 'UserAPI/index.mjs'
+file:///home/jbrousse/Documents/42/ft_transcendence/backend/UserAPI/Schema/UserSchema.mjs:16
+};
+^
+
+SyntaxError: Unexpected token '}'
+    at compileSourceTextModule (node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:102:18)
+    at #translate (node:internal/modules/esm/loader:468:12)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:515:27)
+
+Node.js v22.14.0
+Failed running 'UserAPI/index.mjs'
+Restarting 'UserAPI/index.mjs'
+{"level":30,"time":1743755509733,"pid":1320732,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743755509734,"pid":1320732,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}

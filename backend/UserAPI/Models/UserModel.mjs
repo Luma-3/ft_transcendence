@@ -1,28 +1,3 @@
-
-const registerValidationSchema = {
-	body: {
-		type: 'object',
-		required: ['username', 'password'],
-		properties: {
-			username: { type: 'string', minLength: 2, maxLength: 32},
-			password: { type: 'string', minLength: 8, maxLength: 255},
-		}
-	}
-}
-
-const loginValidationSchema = {
-	body: {
-		type: 'object',
-		required: ['username', 'password'],
-		properties: {
-			username: { type: 'string', minLength: 2, maxLength: 32},
-			password: { type: 'string', minLength: 8, maxLength: 255}
-		}
-	}
-}
-
-
-
 export class UserModel {
 	constructor(knex) {
 		this.knex = knex
@@ -36,7 +11,6 @@ export class UserModel {
 	 * @var password
 	 * @var created_at
 	 */
-
 
 	async findAll(schema = Base_Schema) {
 		return await this.knex('users')
@@ -62,5 +36,3 @@ export class UserModel {
 		return this.knex('users').insert({username, password, created_at: this.knex.fn.now()});
 	}
 }
-
-export { registerValidationSchema, loginValidationSchema };

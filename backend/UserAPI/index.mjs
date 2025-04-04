@@ -3,9 +3,9 @@ import common_config from '../config/fastify_commun.config.mjs'
 import config from './config/fastify.config.mjs'
 import errorHandler from '../middlewares/errorHandler.mjs'
 import formatJSON from '../middlewares/formatJSON.mjs'
-import UserRoutes from './routes/UserRoutes.mjs'
-import Models from './Models/index.mjs'
-
+import UserRoutes from './Routes/UserRoutes.mjs'
+import { UserModel } from './Models/UserModel.mjs'
+import { registerUserSchemas } from './Schema/UserSchema.mjs'
 
 const fastify = Fastify(common_config.fastifyOptions);
 
@@ -15,7 +15,8 @@ await config.registerPlugins(fastify);
 fastify.setErrorHandler(errorHandler)
 fastify.addHook("preSerialization", formatJSON)
 
-Models(fastify);
+fastify.decorate('userModel', (new UserModel(fastify.knex)))
+await registerUserSchemas(fastify);
 fastify.register(UserRoutes);
 
 const start = async () => {
