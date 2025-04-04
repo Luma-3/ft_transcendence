@@ -1,4 +1,4 @@
-export function renderSecondaryButton({
+export function secondaryButton({
 	id,
 	weight = 'full',
 	text,

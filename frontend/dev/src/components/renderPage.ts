@@ -1,9 +1,11 @@
 import { homePage } from '../pages/Home'
 import { loginPage } from '../pages/Login'
 import { registerPage } from '../pages/Register'
+import { hackPage } from '../pages/Hack'
 import { addToHistory } from '../main'
-import { translatePage } from '../i18n/translate'
+import { translatePage } from '../i18n/Translate'
 import { setupGoogleButton } from './Google'
+import { fadeIn, fadeOut } from './utils/fade'
 
 
 // * Associe chaque page à sa fonction de rendu
@@ -11,14 +13,14 @@ const rendererPage: {[key: string]: () => string} = {
 	'home': homePage,
 	'login': loginPage,
 	'register': registerPage,
+	'hacked': hackPage,
 };
 
 export function renderPage(page: string, updateHistory: boolean = true) {
 	
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
-	console.log('remove opacity-100')
-	main_container.classList.remove('opacity-100')
-	main_container.classList.add('opacity-0')
+	
+	fadeOut(main_container);
 	
 	setTimeout(() => {
 		const rendererFunction = rendererPage[page] || homePage;
@@ -34,15 +36,7 @@ export function renderPage(page: string, updateHistory: boolean = true) {
 		}
 		
 		translatePage(localStorage.getItem('lang') || 'en');
-		}
-	, 300);
-
-	setTimeout(() => {
-		console.log('remove opacity-0')
-		main_container.classList.remove('opacity-0')
-		main_container.classList.add('opacity-100')
+		fadeIn(main_container);
 	}
-	, 300);
-		
-
+	, 200);
 }

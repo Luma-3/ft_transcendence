@@ -1,4 +1,4 @@
-export function renderPrimaryButton({
+export function primaryButton({
 	id,
 	weight = 'full',
 	text,

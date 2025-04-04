@@ -1,5 +1,5 @@
-import { changeLanguage } from '../i18n/translate'
-import { renderPage } from '../components/RenderPage'
+import { changeLanguage } from '../i18n/Translate'
+import { renderPage } from '../components/renderPage'
 import { verifPasswordAndRegisterUser } from './userSession/userRegister'
 import { loginUser } from './userSession/userLogIn'
 
@@ -15,7 +15,7 @@ const changeEvent: {[key: string]: () => void } = {
 };
 
 const submitEvent: {[key: string]: () => void } = {
-	'registerForm': verifPasswordAndRegisterUser,
+	'registerUser': verifPasswordAndRegisterUser,
 	'loginForm': loginUser,
 };
 
@@ -45,5 +45,5 @@ export function addAllEventListenOnPage(container : HTMLDivElement) {
 		if (target.id in submitEvent) {
 			submitEvent[target.id]();
 		}
-	})
+	});
 }

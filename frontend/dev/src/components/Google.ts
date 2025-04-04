@@ -26,9 +26,9 @@ function waitForGoogle() {
 	});
 }
 
-export function renderButtonGoogle() {
+export function googleButton() {
 	return `
-	<button id="google_login" class="items-center justify-center p-2 hover:cursor-pointer">
+	<button id="google_login" class="w-[250px] h-[50px] items-center justify-center hover:cursor-pointer">
 	</button>
 	`;
 }

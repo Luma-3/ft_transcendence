@@ -1,61 +1,22 @@
 import { loadGoodLanguageGoogleScript } from "../components/Google"
-import { renderButtonGoogle } from "../components/Google"
-import { BackButton } from "../components/ui/back-button"
-import { renderForm } from "../components/ui/form"
+import { googleButton } from "../components/Google"
+import { backButton } from "../components/ui/backButton"
+import { registerForm } from "../components/ui/registerForm"
 
-function renderTitle() {
+function title() {
 	return `
-	<div class="text-6xl p-7 font-title" translate="register">Register</div>
+	<div class="text-6xl p-7 font-title motion-reduce:animate-pulse" translate="register">Register</div>
 	`
 }
 
-function renderRegisterForm() {
-	return `
-	${ renderForm({
-		id: "registerForm",
-		inputs: [
-			{
-				id: "username",
-				type: "text",
-				placeholder: "username",
-				autocomplete: "username",
-				required: true,
-				translate: "username",
-			},
-			{
-				id: "password",
-				type: "password",
-				placeholder: "Password",
-				autocomplete: "current-password",
-				required: true,
-				translate: "password",
-			},
-			{
-				id: "passwordVerif",
-				type: "password",
-				placeholder: "Verify Password",
-				autocomplete: "current-password",
-				required: true,
-				translate: "verif_password",
-			},
-		],
-		button: {
-			id: "registerFormButton",
-			text: "Register",
-			translate: "register",
-			type: "submit",
-		},
-		
-	})}`;
-}
 
 function renderRegisterPage() {
 	return `
 	<div class='flex flex-col items-center justify-center h-screen space-y-4 text-tertiary backdrop-filter backdrop-blur-xs'>
-	${renderTitle()}
-	${renderRegisterForm()}
-	${renderButtonGoogle()}
-	${BackButton()}
+	${title()}
+	${registerForm()}
+	${googleButton()}
+	${backButton()}
 	</div>
 	`
 }

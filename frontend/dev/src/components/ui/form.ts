@@ -1,7 +1,7 @@
-import { renderPrimaryButton } from './primary-button.ts';
+import { primaryButton } from './primaryButton.ts';
 
 type InputField = {
-	id: string;
+	name: string;
 	type: string;
 	placeholder: string;
 	autocomplete?: string;
@@ -10,7 +10,7 @@ type InputField = {
 };
 
 type FormOptions = {
-	id: string;
+	name: string;
 	inputs: InputField[];
 	button: {
 		id: string;
@@ -21,12 +21,12 @@ type FormOptions = {
 	};
 };
 
-export function renderForm({ id, inputs, button }: FormOptions): string {
+export function form({ name, inputs, button }: FormOptions): string {
 	const inputFields = inputs
 		.map(
 			(input) => `
-		<label for="${input.id}" class="sr-only" translate="${input.translate || ''}">${input.placeholder}</label>
-		<input id="${input.id}" type="${input.type}" autocomplete="${input.autocomplete || ''}" 
+		<label for="${input.name}" class="sr-only" translate="${input.translate || ''}">${input.placeholder}</label>
+		<input name="${input.name}" type="${input.type}" autocomplete="${input.autocomplete || ''}" 
 			class="font-text p-2 border border-tertiary rounded w-full ring-primary focus:ring-1 focus:outline-none" 
 			placeholder="${input.placeholder}" ${input.required ? 'required' : ''} />
 	`
@@ -34,9 +34,9 @@ export function renderForm({ id, inputs, button }: FormOptions): string {
 		.join('');
 
 	return `
-	<form id="${id}" class="flex flex-col items-center space-y-4 w-1/2">
+	<form id="registerUser" name="${name}" class="flex flex-col items-center space-y-4 w-1/2">
 		${inputFields}
-		${renderPrimaryButton(button)}
+		${primaryButton(button)}
 	</form>
 	`;
 }
