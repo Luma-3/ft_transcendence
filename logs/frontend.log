@@ -971,3 +971,14 @@ Port 5173 is in use, trying another one...
 6:32:44 PM [vite] (client) page reload index.html
 6:32:49 PM [vite] (client) page reload index.html
 6:33:19 PM [vite] (client) page reload index.html
+
+> transcenduck-front@0.0.1 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 564 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://10.25.106.4:5173/
+  ➜  press h + enter to show help
+10:41:25 AM [vite] (client) ✨ new dependencies optimized: sweetalert2

@@ -21,13 +21,13 @@ run() {
 	mkdir -p pids logs
 
 	cd frontend/dev 
-	npm run dev 2>&1 | tee -a ../../logs/frontend.log &
+	npm run dev &
 	cd ../..
 	echo "➡️ Frontend started"
 
 
 	cd "backend"
-	npm run dev 2>&1 | tee -a ../logs/backend.log &
+	npm run dev &
 	echo "➡️ Backend started"
 	cd ..
 

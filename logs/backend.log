@@ -12782,3 +12782,11 @@ Server listening on 3001
 {"level":30,"time":1743695705985,"pid":1543,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://26.235.30.113:3001"}
 {"level":30,"time":1743695705985,"pid":1543,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://172.26.32.1:3001"}
 {"level":30,"time":1743695705985,"pid":1543,"hostname":"DESKTOP-0QU0H72","msg":"Server listening at http://192.168.1.21:3001"}
+
+> transcenduck@0.0.1 dev
+> ./start-API.sh
+
+Gateway listening on 3000
+{"level":30,"time":1743756082092,"pid":1324611,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://127.0.0.1:3001"}
+Server listening on 3001
+{"level":30,"time":1743756082092,"pid":1324611,"hostname":"paul-f5Br6s4.clusters.42paris.fr","msg":"Server listening at http://10.25.106.4:3001"}

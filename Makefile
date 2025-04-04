@@ -8,9 +8,4 @@ dev-install:
 dev-run:
 	@bash $(SH_DEV) run
 
-dev-stop: 
-	@bash $(SH_DEV) stop
-
-dev-restart: stop run
-
 PHONY: dev-install dev-run dev-stop dev-restart
