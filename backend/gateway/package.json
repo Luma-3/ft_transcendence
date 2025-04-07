@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.mjs",
   "scripts": {
-    "dev": "./start-API.sh",
+    "dev": "node --watch main.mjs",
     "start": "node main.mjs",
     "stop": ""
   },
@@ -18,18 +18,16 @@
     "url": "https://github.com/Luma-3/ft_transcendence/issues"
   },
   "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
+	"devDependencies": {
+		"@fastify/cors": "^10.0.2"
+	},
   "dependencies": {
-    "@fastify/cookie": "^11.0.2",
-    "@fastify/cors": "^10.0.2",
     "@fastify/http-proxy": "^11.1.2",
     "@fastify/jwt": "^9.1.0",
     "@fastify/swagger": "^9.4.2",
     "@fastify/swagger-ui": "^5.2.2",
     "dotenv": "^16.4.7",
-    "fastify": "^5.2.2",
-    "fastify-bcrypt": "^1.0.1",
-    "knex": "^3.1.0",
-    "sqlite3": "^5.1.7"
+    "fastify": "^5.2.2"
   },
   "type": "module"
 }

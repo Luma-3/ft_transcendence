@@ -1,15 +1,16 @@
 import Fastify from 'fastify'
 import http_proxy from '@fastify/http-proxy';
-import common_config from './config/fastify_commun.config.mjs'
 import gateway_config from './config/gateway.config.mjs'
 
-const gateway = Fastify(common_config);
+const gateway = Fastify({
+	logger : true,
+});
 
 await gateway_config.registersPlugins(gateway);
 
 gateway.register(http_proxy, {
-	upstream: 'http://localhost:3001',
-	prefix: '/api/user'
+	upstream: 'http://user_api:3001',
+	prefix: '/user'
 })
 
 const start = async () => {

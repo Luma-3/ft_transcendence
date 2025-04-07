@@ -1,0 +1,35 @@
+{
+  "name": "transcenduck",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.mjs",
+  "scripts": {
+    "dev": "node --watch main.mjs",
+    "start": "node main.mjs",
+    "stop": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luma-3/ft_transcendence.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Luma-3/ft_transcendence/issues"
+  },
+  "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
+	"devDependencies": {
+		"@fastify/cors": "^10.0.2"
+	},
+  "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/jwt": "^9.1.0",
+    "@fastify/swagger": "^9.4.2",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.2",
+    "fastify-bcrypt": "^1.0.1",
+    "knex": "^3.1.0",
+    "sqlite3": "^5.1.7"
+  },
+  "type": "module"
+}

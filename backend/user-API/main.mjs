@@ -1,16 +1,16 @@
 import Fastify from 'fastify'
-import common_config from '../config/fastify_commun.config.mjs'
 import config from './config/fastify.config.mjs'
-import errorHandler from '../middlewares/errorHandler.mjs'
-import formatJSON from '../middlewares/formatJSON.mjs'
+import errorHandler from './middlewares/errorHandler.mjs'
+import formatJSON from './middlewares/formatJSON.mjs'
 import UserRoutes from './Routes/UserRoutes.mjs'
 
 import { UserModel } from './Models/UserModel.mjs'
 import { registerUserSchemas } from './Schema/UserSchema.mjs'
 
-const fastify = Fastify(common_config.fastifyOptions);
+const fastify = Fastify({
+	logger : true,
+});
 
-await common_config.registerPlugins(fastify);
 await config.registerPlugins(fastify);
 
 fastify.setErrorHandler(errorHandler)

@@ -1,15 +1,21 @@
-import knex from '../../plugins/knex.mjs'
+import knex from '../plugins/knex.mjs'
 import bcrypt from 'fastify-bcrypt'
 import knex_config from './knex.config.mjs'
-import swagger from '../../plugins/swagger.mjs';
-
+import swagger from '../plugins/swagger.mjs';
+import cookie from '../plugins/cookie.mjs';
+import jwt from '../plugins/jwt.mjs';
+import dotenv from 'dotenv';
 
 export default {
 	async registerPlugins(fastify) {
 
+		dotenv.config()
+
 		await fastify.register(knex, knex_config)
 
 		await fastify.register(bcrypt, { saltWorkFactor: 12 })
+		await cookie(fastify);
+		await jwt(fastify);
 
 		await swagger(fastify, {
 			title: 'User Service API',

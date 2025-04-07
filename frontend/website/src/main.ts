@@ -19,7 +19,7 @@ addAllEventListenOnPage(main_container);
 // * On affiche la page courante ou la page d'accueil par défaut avec un leger delai
 document.addEventListener('DOMContentLoaded', () => {
 	
-	const page =  window.location.pathname.substring(1) || 'dashboard'
+	const page =  window.location.pathname.substring(1) || 'home'
 	
 	initGoogleClient();
 	renderPage(page, false)

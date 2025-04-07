@@ -7,10 +7,10 @@ install() {
 	echo "📦 Installing dev dependencies..."
 
 	echo "➡️ Frontend"
-	cd frontend/dev && npm install && cd ../..
+	cd frontend/website && npm install && cd ../..
 
 	echo "➡️ Backend"
-	cd backend && npm install && cd ..
+	cd backend && bash ./utils.dev.sh install && cd ..
 
 	echo "✅ All dev dependencies installed!"
 }
@@ -18,14 +18,14 @@ install() {
 run() {
 	echo "🚀 Running dev server..."
 
-	cd frontend/dev 
+	cd frontend/website 
 	npm run dev &
 	cd ../..
 	echo "➡️ Frontend started"
 
 
 	cd "backend"
-	npm run dev &
+	bash ./utils.dev.sh run &
 	echo "➡️ Backend started"
 	cd ..
 
@@ -42,7 +42,7 @@ case $ARG in
 	install) install ;;
 	run) run ;;
 	*)
-		echo "Usage: $0 {install|run|stop}"
+		echo "Usage: $0 {install|run}"
 		exit 1
 		;;
 esac
