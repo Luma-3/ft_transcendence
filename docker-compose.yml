@@ -1,0 +1,42 @@
+services:
+
+  gateway:
+    container_name: nginx-gateway
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    ports:
+      - 7777:443
+      - 8080:80
+    # env_file:
+    #   - .env
+    networks:
+      - gateway_back_front
+
+# APIS
+
+  # user_api:
+  #   container_name: user_api
+  #   build:
+  #     context: ./backend/UserAPI
+  #     dockerfile: Dockerfile.dev
+  #   user: "node"
+  #   environment:
+  #     - NODE_ENV=development
+  #   volumes:
+  #     - ./backend/UserAPI/src:/home/node/src
+  #   ports:
+  #     - '3000:3000'
+  #     - '9229:9229'
+  #   networks: 
+  #     - api
+  #     - front
+
+
+networks:
+  # api:
+  #   name: api
+  #   driver: bridge
+  gateway_back_front:
+    name: gateway_back_front
+    driver: bridge
