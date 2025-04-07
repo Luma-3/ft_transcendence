@@ -3,7 +3,7 @@ services:
   gateway:
     container_name: nginx-gateway
     build:
-      context: ./frontend/
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - 7777:443

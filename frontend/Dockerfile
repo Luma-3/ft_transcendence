@@ -2,11 +2,9 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-COPY ./package.json ./
+COPY ./website .
 
 RUN npm install
-
-COPY . .
 
 RUN npm i -g vite
 
