@@ -6,6 +6,7 @@ import { addToHistory } from '../main'
 import { translatePage } from '../i18n/Translate'
 import { setupGoogleButton } from './Google'
 import { fadeIn, fadeOut } from './utils/fade'
+import { dashboardPage } from '../pages/Dashboard'
 
 
 // * Associe chaque page à sa fonction de rendu
@@ -13,6 +14,7 @@ const rendererPage: {[key: string]: () => string} = {
 	'home': homePage,
 	'login': loginPage,
 	'register': registerPage,
+	'dashboard': dashboardPage,
 	'hacked': hackPage,
 };
 
