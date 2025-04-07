@@ -4,16 +4,17 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-	  "dev": "vite --host",
-	  "build": "tsc && vite build",
-	  "preview": "vite preview"
+		"dev": "vite --host",
+		"build": "tsc && vite build",
+		"preview": "vite preview"
 	},
 	"devDependencies": {
-	  "typescript": "~5.7.2",
-	  "vite": "^6.1.0"
+		"typescript": "~5.7.2",
+		"vite": "^6.1.0"
 	},
 	"dependencies": {
-	  "@tailwindcss/vite": "^4.0.6",
-	  "tailwindcss": "^4.0.6"
+		"@tailwindcss/vite": "^4.0.6",
+		"sweetalert2": "^11.17.2",
+		"tailwindcss": "^4.0.6"
 	}
-  }
+}

@@ -18,8 +18,6 @@ install() {
 run() {
 	echo "🚀 Running dev server..."
 
-	mkdir -p pids logs
-
 	cd frontend/dev 
 	npm run dev &
 	cd ../..

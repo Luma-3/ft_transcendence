@@ -1,6 +1,6 @@
 services:
 
-  vite:
+  front:
     container_name: vite
     build:
       context: ./frontend/dev/
