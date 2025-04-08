@@ -1,8 +1,12 @@
 import { navbar } from "../components/ui/navbar";
+import { userMenu } from "../components/ui/userMenu";
 
 function renderDashboard() {
 	return `
-	${navbar()}`
+	${navbar()}
+	${userMenu()}
+	`
+
 }
 
 export function dashboardPage() {

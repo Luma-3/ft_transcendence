@@ -7,9 +7,10 @@ export function homeButton() {
 	return `
 		<div class="flex justify-center">
 		  <button class="mt-2 group p-5 cursor-pointer relative text-xl font-title 
-		  border-0 flex items-center rounded justify-center bg-transparent text-tertiary 
+		  border-0 flex items-center rounded justify-center bg-transparent dark:text-dtertiary 
 		  h-auto w-[170px] overflow-hidden transition-all duration-100">
-			<span class="
+			
+		  <span class="
 				 group-hover:w-full
 				 absolute 
 				 left-0 
@@ -17,7 +18,8 @@ export function homeButton() {
 				 w-5 
 				 border-y-4
 				 border-l-4
-				 border-primary
+				 dark:border-dprimary
+				border-primary
 				 rounded
 				 transition-all
 				 duration-500">

@@ -12,7 +12,7 @@ function title() {
 
 function renderRegisterPage() {
 	return `
-	<div class='flex flex-col items-center justify-center h-screen space-y-4 text-tertiary backdrop-filter backdrop-blur-xs'>
+	<div class='flex flex-col items-center justify-center h-screen space-y-4 text-primary dark:text-dtertiary backdrop-filter backdrop-blur-xs'>
 	${title()}
 	${registerForm()}
 	${googleButton()}

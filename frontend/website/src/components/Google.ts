@@ -28,27 +28,30 @@ function waitForGoogle() {
 
 export function googleButton() {
 	return `
-	<button id="google_login" class="w-[250px] h-[50px] items-center justify-center hover:cursor-pointer">
+	<button id="google_login" class=" items-center justify-center hover:cursor-pointer">
 	</button>
 	`;
 }
 
 export function setupGoogleButton() {
+	const theme = localStorage.getItem('theme') || 'dark';
+	const google_theme = theme === 'dark' ? 'filled_black' : 'outline'; 
+	
 	waitForGoogle().then(() => {	
 		const localisation = localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en'
 		console.log('localisation: ', localisation)
 		const container = document.getElementById('google_login')!
 		
 		google.accounts.id.renderButton(container, {
-			theme: `outlined`,
-			size: 'large',
-			shape: 'square',
+			theme: google_theme,
+			size: 'small',
+			shape: 'rectangular',
 			locale: localisation,
 		});
 	});
 }
 
-export function initGoogleClient() {
+export async function initGoogleClient() {
 	waitForGoogle().then(() => {
 		google.accounts.id.initialize({
 			client_id: '119862352582-9id39otgurluqrqblb7n4b9np4861hle.apps.googleusercontent.com',

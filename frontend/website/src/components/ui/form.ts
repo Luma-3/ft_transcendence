@@ -27,14 +27,14 @@ export function form({ name, inputs, button }: FormOptions): string {
 			(input) => `
 		<label for="${input.name}" class="sr-only" translate="${input.translate || ''}">${input.placeholder}</label>
 		<input name="${input.name}" type="${input.type}" autocomplete="${input.autocomplete || ''}" 
-			class="font-text p-2 border border-tertiary rounded w-full ring-primary focus:ring-1 focus:outline-none" 
+			class="font-text p-2 border border-primary dark:border-dtertiary rounded w-full ring-primary focus:ring-1 focus:outline-none" 
 			placeholder="${input.placeholder}" ${input.required ? 'required' : ''} />
 	`
 		)
 		.join('');
 
 	return `
-	<form id="registerUser" name="${name}" class="flex flex-col items-center space-y-4 w-1/2">
+	<form id="registerUser" name="${name}" class="flex flex-col items-center space-y-4 w-1/2 ">
 		${inputFields}
 		${primaryButton(button)}
 	</form>

@@ -12,5 +12,10 @@
 	"get_started": "Get started !",
 	"google_login": "Login with Google",
 	"passwords_dont_match": "Passwords do not match",
-	"welcome": "Welcome"
+	"welcome": "Welcome",
+	"profil": "Profile",
+	"stats": "Games stats",
+	"logout": "Logout",
+	"dark-mode": "Dark mode",
+	"settings": "Settings"
 }

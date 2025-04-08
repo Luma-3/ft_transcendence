@@ -19,10 +19,14 @@ addAllEventListenOnPage(main_container);
 // * On affiche la page courante ou la page d'accueil par défaut avec un leger delai
 document.addEventListener('DOMContentLoaded', () => {
 	
+	const load_screen = document.getElementById('loading-screen')!
 	const page =  window.location.pathname.substring(1) || 'home'
 	
+
 	initGoogleClient();
 	renderPage(page, false)
+
+	load_screen.classList.add('hidden')
 	
 	setTimeout(() => {
 		fadeIn(main_container)

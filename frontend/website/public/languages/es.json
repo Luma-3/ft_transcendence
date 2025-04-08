@@ -12,5 +12,10 @@
 	"get_started": "¡Comienza!",
 	"google_login": "Iniciar sesión con Google",
 	"passwords_dont_match": "Las contraseñas no coinciden",
-	"welcome": "Bienvenido"
+	"welcome": "Bienvenido",
+	"profil": "Perfil",
+	"stats": "Estadísticas de juegos",
+	"logout": "Cerrar sesión",
+	"dark-mode": "Modo oscuro",
+	"settings": "Configuraciones"
 }
