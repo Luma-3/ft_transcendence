@@ -16,7 +16,7 @@ export const loginValidationSchema = {
 	}
 };
 
-export const userSchema= {
+export const publicUserSchema = {
 	type: 'object',
 	properties: {
 		id: { type: 'integer' },
@@ -25,8 +25,18 @@ export const userSchema= {
 	}
 };
 
+export const privateUserSchema = {
+	type: 'object',
+	properties: {
+		id: { type: 'integer' },
+		username: { type: 'string' },
+		created_at: {type: 'string'}
+	}
+}
+
 export async function registerUserSchemas(fastify) {
-	fastify.addSchema({$id: 'UserSchema', ...userSchema});
+	fastify.addSchema({$id: 'publicUserSchema', ...publicUserSchema});
+	fastify.addSchema({$id: 'privateUserSchema', ...privateUserSchema});
 	fastify.addSchema({$id: 'loginValidationSchema', ...loginValidationSchema});
 	fastify.addSchema({$id: 'registerValidationSchema', ...registerValidationSchema});
 }

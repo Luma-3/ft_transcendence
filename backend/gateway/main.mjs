@@ -1,17 +1,40 @@
 import Fastify from 'fastify'
 import http_proxy from '@fastify/http-proxy';
 import gateway_config from './config/gateway.config.mjs'
+import swaggerUi from "./plugins/swaggerUi.mjs"
+import path from 'path'
+
 
 const gateway = Fastify({
 	logger : true,
 });
 
+
 await gateway_config.registersPlugins(gateway);
 
-gateway.register(http_proxy, {
-	upstream: 'http://user_api:3001',
-	prefix: '/user'
+console.log(process.env.NODE_ENV);
+
+const Services = [
+	{
+		name: 'Users Services', prefix: '/user',
+		upstream: process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'http://user_api:3001'
+	}
+]
+
+Services.forEach((value) => {
+	value['url'] = value.upstream + '/doc/json';
+});
+
+console.log(Services);
+
+await swaggerUi(gateway, Services)
+
+
+Services.forEach((value) => {
+	gateway.register(http_proxy, value);
 })
+
+
 
 const start = async () => {
 	try {

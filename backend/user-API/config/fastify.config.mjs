@@ -5,11 +5,14 @@ import swagger from '../plugins/swagger.mjs';
 import cookie from '../plugins/cookie.mjs';
 import jwt from '../plugins/jwt.mjs';
 import dotenv from 'dotenv';
+import cors from '../plugins/cors.mjs';
 
 export default {
 	async registerPlugins(fastify) {
 
 		dotenv.config()
+
+		await cors(fastify)
 
 		await fastify.register(knex, knex_config)
 

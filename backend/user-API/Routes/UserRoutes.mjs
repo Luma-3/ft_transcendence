@@ -6,12 +6,7 @@ export default async function UserRoutes(fastify) {
 			description: 'create a new User',
 			body : {$ref: 'registerValidationSchema'},
 			response: {
-				201: { allOf: [
-					{ $ref: 'BaseSchema' },
-					{	properties: {
-						data: { $ref: 'UserSchema' },
-					}}
-				]}
+				201: {}
 			}
 		}
 	},  UserController.register);
@@ -21,13 +16,33 @@ export default async function UserRoutes(fastify) {
 			description: 'login a User',
 			body: {$ref: 'loginValidationSchema'},
 			response: {
-				200: { allOf: [
-					{ $ref: 'BaseSchema' },
-					{	properties: { data: { $ref: 'UserSchema' }, }}
-				]}
+				200: {}
 			}
 		}
 	}, UserController.login);
 	
-	fastify.get('/info/:userId', {onRequest: [fastify.authenticate]}, UserController.getUser);
+	fastify.get('/public/:userId', {
+		schema: {
+			description: 'Get Public Info of a User',
+			response: {
+				200: { allOf: [
+					{ $ref: 'BaseSchema'},
+					{ properties: { data: { $ref: 'publicUserSchema'}}}
+				]}
+			}
+		}
+	}, UserController.getUser);
+
+	fastify.get('/me', {
+		onRequest: [fastify.authenticate],
+		schema : {
+			description: 'Get Private Info of a User',
+			response: {
+				200: { allOf: [
+					{ $ref: 'BaseSchema'},
+					{ properties: { data: { $ref: 'privateUserSchema'}}}
+				]}
+			}
+		}
+	})
 }
