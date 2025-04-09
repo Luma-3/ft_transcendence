@@ -2,16 +2,22 @@ import { changeLanguage } from '../i18n/Translate'
 import { renderPage } from '../components/renderPage'
 import { verifPasswordAndRegisterUser } from './userSession/userRegister'
 import { loginUser } from './userSession/userLogIn'
+import { changeLightMode } from '../components/utils/toggleLight'
+import { toggleUserMenu } from '../components/utils/toggleUserMenu'
+import { hideToggleElements } from '../components/utils/hideToggleElements'
 
 const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => window.history.back(),
 	'loadLogin': () => renderPage('login'),
 	'loadHome': () => renderPage('home'),
 	'loadRegister': () => renderPage('register'),
+	'user-menu-button': () => toggleUserMenu(),
+	'loadSettings': () => renderPage('settings'),
 };
 
 const changeEvent: {[key: string]: () => void } = {
 	'language': changeLanguage,
+	'switch-component': changeLightMode,
 };
 
 const submitEvent: {[key: string]: () => void } = {
@@ -21,9 +27,11 @@ const submitEvent: {[key: string]: () => void } = {
 
 
 export function addAllEventListenOnPage(container : HTMLDivElement) {
+
 	container.addEventListener('click', (event) => {
 		const target = event.target as HTMLElement;
 		
+		hideToggleElements(target);
 		if (target.id in clickEvent) {
 			clickEvent[target.id]();
 		}
