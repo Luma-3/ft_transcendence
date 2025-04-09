@@ -1,16 +1,18 @@
 _id: req_513de5b65ebe4145952fd1c10c06e474
 type: Request
 parentId: fld_265aacb41d794f9aa15abfe6adc70857
-modified: 1744205296484
+modified: 1744206652118
 created: 1744205276650
-url: ""
-name: getMet
+url: "{{ _.IP }}/user/me"
+name: Me
 description: ""
 method: GET
 body: {}
 parameters: []
 headers: []
-authentication: {}
+authentication:
+  type: bearer
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTQsInVzZXJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDI1LTA0LTA5IDEzOjAyOjU4IiwiaXNzIjoiMTI3LjAuMC4xOjMwMDAiLCJpYXQiOjE3NDQyMDM3NzgsImV4cCI6MTc0NDI5MDE3OH0.TTURcgnvoCEyXi0UYilV2riM48XOnvGDnga11VV5vsM
 metaSortKey: -1744205276650
 isPrivate: false
 settingStoreCookies: true
