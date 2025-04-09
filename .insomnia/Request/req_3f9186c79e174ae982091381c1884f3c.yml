@@ -1,0 +1,23 @@
+_id: req_3f9186c79e174ae982091381c1884f3c
+type: Request
+parentId: fld_265aacb41d794f9aa15abfe6adc70857
+modified: 1744205317632
+created: 1744204216135
+url: "{{ _.IP }}/user/public/52"
+name: public/id
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTQsInVzZXJuYW1lIjoidGVzdCIsImNyZWF0ZWRfYXQiOiIyMDI1LTA0LTA5IDEzOjAyOjU4IiwiaXNzIjoiMTI3LjAuMC4xOjMwMDAiLCJpYXQiOjE3NDQyMDM3NzgsImV4cCI6MTc0NDI5MDE3OH0.TTURcgnvoCEyXi0UYilV2riM48XOnvGDnga11VV5vsM
+metaSortKey: -1744205276700
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

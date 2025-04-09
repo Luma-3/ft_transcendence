@@ -1,0 +1,29 @@
+_id: req_5700f27397ca4c86a9c7599f600cfcac
+type: Request
+parentId: fld_265aacb41d794f9aa15abfe6adc70857
+modified: 1744205326134
+created: 1744203446214
+url: "{{ _.IP }}/user/register"
+name: register
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+      "username": "test",
+      "password": "testasdasdas"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1744205276750
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

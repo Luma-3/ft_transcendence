@@ -1,0 +1,21 @@
+_id: req_a3e52d4dda604279ab7ed889cc42d537
+type: Request
+parentId: fld_265aacb41d794f9aa15abfe6adc70857
+modified: 1744205335969
+created: 1743578733257
+url: "{{ _.IP }}/user/login"
+name: login
+description: ""
+method: POST
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1744205276800
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
