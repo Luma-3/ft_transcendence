@@ -1,0 +1,14 @@
+_id: env_8d7a92b1c9a05ddb2f9a6e1df1024bd9c8460598
+type: Environment
+parentId: wrk_85090910b30c4912a609ed74d08c4588
+modified: 1743578930457
+created: 1743578733251
+name: Base Environment
+data:
+  IP: 127.0.0.1:3000
+dataPropertyOrder:
+  "&":
+    - IP
+color: null
+isPrivate: false
+metaSortKey: 1743578733251
