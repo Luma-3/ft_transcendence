@@ -20,4 +20,4 @@
 	- [ ] Monitoring Sys 0.5
 	- [ ] ELK 1 (TO DOC)
 	- [ ] User/Game dashboard 0.5
-	- [ ] Support all Divices 0.5
+	- [ ] Support all Divices 0.5# insomnia_tran
