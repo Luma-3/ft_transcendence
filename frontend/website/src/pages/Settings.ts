@@ -11,10 +11,48 @@ function settingsTitle() {
 	return `<div class="text-6xl p-7 font-title items-center justify-center motion-reduce:animate-pulse" translate="settings">Settings</div>`
 }
 
+function changeDefaultLang() {
+
+	const all_langs = [
+		"fr",
+		"en",
+		"es"]
+	
+	
+	const labels = all_langs.map((lang) => {
+		return `<div role="button" class="flex w-full items-center rounded-lg p-0 transition-all hover:bg-secondary focus:bg-slate-100 active:bg-slate-100">
+ 					<label for="${lang}-changer" class="flex w-full cursor-pointer items-center px-3 py-2">
+ 					<div class="inline-flex items-center">
+			
+ 					<label class="flex items-center cursor-pointer relative" for="check-vertical-list-group4">
+ 					<input type="radio" name="lang-selector" class="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-slate-800 checked:border-slate-800"
+ 						id="${lang}-changer" name="langSelect"/>
+ 					</label>
+					
+ 					<label class="cursor-pointer ml-2 text-slate-600 text-sm" for="check-vertical-list-group4">
+					<img src="images/icons/${lang}.png" alt="${lang}" class="w-5 h-5 mr-2">
+					</label>
+ 					</div>
+ 					</label>
+ 					</div>`
+	}).join('')
+	
+
+	return `<div class="text-2xl p-7 font-title items-center justify-center motion-reduce:animate-pulse" translate="">Change default language</div>
+				<div class="relative max-w-sm flex w-full flex-col rounded-xl bg-primary shadow">
+				<nav class="flex min-w-[240px] flex-row gap-1 p-2">
+				${labels}
+				</div>
+				</nav>
+				</div>`
+}
+
+
 function renderSettingsPage() {
 	return `<div class="flex flex-col items-center justify-center space-y-4 dark:text-dtertiary backdrop-filter backdrop-blur-xs pt-20">
 				${settingsLogo()}
 				${settingsTitle()}
+				${changeDefaultLang()}
 				${backButton()}
 			</div>`
 }
