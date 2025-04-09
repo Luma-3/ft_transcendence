@@ -34,7 +34,6 @@ export default async function UserRoutes(fastify) {
 	}, UserController.getUser);
 
 	fastify.get('/me', {
-		onRequest: [fastify.authenticate],
 		schema : {
 			description: 'Get Private Info of a User',
 			response: {
@@ -44,5 +43,5 @@ export default async function UserRoutes(fastify) {
 				]}
 			}
 		}
-	})
+	}, UserController.privateInfoUser)
 }

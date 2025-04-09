@@ -22,6 +22,7 @@
 		"@fastify/cors": "^10.0.2"
 	},
   "dependencies": {
+    "@fastify/cookie": "^11.0.2",
     "@fastify/http-proxy": "^11.1.2",
     "@fastify/jwt": "^9.1.0",
     "@fastify/swagger": "^9.4.2",

@@ -1,28 +1,8 @@
-
-export const getUser = async (req, rep) => {
-	const fastify = req.server;
-	const userModel = req.server.userModel;
-	const { userId } = req.params;
-	
-	const user = req.data;
-	if (user.id != userId) {
-		return rep.code(401).send({message: "Unauthorized"})
-	}
-
-	const [db_user] = await userModel.findByID(userId);
-
-	if (!db_user) {
-		return rep.code(404).send({message: "user ID not found"});
-	}
-	return rep.code(200).send({data: db_user});
-}
-
+import { publicUserSchema, privateUserSchema } from "../Schema/UserSchema.mjs";
 
 export const login = async (req, rep) => {
 	const fastify = req.server;
 	const userModel = req.server.userModel;
-	
-	// TODO: redirect if Token JWT is Ok
 
 	const {username, password} = req.body;
 	const [user] = await userModel.findByUsername(username, ['id', 'username', 'password']);
@@ -49,9 +29,7 @@ export const login = async (req, rep) => {
 export const register = async (req, rep) => {
 	const fastify = req.server;
 	const userModel = req.server.userModel;
-
-	// TODO: redirect if Token JWT is Ok
-
+	
 	const {username, password} = req.body;
 	if (userModel.findByUsername(username) === null) {
 		return rep.code(403).send({message: 'User Already Exist'})
@@ -74,4 +52,27 @@ export const register = async (req, rep) => {
 		path: "/",
 		maxAge: 60 * 60 * 24, // 1 jour
 	}).send({data: newUsername});
+}
+
+
+export const getUser = async (req, rep) => {
+	const userModel = req.server.userModel;
+	const { userId } = req.params;
+
+	const [db_user] = await userModel.findByID(userId, Object.keys(publicUserSchema.properties));
+
+	if (!db_user) {
+		return rep.code(404).send({message: "user ID not found"});
+	}
+	return rep.code(200).send({data: db_user});
+}
+
+export const privateInfoUser = async (req, rep) => {
+	const userModel = req.server.userModel
+
+	const id = req.headers['x-user-id'];
+
+	const [userInfo] = await userModel.findByID(id, Object.keys(privateUserSchema.properties));
+
+	return rep.code(200).send({data : userInfo, message: 'Ok'});
 }

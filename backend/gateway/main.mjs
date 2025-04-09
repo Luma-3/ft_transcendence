@@ -2,7 +2,6 @@ import Fastify from 'fastify'
 import http_proxy from '@fastify/http-proxy';
 import gateway_config from './config/gateway.config.mjs'
 import swaggerUi from "./plugins/swaggerUi.mjs"
-import path from 'path'
 
 
 const gateway = Fastify({
@@ -11,8 +10,6 @@ const gateway = Fastify({
 
 
 await gateway_config.registersPlugins(gateway);
-
-console.log(process.env.NODE_ENV);
 
 const Services = [
 	{
@@ -29,12 +26,9 @@ console.log(Services);
 
 await swaggerUi(gateway, Services)
 
-
 Services.forEach((value) => {
 	gateway.register(http_proxy, value);
 })
-
-
 
 const start = async () => {
 	try {
