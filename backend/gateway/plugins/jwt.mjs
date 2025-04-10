@@ -8,6 +8,7 @@ export default async function (fastify) {
 			return;
 
 		try {
+			console.log("TOKEN :", req.cookies.token);
 			if (req.cookies.token) {
 				req.user = await fastify.jwt.verify(req.cookies.token);
 				req.headers['x-user-id'] = req.user.id;

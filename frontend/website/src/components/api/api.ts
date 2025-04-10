@@ -11,6 +11,10 @@ export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IAp
 			headers: {"Content-Type": "application/json"},
 			...option,
 		});
+		if (!response.ok) {
+			const errorData = await response.json();
+			return {status: "error", message: errorData.message, details: errorData.details};
+		}
 		return response.json() as Promise<IApiResponce<T>>;
 	} 
 	catch (error) {

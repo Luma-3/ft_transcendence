@@ -8,12 +8,13 @@ const gateway = Fastify({
 	logger : true,
 });
 
+const dev_prefix = process.env.NODE_ENV === 'development' ? '/api' : '';
 
 await gateway_config.registersPlugins(gateway);
 
 const Services = [
 	{
-		name: 'Users Services', prefix: '/user',
+		name: 'Users Services', prefix: dev_prefix + '/user',
 		upstream: process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'http://user_api:3001'
 	}
 ]
