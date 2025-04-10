@@ -1,5 +1,5 @@
-import { loadGoodLanguageGoogleScript } from "../components/Google"
-import { googleButton } from "../components/Google"
+// import { loadGoodLanguageGoogleScript } from "../components/Google"
+// import { googleButton } from "../components/Google"
 import { backButton } from "../components/ui/backButton"
 import { registerForm } from "../components/ui/registerForm"
 
@@ -15,7 +15,6 @@ function renderRegisterPage() {
 	<div class='flex flex-col items-center justify-center h-screen space-y-4 text-primary dark:text-dtertiary backdrop-filter backdrop-blur-xs'>
 	${title()}
 	${registerForm()}
-	${googleButton()}
 	${backButton()}
 	</div>
 	`
@@ -23,7 +22,7 @@ function renderRegisterPage() {
 
 export function registerPage() {
 
-	loadGoodLanguageGoogleScript()
+	// loadGoodLanguageGoogleScript()
 	return renderRegisterPage()
 
 }

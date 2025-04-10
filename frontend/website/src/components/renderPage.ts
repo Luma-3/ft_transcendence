@@ -8,7 +8,7 @@ import { hackPage } from '../pages/Hack'
 import { setupColorTheme } from './utils/setColorTheme'
 import { addToHistory } from '../main'
 import { translatePage } from '../i18n/Translate'
-import { setupGoogleButton } from './Google'
+// import { setupGoogleButton } from './Google'
 import { fadeIn, fadeOut } from './utils/fade'
 
 
@@ -35,9 +35,9 @@ export function renderPage(page: string, updateHistory: boolean = true) {
 
 		main_container.innerHTML = page_content;
 
-		if (page === 'login' || page === 'register') {
-			setupGoogleButton();
-		}
+		// if (page === 'login' || page === 'register') {
+		// 	setupGoogleButton();
+		// }
 		if (updateHistory) {
 			addToHistory(page, updateHistory);
 		}

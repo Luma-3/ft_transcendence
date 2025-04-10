@@ -6,6 +6,7 @@ import cookie from '../plugins/cookie.mjs';
 import jwt from '../plugins/jwt.mjs';
 import dotenv from 'dotenv';
 import cors from '../plugins/cors.mjs';
+import google from '../plugins/google.mjs'
 
 export default {
 	async registerPlugins(fastify) {
@@ -19,6 +20,7 @@ export default {
 		await fastify.register(bcrypt, { saltWorkFactor: 12 })
 		await cookie(fastify);
 		await jwt(fastify);
+		await google(fastify);
 
 		await swagger(fastify, {
 			title: 'User Service API',

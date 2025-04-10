@@ -44,4 +44,6 @@ export default async function UserRoutes(fastify) {
 			}
 		}
 	}, UserController.privateInfoUser)
+
+	fastify.get('/oauth', UserController.oauthCallback);
 }

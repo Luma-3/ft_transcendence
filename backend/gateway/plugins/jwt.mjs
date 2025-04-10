@@ -4,8 +4,17 @@ export default async function (fastify) {
 	await fastify.register(jwt, { secret: process.env.JWT_SECRET });
 
 	fastify.addHook('onRequest', async function (req, rep) {
-		if (req.url.startsWith('/user/register') || req.url.startsWith('/user/login') || req.url.startsWith('/doc'))
+		console.log(req.url);
+		const dev_prefix = process.env.NODE_ENV === 'development' ? '/api' : '' 
+		if (
+			req.url.startsWith(dev_prefix + '/user/register') ||
+			req.url.startsWith(dev_prefix + '/user/login')		||
+			req.url.startsWith(dev_prefix + '/user/oauth')		||
+			req.url.startsWith('/doc')
+		) {
 			return;
+
+		}
 
 		try {
 			if (req.cookies.token) {

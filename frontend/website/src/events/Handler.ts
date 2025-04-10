@@ -13,6 +13,9 @@ const clickEvent: {[key: string]: () => void } = {
 	'loadRegister': () => renderPage('register'),
 	'user-menu-button': () => toggleUserMenu(),
 	'loadSettings': () => renderPage('settings'),
+	'google': () => {
+		window.location.href = 'http://localhost:3000/api/user/login/google'
+	}
 };
 
 const changeEvent: {[key: string]: () => void } = {
@@ -54,4 +57,5 @@ export function addAllEventListenOnPage(container : HTMLDivElement) {
 			submitEvent[target.id]();
 		}
 	});
+
 }
