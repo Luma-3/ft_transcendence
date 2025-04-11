@@ -68,23 +68,23 @@ declare var google: any;
 // 	console.log('token: ', token)
 // }
 
-export class GoogleButton {
-	private button: HTMLButtonElement;
+// export class GoogleButton {
+// 	private button: HTMLButtonElement;
 	
-	constructor(refirectUrl: string) {
-		this.button = document.createElement('button');
+// 	constructor(refirectUrl: string) {
+// 		this.button = document.createElement('button');
 
-		const text = document.createElement('span');
-		text.textContent = 'Se connecter avec Google'
+// 		const text = document.createElement('span');
+// 		text.textContent = 'Se connecter avec Google'
 
-		this.button.appendChild(text);
+// 		this.button.appendChild(text);
 
-		this.button.onclick = () => {
-			window.location.href = refirectUrl;
-		}
-	};
+// 		this.button.onclick = () => {
+// 			window.location.href = refirectUrl;
+// 		}
+// 	};
 
-	public mount(parent: HTMLElement) {
-		parent.appendChild(this.button);
-	}
-}
+// 	public mount(parent: HTMLElement) {
+// 		parent.appendChild(this.button);
+// 	}
+// }

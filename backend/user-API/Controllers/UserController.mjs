@@ -55,10 +55,15 @@ export const register = async (req, rep) => {
 }
 
 export async function oauthCallback(req, rep) {
-	console.log(this.googleOAuth2);
-	const { token } = await this.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(req);
+	const {token} = await this.googleOAuth2.getAccessTokenFromAuthorizationCodeFlow(req)
 
-	console.log('GOOGLE TOKEN:' + token);
+	const res = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+		headers: {
+			Authorization: `Bearer ${token.access_token}`
+		}
+	});
+
+	console.log(await res.json());
 }
 
 

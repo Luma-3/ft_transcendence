@@ -12,6 +12,12 @@ export default async function (fastify) {
 		},
 		scope: ['openid', 'email', 'profile'],
 		startRedirectPath: '/login/google',
-		callbackUri: 'http://localhost:3000/api/user/oauth'
+		callbackUri: 'http://localhost:3001/oauth',
+		cookie: {
+			path: '/',
+			secure: true,
+			sameSite: 'lax',
+			httpOnly: true
+		},
 	});
 }
