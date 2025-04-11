@@ -33,7 +33,9 @@ export class UserModel {
 			.first();
 	}
 
-	async insert(username, password, schema = Base_Schema) {
-		return this.knex('users').insert({username, password, created_at: this.knex.fn.now()}, schema);
+	async insert(user, schema = Base_Schema) {
+		user.created_at = this.knex.fn.now();
+
+		return this.knex('users').insert(user, schema);
 	}
 }

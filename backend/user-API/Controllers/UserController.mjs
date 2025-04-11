@@ -6,7 +6,7 @@ export const login = async (req, rep) => {
 
 	const {username, password} = req.body;
 	const [user] = await userModel.findByUsername(username, ['id', 'username', 'password']);
-	if (! user) {
+	if (!user || !password) {
 		return rep.code(401).send({message: "Login or password incorrect"})
 	}
 
@@ -31,19 +31,23 @@ export const register = async (req, rep) => {
 	const userModel = req.server.userModel;
 	
 	const {username, password} = req.body;
-	if (userModel.findByUsername(username) === null) {
+	if (userModel.findByUsername(username) === undefined) {
 		return rep.code(403).send({message: 'User Already Exist'})
 	}
 
 	let hash_pass = await fastify.bcrypt.hash(password);
+	const obj_user = {
+		username: username,
+		password: hash_pass,
+	}
 
-	const [newUsername] = await userModel.insert(username, hash_pass);
+	const [newUser] = await userModel.insert(obj_user);
 
 	let altSignOptions = Object.assign({}, fastify.jwt.options.sign)
 	altSignOptions.iss = '127.0.0.1:3000'
 	altSignOptions.expiresIn = '1d'
 
-	const token = fastify.jwt.sign(newUsername, altSignOptions);
+	const token = fastify.jwt.sign(newUser, altSignOptions);
 	
 	return rep.code(201).setCookie("token", token, {
 		httpOnly: true,
@@ -51,7 +55,7 @@ export const register = async (req, rep) => {
 		sameSite: process.env.NODE_ENV === "production" ? "none": undefined,
 		path: "/",
 		maxAge: 60 * 60 * 24, // 1 jour
-	}).send({data: newUsername});
+	}).send({data: newUser});
 }
 
 export async function oauthCallback(req, rep) {
@@ -63,7 +67,42 @@ export async function oauthCallback(req, rep) {
 		}
 	});
 
-	console.log(await res.json());
+	const profile = await res.json();
+
+	const user =	await this.userModel.findByUsername(profile.given_name)
+	if (user !== undefined) {
+		console.log(user)
+		let altSignOptions = Object.assign({}, this.jwt.options.sign)
+		altSignOptions.iss = '127.0.0.1:3000'
+		altSignOptions.expiresIn = '1d'
+		const token = this.jwt.sign([user], altSignOptions);
+
+		rep.setCookie('token', token, {
+			httpOnly: true,
+			secure: process.env.COOKIE_SECURE,
+			sameSite: process.env.NODE_ENV === "production" ? "none": undefined,
+			path: "/",
+			maxAge: 60 * 60 * 24, // 1 jour
+		}).redirect('http://localhost:5173/dashboard');
+	}
+	else {
+		const [newUser] = this.userModel.insert({
+			username: profile.given_name,
+		})
+
+		let altSignOptions = Object.assign({}, this.jwt.options.sign)
+		altSignOptions.iss = '127.0.0.1:3000'
+		altSignOptions.expiresIn = '1d'
+		const token = this.jwt.sign(newUser, altSignOptions);
+
+		rep.setCookie('token', token, {
+			httpOnly: true,
+			secure: process.env.COOKIE_SECURE,
+			sameSite: process.env.NODE_ENV === "production" ? "none": undefined,
+			path: "/",
+			maxAge: 60 * 60 * 24, // 1 jour
+		}).redirect('http://localhost:5173/dashboard');
+	}
 }
 
 

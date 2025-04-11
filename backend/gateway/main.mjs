@@ -8,11 +8,9 @@ const gateway = Fastify({
 	logger : true,
 });
 
-const dev_prefix = process.env.NODE_ENV === 'development' ? '/api' : '';
-
 await gateway_config.registersPlugins(gateway);
 
-const dev_prefix = process.env.NODE_ENV === 'development' ? '/api' : '' 
+const dev_prefix = process.env.NODE_ENV === 'development' ? '/api' : '';
 
 const Services = [
 	{

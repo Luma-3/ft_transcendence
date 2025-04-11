@@ -32,7 +32,7 @@ export async function verifPasswordAndRegisterUser() {
 		console.log(user);
 		console.log("Cookies: ", document.cookie);
 
-	const userinfo = await fetchApi<User>(API_ROUTES.USERS.DECODE + `${user.data?.id}`,
+	const userinfo = await fetchApi<User>(API_ROUTES.USERS.DECODE,
 		{method: "GET", credentials: "include"});
 
 		console.log(userinfo);
