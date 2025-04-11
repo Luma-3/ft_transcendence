@@ -6,6 +6,7 @@ export default async function (fastify) {
 
 	await fastify.decorate('authenticate', async function(req, rep) {
 		try {
+			fastify.log(req.cookies)
 			req.data = await fastify.jwt.verify(req.cookies.token);
 		}
 		catch (error) {

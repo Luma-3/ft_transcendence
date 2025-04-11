@@ -27,12 +27,13 @@ export async function verifPasswordAndRegisterUser() {
 	}
 
 	const user = await fetchApi<User>(API_ROUTES.USERS.REGISTER,
-		{method: "POST", credentials: "include", body: JSON.stringify(userdata)});	
+		{method: "POST", credentials: "include", body: JSON.stringify(userdata)});
 	
 		console.log(user);
+		console.log("Cookies: ", document.cookie);
 
 	const userinfo = await fetchApi<User>(API_ROUTES.USERS.DECODE + `${user.data?.id}`,
-		{method: "GET", credentials: "include"});	
+		{method: "GET", credentials: "include"});
 
 		console.log(userinfo);
 }
