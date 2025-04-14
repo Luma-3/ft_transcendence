@@ -10,7 +10,8 @@ export default async function (fastify) {
 			req.url.startsWith(dev_prefix + '/user/register') ||
 			req.url.startsWith(dev_prefix + '/user/login')		||
 			req.url.startsWith(dev_prefix + '/user/oauth')		||
-			req.url.startsWith('/doc')
+			req.url.startsWith('/doc')												||
+			req.url.endsWith('/doc/json')
 		) {
 			return;
 

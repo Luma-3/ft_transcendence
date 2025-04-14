@@ -15,13 +15,14 @@ const dev_prefix = process.env.NODE_ENV === 'development' ? '/api' : '';
 const Services = [
 	{
 		name: 'Users Services', prefix: dev_prefix + '/user',
-		upstream: process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'http://user_api:3001'
+		upstream: process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'http://user_api:3001',
+		url: 'http://localhost:3000' + dev_prefix + '/user/doc/json'
 	}
 ]
 
-Services.forEach((value) => {
-	value['url'] = value.upstream + '/doc/json';
-});
+// Services.forEach((value) => {
+// 	value['url'] = value.upstream + '/doc/json';
+// });
 
 console.log(Services);
 

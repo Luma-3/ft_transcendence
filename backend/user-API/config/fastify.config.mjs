@@ -13,7 +13,7 @@ export default {
 
 		dotenv.config()
 
-		await cors(fastify)
+		// await cors(fastify)
 
 		await fastify.register(knex, knex_config)
 
