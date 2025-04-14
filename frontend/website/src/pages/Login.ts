@@ -18,7 +18,7 @@ function renderLoginPage() {
 	${title()}
 	${loginForm()}
 	${registerLink()}
-	${primaryButton({id: 'google', text: 'Google'})}
+	${primaryButton({id: 'google', text: 'Google', weight: '1/2', translate: 'google_login'})}
 	${backButton()}
 	<div class="flex flex-row items-center justify-center">
 	<a href="/dashboard" class="p-3 font-title text-center text-secondary hover:cursor-pointer hover:ring-2 ring-secondary" translate="login_guest">Back Door (uniquement pour les duckDev)</a>

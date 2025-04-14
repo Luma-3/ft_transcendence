@@ -1,36 +1,35 @@
 import { renderPage } from '../../components/renderPage'
+import { fetchApi } from '../../components/api/api';
+import { User } from './userRegister';
+import { API_ROUTES } from '../../components/api/routes';
 
 export async function loginUser() {
-    const username = document.forms["loginForm"]["loginUsername"].value;
-    const password = document.forms["loginForm"]["loginPassword"].value;
-
-    //requete verif username existe ou pas
-    if (username === "")        { renderPage('login') } // TODO : redirection page d'erreur et/ou page de redirection (tenter de modifier le code style "you have been hacked")
-    if (password === "")        { renderPage('login') }
-
-    //requete vers backend
-    let data = null;
-    try {
-        const response = await fetch('http://localhost:3000/api/user', {
-            method: "POST",
-            body: JSON.stringify({
-                username: username,
-                password: password
-            }),
-            headers: {
-                "Content-type": "application/json"
-              }
-        })
-        data = await response.json();
-    } catch (error) {
-        console.error('Fetch error:', error);
+    
+    console.log('loginUser');
+    const form = document.forms.namedItem("LoginForm") as HTMLFormElement | null;
+    if (!form) {
+        return;
     }
+
+    const formData = new FormData(form);
+    const userdata = Object.fromEntries(formData) as Record<string, string>;
+    //requete verif username existe ou pas
+    if (userdata.username === "")        { renderPage('login') } // TODO : redirection page d'erreur et/ou page de redirection (tenter de modifier le code style "you have been hacked")
+    if (userdata.password === "")        { renderPage('login') }
+
+    console.log('userdata', userdata);
+    //requete vers backend
+    const response = await fetchApi<User>(API_ROUTES.USERS.LOGIN,
+            {method: "POST", credentials: "include", body: JSON.stringify(userdata)})
+    
+    console.log('response', response);
+   
     // if not connected : refresh log page
     // if connected : go to home
-    if (data === null) {
-        renderPage('login')
-    }
-    console.log('fin du post', data);
-    renderPage('home');
-    window.alert("username or password incorrect")
+    // if (data === null) {
+    //     renderPage('login')
+    // }
+    // console.log('fin du post', data);
+    // renderPage('home');
+    // window.alert("username or password incorrect")
 }

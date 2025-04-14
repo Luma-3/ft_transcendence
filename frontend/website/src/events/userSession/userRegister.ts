@@ -3,7 +3,7 @@ import { fetchApi } from '../../components/api/api'
 import { API_ROUTES } from '../../components/api/routes';
 import { alertError } from '../../components/ui/alertError';
 
-interface User {
+export interface User {
 	id: number;
 	username: string;
 	created_at: string;
@@ -11,7 +11,10 @@ interface User {
 
 export async function verifPasswordAndRegisterUser() {
 	
-	const form = document.forms.namedItem("registerForm") as HTMLFormElement;
+	const form = document.forms.namedItem("registerForm") as HTMLFormElement | null;
+	if (!form) {
+		return;
+	}
 	const formData = new FormData(form);
 	const userdata = Object.fromEntries(formData) as Record<string, string>;
 
@@ -26,14 +29,9 @@ export async function verifPasswordAndRegisterUser() {
 		return;
 	}
 
-	const user = await fetchApi<User>(API_ROUTES.USERS.REGISTER,
+	await fetchApi<User>(API_ROUTES.USERS.REGISTER,
 		{method: "POST", credentials: "include", body: JSON.stringify(userdata)});
 	
-		console.log(user);
-		console.log("Cookies: ", document.cookie);
-
-	const userinfo = await fetchApi<User>(API_ROUTES.USERS.DECODE,
-		{method: "GET", credentials: "include"});
-
-		console.log(userinfo);
+	renderPage('dashboard');
+	return;
 }

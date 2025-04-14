@@ -7,7 +7,7 @@ export async function login(req, rep) {
 		return rep.code(400).send({message: "Username and password are required"})
 	}
 
-	const [user] = await this.userModel.findByUsername(username, ['id', 'username', 'password']);
+	const user = await this.userModel.findByUsername(username, ['id', 'username', 'password']);
 	if (!user) {
 		return rep.code(401).send({message: "Login or password incorrect"})
 	}
@@ -54,7 +54,7 @@ export async function register(req, rep) {
 	return rep.code(201).setCookie("token", token, {
 		httpOnly: true,
 		secure: process.env.COOKIE_SECURE,
-		sameSite: process.env.NODE_ENV === "production" ? "none": undefined,
+		sameSite: process.env.NODE_ENV === "production" ? "none": "none",
 		path: "/",
 		maxAge: 60 * 60 * 24, // 1 jour
 	}).send({data: newUser});

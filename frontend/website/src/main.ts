@@ -1,8 +1,6 @@
 import { renderPage } from './components/renderPage'
 import { addAllEventListenOnPage } from './events/Handler'
-// import { initGoogleClient } from './components/Google'
 import { fadeIn } from './components/utils/fade'
-import { GoogleButton } from './components/Google'
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 
@@ -22,8 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const page =  window.location.pathname.substring(1) || 'home'
     
-    // initGoogleClient();
-
     renderPage(page, false)
     
     setTimeout(() => {

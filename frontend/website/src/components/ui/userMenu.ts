@@ -1,17 +1,18 @@
-export function userMenu(username: string, photoProfil: string) {
+
+export function userMenu(username: string | undefined) {
 	return `
 	<div id="user-menu" class="hidden absolute right-0 z-50 my-4 mx-4 w-56 text-tertiary bg-primary rounded dark:text-dtertiary dark:bg-dprimary">
-	${renderUserMenu(username, photoProfil)}
+	${renderUserMenu(username, "pp.jpg")}
 	</div>`
 }
 
-function renderUserMenu(username: string, photoProfil: string) {
+function renderUserMenu(username: string | undefined, photoProfil: string) {
 	const theme = localStorage.getItem('theme') || 'dark';
 	const isChecked = theme === 'dark' ? 'checked' : '';
 	return `
-			<div class="py-3 px-6 flex flex-col-2 items-center justify-between">
+			<div class=" py-3 px-6 flex flex-col-2 items-center">
 				<img class="w-10 h-10 rounded-full" src="/images/${photoProfil}" alt="User profile picture">
-				<span class="block text-sm font-title text-secondary dark:text-dsecondary">${username}</span>
+				<span class="p-2 block text-sm font-title overflow-hidden truncate text-secondary dark:text-dsecondary">${username}</span>
 			</div>
 			<ul class="py-1 text-tertiary dark:text-dtertiary" aria-labelledby="menu-dropdown">
 				<li>
