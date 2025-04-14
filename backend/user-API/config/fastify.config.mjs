@@ -12,8 +12,6 @@ export default {
 
 		dotenv.config()
 
-		// await cors(fastify)
-
 		await fastify.register(knex, knex_config)
 
 		await fastify.register(bcrypt, { saltWorkFactor: 12 })
