@@ -19,7 +19,7 @@ export const loginValidationSchema = {
 export const publicUserSchema = {
 	type: 'object',
 	properties: {
-		id: { type: 'integer' },
+		id: { type: 'string' },
 		username: { type: 'string' },
 		created_at: {type: 'string'}
 	}
@@ -28,7 +28,7 @@ export const publicUserSchema = {
 export const privateUserSchema = {
 	type: 'object',
 	properties: {
-		id: { type: 'integer' },
+		id: { type: 'string' },
 		username: { type: 'string' },
 		created_at: {type: 'string'}
 	}

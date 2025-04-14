@@ -1,3 +1,5 @@
+import {v4 as uuidv4} from 'uuid'
+
 const  Base_Schema = ['id', 'username', 'created_at']
 
 export class UserModel {
@@ -34,6 +36,7 @@ export class UserModel {
 	}
 
 	async insert(user, schema = Base_Schema) {
+		user.id = uuidv4();
 		user.created_at = this.knex.fn.now();
 
 		return this.knex('users').insert(user, schema);

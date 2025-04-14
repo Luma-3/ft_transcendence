@@ -1,4 +1,4 @@
-import { publicUserSchema, privateUserSchema } from "../Schema/UserSchema.mjs";
+import { publicUserSchema, privateUserSchema } from "./Schema.mjs";
 
 export async function login(req, rep) {
 	const {username, password} = req.body;
@@ -25,7 +25,7 @@ export async function login(req, rep) {
 		sameSite: process.env.NODE_ENV === "production" ? "none": undefined,
 		path: "/",
 		maxAge: 60 * 60 * 24, // 1 jour
-	}).send({data: user});
+	}).send({});
 }
 
 
@@ -48,6 +48,7 @@ export async function register(req, rep) {
 	}
 
 	const [newUser] = await this.userModel.insert(obj_user);
+	console.log(newUser);
 
 	const token = this.jwt.sign(newUser, this.jwt.options.sign);
 	
@@ -57,7 +58,7 @@ export async function register(req, rep) {
 		sameSite: process.env.NODE_ENV === "production" ? "none": "none",
 		path: "/",
 		maxAge: 60 * 60 * 24, // 1 jour
-	}).send({data: newUser});
+	}).send({});
 }
 
 export async function oauthCallback(req, rep) {
@@ -110,4 +111,10 @@ export async function privateInfoUser(req, rep) {
 	const [userInfo] = await this.userModel.findByID(id, Object.keys(privateUserSchema.properties));
 
 	return rep.code(200).send({data : userInfo, message: 'Ok'});
+}
+
+export async function logout(req, rep) {
+	rep.clearCookie('token', {
+		path: '/'
+	}).code(200).send({message: 'logged out successfully'})
 }

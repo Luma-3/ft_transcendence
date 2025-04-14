@@ -3,7 +3,7 @@
 set -e
 
 ARG=$1
-servers=("gateway" "user-API")
+servers=("gateway" "user-API" "upload-API")
 
 install() {
 	for dir in "${servers[@]}"; do

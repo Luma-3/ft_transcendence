@@ -27,7 +27,7 @@ export default async function (fastify, options) {
 	})
 
 	if (options.route !== undefined) {
-		fastify.get(options.route, async (_, rep) => {
+		fastify.get(options.route, {schema : {hide: true}}, async (_, rep) => {
 			console.log('swagger');
 			rep.send(fastify.swagger());
 		})

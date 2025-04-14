@@ -1,4 +1,4 @@
-import * as UserController from "../Controllers/UserController.mjs";
+import * as Controller from "./Controller.mjs";
 
 export default async function UserRoutes(fastify) {
 	fastify.post('/register', {	
@@ -9,7 +9,7 @@ export default async function UserRoutes(fastify) {
 				201: {}
 			}
 		}
-	},  UserController.register);
+	},  Controller.register);
 
 	fastify.post('/login', {
 		schema : {
@@ -19,7 +19,7 @@ export default async function UserRoutes(fastify) {
 				200: {}
 			}
 		}
-	}, UserController.login);
+	}, Controller.login);
 	
 	fastify.get('/public/:userId', {
 		schema: {
@@ -31,7 +31,7 @@ export default async function UserRoutes(fastify) {
 				]}
 			}
 		}
-	}, UserController.getUser);
+	}, Controller.getUser);
 
 	fastify.get('/me', {
 		schema : {
@@ -43,7 +43,19 @@ export default async function UserRoutes(fastify) {
 				]}
 			}
 		}
-	}, UserController.privateInfoUser)
+	}, Controller.privateInfoUser)
 
-	fastify.get('/oauth', UserController.oauthCallback);
+	fastify.get('/oauth',{schema: {hide: true}}, Controller.oauthCallback);
+
+
+	fastify.get('/logout', {
+		schema : {
+			description: 'logout a User',
+			response: {
+				200: {
+					$ref: 'BaseSchema'
+				}
+			}
+		}
+	}, Controller.logout);
 }
