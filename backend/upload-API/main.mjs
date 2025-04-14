@@ -1,7 +1,15 @@
 import Fastify from 'fastify'
+import fs from 'fs'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const fastify = Fastify({
 	logger: true,
+	https: {
+		key: fs.readFileSync(process.env.SSL_KEY),
+		cert: fs.readFileSync(process.env.SSL_CERT),
+	},
 });
 
 const start = async () => {

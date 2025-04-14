@@ -3,12 +3,20 @@ import config from './config/fastify.config.mjs'
 import errorHandler from './middlewares/errorHandler.mjs'
 import formatJSON from './middlewares/formatJSON.mjs'
 import Routes from './handler/Routes.mjs'
+import fs from 'fs'
+import dotenv from 'dotenv'
 
 import { UserModel } from './handler/Model.mjs'
 import { registerUserSchemas } from './handler/Schema.mjs'
 
+dotenv.config()
+
 const fastify = Fastify({
 	logger : true,
+	https: {
+		key: fs.readFileSync(process.env.SSL_KEY),
+		cert: fs.readFileSync(process.env.SSL_CERT),
+	},
 });
 
 await config.registerPlugins(fastify);

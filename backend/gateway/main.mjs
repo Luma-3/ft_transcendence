@@ -2,10 +2,17 @@ import Fastify from 'fastify'
 import http_proxy from '@fastify/http-proxy';
 import gateway_config from './config/gateway.config.mjs'
 import swaggerUi from "./plugins/swaggerUi.mjs"
+import fs from 'fs'
+import dotenv from 'dotenv'
 
+dotenv.config()
 
 const gateway = Fastify({
 	logger : true,
+	https: {
+		key: fs.readFileSync(process.env.SSL_KEY),
+		cert: fs.readFileSync(process.env.SSL_CERT),
+	},
 });
 
 await gateway_config.registersPlugins(gateway);
@@ -15,8 +22,8 @@ const dev_prefix = process.env.NODE_ENV === 'development' ? '/api' : '';
 const Services = [
 	{
 		name: 'Users Services', prefix: dev_prefix + '/user',
-		upstream: process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'http://user_api:3001',
-		url: 'http://localhost:3000' + dev_prefix + '/user/doc/json'
+		upstream: process.env.NODE_ENV === 'development' ? 'https://localhost:3001' : 'https://user_api:3001',
+		url: 'https://localhost:3000' + dev_prefix + '/user/doc/json'
 	}
 ]
 

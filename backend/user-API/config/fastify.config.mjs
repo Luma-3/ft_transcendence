@@ -4,13 +4,10 @@ import knex_config from './knex.config.mjs'
 import swagger from '../plugins/swagger.mjs';
 import cookie from '../plugins/cookie.mjs';
 import jwt from '../plugins/jwt.mjs';
-import dotenv from 'dotenv';
 import google from '../plugins/google.mjs'
 
 export default {
 	async registerPlugins(fastify) {
-
-		dotenv.config()
 
 		await fastify.register(knex, knex_config)
 

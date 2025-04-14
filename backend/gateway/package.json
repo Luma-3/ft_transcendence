@@ -18,9 +18,9 @@
     "url": "https://github.com/Luma-3/ft_transcendence/issues"
   },
   "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
-	"devDependencies": {
-		"@fastify/cors": "^10.0.2"
-	},
+  "devDependencies": {
+    "@fastify/cors": "^10.0.2"
+  },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
     "@fastify/http-proxy": "^11.1.2",
@@ -28,7 +28,8 @@
     "@fastify/swagger": "^9.4.2",
     "@fastify/swagger-ui": "^5.2.2",
     "dotenv": "^16.4.7",
-    "fastify": "^5.2.2"
+    "fastify": "^5.2.2",
+    "fs": "^0.0.1-security"
   },
   "type": "module"
 }

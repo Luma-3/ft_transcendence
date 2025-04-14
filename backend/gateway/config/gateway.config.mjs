@@ -7,8 +7,6 @@ import dotenv from 'dotenv';
 export default {
 	async registersPlugins(app) {
 
-		dotenv.config()
-
 		await cookie(app)
 		await cors(app);
 		await jwt(app);
