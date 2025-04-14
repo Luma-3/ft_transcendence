@@ -1,17 +1,28 @@
 import jwt from '@fastify/jwt'
 
 export default async function (fastify) {
-	console.log(process.env.JWT_SECRET);
-	await fastify.register(jwt, { secret: process.env.JWT_SECRET });
+	await fastify.register(jwt, { 
+		secret: process.env.JWT_SECRET,
+		sign: {
+			iss: process.env.GATEWAY_IP,
+			expiresIn: '1d',
+		}
+	});
 
 	await fastify.decorate('authenticate', async function(req, rep) {
+		const token = req.cookies.token;
+		if (!token) {
+			return rep.code(401).send({message: "Token is required"});
+		}
+
 		try {
-			fastify.log(req.cookies)
-			req.data = await fastify.jwt.verify(req.cookies.token);
+			req.data = await fastify.jwt.verify(token);
 		}
 		catch (error) {
-			console.log(error);
-			rep.code(error.statusCode).send({message: error.message, details: error})
+			rep.code(401).send({
+				message: "Invalid or expired token",
+				details: error.message,
+			})
 		}
 	});
 }

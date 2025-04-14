@@ -1,10 +1,15 @@
 import jwt from '@fastify/jwt'
 
 export default async function (fastify) {
-	await fastify.register(jwt, { secret: process.env.JWT_SECRET });
+	await fastify.register(jwt, { 
+		secret: process.env.JWT_SECRET,
+		sign: {
+			iss: process.env.GATEWAY_IP,
+			expiresIn: '1d',
+		}
+	});
 
 	fastify.addHook('onRequest', async function (req, rep) {
-		console.log(req.url);
 		const dev_prefix = process.env.NODE_ENV === 'development' ? '/api' : '' 
 		if (
 			req.url.startsWith(dev_prefix + '/user/register') ||
@@ -14,23 +19,24 @@ export default async function (fastify) {
 			req.url.endsWith('/doc/json')
 		) {
 			return;
+		}
 
+		const token = req.cookies.token;
+		if (!token) {
+			return rep.code(401).send({message: "Token is required"});
 		}
 
 		try {
-			console.log("TOKEN :", req.cookies.token);
-			if (req.cookies.token) {
-				req.user = await fastify.jwt.verify(req.cookies.token);
-				req.headers['x-user-id'] = req.user.id;
-				req.headers['x-user-username'] = req.user.username;
-			}
-			else  {
-				rep.code(401).send({message: "Authentication Token not found"})
-			}
+			req.user = await fastify.jwt.verify(token);
+			req.headers['x-user-id'] = req.user.id;
+			req.headers['x-user-username'] = req.user.username;
 		}
 		catch (error) {
-			console.log(error);
-			rep.code(error.statusCode).send({message: error.message, details: error})
+			req.log.error(error);
+			rep.code(401).send({
+				message: "Invalid or expired token",
+				details: error.message,
+			})
 		}
 	})
 }

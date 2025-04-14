@@ -5,7 +5,6 @@ import swagger from '../plugins/swagger.mjs';
 import cookie from '../plugins/cookie.mjs';
 import jwt from '../plugins/jwt.mjs';
 import dotenv from 'dotenv';
-import cors from '../plugins/cors.mjs';
 import google from '../plugins/google.mjs'
 
 export default {
