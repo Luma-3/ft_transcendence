@@ -19,18 +19,24 @@ export function homeButton() {
 				 border-y-4
 				 border-l-4
 				 dark:border-dprimary
-				border-primary
+				 border-primary
 				 rounded
 				 transition-all
 				 duration-500">
 			</span>
 			<p id="loadLogin" class="group-hover:opacity-0 group-hover:translate-x-[-100%] absolute translate-x-0 transition-all
-				 duration-200" translate="welcome">	Welcome </p>
+				 duration-200" translate="welcome">
+				 
+				 Welcome 
+
+			</p>
 			<span id="loadLogin" class="
 				group-hover:translate-x-0 
 				group-hover:opacity-100 absolute 
 				translate-x-full opacity-0 transition-all duration-200" translate="get_started">
-			Get Started !
+			
+				Get Started !
+			
 			</span>
 			<span id="loadLogin"  class="group-hover:w-1/2 absolute right-0 h-full w-5 
 			border-y-4 border-r-4 border-secondary transition-all duration-500">

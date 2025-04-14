@@ -5,12 +5,12 @@ export const login = async (req, rep) => {
 	const userModel = req.server.userModel;
 
 	const {username, password} = req.body;
-	const [user] = await userModel.findByUsername(username, ['id', 'username', 'password']);
+	const user = await userModel.findByUsername(username, ['id', 'username', 'password']);
 	if (! user) {
 		return rep.code(401).send({message: "Login or password incorrect"})
 	}
 
-	const isMatch = fastify.bcrypt.compare(password, user.password);
+	const isMatch = await fastify.bcrypt.compare(password, user.password);
 	if (!isMatch) {
 		return rep.code(401).send({message: "Login or password incorrect"})
 	}
@@ -44,14 +44,16 @@ export const register = async (req, rep) => {
 	altSignOptions.expiresIn = '1d'
 
 	const token = fastify.jwt.sign(newUsername, altSignOptions);
-	
+
 	return rep.code(201).setCookie("token", token, {
 		httpOnly: true,
 		secure: process.env.COOKIE_SECURE,
-		sameSite: process.env.NODE_ENV === "production" ? "none": undefined,
+		sameSite: process.env.NODE_ENV === "production" ? "none": "none",
 		path: "/",
 		maxAge: 60 * 60 * 24, // 1 jour
 	}).send({data: newUsername});
+
+
 }
 
 export async function oauthCallback(req, rep) {

@@ -8,6 +8,7 @@ import { hideToggleElements } from '../components/utils/hideToggleElements'
 
 const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => window.history.back(),
+	'loginForm': () => loginUser(),
 	'loadLogin': () => renderPage('login'),
 	'loadHome': () => renderPage('home'),
 	'loadRegister': () => renderPage('register'),
@@ -24,8 +25,8 @@ const changeEvent: {[key: string]: () => void } = {
 };
 
 const submitEvent: {[key: string]: () => void } = {
-	'registerUser': verifPasswordAndRegisterUser,
 	'loginForm': loginUser,
+	'registerUser': verifPasswordAndRegisterUser,
 };
 
 

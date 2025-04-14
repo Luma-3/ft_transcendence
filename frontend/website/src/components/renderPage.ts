@@ -13,7 +13,7 @@ import { fadeIn, fadeOut } from './utils/fade'
 
 
 // * Associe chaque page à sa fonction de rendu
-const rendererPage: {[key: string]: () => string} = {
+const rendererPage: {[key: string]: () => string | Promise<string>} = {
 	'home': homePage,
 	'login': loginPage,
 	'register': registerPage,
@@ -22,16 +22,20 @@ const rendererPage: {[key: string]: () => string} = {
 	'hacked': hackPage,
 };
 
-export function renderPage(page: string, updateHistory: boolean = true) {
+export async function renderPage(page: string, updateHistory: boolean = true) {
 	
+	if (page == 'doc')
+		window.location.href = 'http://localhost:3000/doc';
+
+
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
 	setupColorTheme();
 	
 	fadeOut(main_container);
 
-	setTimeout(() => {
+	setTimeout(async () => {
 		const rendererFunction = rendererPage[page] || homePage;
-		const page_content = rendererFunction();
+		const page_content = await Promise.resolve(rendererFunction());
 
 		main_container.innerHTML = page_content;
 

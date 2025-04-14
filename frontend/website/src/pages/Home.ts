@@ -5,7 +5,7 @@ function logo() {
 	const theme = localStorage.getItem('theme') || 'dark';
   return `
   <div class="flex animate-fade-in-down">
-		<img src='/images/logo-${theme}.svg' alt='Transcenduck Logo'/>
+		<img src='/images/logo-${theme}.webp' alt='Transcenduck Logo'/>
     </div>
 	`;
 }
