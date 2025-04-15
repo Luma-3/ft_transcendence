@@ -1,21 +1,38 @@
 {
-	"lang_choice": "Choose your language: ",
-	"save_choice": "Save choice",
+	"welcome": "Welcome",
+	"yes": "Yes",
+	"no": "No",
+	"cancel": "Cancel",
+	"back-link": "Back",
+
 	"username": "Username",
 	"password": "Password",
 	"verif_password": "Repeat password",
 	"register": "Register",
 	"no_account": "Don't have an account yet?",
 	"create_account": "Create an account",
-	"back-link": "Back",
 	"login": "Login",
-	"get_started": "Get started !",
 	"google_login": "Login with Google",
 	"passwords_dont_match": "Passwords do not match",
-	"welcome": "Welcome",
+	"username_or_password_incorrect": "Username or password incorrect",
+
 	"profil": "Profile",
 	"stats": "Games stats",
 	"logout": "Logout",
 	"dark-mode": "Dark mode",
-	"settings": "Settings"
+	"settings": "Settings",
+	"change-default-language": "Change default language",
+
+	"disable": "Disable",
+	"enable": "Enable",
+	"save_choice": "Save choice",
+	"lang_choice": "Choose your language: ",
+	"get_started": "Get started !",
+
+	"2fa-auth": "Two factor authentication",
+	"2fa-warning": "Warning ! <br> No 2FA reduces security (as anyone can access your account)<br> and increases the risk of accidental actions.<br> This is not recommended !",
+
+	"are-you-sure": "Are you sure ?",
+	"dangerous-action": "Dangerous actions",
+	"delete-account": "Delete account"
 }

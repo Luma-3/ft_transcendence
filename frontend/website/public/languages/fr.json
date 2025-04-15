@@ -1,21 +1,38 @@
 {
-	"lang_choice": "Choisissez votre langue: ",
-	"save_choice": "Sauvegarder mon choix",
+	"welcome": "Bienvenue",
+	"yes": "Oui",
+	"no": "Non",
+	"cancel": "Annuler",
+	"back-link": "Retour",
+	
 	"username": "Nom d'utilisateur",
 	"password": "Mot de passe",
 	"verif_password": "Repete le mot de passe",
 	"register": "S'inscrire",
 	"no_account": "Pas de compte ?",
 	"create_account": "Créer un compte",
-	"back-link": "Retour",
 	"login": "Connexion",
-	"get_started": "Commencer !",
+	"logout": "Se déconnecter",
 	"google_login": "Connexion avec Google",
 	"passwords_dont_match": "Les mots de passe ne sont pas identiques",
-	"welcome": "Bienvenue",
+	"username_or_password_incorrect": "Nom d'utilisateur ou mot de passe incorrect",
+	
 	"profil": "Profil",
 	"stats": "Statistiques de jeux",
-	"logout": "Se déconnecter",
 	"dark-mode": "Mode sombre",
-	"settings": "Paramètres"
+	"settings": "Paramètres",
+	"change-default-language": "Changer la langue par défaut",
+	
+	"disable": "Désactiver",
+	"enable": "Activer",
+	"lang_choice": "Choisissez votre langue: ",
+	"save_choice": "Sauvegarder mon choix",
+	"get_started": "Commencer !",
+	
+	"2fa-auth": "Authentification à deux facteurs",
+	"2fa-warning": "Avertissement ! <br> Pas de 2FA réduit la sécurité (car n'importe qui peut accéder à votre compte) et augmente le risque d'actions accidentelles.<br> Ce n'est pas recommandé !",
+	
+	"are-you-sure": "Êtes-vous sûr ?",
+	"dangerous-action": "Actions dangereuses",
+	"delete-account": "Supprimer le compte"
 }

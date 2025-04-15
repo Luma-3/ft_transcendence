@@ -1,13 +1,8 @@
-import { renderPage } from '../../components/renderPage'
-import { fetchApi } from '../../components/api/api'
-import { API_ROUTES } from '../../components/api/routes';
+import { renderPage } from '../../renderers/renderPage'
+import { fetchApi } from '../../api/fetch'
+import { API_ROUTES } from '../../api/routes';
 import { alertError } from '../../components/ui/alertError';
-
-export interface User {
-	id: number;
-	username: string;
-	created_at: string;
-}
+import { User } from '../../api/interfaces/User';
 
 export async function verifPasswordAndRegisterUser() {
 	

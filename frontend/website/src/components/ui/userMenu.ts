@@ -6,15 +6,15 @@ export function userMenu(username: string | undefined) {
 	</div>`
 }
 
-function renderUserMenu(username: string | undefined, photoProfil: string) {
-	const theme = localStorage.getItem('theme') || 'dark';
-	const isChecked = theme === 'dark' ? 'checked' : '';
-	return `
-			<div class=" py-3 px-6 flex flex-col-2 items-center">
+function headerUserMenu(username: string | undefined, photoProfil: string | undefined) {
+	return `<div class=" py-3 px-6 flex flex-col-2 items-center">
 				<img class="w-10 h-10 rounded-full" src="/images/${photoProfil}" alt="User profile picture">
 				<span class="p-2 block text-sm font-title overflow-hidden truncate text-secondary dark:text-dsecondary">${username}</span>
-			</div>
-			<ul class="py-1 text-tertiary dark:text-dtertiary" aria-labelledby="menu-dropdown">
+			</div>`;
+}
+
+function UserMenuOptions() {
+	return `<ul class="py-1 text-tertiary dark:text-dtertiary" aria-labelledby="menu-dropdown">
 				<li>
 					<a href="#" class="flex items-center py-2 px-2 text-sm font-title text-tertiary dark:text-dtertiary hover:bg-gray-100 dark:hover:bg-myblack dark:hover:text-dtertiary">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -42,20 +42,41 @@ function renderUserMenu(username: string | undefined, photoProfil: string) {
 						<div translate="settings">Settings</div>
 					</a>
 				</li>
-			</ul>
-			<ul class="py-1 text-secondary dark:text-dsecondary" aria-labelledby="dropdown">
-				<li>
-					<div class="flex items-center justify-between py-2 px-4 text-sm ">
-						<div translate="dark-mode">Light mode</div>
-						<div class="relative inline-block w-11 h-5">
-							<input ${isChecked} id="switch-component" type="checkbox" class="peer appearance-none w-11 h-5 bg-slate-100 rounded-full checked:bg-slate-800 cursor-pointer transition-colors duration-300" />
-							<label id="switch-component-label" for="switch-component" class="absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-slate-800 cursor-pointer">
-							</label>
-						</div>
+			</ul>`;
+}
+
+function darkMode() {
+	const theme = localStorage.getItem('theme') || 'dark';
+	const isChecked = theme === 'dark' ? 'checked' : '';
+
+	return `<div class="flex items-center justify-between py-2 px-4 text-sm ">
+				<div translate="dark-mode">Light mode</div>
+					<div class="relative inline-block w-11 h-5">
+					
+						<input ${isChecked} id="switch-component" type="checkbox"
+						class="peer appearance-none w-11 h-5 bg-slate-100 rounded-full checked:bg-slate-800 cursor-pointer transition-colors duration-300" />
+					
+						<label id="switch-component-label" for="switch-component"
+						class="absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-slate-800 cursor-pointer">
+						</label>
 					</div>
-				</li>
-				<li>
-					<a href="/home" translate="logout" class="block py-2 px-4 text-sm dark:text-dsecondary hover:dark:bg-myblack hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
-				</li>
+				</div>`;
+}
+
+function logout() {
+	return `<a href="/home" translate="logout" 
+	class="block py-2 px-4 text-sm
+	dark:text-dsecondary hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+	Sign out
+	</a>`
+}
+
+
+function renderUserMenu(username: string | undefined, photoProfil: string) {
+	return `${headerUserMenu(username, photoProfil)}
+			${UserMenuOptions()}
+			<ul class="py-1 text-secondary dark:text-dsecondary" aria-labelledby="dropdown">
+				<li> ${darkMode()}</li>
+				<li> ${logout()}</li>
 			</ul>`
 }

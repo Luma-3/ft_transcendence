@@ -14,7 +14,6 @@
 	},
 	"dependencies": {
 		"@tailwindcss/vite": "^4.0.6",
-		"swagger-ui": "^5.20.8",
 		"sweetalert2": "^11.17.2",
 		"tailwindcss": "^4.0.6"
 	}
