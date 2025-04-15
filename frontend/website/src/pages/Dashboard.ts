@@ -1,12 +1,12 @@
 import { navbar } from "../components/ui/navbar";
 import { userMenu } from "../components/ui/userMenu";
-import { fetchApi } from "../components/api/api";
-import { API_ROUTES } from "../components/api/routes";
-import { User } from "../events/userSession/userRegister";
+import { fetchApi } from "../api/fetch";
+import { API_ROUTES } from "../api/routes";
+import { User } from "../api/interfaces/User";
 
 async function renderDashboard() {
 	
-	const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.DECODE,
+	const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
 		{method: "GET", credentials: "include"});
 		
 	console.log(userinfoResponse);

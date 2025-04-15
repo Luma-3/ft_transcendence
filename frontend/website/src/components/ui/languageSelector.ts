@@ -14,6 +14,7 @@ function selectorOptions(lang: string) {
 }
 
 export function languageSelector() {
+
 	const lang = sessionStorage.getItem('lang') || 'en'; 
 	
 	return `

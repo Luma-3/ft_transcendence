@@ -1,6 +1,8 @@
-import { renderPage } from './components/renderPage'
+import { renderPage } from './renderers/renderPage'
 import { addAllEventListenOnPage } from './events/Handler'
-import { fadeIn } from './components/utils/fade'
+import { fetchApi } from "./api/fetch"
+import { User } from "./api/interfaces/User"
+import { API_ROUTES } from "./api/routes"
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 
@@ -16,15 +18,19 @@ addAllEventListenOnPage(main_container);
 // * Au chargement initial ou refresh de la page
 // * On initialise le client Google
 // * On affiche la page courante ou la page d'accueil par défaut avec un leger delai
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     
     const page =  window.location.pathname.substring(1) || 'home'
     
-    renderPage(page, false)
+    if (page === 'home') {
+        const verif = await fetchApi<User>(API_ROUTES.USERS.INFOS,
+            {method: "GET", credentials: "include"});
     
-    setTimeout(() => {
-        fadeIn(main_container)
-    }, 1900);
+        if (verif.status == "success") {
+            return renderPage('dashboard');
+        }
+    }
+    renderPage(page, false)
 });
 
 // * Au changement de page lors de l'utilisation du bouton back/forward

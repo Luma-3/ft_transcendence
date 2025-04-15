@@ -1,21 +1,38 @@
 {
-	"lang_choice": "Elige tu idioma: ",
-	"save_choice": "Guardar elección",
+	"welcome": "Bienvenido",
+	"yes": "Sí",
+	"no": "No",
+	"cancel": "Cancelar",
+	"back-link": "Atrás",
+	
 	"username": "Nombre de usuario",
 	"password": "Contraseña",
 	"verif_password": "Repetir contraseña",
 	"register": "Registrarse",
 	"no_account": "¿No tienes una cuenta?",
 	"create_account": "Crear una cuenta",
-	"back-link": "Atrás",
 	"login": "Iniciar sesión",
-	"get_started": "¡Comienza!",
 	"google_login": "Iniciar sesión con Google",
 	"passwords_dont_match": "Las contraseñas no coinciden",
-	"welcome": "Bienvenido",
+	"username_or_password_incorrect": "Nombre de usuario o contraseña incorrectos",
+	
 	"profil": "Perfil",
 	"stats": "Estadísticas de juegos",
 	"logout": "Cerrar sesión",
 	"dark-mode": "Modo oscuro",
-	"settings": "Configuraciones"
+	"settings": "Configuraciones",
+	"change-default-language": "Cambiar idioma predeterminado",
+	
+	"disable": "Desactivar",
+	"enable": "Activar",
+	"save_choice": "Guardar elección",
+	"lang_choice": "Elige tu idioma: ",
+	"get_started": "¡Comienza!",
+	
+	"2fa-auth": "Autenticación de dos factores",
+	"2fa-warning": "¡Advertencia! <br> No usar 2FA reduce la seguridad (ya que cualquiera puede acceder a tu cuenta)<br> y aumenta el riesgo de acciones accidentales.<br> ¡No se recomienda!",
+	
+	"are-you-sure": "¿Estás seguro?",
+	"dangerous-action": "Acciones peligrosas",
+	"delete-account": "Eliminar cuenta"
 }

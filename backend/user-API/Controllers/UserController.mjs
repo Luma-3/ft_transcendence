@@ -65,7 +65,7 @@ export async function oauthCallback(req, rep) {
 		}
 	});
 
-	console.log(await res.json());
+	const user = await res.json();
 }
 
 
