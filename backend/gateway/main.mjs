@@ -24,12 +24,13 @@ const Services = [
 		name: 'Users Services', prefix: dev_prefix + '/user',
 		upstream: process.env.NODE_ENV === 'development' ? 'https://localhost:3001' : 'https://user_api:3001',
 		url: 'https://localhost:3000' + dev_prefix + '/user/doc/json'
+	},
+	{
+		name: 'Upload Services', prefix: dev_prefix + '/upload',
+		upstream: process.env.NODE_ENV === 'development' ? 'https://localhost:3002' : 'https://upload_api:3002',
+		url: 'https://localhost:3000' + dev_prefix + '/upload/doc/json'
 	}
 ]
-
-// Services.forEach((value) => {
-// 	value['url'] = value.upstream + '/doc/json';
-// });
 
 console.log(Services);
 
