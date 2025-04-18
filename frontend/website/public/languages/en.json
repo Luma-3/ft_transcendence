@@ -7,6 +7,7 @@
 
 	"username": "Username",
 	"password": "Password",
+	"email": "Email",
 	"verif_password": "Repeat password",
 	"register": "Register",
 	"no_account": "Don't have an account yet?",
@@ -34,5 +35,18 @@
 
 	"are-you-sure": "Are you sure ?",
 	"dangerous-action": "Dangerous actions",
-	"delete-account": "Delete account"
+	"delete-account": "Delete account",
+
+	"profile": "Profile",
+	"change-profil-picture": "Change your profile picture",
+	"choose-file": "Choose file",
+
+	"version": "Version",
+	"no-duck-hurt": "No duck was hurt",
+	"during-development": "during the development of this website",
+	"rgpd": "RGPD",
+	"terms-of-service": "Terms of service",
+	"cookie-policy": "Cookie policy",
+	"contact": "Contact"
+	
 }

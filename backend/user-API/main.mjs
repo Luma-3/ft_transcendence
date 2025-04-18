@@ -8,6 +8,7 @@ import dotenv from 'dotenv'
 
 import { UserModel } from './handler/Model.mjs'
 import { registerUserSchemas } from './handler/Schema.mjs'
+import cors from './plugins/cors.mjs'
 
 dotenv.config()
 
@@ -20,6 +21,8 @@ const fastify = Fastify({
 });
 
 await config.registerPlugins(fastify);
+
+// await cors(fastify);
 
 fastify.setErrorHandler(errorHandler)
 fastify.addHook("preSerialization", formatJSON)

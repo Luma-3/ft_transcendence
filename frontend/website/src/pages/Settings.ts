@@ -1,12 +1,15 @@
 import { backButton } from "../components/ui/backButton";
-import { primaryButton } from "../components/ui/primaryButton";
-import { secondaryButton } from "../components/ui/secondaryButton";
+import { changeDefaultLang } from "../components/ui/changeDefaultLang";
 import { navbar } from "../components/ui/navbar";
 import { userMenu } from "../components/ui/userMenu";
-import { User } from "../events/userSession/userRegister";
+import { User } from "../api/interfaces/User";
 import { fetchApi } from "../api/fetch";
 import { API_ROUTES } from "../api/routes";
 import { changeLanguage } from "../i18n/Translate";
+import { change2FA } from "../components/ui/change2FA";
+import { logoutButton } from "../components/ui/logoutButton";
+import { deleteAccountButton } from "../components/ui/deleteAccountButton";
+import { footer } from "../components/ui/footer";
 (window as any).changeLanguage = changeLanguage;
 
 function settingsLogo() {
@@ -20,93 +23,31 @@ function settingsTitle() {
 	return `<div class="text-6xl p-7 font-title items-center justify-center motion-reduce:animate-pulse" translate="settings">Settings</div>`
 }
 
-function changeDefaultLang() {
-
-	const all_langs = [
-		"fr",
-		"en",
-		"es"]
-	
-	const langPreselect = localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en';
-	const labels = all_langs.map((lang) => {
-
-		const isChecked = (lang === langPreselect) ? 'checked' : ''
-		return `<div role="button" class="flex w-full items-center rounded-lg p-0 transition-all hover:bg-secondary focus:bg-slate-100 active:bg-slate-100">
- 					<label for="${lang}-changer" class="flex w-full cursor-pointer items-center px-3 py-2">
- 					<div class="inline-flex items-center">
-			
- 					<label class="flex items-center cursor-pointer relative" for="check-vertical-list-group4">
- 					<input type="radio" name="lang-selector" class="peer h-5 w-5 cursor-pointer transition-all
-					 appearance-none rounded shadow hover:shadow-md border
-					  border-slate-300 checked:bg-slate-800 checked:border-slate-800"
- 					id="${lang}-changer" name="langSelect" ${isChecked} onchange="changeLanguage('${lang}')"/>
- 					</label>
-					
- 					<label class="cursor-pointer ml-2 text-slate-600 text-sm" for="check-vertical-list-group4">
-					<img src="icons/${lang}.png" alt="${lang}" class="w-5 h-5 mr-2">
-					</label>
- 					</div>
- 					</label>
- 					</div>`
-	}).join('')
-	
-
-	return `<div class="text-2xl p-2 font-title items-center justify-center motion-reduce:animate-pulse" translate="change-default-language">Change default language</div>
-				<div class="relative max-w-sm flex w-full flex-col rounded-xl bg-primary shadow">
-				<nav class="flex min-w-[240px] flex-row gap-1 p-2">
-				${labels}
-				${secondaryButton({id: 'saveLang',weight: "1/2", text: 'Save', translate: 'saveLang', type: 'button'})}
-				</div>
-				</nav>
-				`
-}
-
-function doubleAuthLink() {
-	return `<div class="text-2xl font-title justify-center animate-pulse" translate="2fa-auth">2FA Authentication<br>
-	</div>
-	${primaryButton({id: 'enable2fa', weight: "1/4", text: 'Disable', translate: 'disable', type: 'button'})}
-			<div class="text-md font-title" translate="2fa-warning">Warning ! <br>
-			No 2FA reduces security
-			(as anyone can access your account)<br> and increases the
-			risk of accidental actions.<br> This is not recommended !</div>`
-}
-
-function logOut() {
-	return `<div class="text-2xl font-title dark:text-dtertiary justify-center">
-	${primaryButton({id: 'logout', weight: "full", text: 'Log out', translate: 'logout', type: 'button'})}
-	</div>`
-}
-
-function deleteAccount() {
-	return `<div class="text-2xl font-title text-red-600 justify-center border-2 border-red-600 rounded-lg p-2">
-	<div class="mb-3 text-color-red-500 animate-pulse" translate="dangerous-action">Dangerous action !</div>
-	${primaryButton({id: 'deleteAccount', weight: "1/3", text: 'Delete account', translate: 'delete-account', type: 'button'})}
-	</div>`
-}
-
 async function renderSettingsPage() {
 
-	const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
-		{method: "GET", credentials: "include"});
+const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
+	{method: "GET", credentials: "include"});
 
-
-	return `${navbar({username: userinfoResponse.data?.username})}
+return `${navbar({username: userinfoResponse.data?.username})}
 		${userMenu(userinfoResponse.data?.username)}
-	<div class="flex flex-col items-center justify-center space-y-4 text-primary dark:text-dtertiary backdrop-filter backdrop-blur-xs pt-20">
-	${settingsLogo()}
-	${settingsTitle()}
-	</div>
-	<div class="flex flex-col items-left ml-15 mr-15 justify-center space-y-4 space-x-4 text-primary dark:text-dtertiary backdrop-filter backdrop-blur-xs pt-20">
-	${changeDefaultLang()}
-	<br>
-	${doubleAuthLink()}
-	<br>
-	${deleteAccount()}
-	</div>
-	<div class="flex flex-col items-center justify-center space-y-4 text-primary dark:text-dtertiary backdrop-filter backdrop-blur-xs pt-20">
-	${logOut()}
-	${backButton()}
-	</div>`
+		<div class=" text-primary dark:text-dtertiary">
+			<div class="flex flex-col items-center justify-center space-y-4 pt-20">
+				${settingsLogo()}
+				${settingsTitle()}
+			</div>
+			<div class="flex flex-col items-center ml-15 mr-15 justify-center space-y-4 space-x-4 pt-20">
+				${changeDefaultLang()}
+				<br>
+				${change2FA()}
+				<br>
+				${deleteAccountButton()}
+			</div>
+			<div class="flex flex-col items-center justify-center space-y-4 pt-20">
+				${logoutButton()}
+				${backButton()}
+			</div>
+		</div>
+		${footer()}`
 }
 
 export function settingsPage() {

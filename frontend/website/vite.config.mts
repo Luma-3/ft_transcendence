@@ -1,4 +1,5 @@
-import { defineConfig } from 'vite'
+import { defineConfig, FSWatcher } from 'vite'
+import fs from 'fs'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
@@ -7,6 +8,12 @@ export default defineConfig({
   ],
   server: {
     host: '0.0.0.0',
-    port: 5173
+    port: 5173,
+    https: {
+      key: fs.readFileSync('cert/key.dev.pem'),
+      cert:  fs.readFileSync('cert/cert.dev.pem'),
+    }
   }
 })
+
+//Sayf-allah gabsi 

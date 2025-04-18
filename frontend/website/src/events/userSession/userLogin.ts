@@ -18,7 +18,6 @@ export async function loginUser() {
 		return;
 	}
 
-	//requete vers backend
 	const response = await fetchApi<User>(API_ROUTES.USERS.LOGIN,
 			{method: "POST", credentials: "include", body: JSON.stringify(userdata)})
 	
@@ -27,13 +26,4 @@ export async function loginUser() {
 	} else {
 		alertError("username_or_password_incorrect");
 	}
-   
-	// if not connected : refresh log page
-	// if connected : go to home
-	// if (data === null) {
-	//     renderPage('login')
-	// }
-	// console.log('fin du post', data);
-	// renderPage('home');
-	// window.alert("username or password incorrect")
 }

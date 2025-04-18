@@ -18,15 +18,20 @@ export async function verifPasswordAndRegisterUser() {
 		 return;
 	}
 
+	console.log(userdata);
 	if (userdata.password !== userdata.passwordVerif) { 
 		renderPage('register');
 		alertError("passwords_dont_match");
 		return;
 	}
 
-	await fetchApi<User>(API_ROUTES.USERS.REGISTER,
+	const reponse = await fetchApi<User>(API_ROUTES.USERS.REGISTER,
 		{method: "POST", credentials: "include", body: JSON.stringify(userdata)});
-	
+	if (reponse.status !== "success" ) {
+		renderPage('register');
+		alertError(reponse.message);
+		return;
+	}
 	renderPage('dashboard');
 	return;
 }

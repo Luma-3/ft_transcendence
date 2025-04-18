@@ -3,6 +3,7 @@ import { loginPage } from '../pages/Login'
 import { registerPage } from '../pages/Register'
 import { dashboardPage } from '../pages/Dashboard'
 import { settingsPage } from '../pages/Settings'
+import { profilePage } from '../pages/Profile'
 import { hackPage } from '../pages/Hack'
 
 import { setupColorTheme } from '../components/utils/setColorTheme'
@@ -19,6 +20,7 @@ const rendererPage: {[key: string]: () => string | Promise<string>} = {
 	'register': registerPage,
 	'dashboard': dashboardPage,
 	'settings': settingsPage,
+	'profile': profilePage,
 	'hacked': hackPage,
 };
 

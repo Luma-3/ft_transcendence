@@ -7,6 +7,7 @@
 	
 	"username": "Nombre de usuario",
 	"password": "Contraseña",
+	"email": "Correo electrónico",
 	"verif_password": "Repetir contraseña",
 	"register": "Registrarse",
 	"no_account": "¿No tienes una cuenta?",
@@ -34,5 +35,17 @@
 	
 	"are-you-sure": "¿Estás seguro?",
 	"dangerous-action": "Acciones peligrosas",
-	"delete-account": "Eliminar cuenta"
+	"delete-account": "Eliminar cuenta",
+	
+	"profile": "Perfil",
+	"change-profil-picture": "Cambiar tu foto de perfil",
+	"choose-file": "Elegir archivo",
+
+	"version": "Versión",
+	"no-duck-hurt": "No se hirió a ningún pato",
+	"during-development": "durante el desarrollo de este sitio web",
+	"rgpd": "RGPD",
+	"terms-of-service": "Términos de servicio",
+	"cookie-policy": "Política de cookies",
+	"contact": "Contacto"
 }
