@@ -28,11 +28,11 @@ function renderProfileName(nameProfil: string | undefined) {
 	return `<h1 class="text-3xl font-title text-center  border-secondary dark:border-dprimary">${nameProfil}</h1>`
 }
 
-function renderProfileHeader() {
+function renderProfileHeader(user: User) {
 	return `<div class="flex flex-col items-center text-primary dark:text-dtertiary justify-center space-y-4 pt-20">
 				${profileLogo()}			
 				${profileTitle()}
-				${renderProfileName("Jean-MichMich")}
+				${renderProfileName(user.username)}
 			</div>`
 }
 
@@ -49,20 +49,20 @@ function selectPhotoProfil() {
 			</div>`
 }
 
-function displayUserInfo(username: string | undefined) {
+function displayUserInfo(user: User) {
 	return `
 			<form type="POST" class="flex flex-col items-center justify-center ml-15 mr-15 pt-20 space-y-4 text-primary dark:text-dtertiary">
 				
 				<div class="flex flex-col w-full lg:flex-row lg:justify-center lg:space-x-4 lg:items-center gap-4">
 					<div class="text-xl font-title" translate="username">Username</div>
-					<input type="text" name="username" id="username" value="${username}" class="text-xl font-title border-2 border-secondary dark:border-dprimary p-5" />
+					<input type="text" name="username" id="username" value="${user.username}" class="text-xl font-title border-2 border-secondary dark:border-dprimary p-5" />
 					<div class="text-xl font-title" translate="email">Email</div>
-						<input type="email" name="email" id="email" value="${username}" class="text-xl font-title border-2 border-secondary dark:border-dprimary p-5" />
+						<input type="email" name="email" id="email" value="${user.email}" class="text-xl font-title border-2 border-secondary dark:border-dprimary p-5" />
 					</div>
 				
 				<div class="flex flex-col w-full lg:flex-row lg:justify-center lg:space-x-4 lg:items-center gap-4">
 					<div class="text-xl font-title w-50" translate="password">Password</div>
-					<input type="password" name="password" id="password" value="${username}" class="text-xl font-title border-2 border-secondary dark:border-dprimary p-5" />
+					<input type="password" name="password" id="password" value="***************" class="text-xl font-title border-2 border-secondary dark:border-dprimary p-5" />
 				</div>
 				<div class="flex w-full lg:justify-center lg:items-center">
 				${secondaryButton({id: "change-password" , text: "Change password", weight: ""})}
@@ -74,16 +74,9 @@ function displayUserInfo(username: string | undefined) {
 			`
 }
 
-function displayProfilInfo(){
+function displayProfilInfo(user: User){
 	
-	// const reponse = await fetchApi<User>(API_ROUTES.USERS.INFOS, { method: "GET", credentials: "include"})
-	// if (reponse.status === "success") {
-	// 	displayUserInfo(reponse.data?.username)
-	// } else {
-	// 	alertError(reponse.message)
-	// }
-	// console.log(displayUserInfo(reponse.data?.username))
-	return displayUserInfo("Jean-MichMich") // TODO: remove this line when the API is ready
+	return displayUserInfo(user) // TODO: remove this line when the API is ready
 }
 
 
@@ -134,17 +127,32 @@ function gameStatsResume() {
 	</div>`
 }
 
-export function profilePage() {
-	return `
+async function renderProfilePage() {
 
-	${navbar({username: "Jean-MichMich"})}
-	${userMenu("Jean-MichMich")}
-	${renderProfileHeader()}
-	${displayProfilInfo()}
-	${selectPhotoProfil()}
-	<div class="flex flex-col">
-	${friendsList()}
-	${gameStatsResume()}
-	</div>
-	${footer()}`
+	const userInfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
+		{method: "GET", credentials: "include"});
+	
+	
+	if (userInfoResponse.status === "success" && userInfoResponse.data) {
+		const userInfos = userInfoResponse.data;
+
+		return `
+		${navbar(userInfos)}
+		${userMenu(userInfos)}
+		${renderProfileHeader(userInfos)}
+		${displayProfilInfo(userInfos)}
+		${selectPhotoProfil()}
+		<div class="flex flex-col">
+		${friendsList()}
+		${gameStatsResume()}
+		</div>
+		${footer()}`
+	} else {
+		return `${alertError(userInfoResponse.message)}`
+	}
+}
+
+export function profilePage() {
+	const container = renderProfilePage();
+	return container;
 }

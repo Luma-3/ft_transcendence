@@ -1,15 +1,16 @@
+import { User } from '../../api/interfaces/User';
 
-export function userMenu(username: string | undefined) {
+export function userMenu(user: User) {
 	return `
 	<div id="user-menu" class="hidden absolute right-0 z-50 my-4 mx-4 w-56 text-tertiary bg-primary rounded dark:text-dtertiary dark:bg-dprimary">
-	${renderUserMenu(username, "pp.jpg")}
+	${renderUserMenu(user)}
 	</div>`
 }
 
-function headerUserMenu(username: string | undefined, photoProfil: string | undefined) {
+function headerUserMenu(user: User) {
 	return `<div class=" py-3 px-6 flex flex-col-2 items-center">
-				<img class="w-10 h-10 rounded-full" src="/images/${photoProfil}" alt="User profile picture">
-				<span class="p-2 block text-sm font-title overflow-hidden truncate text-secondary dark:text-dsecondary">${username}</span>
+				<img class="w-10 h-10 rounded-full" src="/images/pp.jpg" alt="User profile picture">
+				<span class="p-2 block text-sm font-title overflow-hidden truncate text-secondary dark:text-dsecondary">${user.username}</span>
 			</div>`;
 }
 
@@ -72,8 +73,8 @@ function logout() {
 }
 
 
-function renderUserMenu(username: string | undefined, photoProfil: string) {
-	return `${headerUserMenu(username, photoProfil)}
+function renderUserMenu(user: User) {
+	return `${headerUserMenu(user)}
 			${UserMenuOptions()}
 			<ul class="py-1 text-secondary dark:text-dsecondary" aria-labelledby="dropdown">
 				<li> ${darkMode()}</li>

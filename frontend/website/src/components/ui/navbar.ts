@@ -1,5 +1,6 @@
+import { User } from "../../api/interfaces/User";
 
-export function navbar(userinfo: { username: string | undefined }) {
+export function navbar(User: User) {
 	return `
 	<nav class="flex items-center w-full justify-between flex-wrap p-2">
 		<div class="flex w-full justify-between items-center">
@@ -8,7 +9,7 @@ export function navbar(userinfo: { username: string | undefined }) {
 			</div>
 			<div id="user-menu-button" class="flex justify-end items-center cursor-pointer">
 				<span class="pointer-events-none mr-2 flex items-center font-title text-primary dark:text-dprimary overflow-hidden truncate">
-				${userinfo.username}
+				${User.username}
 				</span>
 				<img class="w-8 h-8 rounded-full pointer-events-none" src="/images/pp.jpg" alt="User profile picture">
 			</div>
