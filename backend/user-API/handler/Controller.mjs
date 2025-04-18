@@ -30,7 +30,7 @@ export async function login(req, rep) {
 
 
 export async function register(req, rep) {
-	const {username, password} = req.body;
+	const {username, password, email} = req.body;
 
 	if (!username || !password) {
 		return rep.code(400).send({message: "Username and password are required"})
@@ -45,6 +45,7 @@ export async function register(req, rep) {
 	const obj_user = {
 		username: username,
 		password: hash_pass,
+		email: email
 	}
 
 	const [newUser] = await this.userModel.insert(obj_user);
