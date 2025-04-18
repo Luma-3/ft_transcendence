@@ -13,7 +13,11 @@ export function primaryButton({
 }) {
 	return `
 	<button id="${id}" type="${type}" 
-	class="font-title p-2 bg-primary text-secondary dark:bg-dprimary dark:text-dtertiary rounded w-${weight} hover:cursor-pointer hover:ring-1 ring-secondary" translate="${translate}">
-	${text}</button>
+	class="font-title p-2 rounded w-${weight} 
+	bg-primary text-tertiary dark:bg-dprimary dark:text-dtertiary
+	hover:cursor-pointer hover:ring-1 ring-tertiary dark:ring-dsecondary"
+	translate="${translate}">
+	${text}
+	</button>
 	`;
 }

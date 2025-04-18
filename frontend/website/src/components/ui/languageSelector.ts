@@ -1,13 +1,23 @@
 function selectorOptions(lang: string) {
 	
-	const all_langs = [{value: 'en', name: 'English'}, {value: 'fr', name: 'French'}, {value: 'es', name: 'Spanish'}];
-	const predefine_lang = `<option class="bg-secondary text-primary dark:bg-dprimary dark:text-dtertiary font-title" value='${lang}'>${all_langs.find(langObj => langObj.value === lang)?.name}</option>`;
+	const all_langs = [
+		{value: 'en', name: 'English'},
+		{value: 'fr', name: 'French'},
+		{value: 'es', name: 'Spanish'}
+	];
+
+	const langAlreadySelected = sessionStorage.getItem('lang') || 'en';
+	
+	const predefine_lang = `<option class="font-title"
+							value='${langAlreadySelected}'>${all_langs.find(langObj => langObj.value === langAlreadySelected)?.name}
+							</option>`;
 
 	const all_options = all_langs.map(langObj => {
 		if (langObj.value !== lang) {
-			 return `<option class="bg-secondary text-primary dark:bg-dprimary dark:text-dtertiary font-title" value='${langObj.value}'>${langObj.name}</option>`;
+			 return `<option class="font-title rounded-lg"
+			 		value='${langObj.value}'>${langObj.name}</option>`;
 		}
-			return '';
+		return '';
 	}).join('');
 
 	return `${predefine_lang}${all_options}`;
@@ -15,14 +25,18 @@ function selectorOptions(lang: string) {
 
 export function languageSelector() {
 
-	const lang = sessionStorage.getItem('lang') || 'en'; 
-	
+	const lang = sessionStorage.getItem('lang') || 'en';
+
 	return `
 		<div class='flex flex-row items-center justify-space-between'>
-			<label for='language' translate="lang_choice" class="p-3 font-title">Choose a language :</label>
-			<select name='language' id='language' class="font-title hover:cursor-pointer hover:ring-2 ring-secondary">
+			<label for='language' translate="lang_choice" class="p-3 font-title">
+				Choose a language :
+			</label>
+			<select name='language' id='language'
+			class="rounded-lg p-1 font-title
+				bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary
+				hover:cursor-pointer hover:ring-2 ring-tertiary dark:ring-dsecondary">
 				${selectorOptions(lang)}
 			</select>
-		</div>
-	`;
+		</div>`;
 }

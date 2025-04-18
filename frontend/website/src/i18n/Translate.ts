@@ -47,14 +47,17 @@ export function changeLanguage(lang: string | undefined) {
 }
 
 export function saveLanguage() {
+	
 	const choice = (document.getElementById('language') as HTMLSelectElement)
 	if (choice === null) {
 		return;
 	}
+	
 	const lang_select = choice.value;
 	if (lang_select !== 'en' && lang_select !== 'fr' && lang_select !== 'es') {
 		return;
 	}
+	
 	sessionStorage.setItem('lang', lang_select);
 }
 

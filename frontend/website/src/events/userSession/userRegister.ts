@@ -1,7 +1,7 @@
 import { renderPage } from '../../renderers/renderPage'
 import { fetchApi } from '../../api/fetch'
 import { API_ROUTES } from '../../api/routes';
-import { alertError } from '../../components/ui/alertError';
+import { alert } from '../../components/ui/alert';
 import { User } from '../../api/interfaces/User';
 
 export async function verifPasswordAndRegisterUser() {
@@ -21,7 +21,7 @@ export async function verifPasswordAndRegisterUser() {
 	console.log(userdata);
 	if (userdata.password !== userdata.passwordVerif) { 
 		renderPage('register');
-		alertError("passwords_dont_match");
+		alert("passwords_dont_match", "error");
 		return;
 	}
 
@@ -29,7 +29,7 @@ export async function verifPasswordAndRegisterUser() {
 		{method: "POST", credentials: "include", body: JSON.stringify(userdata)});
 	if (reponse.status !== "success" ) {
 		renderPage('register');
-		alertError(reponse.message);
+		alert(reponse.message, "error");
 		return;
 	}
 	renderPage('dashboard');

@@ -1,7 +1,7 @@
 import { form } from "./form";
 
 export function registerForm() {
-	return `
+	return `<div class="flex flex-col items-center justify-center">
 	${form({
 		name : "registerForm",
 		inputs: [
@@ -45,5 +45,6 @@ export function registerForm() {
 			type: "submit",
 		},
 		
-	})}`;
+	})}
+	</div>`;
 }

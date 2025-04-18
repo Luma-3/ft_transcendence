@@ -1,39 +1,48 @@
 import { navbar } from "../components/ui/navbar"
-import { userMenu } from "../components/ui/userMenu"
 import { footer } from "../components/ui/footer"
 import { fetchApi } from "../api/fetch"
 import { API_ROUTES } from "../api/routes"
 import { User } from "../api/interfaces/User"
-import { alertError } from "../components/ui/alertError"
+import { alert } from "../components/ui/alert"
 import { primaryButton } from "../components/ui/primaryButton"
 import { secondaryButton } from "../components/ui/secondaryButton"
-function profilePicture(photoProfil: string | undefined) {
-	return `<img src="${photoProfil}" alt="Profile picture" class="w-32 h-32 rounded-full border-4 border-primary dark:border-dprimary shadow-lg">`
-}
+import { form } from "../components/ui/form"
 
 function profileLogo() {
-	return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-20 mr-2 hover:animate-bounce">
- 	 		<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-			</svg>
-		`
+	return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+	class="size-20 mr-2 hover:animate-spin">
+	<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+	</svg>
+	`
 }
 
-
 function profileTitle() {
-	return `<div class="text-6xl p-2 font-title items-center justify-center motion-reduce:animate-pulse" translate="profile">Profile</div>`
+	return `<div class="text-6xl font-title p-2 items-center justify-center 
+	text-tertiary dark:text-dtertiary 
+	motion-reduce:animate-pulse" translate="profile">
+	Profile
+	</div>`
 }
 
 
 function renderProfileName(nameProfil: string | undefined) {
-	return `<h1 class="text-3xl font-title text-center  border-secondary dark:border-dprimary">${nameProfil}</h1>`
+	return `<h1 class="text-4xl font-title text-center italic
+	text-tertiary dark:text-dtertiary">
+	${nameProfil}
+	</h1>`
 }
 
 function renderProfileHeader(user: User) {
-	return `<div class="flex flex-col items-center text-primary dark:text-dtertiary justify-center space-y-4 pt-20">
-				${profileLogo()}			
-				${profileTitle()}
-				${renderProfileName(user.username)}
-			</div>`
+	return `<div class="flex flex-col items-center justify-center space-y-4 pt-20
+	text-primary dark:text-dprimary">
+	${profileLogo()}			
+	${profileTitle()}
+	${renderProfileName(user.username)}
+	</div>`
+}
+
+function profilePicture(photoProfil: string | undefined) {
+	return `<img src="${photoProfil}" alt="Profile picture" class="w-32 h-32 rounded-full border-4 border-primary dark:border-dprimary shadow-lg">`
 }
 
 function selectPhotoProfil() {
@@ -51,31 +60,47 @@ function selectPhotoProfil() {
 
 function displayUserInfo(user: User) {
 	return `
-			<form type="POST" class="flex flex-col items-center justify-center ml-15 mr-15 pt-20 space-y-4 text-primary dark:text-dtertiary">
+	<div class="flex flex-col font-title w-full justify-left items-center text-tertiary dark:text-dtertiary space-y-4 pt-10">
+		${form({
+		name : "change-user-info",
+		inputs: [
+			{
+				name: "username",
+				type: "text",
+				labelClass: "font-title",
+				placeholder: user.username,
+				autocomplete: "off",
+				required: true,
+				translate: "username",
+			},
+			{
+				name: "email",
+				type: "email",
+				labelClass: "font-title",
+				placeholder: user.email,
+				autocomplete: "off",
+				required: true,
+				translate: "email",
+			},
+		],
+		button: {
+			id: "change-info-user-button",
+			text: "Save changes",
+			weight: "1/2",
+			translate: "save-changes",
+			type: "submit",
+		},
+		
+	})}
+		</div>
 				
-				<div class="flex flex-col w-full lg:flex-row lg:justify-center lg:space-x-4 lg:items-center gap-4">
-					<div class="text-xl font-title" translate="username">Username</div>
-					<input type="text" name="username" id="username" value="${user.username}" class="text-xl font-title border-2 border-secondary dark:border-dprimary p-5" />
-					<div class="text-xl font-title" translate="email">Email</div>
-						<input type="email" name="email" id="email" value="${user.email}" class="text-xl font-title border-2 border-secondary dark:border-dprimary p-5" />
-					</div>
-				
-				<div class="flex flex-col w-full lg:flex-row lg:justify-center lg:space-x-4 lg:items-center gap-4">
-					<div class="text-xl font-title w-50" translate="password">Password</div>
-					<input type="password" name="password" id="password" value="***************" class="text-xl font-title border-2 border-secondary dark:border-dprimary p-5" />
+				<div class="flex flex-row w-full justify-left items-center mt-10 lg:flex-row lg:justify-center lg:space-x-4 lg:items-center gap-4">
+					${secondaryButton({id: "change-password" , text: "Change password", weight: "1/4", translate: "change-password"})}
 				</div>
-				<div class="flex w-full lg:justify-center lg:items-center">
-				${secondaryButton({id: "change-password" , text: "Change password", weight: ""})}
-				</div>
-				<div class="flex flex-col space-y-5 text-xl font-title justify-center items-center mt-5">
-				${primaryButton({id: "save-profil" , text: "Save changes",  weight: ""})}
-				</div>
-			</form>
 			`
 }
 
 function displayProfilInfo(user: User){
-	
 	return displayUserInfo(user) // TODO: remove this line when the API is ready
 }
 
@@ -137,18 +162,17 @@ async function renderProfilePage() {
 		const userInfos = userInfoResponse.data;
 
 		return `
-		${navbar(userInfos)}
-		${userMenu(userInfos)}
-		${renderProfileHeader(userInfos)}
-		${displayProfilInfo(userInfos)}
-		${selectPhotoProfil()}
-		<div class="flex flex-col">
-		${friendsList()}
-		${gameStatsResume()}
-		</div>
-		${footer()}`
+			${navbar(userInfos)}
+			${renderProfileHeader(userInfos)}
+			${displayProfilInfo(userInfos)}
+			${selectPhotoProfil()}
+			<div class="flex flex-col">
+				${friendsList()}
+				${gameStatsResume()}
+			</div>
+			${footer()}`
 	} else {
-		return `${alertError(userInfoResponse.message)}`
+		return `${alert(userInfoResponse.message, "error")}`
 	}
 }
 

@@ -12,7 +12,7 @@ const clickEvent: {[key: string]: () => void } = {
 	'loginForm': () => loginUser(),
 	'loadLogin': () => renderPage('login'),
 	'loadHome': () => renderPage('home'),
-	'loadRegister': () => renderPage('register'),
+	'loadRegisterPage': () => renderPage('register'),
 	'user-menu-button': () => toggleUserMenu(),
 	'loadSettings': () => renderPage('settings'),
 	'logout': () =>  logOutUser(),

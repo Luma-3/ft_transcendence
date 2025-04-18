@@ -2,7 +2,7 @@ import { renderPage } from '../../renderers/renderPage'
 import { fetchApi } from '../../api/fetch';
 import { User } from '../../api/interfaces/User';
 import { API_ROUTES } from '../../api/routes';
-import { alertError } from '../../components/ui/alertError';
+import { alert } from '../../components/ui/alert';
 
 export async function loginUser() {
 
@@ -24,6 +24,6 @@ export async function loginUser() {
 	if (response.status == "success") {
 		renderPage('dashboard');
 	} else {
-		alertError("username_or_password_incorrect");
+		alert("username_or_password_incorrect", "error");
 	}
 }

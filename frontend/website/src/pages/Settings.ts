@@ -1,15 +1,14 @@
 import { backButton } from "../components/ui/backButton";
 import { changeDefaultLang } from "../components/ui/changeDefaultLang";
 import { navbar } from "../components/ui/navbar";
-import { userMenu } from "../components/ui/userMenu";
 import { User } from "../api/interfaces/User";
 import { fetchApi } from "../api/fetch";
 import { API_ROUTES } from "../api/routes";
 import { changeLanguage } from "../i18n/Translate";
 import { change2FA } from "../components/ui/change2FA";
-import { logoutButton } from "../components/ui/logoutButton";
-import { deleteAccountButton } from "../components/ui/deleteAccountButton";
 import { footer } from "../components/ui/footer";
+import { alert } from "../components/ui/alert";
+import { primaryButton } from "../components/ui/primaryButton";
 (window as any).changeLanguage = changeLanguage;
 
 function settingsLogo() {
@@ -28,26 +27,36 @@ async function renderSettingsPage() {
 const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
 	{method: "GET", credentials: "include"});
 
-return `${navbar({username: userinfoResponse.data?.username})}
-		${userMenu(userinfoResponse.data?.username)}
-		<div class=" text-primary dark:text-dtertiary">
-			<div class="flex flex-col items-center justify-center space-y-4 pt-20">
-				${settingsLogo()}
-				${settingsTitle()}
+	if (userinfoResponse.status === "success" && userinfoResponse.data) {
+		
+		const userInfos = userinfoResponse.data;
+		
+		return `
+			${navbar(userInfos)}
+			<div class=" text-primary dark:text-dtertiary">
+				<div class="flex flex-col items-center justify-center space-y-4 pt-20">
+					${settingsLogo()}
+					${settingsTitle()}
+				</div>
+				<div class="flex flex-col items-center ml-15 mr-15 justify-center space-y-4 space-x-4 pt-20">
+					${changeDefaultLang()}
+					<br>
+					${change2FA()}
+					<br>
+					<div class="flex flex-col font-title border-red-600 border-2 p-2 justify-center items-center rounded-lg">
+						<span class="p-2"> Dangerous Actions </span>
+						${primaryButton({id: 'deleteAccount', weight: "1/3", text: 'Delete account', translate: 'delete-account', type: 'button'})}
+					</div>
+				</div>
+				<div class="flex flex-col items-center justify-center space-y-4 pt-20">
+					${primaryButton({id: "logout", text: "logout", translate: "logout"})}
+					${backButton()}
+				</div>
 			</div>
-			<div class="flex flex-col items-center ml-15 mr-15 justify-center space-y-4 space-x-4 pt-20">
-				${changeDefaultLang()}
-				<br>
-				${change2FA()}
-				<br>
-				${deleteAccountButton()}
-			</div>
-			<div class="flex flex-col items-center justify-center space-y-4 pt-20">
-				${logoutButton()}
-				${backButton()}
-			</div>
-		</div>
-		${footer()}`
+			${footer()}`
+	}
+	alert(userinfoResponse.message, "error");
+	return ``;
 }
 
 export function settingsPage() {

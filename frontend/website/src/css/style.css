@@ -14,14 +14,14 @@
   --font-text: 'Merriweather', sans-serif;
   
   /* White mode */
-  --color-primary: #F8E9E9;
-  --color-secondary: #FF8904;
-  --color-tertiary: #747A89;
+  --color-primary: #FF8904; /* Orange */
+  --color-secondary: #744FAC; /* Violet */
+  --color-tertiary: #F8E9E9; /* White */
 
   /* Dark mode */
-  --color-dprimary: #744FAC;
-  --color-dsecondary: #FF8904;
-  --color-dtertiary: #F8E9E9;
+  --color-dprimary: #744FAC; /* Violet */
+  --color-dsecondary: #FF8904; /* Orange */
+  --color-dtertiary: #F8E9E9; /* White */
 
   --color-myblack: #000000;
 }

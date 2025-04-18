@@ -1,7 +1,7 @@
 import { form } from "./form";
 
 export function loginForm() {
-	return `
+	return `<div class="flex flex-col items-center justify-center">
 	${form({
 		name: "LoginForm",
 		inputs: [
@@ -29,5 +29,5 @@ export function loginForm() {
 			type: "submit",
 		},
 	})}
-	`;
+	</div>`;
 }
