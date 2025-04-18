@@ -8,10 +8,18 @@ export function registerForm() {
 			{
 				name: "username",
 				type: "text",
-				placeholder: "username",
+				placeholder: "Username",
 				autocomplete: "username",
 				required: true,
 				translate: "username",
+			},
+			{
+				name: "email",
+				type: "email",
+				placeholder: "Email",
+				autocomplete: "email",
+				required: true,
+				translate: "email",
 			},
 			{
 				name: "password",

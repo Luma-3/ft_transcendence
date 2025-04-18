@@ -1,13 +1,8 @@
-import { renderPage } from '../../components/renderPage'
-import { fetchApi } from '../../components/api/api'
-import { API_ROUTES } from '../../components/api/routes';
+import { renderPage } from '../../renderers/renderPage'
+import { fetchApi } from '../../api/fetch'
+import { API_ROUTES } from '../../api/routes';
 import { alertError } from '../../components/ui/alertError';
-
-export interface User {
-	id: number;
-	username: string;
-	created_at: string;
-}
+import { User } from '../../api/interfaces/User';
 
 export async function verifPasswordAndRegisterUser() {
 	
@@ -23,15 +18,20 @@ export async function verifPasswordAndRegisterUser() {
 		 return;
 	}
 
+	console.log(userdata);
 	if (userdata.password !== userdata.passwordVerif) { 
 		renderPage('register');
 		alertError("passwords_dont_match");
 		return;
 	}
 
-	await fetchApi<User>(API_ROUTES.USERS.REGISTER,
+	const reponse = await fetchApi<User>(API_ROUTES.USERS.REGISTER,
 		{method: "POST", credentials: "include", body: JSON.stringify(userdata)});
-	
+	if (reponse.status !== "success" ) {
+		renderPage('register');
+		alertError(reponse.message);
+		return;
+	}
 	renderPage('dashboard');
 	return;
 }

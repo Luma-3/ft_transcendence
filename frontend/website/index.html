@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="images/icons/icon.png" />
+    <link rel="icon" type="image/x-icon" href="icons/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- If Javascript available load script -->
     <link rel="preload" href="src/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -13,8 +13,8 @@
  
   </head>
   
-  <body class="bg-[url('/images/back_white.webp')] dark:bg-[url('/images/fond_dark.webp')] bg-cover bg-center backdrop-filter backdrop-blur-sm w-full h-screen">
-    <div id="app" class="w-full h-screen opacity-0 transition-opacity duration-200"></div>
+  <body class="bg-[url('/images/back_white.webp')] dark:bg-[url('/images/fond_dark.webp')] bg-cover bg-no-repeat bg-fixed backdrop-filter backdrop-blur-sm w-full min-h-screen">
+    <div id="app" class="w-full h-full opacity-0 transition-opacity duration-200"></div>
     <script type="module" src="src/main.ts"></script>
   </body>
   </html>

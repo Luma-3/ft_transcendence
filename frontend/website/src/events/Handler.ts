@@ -1,10 +1,11 @@
-import { changeLanguage } from '../i18n/Translate'
-import { renderPage } from '../components/renderPage'
+import { changeLanguage, saveDefaultLanguage } from '../i18n/Translate'
+import { renderPage } from '../renderers/renderPage'
 import { verifPasswordAndRegisterUser } from './userSession/userRegister'
-import { loginUser } from './userSession/userLogIn'
+import { loginUser } from './userSession/userLogin'
 import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
+import { logOutUser } from './userSession/userLogout'
 
 const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => window.history.back(),
@@ -14,13 +15,15 @@ const clickEvent: {[key: string]: () => void } = {
 	'loadRegister': () => renderPage('register'),
 	'user-menu-button': () => toggleUserMenu(),
 	'loadSettings': () => renderPage('settings'),
+	'logout': () =>  logOutUser(),
 	'google': () => {
 		window.location.href = 'http://localhost:3000/api/user/login/google'
-	}
+	},
+	'saveLang': saveDefaultLanguage,
 };
 
 const changeEvent: {[key: string]: () => void } = {
-	'language': changeLanguage,
+	'language': () => changeLanguage(undefined),
 	'switch-component': changeLightMode,
 };
 

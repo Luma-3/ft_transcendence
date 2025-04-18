@@ -7,6 +7,5 @@ export function backButton() {
 		weight: "1/2",
 		text: "Back",
 		translate: "back-link",
-	})}
-	`;
+	})}`;
 }
