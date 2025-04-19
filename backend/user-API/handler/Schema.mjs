@@ -30,7 +30,8 @@ export const privateUserSchema = {
 	properties: {
 		id: { type: 'string' },
 		username: { type: 'string' },
-		created_at: {type: 'string'}
+		created_at: {type: 'string'},
+		email: {type: 'string'}
 	}
 }
 
