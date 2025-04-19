@@ -16,11 +16,11 @@ export function userMenu(user: User) {
 
 export function navbar(User: User) {
 	return `
-	<nav class="flex items-center w-full justify-between flex-wrap p-2">
+	<nav class="flex flex-row items-center w-full flex-wrap justify-between p-2">
 			${navbarLogo()}
 			<div id="user-menu-button" class="flex justify-end items-center cursor-pointer">
-				<span class="font-title pointer-events-none mr-2 flex items-center
-				 text-tertiary dark:text-dtertiary overflow-hidden truncate">
+				<span class="font-title hidden sm:block pointer-events-none mr-2 items-center
+				 text-secondary dark:text-dtertiary">
 				${User.username}
 				</span>
 				<img class="w-8 h-8 rounded-full pointer-events-none" src="/images/pp.jpg" alt="User profile picture">

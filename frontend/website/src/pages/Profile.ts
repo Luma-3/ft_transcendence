@@ -5,15 +5,15 @@ import { API_ROUTES } from "../api/routes"
 import { User } from "../api/interfaces/User"
 import { alert } from "../components/ui/alert"
 import { primaryButton } from "../components/ui/primaryButton"
-import { secondaryButton } from "../components/ui/secondaryButton"
 import { form } from "../components/ui/form"
+import { backButton } from "../components/ui/backButton"
+import Swal from "sweetalert2"
 
 function profileLogo() {
 	return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 	class="size-20 mr-2 hover:animate-spin">
 	<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-	</svg>
-	`
+	</svg>`
 }
 
 function profileTitle() {
@@ -25,50 +25,122 @@ function profileTitle() {
 }
 
 
-function renderProfileName(nameProfil: string | undefined) {
-	return `<h1 class="text-4xl font-title text-center italic
-	text-tertiary dark:text-dtertiary">
+function profileName(nameProfil: string | undefined) {
+	return `<h1 class="relative w-full p-2 text-4xl justify-center font-title text-center italic
+	text-tertiary dark:text-dtertiary overflow truncate">
 	${nameProfil}
 	</h1>`
 }
 
-function renderProfileHeader(user: User) {
-	return `<div class="flex flex-col items-center justify-center space-y-4 pt-20
-	text-primary dark:text-dprimary">
-	${profileLogo()}			
-	${profileTitle()}
-	${renderProfileName(user.username)}
+function profilePicture(photoProfil: string | undefined) {
+	return `<div class="relative w-32 h-32 group text-primary dark:text-dprimary">
+		<img src="${photoProfil}" class="w-full h-full rounded-full border-2 opacity-100 group-hover:opacity-0 transition-opacity duration-300 ease-in-out"
+		 alt="Profile picture">
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+		 class="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out">
+		  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+		</svg>
 	</div>`
 }
 
-function profilePicture(photoProfil: string | undefined) {
-	return `<img src="${photoProfil}" alt="Profile picture" class="w-32 h-32 rounded-full border-4 border-primary dark:border-dprimary shadow-lg">`
+function profilePhotoChanger() {
+	return `
+	<div class="flex flex-col items-center space-y-2 ml-15 mr-15 pt-4 justify-center">
+		<label for="file-upload" class="flex">
+		<input id="file-upload" type="file" accept="image/*" class="hidden"  />
+		${profilePicture("/images/pp.jpg")}
+		</label>
+	</div>`
 }
 
-function selectPhotoProfil() {
-	return `
-	<div class="flex flex-col items-center space-y-4 ml-15 mr-15 pt-20 justify-center text-primary dark:text-dtertiary">
-	${profilePicture("/images/pp.jpg")}			
-	<div class="flex text-2xl font-title mt-4 mr-5 animate-pulse" translate="change-profil-picture">Change your profile picture</div>
-				<label for="file-upload" class="flex">
-				<span class="text-sm font-title p-2 bg-secondary dark:bg-dprimary rounded-sm
-				hover:cursor-pointer hover:bg-primary hover:text-secondary hover:dark:bg-dtertiary hover:dark:text-dprimary" translate="choose-file"> Choose a file </span>
-				<input id="file-upload" type="file" accept="image/*" class="hidden"  />
-				</label>
-			</div>`
+export async function changeUserInfo() {
+	Swal.fire({
+	position: "center-end",
+	toast: true,
+	icon: "success",
+	title: "Your informations have been changed",
+	showConfirmButton: false,
+	timer: 1500
+	});
 }
 
-function displayUserInfo(user: User) {
+
+
+// export async function changePasswordUser() {
+	
+// 	const responseApiUser = await fetchApi<User>(API_ROUTES.USERS.INFOS,
+// 		{method: "GET", credentials: "include"});
+// 	if (responseApiUser.status === "success" && responseApiUser.data) {
+// 		const userInfos = responseApiUser.data;
+// 		// const lang = localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en';
+// 		// const trad = await loadTranslation(lang);
+		
+// 		const theme = localStorage.getItem('theme') || 'dark';
+// 		const bg = theme === 'dark' ? '#000000' : '#F8E9E9';
+// 		const text = theme === 'dark' ? '#F8E9E9' : '#FF8904';
+// 		const icon = theme === 'dark' ? '#FF8904' : '#FF8904';
+// 		const confirmButtonColor = theme === 'dark' ? '#744FAC' : '#FF8904';
+// 		const cancelButtonColor = theme === 'dark' ? '#FF8904' : '#744FAC';
+
+// 		Swal.fire({
+// 			title: "Change your informations",
+// 			position: "top-end",
+// 			icon: "info",
+// 			background: bg,
+// 			color: text,
+// 			iconColor: icon,
+// 			confirmButtonColor: confirmButtonColor,
+// 			cancelButtonColor: cancelButtonColor,
+			
+// 			html: `
+// 			<div class="flex flex-col justify-left items-left bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary p-4 rounded-lg">
+// 				<label for="username-input" class="swal2-label font-title">Username</label>
+// 				<input id="username-input" class="swal2-input font-title" value="${userInfos.username}" autocapitalize="off">
+// 				<label for="email-input" class="swal2-label font-title">Email</label>
+// 				<input id="email-input" type="email" class="swal2-input font-title" value="${userInfos.email}" placeholder="Email" autocapitalize="off">
+// 			</div>
+// 			`,
+// 			showCancelButton: true,
+// 			confirmButtonText: "Confirm",
+// 			showLoaderOnConfirm: true,
+		
+
+// 			preConfirm: () => {
+// 				const username = (document.getElementById('username-input') as HTMLInputElement).value;
+// 				const email = (document.getElementById('email-input') as HTMLInputElement).value;
+// 				if (!username || !email) {
+// 					Swal.showValidationMessage('Please enter both username and email');
+// 				}
+// 				return { username, email };
+// 			}
+// 		}).then((result) => {
+// 			if (result.isConfirmed) {
+// 				Swal.fire({
+// 					title: `Username: ${result.value?.username}, Email: ${result.value?.email}`,
+// 				});
+// 			}
+// 		});
+// 	}
+
+// }
+
+
+function profileFormInfos(user: User) {
 	return `
-	<div class="flex flex-col font-title w-full justify-left items-center text-tertiary dark:text-dtertiary space-y-4 pt-10">
+	<div class="flex flex-col font-title w-full justify-left items-center text-tertiary dark:text-dtertiary space-y-2 pt-10">
+	 <div class="flex font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary" translate="your-informations"> 
+	 Your informations
+	 </div>
+	${profilePhotoChanger()}
+
 		${form({
-		name : "change-user-info",
+		name : "saveChangeBasicUserInfo",
 		inputs: [
 			{
 				name: "username",
 				type: "text",
-				labelClass: "font-title",
-				placeholder: user.username,
+				labelClass: "font-title text-primary dark:text-dprimary",
+				value: user.username,
 				autocomplete: "off",
 				required: true,
 				translate: "username",
@@ -76,39 +148,38 @@ function displayUserInfo(user: User) {
 			{
 				name: "email",
 				type: "email",
-				labelClass: "font-title",
+				labelClass: "font-title text-primary dark:text-dprimary",
 				placeholder: user.email,
+				value: user.email,
 				autocomplete: "off",
 				required: true,
 				translate: "email",
 			},
 		],
 		button: {
-			id: "change-info-user-button",
+			id: "changeUserInfo",
 			text: "Save changes",
 			weight: "1/2",
 			translate: "save-changes",
 			type: "submit",
 		},
+		button2: {
+			id: "change-password",
+			text: "Change password",
+			weight: "1/2",
+			translate: "change-password",
+			type: "button",
+		},
 		
 	})}
-		</div>
-				
-				<div class="flex flex-row w-full justify-left items-center mt-10 lg:flex-row lg:justify-center lg:space-x-4 lg:items-center gap-4">
-					${secondaryButton({id: "change-password" , text: "Change password", weight: "1/4", translate: "change-password"})}
-				</div>
-			`
+	</div>`
 }
-
-function displayProfilInfo(user: User){
-	return displayUserInfo(user) // TODO: remove this line when the API is ready
-}
-
-
 
 function friendsList() {
-	return `<div class="flex flex-col items-center justify-center space-y-4 pt-20 text-primary dark:text-dtertiary">
-		<div class="text-3xl font-title" translate="friends">Friends</div>
+	return `<div class="flex flex-col items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
+		<div class="flex font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary"> 
+			 Your friends
+		 </div>
 		
 		<div class="items-center justify-center bg-primary dark:bg-dprimary w-1/2 h-1/2 rounded-lg shadow-lg">
 		<ul class="flex flex-row space-x-5 items-center p-5 text-secondary dark:text-dprimary">
@@ -124,8 +195,10 @@ function friendsList() {
 }
 
 function gameStatsResume() {
-	return `<div class="flex flex-col pt-20 items-center justify-center space-y-4 text-primary dark:text-dtertiary">
-	<div class="flex text-3xl font-title justify-center items-center" translate="last-game-stats">Games Result</div>
+	return `<div class="flex flex-col pt-10 items-center justify-center space-y-4 text-primary dark:text-dtertiary">
+			<div class="flex font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary"> 
+				 Your game results
+			</div>
 	
 	<span class="text-xl font-title border-2 border-primary dark:border-dprimary p-2 "> wins 3 / losses 9</span>
 	<div class="items-center justify-center bg-primary dark:bg-dprimary w-1/2 h-1/2 rounded-lg shadow-lg">
@@ -152,6 +225,15 @@ function gameStatsResume() {
 	</div>`
 }
 
+function profileHeader(user: User) {
+	return `<div class="flex flex-col w-full items-center justify-center space-y-4 pt-20
+	text-primary dark:text-dprimary">
+	${profileLogo()}			
+	${profileTitle()}
+	${profileName(user.username)}
+	</div>`
+}
+
 async function renderProfilePage() {
 
 	const userInfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
@@ -163,9 +245,9 @@ async function renderProfilePage() {
 
 		return `
 			${navbar(userInfos)}
-			${renderProfileHeader(userInfos)}
-			${displayProfilInfo(userInfos)}
-			${selectPhotoProfil()}
+			${backButton()}
+			${profileHeader(userInfos)}
+			${profileFormInfos(userInfos)}
 			<div class="flex flex-col">
 				${friendsList()}
 				${gameStatsResume()}

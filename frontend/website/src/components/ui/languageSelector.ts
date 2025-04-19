@@ -34,7 +34,7 @@ export function languageSelector() {
 			</label>
 			<select name='language' id='language'
 			class="rounded-lg p-1 font-title
-				bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary
+				bg-tertiary dark:bg-dprimary text-secondary dark:text-dtertiary
 				hover:cursor-pointer hover:ring-2 ring-tertiary dark:ring-dsecondary">
 				${selectorOptions(lang)}
 			</select>

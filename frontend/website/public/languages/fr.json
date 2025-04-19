@@ -38,8 +38,9 @@
 	"delete-account": "Supprimer le compte",
 
 	"profile": "Profil",
-	"change-profil-picture": "Changer votre photo de profil",
-	"choose-file": "Choisir un fichier",
+	"your-informations": "Vos informations",
+	"save-changes": "Sauvegarder les modifications",
+	"change-password": "Changer le mot de passe",
 
 
 	"version": "Version",

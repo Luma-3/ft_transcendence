@@ -38,8 +38,9 @@
 	"delete-account": "Eliminar cuenta",
 	
 	"profile": "Perfil",
-	"change-profil-picture": "Cambiar tu foto de perfil",
-	"choose-file": "Elegir archivo",
+	"your-informations": "Tu información",
+	"save-changes": "Guardar cambios",
+	"change-password": "Cambiar contraseña",
 
 	"version": "Versión",
 	"no-duck-hurt": "No se hirió a ningún pato",

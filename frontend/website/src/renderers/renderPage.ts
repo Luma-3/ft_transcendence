@@ -37,9 +37,6 @@ export async function renderPage(page: string, updateHistory: boolean = true) {
 
 		main_container.innerHTML = page_content;
 
-		// if (page === 'login' || page === 'register') {
-		// 	setupGoogleButton();
-		// }
 		if (updateHistory) {
 			addToHistory(page, updateHistory);
 		}
@@ -47,5 +44,5 @@ export async function renderPage(page: string, updateHistory: boolean = true) {
 		translatePage(localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en');
 		fadeIn(main_container);
 	}
-	, 200);
+	, 310);
 }

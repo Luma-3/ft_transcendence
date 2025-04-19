@@ -7,11 +7,11 @@ export async function alert(reason: string, level: string) {
 	const trad_message = trad[reason] || reason;
 	
 	const theme = localStorage.getItem('theme') || 'dark';
-	const bg = theme === 'dark' ? '#000000' : '#F8E9E9';
-	const text = theme === 'dark' ? '#F8E9E9' : '#FF8904';
-	const icon = theme === 'dark' ? '#FF8904' : '#FF8904';
-	const confirmButtonColor = theme === 'dark' ? '#744FAC' : '#FF8904';
-	const cancelButtonColor = theme === 'dark' ? '#FF8904' : '#744FAC';
+	const bg = theme === 'dark' ? '#000000' : '#FFFFFF';
+	const text = theme === 'dark' ? '#F8E9E9' : '#000000';
+	const icon = theme === 'dark' ? '#FF8904' : '#137B80';
+	const confirmButtonColor = theme === 'dark' ? '#744FAC' : '#137B80';
+	const cancelButtonColor = theme === 'dark' ? '#FF8904' : '#000000';
 
 	let result = {isConfirmed: false};
 	switch (level) {

@@ -4,8 +4,8 @@ import { homeButton } from '../components/ui/homeButton.ts';
 function logo() {
 	const theme = localStorage.getItem('theme') || 'dark';
 	return `
-		<div class="flex animate-fade-in-down">
-			<img class="w-400 h-full" src='/images/logo-${theme}.webp' alt='Transcenduck Logo'/>
+		<div class="flex w-3/4 justify-center items-center animate-fade-in-down">
+			<img class="w-full h-full" src='/images/logo-${theme}-optimized.webp' alt='Transcenduck Logo'/>
 		</div>`;
 }
 

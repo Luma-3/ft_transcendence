@@ -6,15 +6,16 @@ import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 import { logOutUser } from './userSession/userLogout'
+import { changeUserInfo } from '../pages/Profile'
 
 const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => window.history.back(),
-	'loginForm': () => loginUser(),
-	'loadLogin': () => renderPage('login'),
-	'loadHome': () => renderPage('home'),
+	'loadLoginPage': () => renderPage('login'),
 	'loadRegisterPage': () => renderPage('register'),
+	'loadSettingsPage': () => renderPage('settings'),
+	'loginForm': () => loginUser(),
+	'changeUserInfo': () => changeUserInfo(),
 	'user-menu-button': () => toggleUserMenu(),
-	'loadSettings': () => renderPage('settings'),
 	'logout': () =>  logOutUser(),
 	'google': () => {
 		window.location.href = 'http://localhost:3000/api/user/login/google'

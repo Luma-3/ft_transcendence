@@ -1,10 +1,12 @@
 import { primaryButton } from './primaryButton.ts';
+import { secondaryButton } from './secondaryButton.ts';
 
 type InputField = {
 	name: string;
 	type: string;
 	labelClass?: string;
-	placeholder: string;
+	placeholder?: string;
+	value?: string;
 	autocomplete?: string;
 	required?: boolean;
 	translate?: string;
@@ -20,9 +22,16 @@ type FormOptions = {
 		translate?: string;
 		type?: 'button' | 'submit';
 	};
+	button2?: {
+		id: string;
+		weight?: string;
+		text: string;
+		translate?: string;
+		type?: 'button' | 'submit';
+	};
 };
 
-export function form({ name, inputs, button }: FormOptions): string {
+export function form({ name, inputs, button, button2 }: FormOptions): string {
 	const inputFields = inputs
 		.map(
 			(input) => `
@@ -31,7 +40,9 @@ export function form({ name, inputs, button }: FormOptions): string {
 			class="font-text p-2 border rounded w-full
 			border-primary dark:border-dprimary
 			focus:ring-1  ring-primary dark:ring-dprimary focus:outline-none" 
-			placeholder="${input.placeholder}" ${input.required ? 'required' : ''} />
+			placeholder="${input.placeholder}" ${input.required ? 'required' : ''} 
+			value="${input.value || ''}"
+			/>
 	`
 		)
 		.join('');
@@ -39,7 +50,10 @@ export function form({ name, inputs, button }: FormOptions): string {
 	return `
 	<form id="registerUser" name="${name}" class="flex flex-col justify-left items-left space-y-4 w-full lg:w-1/2 p-4">
 		${inputFields}
+	<div class="flex flex-row gap-2 justify-between items-center">
 		${primaryButton(button)}
+		${button2 ? secondaryButton(button2) : ''}
+	</div>
 	</form>
 	`;
 }

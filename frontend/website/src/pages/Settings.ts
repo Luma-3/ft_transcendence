@@ -33,6 +33,7 @@ const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
 		
 		return `
 			${navbar(userInfos)}
+			${backButton()}
 			<div class=" text-primary dark:text-dtertiary">
 				<div class="flex flex-col items-center justify-center space-y-4 pt-20">
 					${settingsLogo()}
@@ -50,7 +51,6 @@ const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
 				</div>
 				<div class="flex flex-col items-center justify-center space-y-4 pt-20">
 					${primaryButton({id: "logout", text: "logout", translate: "logout"})}
-					${backButton()}
 				</div>
 			</div>
 			${footer()}`

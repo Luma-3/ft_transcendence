@@ -1,9 +1,12 @@
 import { User } from '../../api/interfaces/User';
 
 function headerUserMenu(user: User) {
-	return `<div class=" py-3 px-6 flex flex-col-2 items-center">
-				<img class="w-10 h-10 rounded-full" src="/images/pp.jpg" alt="User profile picture">
-				<span class="p-2 block text-sm font-title overflow-hidden truncate text-secondary dark:text-dsecondary">${user.username}</span>
+	return `<div class="flex flex-row py-3 px-2 items-center gap-2">
+				<div class="relative w-12 h-12 flex-shrink-0">
+					<img class="w-full h-full rounded-full" src="/images/pp.jpg" alt="User profile picture">
+				</div>
+				<span class="p-2 block text-sm font-title overflow-hidden truncate
+				 text-secondary dark:text-dsecondary">${user.username}</span>
 			</div>`;
 }
 
