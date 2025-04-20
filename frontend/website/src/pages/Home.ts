@@ -1,5 +1,5 @@
 import { languageSelector } from '../components/ui/languageSelector.ts';
-import { homeButton } from '../components/ui/homeButton.ts';
+import { animateButton } from '../components/ui/animateButton.ts';
 
 function logo() {
 	const theme = localStorage.getItem('theme') || 'dark';
@@ -11,17 +11,14 @@ function logo() {
 
 function divHomePage() {
 	return `
-		<div class='flex flex-col items-center justify-center h-screen space-y-4
-		 text-tertiary dark:text-dtertiary'>
+		<div class='flex flex-col items-center justify-center h-screen'>
 			${logo()}
 			${languageSelector()}
-			${homeButton()}
+			${animateButton("loadLoginPage", "welcome", "get_started")}
 		</div>`;
 }
 
 export async function homePage() {
-
 	const container = divHomePage();
-	
 	return container;
 }
