@@ -11,7 +11,7 @@ function logo() {
 
 function divHomePage() {
 	return `
-		<div class='flex flex-col items-center justify-center h-screen'>
+		<div class='flex flex-col items-center justify-center h-screen space-y-5'>
 			${logo()}
 			${languageSelector()}
 			${animateButton("loadLoginPage", "welcome", "get_started")}

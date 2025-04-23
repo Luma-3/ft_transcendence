@@ -32,17 +32,17 @@ export function headerPage(titlePage: string) {
 			break;
 	}
 	if (logoSvg !== "") {
-		logo = `<div class="flex flex-col w-full items-center justify-center space-y-4 pt-20
+		logo = `<div class="flex flex-col w-full items-center justify-center space-y-4 pt-5
 		text-primary dark:text-dprimary" alt="logoPage">
 			${logoSvg}
-		</div>`;
+	</div>`;
 	}
 	
 	return `
 		${backButton()}
 		${logo}
 		<div class="flex text-6xl p-7 font-title items-center justify-center
-		text-tertiary dark:text-dtertiary motion-reduce:animate-pulse overflow truncate"
+		text-primary dark:text-dtertiary motion-reduce:animate-pulse overflow truncate"
 		translate="${titlePage}">
 			${titlePage}
 		</div>`;

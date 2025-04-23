@@ -11,7 +11,7 @@ export function changeDefaultLang() {
 	const labels = all_langs.map((lang) => {
 
 		const isChecked = (lang === langPreselect) ? 'checked' : ''
-		return `<div role="button" class="flex w-full items-center rounded-lg p-0 transition-all hover:bg-secondary focus:bg-slate-100 active:bg-slate-100">
+		return `<div role="button" class="flex w-full items-center rounded-lg p-0 transition-all hover:bg-tertiary hover:dark:bg-dsecondary focus:bg-slate-100 active:bg-slate-100">
 					<label for="${lang}-changer" class="flex w-full cursor-pointer items-center px-3 py-2">
 					<div class="inline-flex items-center">
 			
@@ -32,8 +32,8 @@ export function changeDefaultLang() {
 	
 
 	return `<div class="text-2xl p-2 font-title items-center justify-center motion-reduce:animate-pulse" translate="change-default-language">Change default language</div>
-				<div class="relative sm:w-full md:w-1/2 flex flex-col rounded-xl bg-primary shadow">
-				<nav class="flex min-w-[240px] w-full flex-row gap-1 p-2">
+				<div class="relative sm:w-full md:w-1/2 flex flex-col rounded-xl bg-primary dark:bg-dprimary shadow">
+				<nav class="flex min-w-[340px] w-full flex-row gap-1 p-2">
 				${labels}
 				${secondaryButton({id: 'saveLang',weight: "1/2", text: 'Save', translate: 'saveLang', type: 'button'})}
 				</div>

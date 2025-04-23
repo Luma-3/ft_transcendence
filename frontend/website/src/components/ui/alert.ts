@@ -44,3 +44,75 @@ export async function alert(reason: string, level: string) {
 	}
 	return result.isConfirmed;
 }
+
+import { User } from "../../api/interfaces/User";
+import { fetchApi } from "../../api/fetch";
+import { API_ROUTES } from "../../api/routes";
+
+export async function alertChangePasword() {
+
+	const responseApiUser = await fetchApi<User>(API_ROUTES.USERS.INFOS,
+		{method: "GET", credentials: "include"});
+
+	if (responseApiUser.status === "success" && responseApiUser.data) {
+	
+	// const userInfos = responseApiUser.data;
+	const lang = localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en';
+	const trad = await loadTranslation(lang);
+	
+	const theme = localStorage.getItem('theme') || 'dark';
+	const bg = theme === 'dark' ? '#000000' : '#FFFFFF';
+	const text = theme === 'dark' ? '#F8E9E9' : '#137B80';
+	const icon = theme === 'dark' ? '#FF8904' : '#137B80';
+	const confirmButtonColor = theme === 'dark' ? '#744FAC' : '#137B80';
+	const cancelButtonColor = theme === 'dark' ? '#FF8904' : '#000000';
+
+	Swal.fire({
+		title: trad["change-your-password"],
+		position: "center",
+		icon: "info",
+		background: bg,
+		color: text,
+		iconColor: icon,
+		confirmButtonColor: confirmButtonColor,
+		cancelButtonColor: cancelButtonColor,
+		//TODO: Translate
+		html: `
+		<div class="flex justify-center items-center font-title m-4 ">
+		${trad['change-your-password-description']}
+		</div>
+		<div class="flex flex-col bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary p-4 rounded-lg">
+			<label for="oldPassword" class="swal2-label font-title">${trad['old-password']}</label>
+			<input id="oldPassword" class="swal2-input font-title" autocapitalize="off" placeholder="${trad['old-password']}" type="password">
+			<label for="newPassword" class="swal2-label font-title mt-4">${trad['new-password']}</label>
+			<input id="newPassword" type="password" class="swal2-input font-title"  placeholder="${trad['old-password']}" autocapitalize="off">
+			<label for="confirmPassword" class="swal2-label font-title mt-4">${trad['confirm-new-password']}</label>
+			<input id="confirmPassword" type="password" class="swal2-input font-title" placeholder="${trad['confirm-new-password']}" autocapitalize="off">
+		</div>
+		`,
+		showCancelButton: true,
+		confirmButtonText: "Confirm",
+		showLoaderOnConfirm: true,
+	
+		preConfirm: () => {
+			const oldPassword = (document.getElementById('oldPassword') as HTMLInputElement).value;
+			const newPassword = (document.getElementById('newPassword') as HTMLInputElement).value;
+			const repeatNewPassword = (document.getElementById('confirmPassword') as HTMLInputElement).value;
+			if (!oldPassword || !newPassword || !repeatNewPassword) {
+				Swal.showValidationMessage('Please enter all fields');
+			} else if (newPassword !== repeatNewPassword) {
+				Swal.showValidationMessage('New password and confirm password do not match');
+			}
+			return { oldPassword, newPassword, repeatNewPassword };
+			// TODO: Rajoute un fetch pour verifier le old password et verifier si le nouveau password correspond a notre police
+		}
+	}).then((result) => {
+		if (result.isConfirmed) {
+			Swal.fire({
+				title: `Old Password: ${result.value?.oldPassword}, New Password: ${result.value?.newPassword}, Confirm Password: ${result.value?.repeatNewPassword}`,
+			});
+		}
+	});
+	}
+
+}

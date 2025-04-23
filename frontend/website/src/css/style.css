@@ -14,9 +14,9 @@
   --font-text: 'Merriweather', sans-serif;
   
   /* White mode */
-  --color-primary: #137B80; /* Orange */
-  --color-secondary: #000000; /* Violet */
-  --color-tertiary: #FFFFFF; /* White */
+  --color-primary: #137B80; /* Vert / Bleu */
+  --color-secondary: #000000; /* Noir */
+  --color-tertiary: #FFFFFF; /* Blanc */
 
   /* Dark mode */
   --color-dprimary: #744FAC; /* Violet */

@@ -24,8 +24,8 @@
 	"settings": "Configuraciones",
 	"change-default-language": "Cambiar idioma predeterminado",
 	
-	"disable": "Desactivar",
-	"enable": "Activar",
+	"activate-2fa": "Activar 2FA",
+	"disable-2fa": "Desactivar 2FA",
 	"save_choice": "Guardar elección",
 	"lang_choice": "Elige tu idioma: ",
 	"get_started": "¡Comienza!",
@@ -40,7 +40,12 @@
 	"profile": "Perfil",
 	"your-informations": "Tu información",
 	"save-changes": "Guardar cambios",
+	"change-your-password": "Cambiar tu contraseña",
+	"change-your-password-description": "Cambia tu contraseña para asegurar tu cuenta.",
 	"change-password": "Cambiar contraseña",
+	"old-password": "Contraseña antigua",
+	"new-password": "Nueva contraseña",
+	"confirm-new-password": "Confirmar nueva contraseña",
 
 	"version": "Versión",
 	"no-duck-hurt": "No se hirió a ningún pato",

@@ -7,6 +7,7 @@ import { toggleUserMenu } from '../components/utils/toggleUserMenu'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 import { logOutUser } from './userSession/userLogout'
 import { changeUserInfo } from '../pages/Profile'
+import { changeUserPassword } from '../events/userSession/userChange'
 
 const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => window.history.back(),
@@ -20,6 +21,7 @@ const clickEvent: {[key: string]: () => void } = {
 	'google': () => {
 		window.location.href = 'http://localhost:3000/api/user/login/google'
 	},
+	'change-password': () => changeUserPassword(),
 	'saveLang': saveDefaultLanguage,
 };
 
