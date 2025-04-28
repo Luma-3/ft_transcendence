@@ -9,7 +9,7 @@ function navbarLogo() {
 
 export function userMenu(user: User) {
 	return `
-	<div id="user-menu" class="hidden absolute right-0 z-50 my-2 mx-4 w-56 text-primary bg-tertiary rounded dark:text-dtertiary dark:bg-dprimary">
+	<div id="user-menu" class="hidden transition-all duration-500 transform translate-y-10 opacity-0 pointer-events-none absolute right-0 z-50 my-2 mx-4 w-56 text-primary bg-tertiary rounded dark:text-dtertiary dark:bg-dprimary">
 	${renderUserMenu(user)}
 	</div>`
 }

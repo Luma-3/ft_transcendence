@@ -18,7 +18,7 @@ export function renderLoginPage() {
 	</div>`;
 }
 
-export function loginPage() {
+export default function loginPage() {
 	saveLanguage();
 	return renderLoginPage();
 }

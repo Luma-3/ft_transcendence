@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import 'tui-image-editor/dist/tui-image-editor.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -9,12 +10,25 @@
   src: url('./font/Chillax-Variable.ttf') format('truetype');
 }
 
+.tui-image-editor-header-logo {
+  display: none !important;
+}
+
+.tui-image-editor-header .tui-image-editor-download-btn {
+  display: none !important;
+  justify-content: center !important;
+}
+
+.tui-image-editor-help-menu {
+  display: none !important;
+}
+
 @theme {
   --font-title: 'Chillax', sans-serif;
   --font-text: 'Merriweather', sans-serif;
   
   /* White mode */
-  --color-primary: #137B80; /* Vert / Bleu */
+  --color-primary: #744FAC; /* Violet */
   --color-secondary: #000000; /* Noir */
   --color-tertiary: #FFFFFF; /* Blanc */
 

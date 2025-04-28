@@ -3,7 +3,7 @@ import { fetchApi } from "../api/fetch";
 import { API_ROUTES } from "../api/routes";
 import { User } from "../api/interfaces/User";
 import { footer } from "../components/ui/footer";
-import { alert } from "../components/ui/alert";
+import notfound from "./404";
 
 async function renderDashboard() {
 	
@@ -18,12 +18,11 @@ async function renderDashboard() {
 			${footer()}
 		`
 	}
-	alert(userinfoResponse.message, "error");
-	return;
+	return notfound()
 }
 
-export async function dashboardPage() {
+export default async function dashboardPage() {
 
 	const container = renderDashboard();
-	return container;
+	return container as Promise<string>;
 }

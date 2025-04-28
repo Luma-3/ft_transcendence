@@ -18,7 +18,7 @@ function divHomePage() {
 		</div>`;
 }
 
-export async function homePage() {
+export default async function homePage() {
 	const container = divHomePage();
 	return container;
 }

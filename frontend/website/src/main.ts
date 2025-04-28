@@ -4,6 +4,7 @@ import { fetchApi } from "./api/fetch"
 import { User } from "./api/interfaces/User"
 import { API_ROUTES } from "./api/routes"
 
+
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 
 export function addToHistory(page: string, updateHistory: boolean = true) {

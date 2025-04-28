@@ -9,6 +9,6 @@ function renderRegisterPage() {
 	</div>`;
 }
 
-export function registerPage() {
+export default function registerPage() {
 	return renderRegisterPage()
 }

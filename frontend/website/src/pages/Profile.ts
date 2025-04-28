@@ -8,6 +8,8 @@ import { primaryButton } from "../components/ui/primaryButton"
 import { form } from "../components/ui/form"
 import { backButton } from "../components/ui/backButton"
 import Swal from "sweetalert2"
+import notfound from "./404";
+
 
 // function profileLogo() {
 // 	return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -33,7 +35,7 @@ function profileName(nameProfil: string | undefined) {
 }
 
 function profilePicture(photoProfil: string | undefined) {
-	return `<div class="relative w-32 h-32 group text-primary dark:text-dprimary">
+	return `<div id="img-div" class="relative w-32 h-32 group text-primary dark:text-dprimary">
 		<img src="${photoProfil}" class="w-full h-full rounded-full border-2 opacity-100 group-hover:opacity-0 transition-opacity duration-300 ease-in-out"
 		 alt="Profile picture">
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -47,11 +49,11 @@ function profilePhotoChanger() {
 	return `
 	<div class="flex flex-col items-center space-y-2 ml-15 mr-15 pt-4 justify-center">
 		<label for="file-upload" class="flex">
-		<input id="file-upload" type="file" accept="image/*" class="hidden"  />
+		<input id="file-upload" type="" accept="image/*" class="hidden"  />
 		${profilePicture("/images/pp.jpg")}
 		</label>
-	</div>`
-}
+		</div>
+	`}
 
 export async function changeUserInfo() {
 	Swal.fire({
@@ -124,6 +126,8 @@ export async function changeUserInfo() {
 
 // }
 
+import { secondaryButton } from "../components/ui/secondaryButton"
+
 
 function profileFormInfos(user: User) {
 	return `
@@ -131,6 +135,17 @@ function profileFormInfos(user: User) {
 	 <div class="flex font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary" translate="your-informations"> 
 	 Your informations
 	 </div>
+
+	 <div id="hidden-main-image-editor" class="hidden transition-all duration-500 transform translate-y-10 opacity-0 pointer-events-none
+	  mt-4 w-[848px] justify-center items-center space-x-2 ">
+	 	<div class="flex flex-col justify-center items-center w-full h-[648px] rounded-lg">
+			<div id="tui-image-editor-container" class="rounded-xl"></div>
+			</div>
+			<div class="flex flex-row justify-between items-center gap-2 mt-4">
+				${primaryButton({id: "save-image", text: "Save", weight: "1/2"})}
+				${secondaryButton({id: "cancel-image", text: "Cancel", weight: "1/2"})}
+			</div>
+		</div>
 	${profilePhotoChanger()}
 
 		${form({
@@ -226,11 +241,11 @@ function profileFormInfos(user: User) {
 // }
 
 import { headerPage } from "../components/ui/headerPage"
-function profileHeader(user: User) {
-	return `
-	${headerPage("profile")}
-	${profileName(user.username)}`
-}
+// function profileHeader(user: User) {
+// 	return `
+// 	${headerPage("profile")}
+// 	${profileName(user.username)}`
+// }
 
 async function renderProfilePage() {
 
@@ -247,15 +262,13 @@ async function renderProfilePage() {
 			${profileName(userInfos.username)}
 			${profileFormInfos(userInfos)}
 			<div class="flex flex-col">
-				
 			</div>
 			${footer()}`
-	} else {
-		return `${alert(userInfoResponse.message, "error")}`
 	}
+	return notfound();
 }
 
-export function profilePage() {
+export default function profilePage() {
 	const container = renderProfilePage();
 	return container;
 }
