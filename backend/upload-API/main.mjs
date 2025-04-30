@@ -4,6 +4,8 @@ import dotenv from 'dotenv'
 import fastifyMultipart from '@fastify/multipart'
 import uplaodRoute from './handler/Routes.mjs'
 import swagger from './plugins/swagger.mjs'
+import staticFile from "./plugins/staticFile.mjs"
+import verifyAPIKey from "./plugins/verifyAPIKey.mjs"
 
 dotenv.config()
 
@@ -15,12 +17,20 @@ const fastify = Fastify({
 	},
 });
 
+const allowedAPIKey = [
+  process.env.USER_SERVICE_API_KEY
+]
+
+fastify.addHook('OnRequest', verifyAPIKey(allowedAPIKey));
+
 fastify.register(fastifyMultipart);
 await swagger(fastify, {
 	title: 'Upload Service API',
 	description: 'Endpoints for uplaod files',
 	route: '/doc/json'
 });
+
+await staticFile(fastify);
 
 fastify.register(uplaodRoute);
 

@@ -41,4 +41,11 @@ export class UserModel {
 
 		return this.knex('users').insert(user, schema);
 	}
+
+  async update(ID, update, schema = Base_Schema) {
+    return this.knex('users')
+    .select(sechema)
+    .where('id', ID)
+    .update(update)
+  }
 }

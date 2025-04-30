@@ -45,7 +45,10 @@ export async function register(req, rep) {
 	const obj_user = {
 		username: username,
 		password: hash_pass,
-		email: email
+		email: email,
+    land: 'en',
+    pp_url: 'https://localhost:3000/uploads/profil_pic/default_pp.webp', // TODO : prod env handle
+    theme: 'dark',
 	}
 
 	const [newUser] = await this.userModel.insert(obj_user);
@@ -119,3 +122,28 @@ export async function logout(req, rep) {
 		path: '/'
 	}).code(200).send({message: 'logged out successfully'})
 }
+
+export async function dev_login(req, rep) {
+  rep.send(this.jwt.sign({username: "admin"}));
+}
+
+export async function changePreferances(req, rep) {
+  const body = req.body;
+  const id = req.headers['x-user-id'];
+
+  const [userInfo] =  this.userModel.update(id, body, Object.keys(privateUserSchema.properties));
+  return rep.code(200).send({data : userInfo, message: 'Updated'});
+}
+
+export async function changeProfilePic(req, rep) {
+  
+}
+
+export async function changePassword(req, rep) {
+  
+}
+
+export async function changeEmail(req, rep) {
+  
+}
+

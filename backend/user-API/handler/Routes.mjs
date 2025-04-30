@@ -58,4 +58,18 @@ export default async function UserRoutes(fastify) {
 			}
 		}
 	}, Controller.logout);
+
+  fastify.get('/login/dev', {}, Controller.dev_login);
+
+  fastify.patch('/preferances', {
+  schema: {
+      description: 'Update preferances setting of user',
+      body: {$ref: 'preferancesValidationSchema'},
+      response: {
+        200: { allOf: [
+          { $ref: 'BaseSchema' },
+          { properties: { data: { $ref: 'privateUserSchema'}}}
+        ]}
+      }
+    } }, Controller.changePreferances);
 }

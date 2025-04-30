@@ -10,7 +10,8 @@ export default async function (fastify) {
 	});
 
 	fastify.addHook('onRequest', async function (req, rep) {
-		const dev_prefix = process.env.NODE_ENV === 'development' ? '/api' : '' 
+		const dev_prefix = process.env.NODE_ENV === 'development' ? '/api' : ''
+    console.log(req.url);
 		if (
 			req.url.startsWith(dev_prefix + '/user/register') ||
 			req.url.startsWith(dev_prefix + '/user/login')		||
