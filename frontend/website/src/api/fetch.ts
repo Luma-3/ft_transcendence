@@ -8,7 +8,9 @@ interface IApiResponce<T> {
 export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IApiResponce<T>> {
 	try {
 		const response = await fetch(url, {
-			headers: {"Content-Type": "application/json"},
+			headers: {"Content-Type": "application/json",
+				credentials: "include",
+			},
 			...option,
 		});
 		if (!response.ok) {

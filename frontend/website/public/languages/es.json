@@ -4,6 +4,8 @@
 	"no": "No",
 	"cancel": "Cancelar",
 	"back-link": "Atrás",
+	"confirm": "Confirmar",
+	"delete": "Eliminar",
 	
 	"username": "Nombre de usuario",
 	"password": "Contraseña",
@@ -46,6 +48,8 @@
 	"old-password": "Contraseña antigua",
 	"new-password": "Nueva contraseña",
 	"confirm-new-password": "Confirmar nueva contraseña",
+	"password-changed": "Contraseña cambiada",
+	"user-infos-updated": "Información actualizada",
 
 	"version": "Versión",
 	"no-duck-hurt": "No se hirió a ningún pato",

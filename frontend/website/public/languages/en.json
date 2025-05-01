@@ -4,6 +4,9 @@
 	"no": "No",
 	"cancel": "Cancel",
 	"back-link": "Back",
+	"confirm": "Confirm",
+	"delete": "Delete",
+	"edit": "Edit",
 
 	"username": "Username",
 	"password": "Password",
@@ -46,6 +49,9 @@
 	"old-password": "Old password",
 	"new-password": "New password",
 	"confirm-new-password": "Confirm new password",
+	"password-changed": "Password changed",
+	"user-infos-updated": "Informations updated",
+
 
 	"version": "Version",
 	"no-duck-hurt": "No duck was hurt",

@@ -3,6 +3,7 @@ import { animateButton } from '../components/ui/animateButton.ts';
 
 function logo() {
 	const theme = localStorage.getItem('theme') || 'dark';
+	console.log(theme);
 	return `
 		<div class="flex w-3/4 justify-center items-center animate-fade-in-down">
 			<img class="w-full h-full" src='/images/logo-${theme}-optimized.webp' alt='Transcenduck Logo'/>

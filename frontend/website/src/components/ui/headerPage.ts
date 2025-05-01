@@ -44,6 +44,6 @@ export function headerPage(titlePage: string) {
 		<div class="flex text-6xl p-7 font-title items-center justify-center
 		text-primary dark:text-dtertiary overflow truncate"
 		translate="${titlePage}">
-			${titlePage}
+		${titlePage}
 		</div>`;
 }

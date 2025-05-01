@@ -1,7 +1,7 @@
 export function footer() {
 	return `
 	<div class="bottom-0 left-0 w-full h-40 mt-10
-	bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary
+	bg-secondary dark:bg-dprimary text-tertiary dark:text-dtertiary
 	flex items-center justify-between rounded-sm">
 		<div class="text-xl justify-start ml-2 font-title">
 			<div class="p-2">Transcenduck <br> </div>

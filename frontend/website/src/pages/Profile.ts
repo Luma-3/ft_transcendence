@@ -8,33 +8,18 @@ import { primaryButton } from "../components/ui/primaryButton"
 import { form } from "../components/ui/form"
 import { backButton } from "../components/ui/backButton"
 import Swal from "sweetalert2"
+import { headerPage } from "../components/ui/headerPage"
 import notfound from "./404";
 
 
-// function profileLogo() {
-// 	return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-// 	class="size-20 mr-2 hover:animate-spin">
-// 	<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-// 	</svg>`
-// }
-
-// function profileTitle() {
-// 	return `<div class="text-6xl font-title p-2 items-center justify-center 
-// 	text-tertiary dark:text-dtertiary 
-// 	motion-reduce:animate-pulse" translate="profile">
-// 	Profile
-// 	</div>`
-// }
-
-
-function profileName(nameProfil: string | undefined) {
+function profileName(nameProfil: string) {
 	return `<h1 class="relative w-full p-2 text-4xl justify-center font-title text-center italic
-	text-tertiary dark:text-dtertiary overflow truncate">
+	text-secondary dark:text-dtertiary overflow truncate">
 	${nameProfil}
 	</h1>`
 }
 
-function profilePicture(photoProfil: string | undefined) {
+function profilePicture(photoProfil: string) {
 	return `<div id="img-div" class="relative w-32 h-32 group text-primary dark:text-dprimary">
 		<img src="${photoProfil}" class="w-full h-full rounded-full border-2 opacity-100 group-hover:opacity-0 transition-opacity duration-300 ease-in-out"
 		 alt="Profile picture">
@@ -45,93 +30,32 @@ function profilePicture(photoProfil: string | undefined) {
 	</div>`
 }
 
-function profilePhotoChanger() {
+function profilePhotoChanger(userPicture: string) {
 	return `
 	<div class="flex flex-col items-center space-y-2 ml-15 mr-15 pt-4 justify-center">
 		<label for="file-upload" class="flex">
 		<input id="file-upload" type="" accept="image/*" class="hidden"  />
-		${profilePicture("/images/pp.jpg")}
+		${profilePicture(userPicture)}
 		</label>
 		</div>
 	`}
 
-export async function changeUserInfo() {
-	Swal.fire({
-	position: "center-end",
-	toast: true,
-	icon: "success",
-	title: "Your informations have been changed",
-	showConfirmButton: false,
-	timer: 1500
-	});
+import { alertTemporary } from "../components/ui/alert"
+export async function messageUpdateUserInfo() {
+	const lang = localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en';
+	const theme = localStorage.getItem('theme') || 'dark';
+	const trad = await loadTranslation(lang);
+	const message = trad['user-infos-updated'];
+	alertTemporary(message, theme);
 }
 
-
-
-// export async function changePasswordUser() {
-	
-// 	const responseApiUser = await fetchApi<User>(API_ROUTES.USERS.INFOS,
-// 		{method: "GET", credentials: "include"});
-// 	if (responseApiUser.status === "success" && responseApiUser.data) {
-// 		const userInfos = responseApiUser.data;
-// 		// const lang = localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en';
-// 		// const trad = await loadTranslation(lang);
-		
-// 		const theme = localStorage.getItem('theme') || 'dark';
-// 		const bg = theme === 'dark' ? '#000000' : '#F8E9E9';
-// 		const text = theme === 'dark' ? '#F8E9E9' : '#FF8904';
-// 		const icon = theme === 'dark' ? '#FF8904' : '#FF8904';
-// 		const confirmButtonColor = theme === 'dark' ? '#744FAC' : '#FF8904';
-// 		const cancelButtonColor = theme === 'dark' ? '#FF8904' : '#744FAC';
-
-// 		Swal.fire({
-// 			title: "Change your informations",
-// 			position: "top-end",
-// 			icon: "info",
-// 			background: bg,
-// 			color: text,
-// 			iconColor: icon,
-// 			confirmButtonColor: confirmButtonColor,
-// 			cancelButtonColor: cancelButtonColor,
-			
-// 			html: `
-// 			<div class="flex flex-col justify-left items-left bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary p-4 rounded-lg">
-// 				<label for="username-input" class="swal2-label font-title">Username</label>
-// 				<input id="username-input" class="swal2-input font-title" value="${userInfos.username}" autocapitalize="off">
-// 				<label for="email-input" class="swal2-label font-title">Email</label>
-// 				<input id="email-input" type="email" class="swal2-input font-title" value="${userInfos.email}" placeholder="Email" autocapitalize="off">
-// 			</div>
-// 			`,
-// 			showCancelButton: true,
-// 			confirmButtonText: "Confirm",
-// 			showLoaderOnConfirm: true,
-		
-
-// 			preConfirm: () => {
-// 				const username = (document.getElementById('username-input') as HTMLInputElement).value;
-// 				const email = (document.getElementById('email-input') as HTMLInputElement).value;
-// 				if (!username || !email) {
-// 					Swal.showValidationMessage('Please enter both username and email');
-// 				}
-// 				return { username, email };
-// 			}
-// 		}).then((result) => {
-// 			if (result.isConfirmed) {
-// 				Swal.fire({
-// 					title: `Username: ${result.value?.username}, Email: ${result.value?.email}`,
-// 				});
-// 			}
-// 		});
-// 	}
-
-// }
-
 import { secondaryButton } from "../components/ui/secondaryButton"
+import { loadTranslation } from "../i18n/Translate"
 
 
 function profileFormInfos(user: User) {
 	return `
-	<div class="flex flex-col font-title w-full justify-left items-center text-tertiary dark:text-dtertiary space-y-2 pt-10">
+	<div class="flex flex-col font-title w-full justify-left items-center text-secondary dark:text-dtertiary space-y-2 pt-10">
 	 <div class="flex font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary" translate="your-informations"> 
 	 Your informations
 	 </div>
@@ -146,7 +70,7 @@ function profileFormInfos(user: User) {
 				${secondaryButton({id: "cancel-image", text: "Cancel", weight: "1/2"})}
 			</div>
 		</div>
-	${profilePhotoChanger()}
+	${profilePhotoChanger(user.pp_url)}
 
 		${form({
 		name : "saveChangeBasicUserInfo",
@@ -185,10 +109,39 @@ function profileFormInfos(user: User) {
 			translate: "change-password",
 			type: "button",
 		},
-		
 	})}
 	</div>`
 }
+
+async function renderProfilePage() {
+
+	const userInfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
+		{method: "GET", credentials: "include"});
+	
+	
+	if (userInfoResponse.status === "success" && userInfoResponse.data) {
+		const userInfos = userInfoResponse.data;
+
+		return `
+			${navbar(userInfos)}
+			${headerPage("profile")}
+			${profileName(userInfos.username)}
+			${profileFormInfos(userInfos)}
+			<div class="flex flex-col">
+			</div>
+			${footer()}`
+	}
+	return notfound();
+}
+
+export default function profilePage() {
+	const container = renderProfilePage();
+	return container;
+}
+
+
+
+
 
 // function friendsList() {
 // 	return `<div class="flex flex-col items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
@@ -239,36 +192,3 @@ function profileFormInfos(user: User) {
 // 	</div>
 // 	</div>`
 // }
-
-import { headerPage } from "../components/ui/headerPage"
-// function profileHeader(user: User) {
-// 	return `
-// 	${headerPage("profile")}
-// 	${profileName(user.username)}`
-// }
-
-async function renderProfilePage() {
-
-	const userInfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
-		{method: "GET", credentials: "include"});
-	
-	
-	if (userInfoResponse.status === "success" && userInfoResponse.data) {
-		const userInfos = userInfoResponse.data;
-
-		return `
-			${navbar(userInfos)}
-			${headerPage("profile")}
-			${profileName(userInfos.username)}
-			${profileFormInfos(userInfos)}
-			<div class="flex flex-col">
-			</div>
-			${footer()}`
-	}
-	return notfound();
-}
-
-export default function profilePage() {
-	const container = renderProfilePage();
-	return container;
-}

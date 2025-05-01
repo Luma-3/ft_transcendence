@@ -62,9 +62,9 @@ export async function alertChangePasword() {
 	
 	const theme = localStorage.getItem('theme') || 'dark';
 	const bg = theme === 'dark' ? '#000000' : '#FFFFFF';
-	const text = theme === 'dark' ? '#F8E9E9' : '#137B80';
-	const icon = theme === 'dark' ? '#FF8904' : '#137B80';
-	const confirmButtonColor = theme === 'dark' ? '#744FAC' : '#137B80';
+	const text = theme === 'dark' ? '#F8E9E9' : '#744FAC';
+	const icon = theme === 'dark' ? '#FF8904' : '#744FAC';
+	const confirmButtonColor = theme === 'dark' ? '#744FAC' : '#744FAC';
 	const cancelButtonColor = theme === 'dark' ? '#FF8904' : '#000000';
 
 	Swal.fire({
@@ -75,19 +75,21 @@ export async function alertChangePasword() {
 		color: text,
 		iconColor: icon,
 		confirmButtonColor: confirmButtonColor,
+		confirmButtonAriaLabel: trad['confirm'],
+		cancelButtonAriaLabel: trad['cancel'],
 		cancelButtonColor: cancelButtonColor,
 		//TODO: Translate
 		html: `
-		<div class="flex justify-center items-center font-title m-4 ">
+		<div class="flex text-sm justify-center items-center font-title m-4 mt-0 ">
 		${trad['change-your-password-description']}
 		</div>
-		<div class="flex flex-col bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary p-4 rounded-lg">
+		<div class="flex flex-col bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary p-4 m-4 rounded-lg">
 			<label for="oldPassword" class="swal2-label font-title">${trad['old-password']}</label>
-			<input id="oldPassword" class="swal2-input font-title" autocapitalize="off" placeholder="${trad['old-password']}" type="password">
+			<input id="oldPassword" class="swal2-input font-title" autocapitalize="off" type="password">
 			<label for="newPassword" class="swal2-label font-title mt-4">${trad['new-password']}</label>
-			<input id="newPassword" type="password" class="swal2-input font-title"  placeholder="${trad['old-password']}" autocapitalize="off">
+			<input id="newPassword" type="password" class="swal2-input font-title" autocapitalize="off">
 			<label for="confirmPassword" class="swal2-label font-title mt-4">${trad['confirm-new-password']}</label>
-			<input id="confirmPassword" type="password" class="swal2-input font-title" placeholder="${trad['confirm-new-password']}" autocapitalize="off">
+			<input id="confirmPassword" type="password" class="swal2-input font-title" autocapitalize="off">
 		</div>
 		`,
 		showCancelButton: true,
@@ -103,16 +105,40 @@ export async function alertChangePasword() {
 			} else if (newPassword !== repeatNewPassword) {
 				Swal.showValidationMessage('New password and confirm password do not match');
 			}
-			return { oldPassword, newPassword, repeatNewPassword };
+			return { oldPassword, newPassword };
 			// TODO: Rajoute un fetch pour verifier le old password et verifier si le nouveau password correspond a notre police
 		}
-	}).then((result) => {
+	}).then(async (result) => {
 		if (result.isConfirmed) {
-			Swal.fire({
-				title: `Old Password: ${result.value?.oldPassword}, New Password: ${result.value?.newPassword}, Confirm Password: ${result.value?.repeatNewPassword}`,
+			const response = await fetchApi(API_ROUTES.USERS.UPDATE_PASSWD, {
+				method: "PUT",
+				body: JSON.stringify({
+					oldPassword: result.value?.oldPassword,
+					newPassword: result.value?.newPassword,
+				}),
 			});
+			if (response.status === "success") {
+				alertTemporary(trad['password-changed'], theme);
+		}
+			
 		}
 	});
 	}
+}
 
+export async function alertTemporary(message: string, theme: string) {
+	const bg = theme === 'dark' ? '#000000' : '#FFFFFF';
+	const text = theme === 'dark' ? '#F8E9E9' : '#744FAC';
+	const icon = theme === 'dark' ? '#FF8904' : '#744FAC';
+	return Swal.fire({
+		position: "center-end",
+		toast: true,
+		icon: "success",
+		iconColor: icon,
+		background: bg,
+		color: text,
+		title: message,
+		showConfirmButton: false,
+		timer: 1500
+		});
 }

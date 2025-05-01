@@ -6,7 +6,7 @@ import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 import { logOutUser } from './userSession/userLogout'
-import { changeUserInfo } from '../pages/Profile'
+import { messageUpdateUserInfo } from '../pages/Profile'
 import { changeUserPassword } from '../events/userSession/userChange'
 import { changePictureElement } from '../components/utils/changePicture'
 import { saveNewPicture } from '../components/utils/changePicture'
@@ -18,7 +18,7 @@ const clickEvent: {[key: string]: () => void } = {
 	'loadRegisterPage': () => renderPage('register'),
 	'loadSettingsPage': () => renderPage('settings'),
 	'loginForm': () => loginUser(),
-	'changeUserInfo': () => changeUserInfo(),
+	'changeUserInfo': () => messageUpdateUserInfo(),
 	'user-menu-button': () => toggleUserMenu(),
 	'logout': () =>  logOutUser(),
 	'google': () => {

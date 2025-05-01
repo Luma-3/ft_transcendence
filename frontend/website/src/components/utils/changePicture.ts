@@ -42,8 +42,8 @@ function initImageEditor() {
 	const editor = new ImageEditor(div_editor, {
 		includeUI: {
 		  loadImage: {
-			path: '',
-			name: '',
+			path: '/images/pp.jpg',
+			name: 'name',
 		  },
 		  theme: {
 			'header.backgroundColor': headerColor,

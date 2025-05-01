@@ -26,7 +26,7 @@ const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
 			${navbar(userInfos)}
 			${headerPage("settings")}
 				<div class="flex flex-col items-center ml-15 mr-15 justify-center space-y-4 space-x-4 pt-10
-				text-text-tertiary dark:text-dtertiary">
+				text-secondary dark:text-dtertiary">
 					${changeDefaultLang()}
 					<br>
 					${change2FA()}

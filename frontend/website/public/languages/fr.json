@@ -4,6 +4,8 @@
 	"no": "Non",
 	"cancel": "Annuler",
 	"back-link": "Retour",
+	"confirm": "Confirmer",
+	"delete": "Supprimer",
 	
 	"username": "Nom d'utilisateur",
 	"password": "Mot de passe",
@@ -45,6 +47,8 @@
 	"old-password": "Ancien mot de passe",
 	"new-password": "Nouveau mot de passe",
 	"confirm-new-password": "Confirmer le nouveau mot de passe",
+	"password-changed": "Mot de passe changé",
+	"user-infos-updated": "Informations mises à jour",
 
 
 	"version": "Version",

@@ -1,7 +1,7 @@
 export function messageWithLink(message: string, linkMessage: string, idLink: string) {
 	return `
 	<div class="flex flex-row items-center justify-center dark:text-dtertiary">
-		<div class="font-title text-secondary" translate="${message}">
+		<div class="font-title text-secondary dark:text-dtertiary" translate="${message}">
 			${message}
 			Don't have an account?
 		</div>

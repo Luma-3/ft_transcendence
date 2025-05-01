@@ -3,4 +3,7 @@ export interface User {
 	username: string;
 	created_at: string;
 	email: string;
+	lang: string;
+	theme: string;
+	pp_url: string;
 }

@@ -1,9 +1,9 @@
 export function animateButton(id: string, message: string, messageHover: string) {
 	return `
 		<div class="flex justify-center">
-			<button id="${id}" class="font-title h-auto w-[170px] mt-2 group p-7 cursor-pointer relative text-2xl
+			<button id="${id}" class="font-title h-auto w-[220px] mt-2 group p-7 cursor-pointer relative text-2xl
 				border-0 flex items-center rounded justify-center bg-transparent
-				 text-tertiary dark:text-dtertiary overflow-hidden transition-all duration-100">
+				 text-primary dark:text-dtertiary overflow-hidden transition-all duration-100">
 
 			<span id="${id}" class="group-hover:w-full absolute left-0 h-full w-5 border-y-4 border-l-4
 			 dark:border-dprimary border-primary

@@ -28,9 +28,9 @@
   --font-text: 'Merriweather', sans-serif;
   
   /* White mode */
-  --color-primary: #744FAC; /* Violet */
-  --color-secondary: #000000; /* Noir */
-  --color-tertiary: #FFFFFF; /* Blanc */
+  --color-primary:#44BBA4; /* Violet */
+  --color-secondary: #FFFFFF; /* Noir */
+  --color-tertiary: #000000; /* Blanc */
 
   /* Dark mode */
   --color-dprimary: #744FAC; /* Violet */
@@ -39,3 +39,5 @@
 
   --color-myblack: #000000;
 }
+
+/* Vert emeraude 69DC9E */
