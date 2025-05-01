@@ -51,6 +51,7 @@ export default async function UserRoutes(fastify) {
 	fastify.get('/logout', {
 		schema : {
 			description: 'logout a User',
+      tags: ['Auth'],
 			response: {
 				200: {
 					$ref: 'BaseSchema'
@@ -61,15 +62,47 @@ export default async function UserRoutes(fastify) {
 
   fastify.get('/login/dev', {}, Controller.dev_login);
 
-  fastify.patch('/preferances', {
-  schema: {
-      description: 'Update preferances setting of user',
-      body: {$ref: 'preferancesValidationSchema'},
+  fastify.patch('/preferences', {
+    schema: {
+      description: 'Update preferences setting of user',
+      body: {$ref: 'preferencesValidationSchema'},
       response: {
         200: { allOf: [
           { $ref: 'BaseSchema' },
           { properties: { data: { $ref: 'privateUserSchema'}}}
         ]}
       }
-    } }, Controller.changePreferances);
+    } 
+  }, Controller.changePreferances);
+
+  fastify.put('/changePassword', {
+    schema : {
+      description: 'Update Password',
+      body: {$ref: 'changePasswordValidationSchema'},
+      response: {
+        204: {},
+      }
+    }
+  }, Controller.changePassword);
+
+  fastify.put('/changeEmail', {
+    schema: {
+      description: 'Update Email',
+      body: {$ref: 'changeEmailValidationSchema'},
+      response: {
+        204: {},
+      }
+    }
+  }, Controller.changeEmail);
+
+  fastify.put('/changePP', {
+    schema: {
+      description: 'Update Profile Picture',
+      consumes: ['multipart/form-data'],
+      body: {$ref: 'changeProfilePicValidationSchema'},
+      response: {
+        204: {},
+      }
+    }
+  }, Controller.changeProfilePic);
 }

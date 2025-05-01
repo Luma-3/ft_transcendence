@@ -44,7 +44,7 @@ export class UserModel {
 
   async update(ID, update, schema = Base_Schema) {
     return this.knex('users')
-    .select(sechema)
+    .select(schema)
     .where('id', ID)
     .update(update)
   }

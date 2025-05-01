@@ -5,6 +5,7 @@ import formatJSON from './middlewares/formatJSON.mjs'
 import Routes from './handler/Routes.mjs'
 import fs from 'fs'
 import dotenv from 'dotenv'
+import fastifyMultipart from '@fastify/multipart'
 
 import { UserModel } from './handler/Model.mjs'
 import { registerUserSchemas } from './handler/Schema.mjs'
@@ -21,7 +22,7 @@ const fastify = Fastify({
 });
 
 await config.registerPlugins(fastify);
-
+fastify.register(fastifyMultipart);
 // await cors(fastify);
 
 fastify.setErrorHandler(errorHandler)

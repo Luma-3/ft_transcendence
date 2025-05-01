@@ -1,11 +1,11 @@
 import * as Controller from './Controller.mjs'
 
 export default async function uplaodRoute(fastify) {
-	fastify.post('/uploadfile', {
+	fastify.post('/internal/uploadfile', {
 
 	}, Controller.uplaodFile);
 
-  // fastify.get('/uploads/:filename', {
-  //
-  // }, Controller.get_file);
+  fastify.delete('/internal/:filename', {
+
+  }, Controller.deleteFile);
 }

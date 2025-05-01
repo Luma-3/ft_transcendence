@@ -1,5 +1,6 @@
 import { publicUserSchema, privateUserSchema } from "./Schema.mjs";
 
+
 export async function login(req, rep) {
 	const {username, password} = req.body;
 
@@ -118,13 +119,15 @@ export async function privateInfoUser(req, rep) {
 }
 
 export async function logout(req, rep) {
-	rep.clearCookie('token', {
+	return rep.clearCookie('token', {
 		path: '/'
 	}).code(200).send({message: 'logged out successfully'})
 }
 
 export async function dev_login(req, rep) {
-  rep.send(this.jwt.sign({username: "admin"}));
+  const jwt = this.jwt.sign({username: "admin"});
+  console.log(jwt);
+  return rep.send(jwt);
 }
 
 export async function changePreferances(req, rep) {
@@ -136,14 +139,61 @@ export async function changePreferances(req, rep) {
 }
 
 export async function changeProfilePic(req, rep) {
-  
+  const id = req.headers['x-user-id'];
+
+  const [pp_url] = await this.userModel.findByID(id, ['pp_url']);
+
+  if (pp_url !== 'https://localhost:3000/uploads/profil_pic/default_pp.webp') {
+    const response = await fetch(`https://localhost:3002/uploads/profil_pic/${pp_url}`, {
+      method: 'DELETE',
+      headers: {
+        'x-api-key': `${process.env.UPLOAD_API_KEY}`
+      }
+    })
+
+    if (!response.ok) {
+      return rep.code(500).send({message: 'Upload-Service Error'});
+    }
+  }
+
+  const response = await fetch('https://localhost:3002/upload/uplaodFile/', {
+    method: 'POST',
+    body: req.body
+  })
+  if (!response.ok) {
+    return rep.code(500).send({message: 'Upload-Service Error'});
+  }
+
+  const json = response.json();
+  const [userInfo] = await this.userModel.update(id, {pp_url: json.url});
+  return rep.code(201).send({message: "profile picture changed", data: {pp_url: userInfo.pp_url}});
 }
 
 export async function changePassword(req, rep) {
-  
+  const { oldPassword, newPassword } = req.body;
+  const id = req.headers['x-user-id'];
+
+  const [user] = await this.userModel.findByID(id, ['password']);
+  let isMatch = await this.bcrypt.compare(oldPassword, user.password);
+
+  if (!isMatch) {
+    return rep.code(401).send({message: 'Old password incorrect'});
+  }
+
+  if (oldPassword === newPassword) {
+    return rep.code(401).send({message: 'newPassword is too `similar'});
+  }
+
+  const hash_pass = this.bcrypt.hash(newPassword);
+  this.userModel.update(id, {password: newPassword});
+  return rep.code(204);
 }
 
 export async function changeEmail(req, rep) {
-  
+  const { email } = req.body;
+  const id = req.headers['x-user-id'];
+
+  this.userModel.update(id, {email: email});
+  return rep.code(204);
 }
 

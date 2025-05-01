@@ -4,6 +4,7 @@ import gateway_config from './config/gateway.config.mjs'
 import swaggerUi from "./plugins/swaggerUi.mjs"
 import fs from 'fs'
 import dotenv from 'dotenv'
+import {InternalRoute} from './middleware/InternalRoute.mjs'
 
 dotenv.config()
 
@@ -23,20 +24,22 @@ const Services = [
 	{
 		name: 'Users Services', prefix: dev_prefix + '/user',
 		upstream: process.env.NODE_ENV === 'development' ? 'https://localhost:3001' : 'https://user_api:3001',
-		url: 'https://localhost:3000' + dev_prefix + '/user/doc/json'
+		url: 'https://localhost:3000' + dev_prefix + '/user/doc/json',
+    preHandler: InternalRoute
 	},
 	{
 		name: 'Upload Services', prefix: dev_prefix + '/upload',
 		upstream: process.env.NODE_ENV === 'development' ? 'https://localhost:3002' : 'https://upload_api:3002',
-		url: 'https://localhost:3000' + dev_prefix + '/upload/doc/json'
+		url: 'https://localhost:3000' + dev_prefix + '/upload/doc/json',
+    preHandler: InternalRoute
 	}
 ]
 
-console.log(Services);
 
 await swaggerUi(gateway, Services)
 
 Services.forEach((value) => {
+  console.log(value);
 	gateway.register(http_proxy, value);
 })
 

@@ -1,9 +1,10 @@
 export const registerValidationSchema = {
 	type: 'object',
-	required: ['username', 'password'],
+	required: ['username', 'password', 'email'],
 	properties: {
 		username: { type: 'string', minLength: 2, maxLength: 32},
 		password: { type: 'string', minLength: 8, maxLength: 255},
+    email: {type: 'string', format: 'email'},
 	}
 };
 
@@ -16,7 +17,7 @@ export const loginValidationSchema = {
 	}
 };
 
-export const preferancesValidationSchema = {
+export const preferencesValidationSchema = {
   type: 'object',
   properties: {
     theme:  { type: 'string', enum: ['dark', 'light']},
@@ -24,6 +25,33 @@ export const preferancesValidationSchema = {
   },
   additionalProperties: false,
   minProperties: 1
+}
+
+export const changePasswordValidationSchema = {
+  type: 'object',
+  required: ['oldPassword', 'newPassword'],
+  properties: {
+    oldPassword: {type : 'string', minLength: 8, maxLength: 255},
+    newPassword: {type : 'string', minLength: 8, maxLength: 255}
+  }
+}
+
+export const changeEmailValidationSchema = {
+  type: 'object',
+  required: ['email'],
+  properties: {
+    email : {type: 'string', format: 'email'}
+  }
+}
+
+export const changeProfilePicValidationSchema = {
+  type: 'object',
+  properties: {
+    file: {
+      type: 'string',
+      format: 'binary'
+    }
+  }
 }
 
 export const publicUserSchema = {
@@ -43,7 +71,7 @@ export const privateUserSchema = {
 		username: { type: 'string' },
 		created_at: {type: 'string'},
 		email: {type: 'string'},
-	  url_pp: {type: 'string'},
+    url_pp: {type: 'string'},
     language: {type: 'string'},
     theme: {type: 'string'}
   }
@@ -54,5 +82,8 @@ export async function registerUserSchemas(fastify) {
 	fastify.addSchema({$id: 'privateUserSchema', ...privateUserSchema});
 	fastify.addSchema({$id: 'loginValidationSchema', ...loginValidationSchema});
 	fastify.addSchema({$id: 'registerValidationSchema', ...registerValidationSchema});
-  fastify.addSchema({$id: 'preferancesValidationSchema', ...preferancesValidationSchema});
+  fastify.addSchema({$id: 'preferencesValidationSchema', ...preferencesValidationSchema});
+  fastify.addSchema({$id: 'changePasswordValidationSchema', ...changePasswordValidationSchema});
+  fastify.addSchema({$id: 'changeEmailValidationSchema', ...changeEmailValidationSchema});
+  fastify.addSchema({$id: 'changeProfilePicValidationSchema', ...changeProfilePicValidationSchema});
 }
