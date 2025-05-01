@@ -47,7 +47,7 @@ export async function register(req, rep) {
 		username: username,
 		password: hash_pass,
 		email: email,
-    land: 'en',
+    lang: 'en',
     pp_url: 'https://localhost:3000/uploads/profil_pic/default_pp.webp', // TODO : prod env handle
     theme: 'dark',
 	}

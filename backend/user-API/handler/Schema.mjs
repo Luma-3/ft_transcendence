@@ -60,7 +60,7 @@ export const publicUserSchema = {
 		id: { type: 'string' },
 		username: { type: 'string' },
 		created_at: {type: 'string'},
-    url_pp: {type: 'string'}
+    pp_url: {type: 'string'}
 	}
 };
 
@@ -71,8 +71,8 @@ export const privateUserSchema = {
 		username: { type: 'string' },
 		created_at: {type: 'string'},
 		email: {type: 'string'},
-    url_pp: {type: 'string'},
-    language: {type: 'string'},
+    pp_url: {type: 'string'},
+    lang: {type: 'string'},
     theme: {type: 'string'}
   }
 }
