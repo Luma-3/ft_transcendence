@@ -1,3 +1,7 @@
+import { API_ROUTES } from "../api/routes";
+import { fetchApi } from "../api/fetch";
+import Swal from "sweetalert2";
+
 // * Chargement des traductions
 export async function loadTranslation(lang: string) {
 	const reponse = await fetch(`languages/${lang}.json`)
@@ -39,7 +43,6 @@ export function changeLanguage(lang: string | undefined) {
 
 	if (!lang) {
 		language = (document.getElementById('language') as HTMLSelectElement).value;
-		sessionStorage.setItem('lang', language);
 	} else {
 		language = lang;
 	}
@@ -47,15 +50,28 @@ export function changeLanguage(lang: string | undefined) {
 }
 
 export function saveLanguage() {
+	
 	const choice = (document.getElementById('language') as HTMLSelectElement)
 	if (choice === null) {
 		return;
 	}
+	
 	const lang_select = choice.value;
 	if (lang_select !== 'en' && lang_select !== 'fr' && lang_select !== 'es') {
 		return;
 	}
-	sessionStorage.setItem('lang', lang_select);
+	
+	const response = fetchApi(API_ROUTES.USERS.UPDATE_PREF, {
+		method: "PATCH",
+		body: JSON.stringify({
+			lang: lang_select,
+		})
+	});
+	if (response.status === "success") {
+		Swal.fire({
+			
+		})
+	}
 }
 
 export function saveDefaultLanguage() {
@@ -67,4 +83,5 @@ export function saveDefaultLanguage() {
 		return;
 	}
 	localStorage.setItem('lang', lang_select);
+	//TODO: PATCH LANG
 }

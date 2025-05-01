@@ -1,3 +1,4 @@
+import { toggleUserMenu } from "./toggleUserMenu";
 
 /**
  * @brief Hide or show elements based on the target element.
@@ -19,7 +20,11 @@ export function hideToggleElements(target: HTMLElement) {
 			if (isInsideParentElement(target, div.id)) {
 				return;
 			}
-			div.classList.toggle('hidden');
+			if (element === 'user-menu') {
+				toggleUserMenu();
+			} else {
+				div.classList.toggle('hidden');
+			}
 		}
 	});
 }

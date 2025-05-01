@@ -4,6 +4,9 @@
 	"no": "No",
 	"cancel": "Cancel",
 	"back-link": "Back",
+	"confirm": "Confirm",
+	"delete": "Delete",
+	"edit": "Edit",
 
 	"username": "Username",
 	"password": "Password",
@@ -24,8 +27,8 @@
 	"settings": "Settings",
 	"change-default-language": "Change default language",
 
-	"disable": "Disable",
-	"enable": "Enable",
+	"activate-2fa": "Activate 2FA",
+	"disable-2fa": "Disable 2FA",
 	"save_choice": "Save choice",
 	"lang_choice": "Choose your language: ",
 	"get_started": "Get started !",
@@ -38,8 +41,17 @@
 	"delete-account": "Delete account",
 
 	"profile": "Profile",
-	"change-profil-picture": "Change your profile picture",
-	"choose-file": "Choose file",
+	"your-informations": "Your informations",
+	"save-changes": "Save changes",
+	"change-password": "Change password",
+	"change-your-password": "Change your password",
+	"change-your-password-description": "Change your password to secure your account.",
+	"old-password": "Old password",
+	"new-password": "New password",
+	"confirm-new-password": "Confirm new password",
+	"password-changed": "Password changed",
+	"user-infos-updated": "Informations updated",
+
 
 	"version": "Version",
 	"no-duck-hurt": "No duck was hurt",

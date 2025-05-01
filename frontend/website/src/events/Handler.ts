@@ -6,20 +6,29 @@ import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 import { logOutUser } from './userSession/userLogout'
+import { messageUpdateUserInfo } from '../pages/Profile'
+import { changeUserPassword } from '../events/userSession/userChange'
+import { changePictureElement } from '../components/utils/changePicture'
+import { saveNewPicture } from '../components/utils/changePicture'
+import { cancelEditor } from '../components/utils/changePicture'
 
 const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => window.history.back(),
+	'loadLoginPage': () => renderPage('login'),
+	'loadRegisterPage': () => renderPage('register'),
+	'loadSettingsPage': () => renderPage('settings'),
 	'loginForm': () => loginUser(),
-	'loadLogin': () => renderPage('login'),
-	'loadHome': () => renderPage('home'),
-	'loadRegister': () => renderPage('register'),
+	'changeUserInfo': () => messageUpdateUserInfo(),
 	'user-menu-button': () => toggleUserMenu(),
-	'loadSettings': () => renderPage('settings'),
 	'logout': () =>  logOutUser(),
 	'google': () => {
 		window.location.href = 'http://localhost:3000/api/user/login/google'
 	},
+	'change-password': () => changeUserPassword(),
 	'saveLang': saveDefaultLanguage,
+	'file-upload': () => changePictureElement(),
+	'save-image': () => saveNewPicture(),
+	'cancel-image': () => cancelEditor(),
 };
 
 const changeEvent: {[key: string]: () => void } = {

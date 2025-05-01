@@ -1,36 +1,25 @@
 import { languageSelector } from '../components/ui/languageSelector.ts';
-import { homeButton } from '../components/ui/homeButton.ts';
-
+import { animateButton } from '../components/ui/animateButton.ts';
 
 function logo() {
 	const theme = localStorage.getItem('theme') || 'dark';
+	console.log(theme);
 	return `
-	<div class="flex animate-fade-in-down">
-		<img class="w-400 h-full" src='/images/logo-${theme}.webp' alt='Transcenduck Logo'/>
-		</div>
-	`;
+		<div class="flex w-3/4 justify-center items-center animate-fade-in-down">
+			<img class="w-full h-full" src='/images/logo-${theme}-optimized.webp' alt='Transcenduck Logo'/>
+		</div>`;
 }
-
-function shouldShowLanguageSelector() {
-	if (localStorage.getItem('lang') !== null) {
-		return false;
-	}
-	return true;
-}
-
 
 function divHomePage() {
 	return `
-		<div class='flex flex-col items-center justify-center h-screen space-y-4 backdrop-filter backdrop-blur-xs text-primary dark:text-dtertiary'>
+		<div class='flex flex-col items-center justify-center h-screen space-y-5'>
 			${logo()}
-			${shouldShowLanguageSelector() ? languageSelector() : ''}
-			${homeButton()}
-		</div>
-	`;
+			${languageSelector()}
+			${animateButton("loadLoginPage", "welcome", "get_started")}
+		</div>`;
 }
 
-export async function homePage() {
-
+export default async function homePage() {
 	const container = divHomePage();
 	return container;
 }

@@ -1,9 +1,12 @@
 import { primaryButton } from './primaryButton.ts';
+import { secondaryButton } from './secondaryButton.ts';
 
 type InputField = {
 	name: string;
 	type: string;
-	placeholder: string;
+	labelClass?: string;
+	placeholder?: string;
+	value?: string;
 	autocomplete?: string;
 	required?: boolean;
 	translate?: string;
@@ -19,24 +22,39 @@ type FormOptions = {
 		translate?: string;
 		type?: 'button' | 'submit';
 	};
+	button2?: {
+		id: string;
+		weight?: string;
+		text: string;
+		translate?: string;
+		type?: 'button' | 'submit';
+	};
 };
 
-export function form({ name, inputs, button }: FormOptions): string {
+export function form({ name, inputs, button, button2 }: FormOptions): string {
 	const inputFields = inputs
 		.map(
 			(input) => `
-		<label for="${input.name}" class="sr-only" translate="${input.translate || ''}">${input.placeholder}</label>
-		<input name="${input.name}" type="${input.type}" autocomplete="${input.autocomplete || ''}" 
-			class="font-text p-2 border border-primary dark:border-dtertiary rounded w-full ring-primary focus:ring-1 focus:outline-none" 
-			placeholder="${input.placeholder}" ${input.required ? 'required' : ''} />
-	`
+		<label for="${input.name}" class="${input.labelClass || 'sr-only'}" translate="${input.translate || ''}">${input.placeholder}</label>
+		<input id="${input.name}" name="${input.name}" type="${input.type}" autocomplete="${input.autocomplete || ''}" 
+			class="font-title p-2 border rounded w-full
+			text-tertiary dark:text-dtertiary
+			border-primary dark:border-dprimary
+			bg-zinc-200 dark:bg-transparent
+			focus:ring-1  ring-primary dark:ring-dprimary focus:outline-none" 
+			placeholder="${input.placeholder}" ${input.required ? 'required' : ''} 
+			value="${input.value || ''}"
+			/>`
 		)
 		.join('');
 
 	return `
-	<form id="registerUser" name="${name}" class="flex flex-col items-center space-y-4 w-1/2 ">
+	<form id="registerUser" name="${name}" class="flex flex-col justify-left items-left space-y-4 w-full lg:w-1/2 p-4">
 		${inputFields}
+	<div class="flex flex-row gap-2 justify-between items-center">
 		${primaryButton(button)}
+		${button2 ? secondaryButton(button2) : ''}
+	</div>
 	</form>
 	`;
 }

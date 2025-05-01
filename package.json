@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "fabric": "^6.6.4",
+    "file-saver": "^2.0.5",
+    "tui-code-snippet": "^2.3.3",
+    "tui-image-editor": "^3.15.3"
+  }
+}

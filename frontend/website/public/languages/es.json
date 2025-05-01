@@ -4,6 +4,8 @@
 	"no": "No",
 	"cancel": "Cancelar",
 	"back-link": "Atrás",
+	"confirm": "Confirmar",
+	"delete": "Eliminar",
 	
 	"username": "Nombre de usuario",
 	"password": "Contraseña",
@@ -24,8 +26,8 @@
 	"settings": "Configuraciones",
 	"change-default-language": "Cambiar idioma predeterminado",
 	
-	"disable": "Desactivar",
-	"enable": "Activar",
+	"activate-2fa": "Activar 2FA",
+	"disable-2fa": "Desactivar 2FA",
 	"save_choice": "Guardar elección",
 	"lang_choice": "Elige tu idioma: ",
 	"get_started": "¡Comienza!",
@@ -38,8 +40,16 @@
 	"delete-account": "Eliminar cuenta",
 	
 	"profile": "Perfil",
-	"change-profil-picture": "Cambiar tu foto de perfil",
-	"choose-file": "Elegir archivo",
+	"your-informations": "Tu información",
+	"save-changes": "Guardar cambios",
+	"change-your-password": "Cambiar tu contraseña",
+	"change-your-password-description": "Cambia tu contraseña para asegurar tu cuenta.",
+	"change-password": "Cambiar contraseña",
+	"old-password": "Contraseña antigua",
+	"new-password": "Nueva contraseña",
+	"confirm-new-password": "Confirmar nueva contraseña",
+	"password-changed": "Contraseña cambiada",
+	"user-infos-updated": "Información actualizada",
 
 	"version": "Versión",
 	"no-duck-hurt": "No se hirió a ningún pato",

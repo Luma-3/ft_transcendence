@@ -4,11 +4,13 @@
 	"no": "Non",
 	"cancel": "Annuler",
 	"back-link": "Retour",
+	"confirm": "Confirmer",
+	"delete": "Supprimer",
 	
 	"username": "Nom d'utilisateur",
 	"password": "Mot de passe",
 	"email": "Email",
-	"verif_password": "Repete le mot de passe",
+	"verif_password": "Repeter le mot de passe",
 	"register": "S'inscrire",
 	"no_account": "Pas de compte ?",
 	"create_account": "Créer un compte",
@@ -24,8 +26,8 @@
 	"settings": "Paramètres",
 	"change-default-language": "Changer la langue par défaut",
 	
-	"disable": "Désactiver",
-	"enable": "Activer",
+	"activate-2fa": "Activer 2FA",
+	"disable-2fa": "Désactiver 2FA",
 	"lang_choice": "Choisissez votre langue: ",
 	"save_choice": "Sauvegarder mon choix",
 	"get_started": "Commencer !",
@@ -38,8 +40,15 @@
 	"delete-account": "Supprimer le compte",
 
 	"profile": "Profil",
-	"change-profil-picture": "Changer votre photo de profil",
-	"choose-file": "Choisir un fichier",
+	"your-informations": "Vos informations",
+	"save-changes": "Sauvegarder les modifications",
+	"change-your-password": "Changer votre mot de passe",
+	"change-your-password-description": "Changez votre mot de passe regulierement pour sécuriser votre compte.",
+	"old-password": "Ancien mot de passe",
+	"new-password": "Nouveau mot de passe",
+	"confirm-new-password": "Confirmer le nouveau mot de passe",
+	"password-changed": "Mot de passe changé",
+	"user-infos-updated": "Informations mises à jour",
 
 
 	"version": "Version",
