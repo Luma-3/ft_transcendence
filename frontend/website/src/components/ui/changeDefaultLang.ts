@@ -1,13 +1,13 @@
 import { secondaryButton } from './secondaryButton'
 
-export function changeDefaultLang() {
+export function changeDefaultLang(langPreselect: string) {
 
 	const all_langs = [
 		"fr",
 		"en",
 		"es"]
+
 	
-	const langPreselect = localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en';
 	const labels = all_langs.map((lang) => {
 
 		const isChecked = (lang === langPreselect) ? 'checked' : ''
@@ -22,8 +22,8 @@ export function changeDefaultLang() {
 					id="${lang}-changer" name="langSelect" ${isChecked} onchange="changeLanguage('${lang}')"/>
 					</label>
 					
-					<label class="cursor-pointer ml-2 text-slate-600 text-sm" for="check-vertical-list-group4">
-					<img src="icons/${lang}.png" alt="${lang}" class="w-5 h-5 mr-2">
+					<label class="cursor-pointer ml-2 text-slate-600 text-sm pointer-events-none" for="check-vertical-list-group4">
+					<img src="icons/${lang}.webp" alt="${lang}" class="w-5 h-5 mr-2">
 					</label>
 					</div>
 					</label>

@@ -1,16 +1,11 @@
 import { navbar } from "../components/ui/navbar";
-import { fetchApi } from "../api/fetch";
-import { API_ROUTES } from "../api/routes";
-import { User } from "../api/interfaces/User";
 import { footer } from "../components/ui/footer";
 import notfound from "./404";
+import { getUserInfo } from "../api/getter";
 
 async function renderDashboard() {
 	
-	const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
-		{method: "GET", credentials: "include"});
-	
-		console.log(userinfoResponse.data)
+	const userinfoResponse = await getUserInfo();
 	if (userinfoResponse.status === "success" && userinfoResponse.data) {
 		const userInfos = userinfoResponse.data;
 		

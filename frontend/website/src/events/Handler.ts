@@ -17,20 +17,22 @@ const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => renderBackPage(),
 	'loadLoginPage': () => renderPage('login'),
 	'loadRegisterPage': () => renderPage('register'),
-	'loadSettingsPage': () => renderPage('settings'),
 	'loginForm': () => loginUser(),
-	'changeUserInfo': () => changeUser('email'),
-	'user-menu-button': () => toggleUserMenu(),
-	'logout': () =>  logOutUser(),
 	'google': () => {
 		window.location.href = 'http://localhost:3000/api/user/login/google'
 	},
+	
+	'user-menu-button': () => toggleUserMenu(),
+	'logout': () =>  logOutUser(),
+	'loadprofile': () => renderPage('profile'),
+	'changeUserInfo': () => changeUser('email'),
 	'change-password': () => changeUserPassword(),
-	'saveLang': saveDefaultLanguage,
-	'file-upload': () => changePictureElement(),
-	'save-image': () => saveNewPicture(),
 	'cancel-image': () => cancelEditor(),
-	'loadProfilPage': () => renderPage('profile'),
+	'save-image': () => saveNewPicture(),
+	'file-upload': () => changePictureElement(),
+
+	'loadsettings': () => renderPage('settings'),
+	'saveLang': saveDefaultLanguage,
 };
 
 const changeEvent: {[key: string]: () => void } = {
@@ -40,7 +42,7 @@ const changeEvent: {[key: string]: () => void } = {
 
 const submitEvent: {[key: string]: () => void } = {
 	'loginForm': loginUser,
-	'registerUser': verifPasswordAndRegisterUser,
+	'registerForm': verifPasswordAndRegisterUser,
 };
 
 

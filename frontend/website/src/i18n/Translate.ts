@@ -1,6 +1,9 @@
 import { API_ROUTES } from "../api/routes";
 import { fetchApi } from "../api/fetch";
-import Swal from "sweetalert2";
+import { alertTemporary } from "../components/ui/alert";
+import { getUserInfo } from "../api/getter";
+
+const autorizedLangs = ['en', 'fr', 'es']
 
 // * Chargement des traductions
 export async function loadTranslation(lang: string) {
@@ -11,9 +14,8 @@ export async function loadTranslation(lang: string) {
 
 export async function translatePage(lang : string = 'en') {
 
-	if (lang !== 'en' && lang != 'fr' && lang != 'es') {
-		return;
-	}
+	if (!autorizedLangs.includes(lang))
+		lang = 'en'
 	
 	const container = document.querySelector<HTMLDivElement>('#app')!
 	
@@ -50,29 +52,30 @@ export function changeLanguage(lang: string | undefined) {
 	translatePage(language);
 }
 
-export function saveLanguage() {
+export async function saveLanguage(lang_select: string) {
 	
-	const choice = (document.getElementById('language') as HTMLSelectElement)
-	if (choice === null) {
-		return;
+	if (autorizedLangs.includes(lang_select)) {
+		alertTemporary("error",'Language not autorized', 'dark');
 	}
 	
-	const lang_select = choice.value;
-	if (lang_select !== 'en' && lang_select !== 'fr' && lang_select !== 'es') {
+	const user = await getUserInfo();
+	if (user.status !== "success" || !user.data) {
+		alertTemporary("error", 'Error while getting user info', 'dark');
 		return;
 	}
-	
-	const response = fetchApi(API_ROUTES.USERS.UPDATE_PREF, {
+	console.log("lang: " + lang_select)
+	const response = await fetchApi(API_ROUTES.USERS.UPDATE_PREF, {
 		method: "PATCH",
 		body: JSON.stringify({
 			lang: lang_select,
 		})
 	});
-	if (response.status === "success") {
-		Swal.fire({
-			
-		})
+	if (response.status !== "success") {
+		alertTemporary("error",'Error while updating language' + response.message, 'dark');
+		return;
 	}
+
+	alertTemporary("success", 'Language updated', user.data.theme);
 }
 
 export function saveDefaultLanguage() {
@@ -80,9 +83,5 @@ export function saveDefaultLanguage() {
 	const choice = (document.querySelector('input[name="lang-selector"]:checked') as HTMLInputElement)
 	const lang_select = choice.id.split('-')[0];
 
-	if (lang_select !== 'en' && lang_select !== 'fr' && lang_select !== 'es') {
-		return;
-	}
-	localStorage.setItem('lang', lang_select);
-	//TODO: PATCH LANG
+	return saveLanguage(lang_select);
 }

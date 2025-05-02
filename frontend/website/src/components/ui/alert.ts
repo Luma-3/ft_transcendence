@@ -2,11 +2,17 @@ import { loadTranslation } from "../../i18n/Translate";
 import Swal from "sweetalert2";
 
 export async function alert(reason: string, level: string) {
-	const lang = localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en';
+		const userInfo = await getUserInfo();
+		if (userInfo.status === "error" || !userInfo.data) {
+			alertTemporary("error", "Error while fetching user info", 'dark');
+			return;
+		}
+	const lang = userInfo.data.lang;
+	const theme = userInfo.data.theme;
+	
 	const trad = await loadTranslation(lang);
 	const trad_message = trad[reason] || reason;
-	
-	const theme = localStorage.getItem('theme') || 'dark';
+	console.log(theme)
 	const bg = theme === 'dark' ? '#000000' : '#FFFFFF';
 	const text = theme === 'dark' ? '#F8E9E9' : '#000000';
 	const icon = theme === 'dark' ? '#FF8904' : '#137B80';
@@ -45,22 +51,23 @@ export async function alert(reason: string, level: string) {
 	return result.isConfirmed;
 }
 
-import { User } from "../../api/interfaces/User";
 import { fetchApi } from "../../api/fetch";
 import { API_ROUTES } from "../../api/routes";
+import { getUserInfo } from "../../api/getter";
 
 export async function alertChangePasword() {
-
-	const responseApiUser = await fetchApi<User>(API_ROUTES.USERS.INFOS,
-		{method: "GET", credentials: "include"});
-
-	if (responseApiUser.status === "success" && responseApiUser.data) {
+	
+	const userInfo = await getUserInfo();
+	if (userInfo.status === "error" || !userInfo.data) {
+		alertTemporary("error","Error while fetching user info", 'dark');
+		return;
+	}
 	
 	// const userInfos = responseApiUser.data;
-	const lang = localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en';
+	const theme = userInfo.data.theme;
+	const lang = userInfo.data.lang;
 	const trad = await loadTranslation(lang);
 	
-	const theme = localStorage.getItem('theme') || 'dark';
 	const bg = theme === 'dark' ? '#000000' : '#FFFFFF';
 	const text = theme === 'dark' ? '#F8E9E9' : '#744FAC';
 	const icon = theme === 'dark' ? '#FF8904' : '#744FAC';
@@ -78,7 +85,7 @@ export async function alertChangePasword() {
 		confirmButtonAriaLabel: trad['confirm'],
 		cancelButtonAriaLabel: trad['cancel'],
 		cancelButtonColor: cancelButtonColor,
-		//TODO: Translate
+		
 		html: `
 		<div class="flex text-sm justify-center items-center font-title m-4 mt-0 ">
 		${trad['change-your-password-description']}
@@ -118,23 +125,25 @@ export async function alertChangePasword() {
 				}),
 			});
 			if (response.status === "success") {
-				alertTemporary(trad['password-changed'], theme);
-		}
-			
+				alertTemporary("success", trad['password-changed'], theme);
+			} else {
+				alertTemporary("error", trad['error-while-changing-password'], theme);
+			}
 		}
 	});
-	}
 }
 
-export async function alertTemporary(message: string, theme: string) {
+export async function alertTemporary(level: string, message: string, theme: string) {
 	const bg = theme === 'dark' ? '#000000' : '#FFFFFF';
-	const text = theme === 'dark' ? '#F8E9E9' : '#744FAC';
-	const icon = theme === 'dark' ? '#FF8904' : '#744FAC';
+	const text = theme === 'dark' ? '#F8E9E9' : '#000000';
+	const iconColor = theme === 'dark' ? '#FF8904' : '#137B80';
+	const icon = level === 'error' ? 'error' : 'success';
+
 	return Swal.fire({
 		position: "center-end",
 		toast: true,
-		icon: "success",
-		iconColor: icon,
+		icon: icon,
+		iconColor: iconColor,
 		background: bg,
 		color: text,
 		title: message,

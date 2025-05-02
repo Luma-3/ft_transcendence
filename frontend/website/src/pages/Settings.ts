@@ -1,8 +1,5 @@
 import { changeDefaultLang } from "../components/ui/changeDefaultLang";
 import { navbar } from "../components/ui/navbar";
-import { User } from "../api/interfaces/User";
-import { fetchApi } from "../api/fetch";
-import { API_ROUTES } from "../api/routes";
 import { changeLanguage } from "../i18n/Translate";
 import { change2FA } from "../components/ui/change2FA";
 import { footer } from "../components/ui/footer";
@@ -10,13 +7,13 @@ import { primaryButton } from "../components/ui/primaryButton";
 import { headerPage } from "../components/ui/headerPage";
 (window as any).changeLanguage = changeLanguage;
 import notfound from "./404";
+import { getUserInfo } from "../api/getter";
 
 
 
 async function renderSettingsPage() {
 
-const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
-	{method: "GET", credentials: "include"});
+const userinfoResponse = await getUserInfo();
 
 	if (userinfoResponse.status === "success" && userinfoResponse.data) {
 		
@@ -27,7 +24,7 @@ const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
 			${headerPage("settings")}
 				<div class="flex flex-col items-center ml-15 mr-15 justify-center space-y-4 space-x-4 pt-10
 				text-secondary dark:text-dtertiary">
-					${changeDefaultLang()}
+					${changeDefaultLang(userInfos.lang)}
 					<br>
 					${change2FA()}
 					<br>

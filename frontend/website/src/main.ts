@@ -1,8 +1,6 @@
 import { renderPage } from './renderers/renderPage'
 import { addAllEventListenOnPage } from './events/Handler'
-import { fetchApi } from "./api/fetch"
-import { User } from "./api/interfaces/User"
-import { API_ROUTES } from "./api/routes"
+import { getUserInfo } from './api/getter'
 
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
@@ -22,17 +20,18 @@ addAllEventListenOnPage(main_container);
 document.addEventListener('DOMContentLoaded', async () => {
 	
 	const page =  window.location.pathname.substring(1) || 'home'
-	let verif;
+	const publicPages = ['home', 'login', 'register']
 	
-	if (page === 'home' || 'login' || 'register') {
-		verif = await fetchApi<User>(API_ROUTES.USERS.INFOS, {
-			method: "GET",
-		});
-		if (verif.status === "success" && verif.data) {
-			return renderPage('dashboard');
+	console.log('akjwdkjahwdkjahwdkjhawdk')
+	const user = await getUserInfo();
+	if (user.status === "success" && user.data) {
+		if (publicPages.includes(page)) {
+			return renderPage('dashboard', true, user.data);
 		}
+		return renderPage(page, false, user.data);
 	}
-	renderPage(page, false);
+	return renderPage(page, false);
+
 });
 
 // * Au changement de page lors de l'utilisation du bouton back/forward

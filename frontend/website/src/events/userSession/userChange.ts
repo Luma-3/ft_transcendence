@@ -12,12 +12,14 @@ export async function changeUserPassword() {
 
 import { alertTemporary } from "../../components/ui/alert"
 import { loadTranslation } from "../../i18n/Translate";
+import { getUserInfo } from "../../api/getter";
 
 async function messageUpdateUserInfo(status: string, lang: string, theme: string) {
 	
 	const trad = await loadTranslation(lang);
-	const message = status === "success" ?  trad["User info updated"] :  trad["User info not updated"];
-	alertTemporary(message, theme);
+	const message = status === "success" ?  trad["user-infos-updated"] :  trad["user-infos-not-updated"];
+
+	alertTemporary(status, message, theme);
 }
 
 // async function changeUserInfos() {
@@ -38,30 +40,30 @@ async function messageUpdateUserInfo(status: string, lang: string, theme: string
 // }
 
 async function changeUserEmail(user: User) {
-	const form = document.getElementById("changeUserInfo") as HTMLFormElement;
+	const form = document.getElementById("saveChangeBasicUserInfo") as HTMLFormElement;
+	
 	const formData = new FormData(form);
-	const data = {
-		email: formData.get("email"),
-	};
+	
+	const email = formData.get("email");
+	console.log(email);
 	const response = await fetchApi<User>(API_ROUTES.USERS.UPDATE_EMAIL, {
-		method: 'POST',
-		body: JSON.stringify(data.email),
+		method: 'PUT',
+		body: '{"email": "' + email + '"}',
 	})
+	
 	if (response.status === "success") {
-		messageUpdateUserInfo("error", user.lang, user.theme);
-	} else {
 		messageUpdateUserInfo("success", user.lang, user.theme);
+	} else {
+		messageUpdateUserInfo("error", user.lang, user.theme);
 	}
 	
 }
 
 export async function changeUser(parameter : string) {
 	
-	const response = await fetchApi<User>(API_ROUTES.USERS.INFOS, {
-		method: 'GET',
-	})
+	const response = await getUserInfo();
 	if (response.status === "error" || !response.data) {
-		alertTemporary("Error while fetching user info", 'dark');
+		alertTemporary("error", "Error while fetching user info", 'dark');
 		return;
 	}
 	switch (parameter) {
@@ -72,6 +74,6 @@ export async function changeUser(parameter : string) {
 			changeUserPassword();
 			break;
 		case "default":
-			alertTemporary("Rien a enregister", response.data.theme);
+			alertTemporary("error", "Rien a enregister", response.data.theme);
 	}
 }

@@ -5,9 +5,8 @@ export async function changeLightMode() {
 	const switchComponent = document.getElementById('switch-component') as HTMLInputElement;
 	if (switchComponent) {
 		document.documentElement.classList.toggle('dark');
-		console.log("light mode");
-		console.log(switchComponent.checked? 'dark' : 'light');
-		const choice_theme = switchComponent.checked ? 'dark' : 'light';
+		
+		const choice_theme = switchComponent.checked ? 'light' : 'dark';
 		const response = await fetchApi(API_ROUTES.USERS.UPDATE_PREF, {
 			method: 'PATCH',
 			body: JSON.stringify({

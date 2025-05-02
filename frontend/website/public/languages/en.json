@@ -52,6 +52,7 @@
 	"confirm-new-password": "Confirm new password",
 	"password-changed": "Password changed",
 	"user-infos-updated": "Informations updated",
+	"user-infos-not-updated": "Informations not updated",
 
 
 	"version": "Version",

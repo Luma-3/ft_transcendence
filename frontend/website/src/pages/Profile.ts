@@ -1,13 +1,8 @@
 import { navbar } from "../components/ui/navbar"
 import { footer } from "../components/ui/footer"
-import { fetchApi } from "../api/fetch"
-import { API_ROUTES } from "../api/routes"
 import { User } from "../api/interfaces/User"
-import { alert } from "../components/ui/alert"
 import { primaryButton } from "../components/ui/primaryButton"
 import { form } from "../components/ui/form"
-import { backButton } from "../components/ui/backButton"
-import Swal from "sweetalert2"
 import { headerPage } from "../components/ui/headerPage"
 import notfound from "./404";
 
@@ -43,17 +38,17 @@ function profilePhotoChanger(userPicture: string) {
 
 
 import { secondaryButton } from "../components/ui/secondaryButton"
-import { loadTranslation } from "../i18n/Translate"
+import { getUserInfo } from "../api/getter"
 
 
-function profileFormInfos(user: User) {
+function profileInfos(user: User) {
 	return `
 	<div class="flex flex-col font-title w-full justify-left items-center text-secondary dark:text-dtertiary space-y-2 pt-10">
 	 <div class="flex font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary" translate="your-informations"> 
 	 Your informations
 	 </div>
 
-	 <div id="hidden-main-image-editor" class="hidden transition-all duration-500 transform translate-y-10 opacity-0 pointer-events-none
+	 <div id="hidden-main-image-editor" class="max-w-2xl hidden transition-all duration-500 transform translate-y-10 opacity-0 pointer-events-none
 	  mt-4 w-[848px] justify-center items-center space-x-2 ">
 	 	<div class="flex flex-col justify-center items-center w-full h-[648px] rounded-lg">
 			<div id="tui-image-editor-container" class="rounded-xl"></div>
@@ -108,9 +103,8 @@ function profileFormInfos(user: User) {
 
 async function renderProfilePage() {
 
-	const userInfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
-		{method: "GET", credentials: "include"});
-	
+	const userInfoResponse = await getUserInfo();
+	console.log(userInfoResponse);
 	
 	if (userInfoResponse.status === "success" && userInfoResponse.data) {
 		const userInfos = userInfoResponse.data;
@@ -119,9 +113,7 @@ async function renderProfilePage() {
 			${navbar(userInfos)}
 			${headerPage("profile")}
 			${profileName(userInfos.username)}
-			${profileFormInfos(userInfos)}
-			<div class="flex flex-col">
-			</div>
+			${profileInfos(userInfos)}
 			${footer()}`
 	}
 	return notfound();

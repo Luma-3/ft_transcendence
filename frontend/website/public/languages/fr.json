@@ -50,6 +50,7 @@
 	"confirm-new-password": "Confirmer le nouveau mot de passe",
 	"password-changed": "Mot de passe changé",
 	"user-infos-updated": "Informations mises à jour",
+	"user-infos-not-updated": "Informations non mises à jour",
 
 
 	"version": "Version",

@@ -10,9 +10,8 @@ import { setupColorTheme } from '../components/utils/setColorTheme'
 import { addToHistory } from '../main'
 import { translatePage } from '../i18n/Translate'
 import { fadeIn, fadeOut } from '../components/utils/fade'
-import { fetchApi } from '../api/fetch'
-import { API_ROUTES } from '../api/routes'
 import { User } from '../api/interfaces/User'
+import serverError from '../pages/500'
 
 
 // * Associe chaque page à sa fonction de rendu
@@ -23,21 +22,19 @@ const rendererPage: {[key: string]: () => string | Promise<string>} = {
 	'dashboard': dashboard,
 	'settings': settings,
 	'profile': profile,
+	'500': serverError,
 	'hacked': hackPage,
 };
 
-export async function renderPage(page: string, updateHistory: boolean = true) {
+export async function renderPage(page: string, updateHistory: boolean = true, user?: User) {
 
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
 	let lang;
 	let theme;
 	
-	const response = await fetchApi<User>(API_ROUTES.USERS.INFOS, {
-		method: "GET",
-	})
-	if (response.status === "success" && response.data) {
-		lang = response.data.lang;
-		theme = response.data.theme;
+	if (user) {
+		lang = user.lang;
+		theme = user.theme;
 	} else {
 		lang = sessionStorage.getItem('lang') || 'en';
 		theme = 'dark';
@@ -54,7 +51,6 @@ export async function renderPage(page: string, updateHistory: boolean = true) {
 		main_container.innerHTML = page_content;
 
 		if (updateHistory) {
-			console.log('updateHistory', page);
 			addToHistory(page, updateHistory);
 		}
 		
@@ -71,7 +67,6 @@ export async function renderPage(page: string, updateHistory: boolean = true) {
 
 export function renderBackPage() {
 	const page = window.history.state?.page || 'home';
-	console.log('back page', page);
 	if (page === 'dashboard') {
 		return;
 	}
