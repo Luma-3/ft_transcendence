@@ -40,14 +40,7 @@ function profilePhotoChanger(userPicture: string) {
 		</div>
 	`}
 
-import { alertTemporary } from "../components/ui/alert"
-export async function messageUpdateUserInfo() {
-	const lang = localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en';
-	const theme = localStorage.getItem('theme') || 'dark';
-	const trad = await loadTranslation(lang);
-	const message = trad['user-infos-updated'];
-	alertTemporary(message, theme);
-}
+
 
 import { secondaryButton } from "../components/ui/secondaryButton"
 import { loadTranslation } from "../i18n/Translate"

@@ -9,7 +9,8 @@ async function renderDashboard() {
 	
 	const userinfoResponse = await fetchApi<User>(API_ROUTES.USERS.INFOS,
 		{method: "GET", credentials: "include"});
-		
+	
+		console.log(userinfoResponse.data)
 	if (userinfoResponse.status === "success" && userinfoResponse.data) {
 		const userInfos = userinfoResponse.data;
 		

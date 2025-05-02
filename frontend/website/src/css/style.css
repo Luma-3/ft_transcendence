@@ -41,3 +41,33 @@
 }
 
 /* Vert emeraude 69DC9E */
+
+@layer base {
+  body {
+    visibility: hidden;
+  }
+
+  html.dark body,
+  html:not(.dark) body {
+    visibility: visible;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;                         /* couvre tout l’écran */
+    background-image: url("/images/Frame-light.webp"); /* même URL que le body */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(8px);                /* floute l’image */
+    transform: scale(1.05);           /* évite les bords nets après le flou */
+    z-index: 0;                       /* sous ton #app en z-index:10 */
+    pointer-events: none;             /* laisse passer les clics */
+  }
+
+  /* Variante pour le mode sombre */
+  .dark body::before {
+    background-image: url("/images/Frame-dark.webp");
+  }
+}

@@ -6,19 +6,20 @@ import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 import { logOutUser } from './userSession/userLogout'
-import { messageUpdateUserInfo } from '../pages/Profile'
+import { changeUser } from '../events/userSession/userChange'
 import { changeUserPassword } from '../events/userSession/userChange'
 import { changePictureElement } from '../components/utils/changePicture'
 import { saveNewPicture } from '../components/utils/changePicture'
 import { cancelEditor } from '../components/utils/changePicture'
+import { renderBackPage } from '../renderers/renderPage'
 
 const clickEvent: {[key: string]: () => void } = {
-	'loadBackPage': () => window.history.back(),
+	'loadBackPage': () => renderBackPage(),
 	'loadLoginPage': () => renderPage('login'),
 	'loadRegisterPage': () => renderPage('register'),
 	'loadSettingsPage': () => renderPage('settings'),
 	'loginForm': () => loginUser(),
-	'changeUserInfo': () => messageUpdateUserInfo(),
+	'changeUserInfo': () => changeUser('email'),
 	'user-menu-button': () => toggleUserMenu(),
 	'logout': () =>  logOutUser(),
 	'google': () => {
@@ -29,6 +30,7 @@ const clickEvent: {[key: string]: () => void } = {
 	'file-upload': () => changePictureElement(),
 	'save-image': () => saveNewPicture(),
 	'cancel-image': () => cancelEditor(),
+	'loadProfilPage': () => renderPage('profile'),
 };
 
 const changeEvent: {[key: string]: () => void } = {

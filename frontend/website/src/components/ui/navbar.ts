@@ -23,7 +23,7 @@ export function navbar(user: User) {
 				 text-tertiary dark:text-dtertiary">
 				${user.username}
 				</span>
-				<img class="w-8 h-8 rounded-full pointer-events-none" src=${user.pp_url} alt="User profile picture">
+				<img class="w-12 h-12 rounded-full pointer-events-none" src="/images/pp.jpg" alt="User profile picture">
 			</div>
 	</nav>
 	${userMenu(user)}`;

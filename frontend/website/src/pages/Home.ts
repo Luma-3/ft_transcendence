@@ -2,11 +2,9 @@ import { languageSelector } from '../components/ui/languageSelector.ts';
 import { animateButton } from '../components/ui/animateButton.ts';
 
 function logo() {
-	const theme = localStorage.getItem('theme') || 'dark';
-	console.log(theme);
 	return `
 		<div class="flex w-3/4 justify-center items-center animate-fade-in-down">
-			<img class="w-full h-full" src='/images/logo-${theme}-optimized.webp' alt='Transcenduck Logo'/>
+			<img class="w-full h-full" src='/images/logo-dark-optimized.webp' alt='Transcenduck Logo'/>
 		</div>`;
 }
 
@@ -16,6 +14,7 @@ function divHomePage() {
 			${logo()}
 			${languageSelector()}
 			${animateButton("loadLoginPage", "welcome", "get_started")}
+
 		</div>`;
 }
 

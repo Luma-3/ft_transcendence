@@ -9,8 +9,8 @@ export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IAp
 	try {
 		const response = await fetch(url, {
 			headers: {"Content-Type": "application/json",
-				credentials: "include",
 			},
+			credentials: "include",
 			...option,
 		});
 		if (!response.ok) {

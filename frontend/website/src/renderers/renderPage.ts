@@ -9,8 +9,10 @@ import { hackPage } from '../pages/Hack'
 import { setupColorTheme } from '../components/utils/setColorTheme'
 import { addToHistory } from '../main'
 import { translatePage } from '../i18n/Translate'
-// import { setupGoogleButton } from './Google'
 import { fadeIn, fadeOut } from '../components/utils/fade'
+import { fetchApi } from '../api/fetch'
+import { API_ROUTES } from '../api/routes'
+import { User } from '../api/interfaces/User'
 
 
 // * Associe chaque page à sa fonction de rendu
@@ -27,26 +29,51 @@ const rendererPage: {[key: string]: () => string | Promise<string>} = {
 export async function renderPage(page: string, updateHistory: boolean = true) {
 
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
-	setupColorTheme();
+	let lang;
+	let theme;
 	
+	const response = await fetchApi<User>(API_ROUTES.USERS.INFOS, {
+		method: "GET",
+	})
+	if (response.status === "success" && response.data) {
+		lang = response.data.lang;
+		theme = response.data.theme;
+	} else {
+		lang = sessionStorage.getItem('lang') || 'en';
+		theme = 'dark';
+	}
+
+	setupColorTheme(theme);
 	fadeOut(main_container);
 
 	setTimeout(async () => {
+
 		const rendererFunction = rendererPage[page] || home;
 		const page_content = await Promise.resolve(rendererFunction());
 
 		main_container.innerHTML = page_content;
 
 		if (updateHistory) {
+			console.log('updateHistory', page);
 			addToHistory(page, updateHistory);
 		}
 		
-		translatePage(localStorage.getItem('lang') || sessionStorage.getItem('lang') || 'en');
+		translatePage(lang);
+		
 		const loading = document.querySelector<HTMLDivElement>('#loading')!;
 		if (loading) {
 			loading.classList.add('hidden');
 		}
 		fadeIn(main_container);
 	}
-	, 310);
+	, 250);
+}
+
+export function renderBackPage() {
+	const page = window.history.state?.page || 'home';
+	console.log('back page', page);
+	if (page === 'dashboard') {
+		return;
+	}
+	history.back();
 }
