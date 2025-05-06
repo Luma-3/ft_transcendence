@@ -1,38 +1,49 @@
 import { changeLanguage, saveDefaultLanguage } from '../i18n/Translate'
-import { renderPage } from '../renderers/renderPage'
+import { renderPublicPage, renderPrivatePage } from '../components/renderPage'
 import { verifPasswordAndRegisterUser } from './userSession/userRegister'
 import { loginUser } from './userSession/userLogin'
 import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 import { logOutUser } from './userSession/userLogout'
-import { changeUser } from '../events/userSession/userChange'
+import { changeUserNameEmail } from '../events/userSession/userChange'
 import { changeUserPassword } from '../events/userSession/userChange'
-import { changePictureElement } from '../components/utils/changePicture'
-import { saveNewPicture } from '../components/utils/changePicture'
-import { cancelEditor } from '../components/utils/changePicture'
-import { renderBackPage } from '../renderers/renderPage'
+import { changePictureElement } from '../components/utils/imageEditor'
+import { saveNewPicture } from '../components/utils/imageEditor'
+import { cancelEditor } from '../components/utils/imageEditor'
+import { renderBackPage } from '../components/renderPage'
 
 const clickEvent: {[key: string]: () => void } = {
-	'loadBackPage': () => renderBackPage(),
-	'loadLoginPage': () => renderPage('login'),
-	'loadRegisterPage': () => renderPage('register'),
+
+	// * -------------- Public Page Load -------------- */
+	'loadhome': () => renderPublicPage('home'),
+	'loadlogin': () => renderPublicPage('login'),
+	'loadregister': () => renderPublicPage('register'),
 	'loginForm': () => loginUser(),
 	'google': () => {
 		window.location.href = 'http://localhost:3000/api/user/login/google'
 	},
 	
-	'user-menu-button': () => toggleUserMenu(),
-	'logout': () =>  logOutUser(),
-	'loadprofile': () => renderPage('profile'),
-	'changeUserInfo': () => changeUser('email'),
+	// * -------------- Profile Page  -------------- */
+	'loadprofile': () => renderPrivatePage('profile'),
+	'changeUserInfo': () => changeUserNameEmail(),
 	'change-password': () => changeUserPassword(),
-	'cancel-image': () => cancelEditor(),
-	'save-image': () => saveNewPicture(),
-	'file-upload': () => changePictureElement(),
+	'user-menu-button': () => toggleUserMenu(),
+	
+		// * ---- Image Editor  ---- */
+		'cancel-image': () => cancelEditor(),
+		'save-image': () => saveNewPicture(),
+		'file-upload': () => changePictureElement(),
+	
+	// * -------------- Settings Page  -------------- */
+	'loadsettings': () => renderPrivatePage('settings'),
+	'saveLang': () => saveDefaultLanguage(),
+	'logout': () =>  logOutUser(),
 
-	'loadsettings': () => renderPage('settings'),
-	'saveLang': saveDefaultLanguage,
+	// * -------------- Common Components  -------------- */
+
+	'loadBackPage': () => renderBackPage(),
+
 };
 
 const changeEvent: {[key: string]: () => void } = {

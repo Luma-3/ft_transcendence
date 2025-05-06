@@ -8,6 +8,5 @@ export async function getUserInfo(): Promise<IApiResponce<User>> {
 	const response = await fetchApi<User>(API_ROUTES.USERS.INFOS, {
 		method: "GET",
 	});
-	console.log("coucou")
 	return response;
 }

@@ -1,15 +1,15 @@
 import { navbar } from "../components/ui/navbar"
 import { footer } from "../components/ui/footer"
 import { User } from "../api/interfaces/User"
-import { primaryButton } from "../components/ui/primaryButton"
-import { form } from "../components/ui/form"
+import { primaryButton } from "../components/ui/buttons/primaryButton"
+import { form } from "../components/ui/form/form"
 import { headerPage } from "../components/ui/headerPage"
 import notfound from "./404";
 
 
 function profileName(nameProfil: string) {
 	return `<h1 class="relative w-full p-2 text-4xl justify-center font-title text-center italic
-	text-secondary dark:text-dtertiary overflow truncate">
+	text-tertiary dark:text-dtertiary overflow truncate">
 	${nameProfil}
 	</h1>`
 }
@@ -37,25 +37,25 @@ function profilePhotoChanger(userPicture: string) {
 
 
 
-import { secondaryButton } from "../components/ui/secondaryButton"
+import { secondaryButton } from "../components/ui/buttons/secondaryButton"
 import { getUserInfo } from "../api/getter"
 
 
 function profileInfos(user: User) {
 	return `
-	<div class="flex flex-col font-title w-full justify-left items-center text-secondary dark:text-dtertiary space-y-2 pt-10">
+	<div class="flex flex-col font-title w-full justify-left items-center text-tertiary dark:text-dtertiary space-y-2 pt-10">
 	 <div class="flex font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary" translate="your-informations"> 
 	 Your informations
 	 </div>
 
-	 <div id="hidden-main-image-editor" class="max-w-2xl hidden transition-all duration-500 transform translate-y-10 opacity-0 pointer-events-none
-	  mt-4 w-[848px] justify-center items-center space-x-2 ">
+	 <div id="hidden-main-image-editor" class="w-full max-w-[1000px] hidden transition-all duration-500 transform translate-y-10 opacity-0 pointer-events-none
+	  mt-4 justify-center items-center space-x-2 ">
 	 	<div class="flex flex-col justify-center items-center w-full h-[648px] rounded-lg">
 			<div id="tui-image-editor-container" class="rounded-xl"></div>
 			</div>
-			<div class="flex flex-row justify-between items-center gap-2 mt-4">
-				${primaryButton({id: "save-image", text: "Save", weight: "1/2"})}
-				${secondaryButton({id: "cancel-image", text: "Cancel", weight: "1/2"})}
+			<div class="flex flex-row justify-center items-center gap-2 mt-4 px-50">
+				${primaryButton({id: "save-image", text: "Save", translate: "save", weight: "1/2"})}
+				${secondaryButton({id: "cancel-image", text: "Cancel",  translate: "cancel", weight: "1/2"})}
 			</div>
 		</div>
 	${profilePhotoChanger(user.pp_url)}

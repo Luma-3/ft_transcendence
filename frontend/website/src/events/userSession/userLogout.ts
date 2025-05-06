@@ -1,6 +1,6 @@
 import { API_ROUTES } from "../../api/routes";
 import { fetchApi } from "../../api/fetch";
-import { alert } from "../../components/ui/alert";
+import { alert } from "../../components/ui/alert/alert";
 import { User } from "../../api/interfaces/User";
 
 export async function logOutUser() {

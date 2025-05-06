@@ -1,9 +1,10 @@
-import { renderPage } from './renderers/renderPage'
+import { renderPrivatePage, renderPublicPage } from './components/renderPage'
 import { addAllEventListenOnPage } from './events/Handler'
 import { getUserInfo } from './api/getter'
 
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
+const publicPages = ['home', 'login', 'register']
 
 export function addToHistory(page: string, updateHistory: boolean = true) {
 	if (updateHistory && page !== history.state?.page) {
@@ -20,22 +21,27 @@ addAllEventListenOnPage(main_container);
 document.addEventListener('DOMContentLoaded', async () => {
 	
 	const page =  window.location.pathname.substring(1) || 'home'
-	const publicPages = ['home', 'login', 'register']
-	
-	console.log('akjwdkjahwdkjahwdkjhawdk')
 	const user = await getUserInfo();
 	if (user.status === "success" && user.data) {
 		if (publicPages.includes(page)) {
-			return renderPage('dashboard', true, user.data);
+			renderPrivatePage('reWelcomeYou', false);
+			setTimeout(() => {
+				renderPrivatePage('dashboard', true);
+			}, 3200);
+			return;
 		}
-		return renderPage(page, false, user.data);
+		return renderPrivatePage(page, false);
 	}
-	return renderPage(page, false);
+	console.log('user not found');
+	return renderPublicPage(page);
 
 });
 
 // * Au changement de page lors de l'utilisation du bouton back/forward
 window.addEventListener('popstate', (event) => { 
 	const page = event.state?.page || 'home'
-	renderPage(page, false)
+	if (publicPages.includes(page)) {
+		return renderPublicPage(page);
+	}
+	return renderPrivatePage(page);
 });

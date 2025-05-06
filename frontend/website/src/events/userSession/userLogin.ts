@@ -1,8 +1,8 @@
-import { renderPage } from '../../renderers/renderPage'
+import { renderPrivatePage } from '../../components/renderPage'
 import { fetchApi } from '../../api/fetch';
 import { User } from '../../api/interfaces/User';
 import { API_ROUTES } from '../../api/routes';
-import { alert } from '../../components/ui/alert';
+import { alert } from '../../components/ui/alert/alert';
 
 export async function loginUser() {
 
@@ -21,9 +21,12 @@ export async function loginUser() {
 	const response = await fetchApi<User>(API_ROUTES.USERS.LOGIN,
 			{method: "POST", credentials: "include", body: JSON.stringify(userdata)})
 	
-	if (response.status == "success") {
-		renderPage('dashboard');
-	} else {
+	if (response.status === "error") {
 		alert("username_or_password_incorrect", "error");
+		return;
 	}
+	renderPrivatePage('reWelcomeYou');
+	setTimeout(() => {
+		renderPrivatePage('dashboard',true);
+	}, 3200);
 }

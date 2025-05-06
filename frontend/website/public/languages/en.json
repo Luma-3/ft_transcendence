@@ -30,7 +30,7 @@
 
 	"activate-2fa": "Activate 2FA",
 	"disable-2fa": "Disable 2FA",
-	"save_choice": "Save choice",
+	"save": "Save",
 	"lang_choice": "Choose your language: ",
 	"get_started": "Get started !",
 
@@ -61,6 +61,13 @@
 	"rgpd": "RGPD",
 	"terms-of-service": "Terms of service",
 	"cookie-policy": "Cookie policy",
-	"contact": "Contact"
+	"contact": "Contact",
+
+	"internal_server_error": "Internal server error",
+	"bad_request": "Bad request",
+	"unautorized": "Unauthorized",
+	"forbidden": "Forbidden",
+	"not_found": "Page not found",
+	"go_back_to_safe_place": "Go back to a safe place"
 	
 }

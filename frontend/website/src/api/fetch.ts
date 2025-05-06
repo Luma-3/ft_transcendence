@@ -1,4 +1,4 @@
-import { renderPage } from "../renderers/renderPage";
+import { renderPublicPage } from "../components/renderPage";
 import { IApiResponce } from "./interfaces/IApiResponse";
 
 export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IApiResponce<T>> {
@@ -16,6 +16,6 @@ export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IAp
 		return response.json() as Promise<IApiResponce<T>>;
 	} 
 	catch (error) {
-		renderPage('500', false)
+		renderPublicPage('500', false)
 		return {status: "500", message: "Internal Server Error"}};
 }

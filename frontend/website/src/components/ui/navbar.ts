@@ -3,7 +3,7 @@ import { renderUserMenu } from "./userMenu";
 
 function navbarLogo() {
 	return `<div class="flex justify-start items-center">
-				<a href="/dashboard" class="mr-2 text-xl flex items-center font-title text-primary dark:text-dprimary">Transcenduck</a>
+				<a href="/dashboard" class="mr-2 text-xl flex items-center font-title text-tertiary dark:text-dprimary">Transcenduck</a>
 			</div>`
 }
 

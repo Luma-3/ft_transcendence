@@ -1,4 +1,4 @@
-import { backButton } from "./backButton";
+import { backButton, backButtonPublicPage } from "./buttons/backButton";
 
 // ! Icons for the header page
 ////////////////////////////////////////////////////////////////////////////
@@ -15,7 +15,7 @@ const settingsIcon: string = `<svg xmlns="http://www.w3.org/2000/svg" fill="none
 
 ///////////////////////////////////////////////////////////////////
 
-export function headerPage(titlePage: string) {
+export function headerPage(titlePage: string, typePage: string = "private") {
 	
 	let logoSvg: string = "";
 	let logo: string = "";
@@ -37,12 +37,13 @@ export function headerPage(titlePage: string) {
 			${logoSvg}
 	</div>`;
 	}
+	const back = typePage === "public" ? backButtonPublicPage(titlePage) : backButton();
 	
 	return `
-		${backButton()}
+		${back}
 		${logo}
 		<div class="flex text-6xl p-7 font-title items-center justify-center
-		text-primary dark:text-dtertiary overflow truncate"
+		text-tertiary dark:text-dtertiary overflow truncate"
 		translate="${titlePage}">
 		${titlePage}
 		</div>`;

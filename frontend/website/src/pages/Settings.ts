@@ -1,13 +1,14 @@
-import { changeDefaultLang } from "../components/ui/changeDefaultLang";
+import { changeDefaultLang } from "../components/ui/selectDefaultLang";
 import { navbar } from "../components/ui/navbar";
 import { changeLanguage } from "../i18n/Translate";
-import { change2FA } from "../components/ui/change2FA";
+import { change2FA } from "../components/ui/buttons/change2FAButton";
 import { footer } from "../components/ui/footer";
-import { primaryButton } from "../components/ui/primaryButton";
+import { primaryButton } from "../components/ui/buttons/primaryButton";
 import { headerPage } from "../components/ui/headerPage";
 (window as any).changeLanguage = changeLanguage;
 import notfound from "./404";
 import { getUserInfo } from "../api/getter";
+import { animateButton } from "../components/ui/buttons/animateButton";
 
 
 
@@ -23,18 +24,18 @@ const userinfoResponse = await getUserInfo();
 			${navbar(userInfos)}
 			${headerPage("settings")}
 				<div class="flex flex-col items-center ml-15 mr-15 justify-center space-y-4 space-x-4 pt-10
-				text-secondary dark:text-dtertiary">
+				text-tertiary dark:text-dtertiary">
 					${changeDefaultLang(userInfos.lang)}
 					<br>
 					${change2FA()}
 					<br>
-					<div class="flex flex-col w-full font-title border-red-600 border-2 space-y-2 p-2 justify-center items-center rounded-lg">
+					<div class="flex flex-col w-full max-w-[800px] font-title border-red-600 border-2 space-y-2 p-2 justify-center items-center rounded-lg">
 						<span class=""> Dangerous Actions </span>
 						${primaryButton({id: 'deleteAccount', weight: "1/3", text: 'Delete account', translate: 'delete-account', type: 'button'})}
 					</div>
 				</div>
 				<div class="flex flex-col items-center justify-center space-y-4 pt-20">
-					${primaryButton({id: "logout", text: "logout",weight:"1/2", translate: "logout"})}
+				${animateButton("logout", "logout", "😥")}
 				</div>
 			</div>
 			${footer()}`

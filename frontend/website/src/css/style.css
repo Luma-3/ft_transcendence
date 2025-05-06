@@ -26,11 +26,11 @@
 @theme {
   --font-title: 'Chillax', sans-serif;
   --font-text: 'Merriweather', sans-serif;
-  
+  /* F4D06F */
   /* White mode */
-  --color-primary:#44BBA4; /* Violet */
+  --color-primary:#E3B1AE; /* Bleu/Vert */
   --color-secondary: #FFFFFF; /* Noir */
-  --color-tertiary: #000000; /* Blanc */
+  --color-tertiary: #1F1918; /* Blanc */
 
   /* Dark mode */
   --color-dprimary: #744FAC; /* Violet */

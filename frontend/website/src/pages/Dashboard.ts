@@ -1,24 +1,17 @@
 import { navbar } from "../components/ui/navbar";
 import { footer } from "../components/ui/footer";
-import notfound from "./404";
-import { getUserInfo } from "../api/getter";
+import { User } from "../api/interfaces/User";
 
-async function renderDashboard() {
-	
-	const userinfoResponse = await getUserInfo();
-	if (userinfoResponse.status === "success" && userinfoResponse.data) {
-		const userInfos = userinfoResponse.data;
-		
+async function renderDashboard(user:User) {
+
 		return `
-			${navbar(userInfos)}
+			${navbar(user)}
 			${footer()}
 		`
-	}
-	return notfound()
 }
 
-export default async function dashboardPage() {
+export default async function dashboardPage(user: User) {
 
-	const container = renderDashboard();
+	const container = renderDashboard(user);
 	return container as Promise<string>;
 }
