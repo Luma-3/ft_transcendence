@@ -2,7 +2,7 @@ import Fastify from 'fastify'
 import dotenv from 'dotenv'
 import fs from 'fs'
 
-import config from './config/fastify.config.mjs'
+import config from './config/fastify.config.js'
 
 import user from './routes/user.js'
 import { UserModel } from './models/userModels.js'

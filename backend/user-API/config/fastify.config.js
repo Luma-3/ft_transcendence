@@ -5,10 +5,10 @@ import fastifyMultipart from '@fastify/multipart'
 import jwt from '@fastify/jwt'
 import formateur from '@transcenduck/formateur'
 
-import knex from '../plugins/knex.mjs'
-import swagger from '../plugins/swagger.mjs'
+import knex from '../plugins/knex.js'
+import swagger from '../plugins/swagger.js'
 
-import knex_config from './knex.config.mjs'
+import knex_config from './knex.config.js'
 
 export default function config(fastify) {
   fastify.register(formateur);

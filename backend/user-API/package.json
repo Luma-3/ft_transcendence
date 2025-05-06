@@ -2,13 +2,13 @@
   "name": "transcenduck_user-services",
   "version": "0.0.1",
   "description": "",
-  "main": "index.mjs",
+  "main": "main.js",
   "imports": {
     "#r/*": "./*"
   },
   "scripts": {
-    "dev": "node --watch main.mjs",
-    "start": "node main.mjs",
+    "dev": "node --watch main.js",
+    "start": "node main.js",
     "stop": ""
   },
   "repository": {

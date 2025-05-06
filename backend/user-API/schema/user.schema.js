@@ -1,4 +1,5 @@
 export const userCreateValidation = {
+  $id: 'userCreateValidation',
   type: 'object',
   required: ['username', 'password', 'email'],
   properties: {
@@ -18,6 +19,7 @@ export const userCreateValidation = {
 }
 
 export const userInfoPublic = {
+  $id: 'userInfoPublic',
   type: 'object',
   properties: {
     id: { type: 'string' },
@@ -28,6 +30,7 @@ export const userInfoPublic = {
 }
 
 export const userInfoPrivate = {
+  $id: 'userInfoPrivate',
   type: 'object',
   properties: {
     id: { type: 'string' },
@@ -35,13 +38,13 @@ export const userInfoPrivate = {
     created_at: { type: 'string' },
     email: { type: 'string' },
     pp_url: { type: 'string' },
-    lang: { type: 'string' },
-    theme: { type: 'string' }
+    lang: { type: 'string', minLength: 2, maxLenght: 2, examples: ['en', 'fr'] },
+    theme: { type: 'string', enum: ['dark', 'light'] }
   }
 }
 
 export async function userSchemas(fastify) {
-  fastify.addSchema({ $id: 'userCreateValidation', ...userCreateValidation });
-  fastify.addSchema({ $id: 'userInfoPublic', ...userInfoPublic });
-  fastify.addSchema({ $id: 'userInfoPrivate', ...userInfoPrivate });
+  fastify.addSchema(userCreateValidation);
+  fastify.addSchema(userInfoPublic);
+  fastify.addSchema(userInfoPrivate);
 }

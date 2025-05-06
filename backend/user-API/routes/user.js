@@ -6,7 +6,11 @@ export default async function(fastify) {
       description: 'Create a user',
       tags: ['Users'],
       response: {
-        200: {}
+        201: fastify.swSchemaFormat({
+          description: 'description',
+          data: fastify.swPayloadFormat('userInfoPublic')
+        }),
+        409: { $ref: 'CONFLICT_ERR' },
       }
     }
   }, Controller.postUser);

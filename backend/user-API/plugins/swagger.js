@@ -33,6 +33,27 @@ function swagger_pl(fastify, opts, done) {
       }
     })
 
+    fastify.decorate('swSchemaFormat', function({ description, headers = {}, data }) {
+      return {
+        description: description,
+        headers: headers,
+        content: data
+      }
+    })
+
+    fastify.decorate('swPayloadFormat', (refID) => {
+      return {
+        'application/json': {
+          schema: {
+            allOf: [
+              { $ref: 'BaseSchema' },
+              { properties: { data: { $ref: refID } } }
+            ]
+          }
+        }
+      }
+    })
+
     if (opts.route !== undefined) {
       fastify.get(opts.route, { schema: { hide: true } },
         async (_, rep) => {
