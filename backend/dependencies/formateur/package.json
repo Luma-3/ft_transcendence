@@ -1,0 +1,10 @@
+{
+  "name": "@transcenduck/formateur",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.js",
+  "dependencies": {
+    "@transcenduck/error": "file:../error",
+    "fastify-plugin": "^5.0.1"
+  }
+}

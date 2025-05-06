@@ -1,19 +1,40 @@
-import cookie from "../plugins/cookie.mjs";
-import cors from "../plugins/cors.mjs";
-import jwt from "../plugins/jwt.mjs"
+import cookie from "@fastify/cookie";
+import cors from "@fastify/cors";
+import swaggerUi from "@fastify/swagger-ui";
+
+import jwt from "../plugins/jwt.mjs";
 import swagger from "../plugins/swagger.mjs";
-import dotenv from 'dotenv';
 
-export default {
-	async registersPlugins(app) {
+export default function(fastify, servers) {
+  fastify.register(cookie);
 
-		await cookie(app)
-		await cors(app);
-		await jwt(app);
-		
-		await swagger(app, {
-			title: 'APIs Documentation',
-			description: 'doc'
-		})
-	}	
+  fastify.register(cors, {
+    orgin: `https://${process.env.AUTHORIZED_IP}`,
+    credentials: true
+  });
+
+  fastify.register(jwt, {
+    secret: process.env.JWT_SECRET,
+    sign: {
+      iss: process.env.GATEWAY_IP,
+      expiresIn: '3d',
+    }
+  });
+
+  fastify.register(swagger, {
+    title: 'APIs Documentation',
+    description: 'doc'
+  })
+
+  fastify.register(swaggerUi, {
+    routePrefix: '/doc',
+    uiConfig: {
+      displayRequestDuration: true,
+      docExpansion: 'none',
+      filter: true,
+      urls: servers
+    },
+    transformSpecification: (swaggerObject) => { return swaggerObject },
+  })
 };
+

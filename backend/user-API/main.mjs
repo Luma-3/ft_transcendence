@@ -1,45 +1,38 @@
 import Fastify from 'fastify'
-import config from './config/fastify.config.mjs'
-import errorHandler from './middlewares/errorHandler.mjs'
-import formatJSON from './middlewares/formatJSON.mjs'
-import Routes from './handler/Routes.mjs'
-import fs from 'fs'
 import dotenv from 'dotenv'
-import fastifyMultipart from '@fastify/multipart'
+import fs from 'fs'
 
-import { UserModel } from './handler/Model.mjs'
-import { registerUserSchemas } from './handler/Schema.mjs'
-import cors from './plugins/cors.mjs'
+import config from './config/fastify.config.mjs'
+
+import user from './routes/user.js'
+import { UserModel } from './models/userModels.js'
+import { userSchemas } from './schema/user.schema.js'
 
 dotenv.config()
 
 const fastify = Fastify({
-	logger : true,
-	https: {
-		key: fs.readFileSync(process.env.SSL_KEY),
-		cert: fs.readFileSync(process.env.SSL_CERT),
-	},
+  logger: true,
+  https: {
+    key: fs.readFileSync(process.env.SSL_KEY),
+    cert: fs.readFileSync(process.env.SSL_CERT),
+  },
 });
 
-await config.registerPlugins(fastify);
-fastify.register(fastifyMultipart);
-// await cors(fastify);
-
-fastify.setErrorHandler(errorHandler)
-fastify.addHook("preSerialization", formatJSON)
+config(fastify);
 
 fastify.decorate('userModel', (new UserModel(fastify.knex)))
-await registerUserSchemas(fastify);
-fastify.register(Routes);
+await userSchemas(fastify);
+
+fastify.register(user);
 
 const start = async () => {
-	try {
-		await fastify.listen({ port: 3001, host: '0.0.0.0'})
-		console.log(`Server listening on ${fastify.server.address().port}`)
-	} catch (err) {
-		console.error(err)
-		process.exit(1)
-	}
+  try {
+    await fastify.listen({ port: 3001, host: '0.0.0.0' })
+    console.log(`Server listening on ${fastify.server.address().port}`)
+  } catch (err) {
+    console.error(err)
+    process.exit(1)
+  }
 }
 
 start()
