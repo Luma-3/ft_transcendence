@@ -13,9 +13,6 @@ function swagger_pl(fastify, opts, done) {
           description: opts?.description,
           version: opts?.version
         },
-        schemes: opts?.schemes,
-        consumes: opts?.schemes,
-        produces: opts?.schemes,
         servers: opts?.servers,
         tags: opts?.tags,
         components: opts?.components

@@ -1,7 +1,7 @@
-import { ForbidenError } from '@transcenduck/error'
+import { ForbiddenError } from '@transcenduck/error'
 
 export const InternalRoute = async (req) => {
   if (req.url.includes('/internal/')) {
-    throw new ForbidenError();
+    throw new ForbiddenError();
   }
 }

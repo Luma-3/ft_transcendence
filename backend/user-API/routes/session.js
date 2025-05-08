@@ -6,7 +6,7 @@ export default async function(fastify) {
       summary: 'Create a Session for a user',
       description: 'Endpoint to create a Session for a user',
       tags: ['Sessions'],
-      // body: { $ref: '' },
+      body: { $ref: 'sessionCreateValidation' },
       response: {
         201: { $ref: 'BaseSchema' },
         401: { $ref: 'UNAUTHORIZED_ERR' }
@@ -15,4 +15,27 @@ export default async function(fastify) {
   }, Controllers.postSession);
 
 
+  fastify.delete('/session', {
+    schema: {
+      summary: 'Delete a Session for a user',
+      description: 'Endpoint to delete a Session for a user',
+      tags: ['Sessions'],
+      response: {
+        200: { $ref: 'BaseSchema' },
+        401: { $ref: 'UNAUTHORIZED_ERR' }
+      }
+    }
+  }, Controllers.deleteSession);
+
+  fastify.post('/session/refresh', {
+    schema: {
+      summary: 'Refresh a Session for a user',
+      description: 'Endpoint to refresh a Session for a user',
+      tags: ['Sessions'],
+      response: {
+        200: { $ref: 'BaseSchema' },
+        401: { $ref: 'UNAUTHORIZED_ERR' }
+      }
+    }
+  }, Controllers.refreshSession);
 }

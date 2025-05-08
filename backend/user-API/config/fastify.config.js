@@ -53,12 +53,10 @@ export default async function config(fastify) {
     servers: [
       { url: '/user/', description: 'User Service' }
     ],
-    schemes: ['http'],
-    consumes: ['application/json'],
-    produces: ['application/json'],
     tags: [
       { name: 'Users', description: 'Endpoints for managing user accounts and accessing personal or public user information.' },
-      { name: 'Sessions', description: 'Endpoints related to user session creation and termination.' }
+      { name: 'Sessions', description: 'Endpoints related to user session creation and termination.' },
+      { name: 'Preferences', description: 'Endpoints related to user preferences.' }
     ],
     components: {
       securitySchemes: {

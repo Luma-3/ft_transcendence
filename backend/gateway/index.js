@@ -25,13 +25,13 @@ const Services = [
   {
     name: 'Users Services', prefix: '/user',
     upstream: 'https://' +  process.env.USER_IP,
-    url: 'https://' + process.env.IP + '/user/doc/json',
+    url: '/user/doc/json',
     preHandler: InternalRoute
   },
   {
     name: 'Upload Services', prefix: '/upload',
     upstream: 'https://' + process.env.UPLAOD_IP,
-    url: 'https://' + process.env.IP + '/user/doc/json',
+    url: 'https://' + process.env.UPLOAD_IP + '/user/doc/json',
     preHandler: InternalRoute
   }
 ]

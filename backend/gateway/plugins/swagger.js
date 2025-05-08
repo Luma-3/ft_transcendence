@@ -13,9 +13,6 @@ function swagger_pl(fastify, opts, done) {
           description: opts?.description,
           version: opts?.version
         },
-        schemes: opts?.schemes,
-        consumes: opts?.schemes,
-        produces: opts?.schemes,
         servers: opts?.servers,
         tags: opts?.tags,
         components: opts?.components
@@ -26,11 +23,30 @@ function swagger_pl(fastify, opts, done) {
 
     fastify.addSchema({
       $id: 'BaseSchema',
+      description: 'default Response',
       type: 'object',
       properties: {
         status: { type: 'string', enum: ['success', 'error'] },
         message: { type: 'string' },
-      }
+      },
+      required: ['status', 'message']
+    })
+
+    fastify.decorate('addSchemaFormater', function(schema) {
+      fastify.addSchema(schema);
+      fastify.addSchema({
+        $id: schema.$id + 'Base',
+        description: schema.description + ' ( + Base Fromat )',
+        type: 'object',
+        properties: {
+          status: { type: 'string', enum: ['success', 'error'] },
+          message: { type: 'string' },
+          data: {
+            type: 'object',
+            properties: schema.properties
+          }
+        }
+      });
     })
 
     if (opts.route !== undefined) {

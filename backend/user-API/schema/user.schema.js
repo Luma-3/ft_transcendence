@@ -39,8 +39,44 @@ export const userInfoPrivate = {
   }
 }
 
+export const userPasswordValidation = {
+  $id: 'userPasswordValidation',
+  type: 'object',
+  properties: {
+    oldPassword: { type: 'string' },
+    password: {
+      type: 'string',
+      pattern: '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$',
+      minLength: 8,
+      maxLength: 255
+    }
+  },
+  required: ['oldPassword', 'password'],
+}
+
+export const userEmailValidation = {
+  $id: 'userEmailValidation',
+  type: 'object',
+  properties: {
+    email: { type: 'string', format: 'email' }
+  },
+  required: ['email'],
+}
+
+export const userUsernameValidation = {
+  $id: 'userUsernameValidation',
+  type: 'object',
+  properties: {
+    username: { type: 'string', minLength: 2, maxLength: 32 }
+  },
+  required: ['username'],
+}
+
 export async function userSchemas(fastify) {
   fastify.addSchemaFormater(userCreateValidation);
   fastify.addSchemaFormater(userInfoPublic);
   fastify.addSchemaFormater(userInfoPrivate);
+  fastify.addSchemaFormater(userPasswordValidation);
+  fastify.addSchemaFormater(userEmailValidation);
+  fastify.addSchemaFormater(userUsernameValidation);
 }

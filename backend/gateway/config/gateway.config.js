@@ -29,8 +29,15 @@ export default function(fastify, servers) {
   });
 
   fastify.register(swagger, {
-    title: 'APIs Documentation',
-    description: 'doc'
+    title: 'Transcenduck API',
+    description: 'Official Documentation for all Services API Of Transcenduck Project',
+    version: '1.0.0',
+    servers: servers.map((value) => {
+      return {
+        url: value.prefix + '/',
+        description: value.name
+      }
+    }),
   })
 
   fastify.register(swaggerUi, {

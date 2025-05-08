@@ -1,4 +1,4 @@
-import { ConflictError } from "@transcenduck/error";
+import { ConflictError, ForbiddenError, NotFoundError } from "@transcenduck/error";
 import { v4 as uuidV4 } from "uuid";
 
 export class UserService {
@@ -54,6 +54,57 @@ export class UserService {
 
     return {
       ...user,
+      preferences: preferences
+    }
+  }
+
+  async updateUserPassword(id, oldPassword, newPassword, schema) {
+    const user = await this.UserModel.findByID(id);
+    if (!user) throw new NotFoundError("User not found");
+    const isValid = await this.bcrypt.compare(oldPassword, user.password);
+    if (!isValid) throw new ForbiddenError("Invalid password");
+
+    const hash_pass = await this.bcrypt.hash(newPassword);
+    const [updatedUser, updatedPreferences] = Promise.all([
+      this.UserModel.update(id, { password: hash_pass }, schema.user),
+      this.PreferencesModel.findByUserID(id, schema.preferences)
+    ]);
+    return {
+      ...updatedUser,
+      preferences: updatePreferences
+    }
+  }
+
+  async updateUserEmail(id, email, schema) {
+    const user = await this.UserModel.findByID(id);
+    if (!user) throw new NotFoundError("User not found");
+
+    const existingEmail = await this.UserModel.findByEmail(email);
+    if (existingEmail) throw new ConflictError("Email already in use");
+
+    const [updatedUser, preferences] = await Promise.all([
+      this.UserModel.update(id, { email: email }, schema.user),
+      this.PreferencesModel.findByUserID(id, schema.preferences)
+    ]);
+    return {
+      ...updatedUser,
+      preferences: preferences
+    }
+  }
+
+  async updateUserUsername(id, username, schema) {
+    const user = await this.UserModel.findByID(id);
+    if (!user) throw new NotFoundError("User not found");
+
+    const existingUsername = await this.UserModel.findByUsername(username);
+    if (existingUsername) throw new ConflictError("Username already in use");
+
+    const [updatedUser, preferences] = await Promise.all([
+      this.UserModel.update(id, { username: username }, schema.user),
+      this.PreferencesModel.findByUserID(id, schema.preferences)
+    ]);
+    return {
+      ...updatedUser,
       preferences: preferences
     }
   }

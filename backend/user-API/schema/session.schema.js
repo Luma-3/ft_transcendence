@@ -5,7 +5,8 @@ export const sessionCreateValidation = {
     username: { type: 'string' },
     password: { type: 'string' }
   },
-  required: ['username', 'password']
+  required: ['username', 'password'],
+  additionalProperties: false,
 }
 
 export async function sessionSchemas(fastify) {

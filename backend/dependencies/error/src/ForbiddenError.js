@@ -1,13 +1,13 @@
 import { BaseError } from './BaseError.js'
 
-export class ForbidenError extends BaseError {
+export class ForbiddenError extends BaseError {
   constructor(message = 'Forbiden', details) {
-    super(message, 403, 'FORBIDEN_ERR', details)
+    super(message, 403, 'FORBIDDEN_ERR', details)
   }
 }
 
 export const ForbiddenSchema = {
-  $id: 'FORBIDEN_ERR',
+  $id: 'FORBIDDEN_ERR',
   description: 'Forbiden Error',
   type: 'object',
   properties: {

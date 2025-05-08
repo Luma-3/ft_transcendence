@@ -17,7 +17,20 @@ export const preferencesPublic = {
   }
 }
 
+export const preferencesValidation = {
+  $id: 'preferencesValidation',
+  minProperties: 1,
+  type: 'object',
+  properties: {
+    theme: { type: 'string', enum: ['dark', 'light'] },
+    lang: { type: 'string', enum: ['en', 'fr', 'es'] },
+    avatar: { type: 'string', format: 'uri' },
+  },
+  additionalProperties: false,
+}
+
 export async function preferencesSchema(fastify) {
   fastify.addSchemaFormater(preferencesPrivate);
   fastify.addSchemaFormater(preferencesPublic);
+  fastify.addSchemaFormater(preferencesValidation);
 }

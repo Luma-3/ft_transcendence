@@ -6,6 +6,7 @@ import config from './config/fastify.config.js'
 
 import user from './routes/user.js'
 import session from './routes/session.js'
+import preferences from './routes/preferences.js'
 
 import { UserModel } from './models/userModel.js'
 import { PreferencesModel } from './models/preferencesModel.js'
@@ -14,6 +15,7 @@ import { UserService } from './services/userService.js'
 
 import { userSchemas } from './schema/user.schema.js'
 import { preferencesSchema } from './schema/preferences.schema.js'
+import { sessionSchemas } from './schema/session.schema.js'
 
 dotenv.config()
 const fastify = Fastify({
@@ -45,9 +47,11 @@ fastify.decorate('extractDbKeys', (schema) => {
 
 await userSchemas(fastify);
 await preferencesSchema(fastify);
+await sessionSchemas(fastify);
 
 fastify.register(user);
-fastify.register(session)
+fastify.register(session);
+fastify.register(preferences);
 
 const start = async () => {
   try {
