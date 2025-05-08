@@ -8,10 +8,13 @@ export class UnauthorizedError extends BaseError {
 
 export const UnauthorizedSchema = {
   $id: 'UNAUTHORIZED_ERR',
+  description: 'Unauthorized errror',
   type: 'object',
   properties: {
-    message: { type: 'string', description: 'Explanation of why authentication failed' },
+    status: { type: 'string', enum: ['error'] },
     statusCode: { type: 'integer', description: 'HTTP status code of the response', examples: [401] },
-    code: { type: 'string', description: 'Application-specific error identifier', examples: ['UNAUTHORIZED_ERR'] }
-  }
+    code: { type: 'string', description: 'Application-specific error identifier', examples: ['UNAUTHORIZED_ERR'] },
+    message: { type: 'string', description: 'Explanation of why authentication failed' },
+  },
+  required: ['status', 'message', 'statusCode', 'code']
 }

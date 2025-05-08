@@ -10,15 +10,15 @@ import swagger from '../plugins/swagger.js'
 
 import knex_config from './knex.config.js'
 
-export default function config(fastify) {
-  fastify.register(formateur);
+export default async function config(fastify) {
+  await fastify.register(formateur);
 
-  fastify.register(knex, knex_config);
-  fastify.register(bcrypt, { saltWorkFactor: 12 });
-  fastify.register(cookie);
-  fastify.register(fastifyMultipart);
+  await fastify.register(knex, knex_config);
+  await fastify.register(bcrypt, { saltWorkFactor: 12 });
+  await fastify.register(cookie);
+  await fastify.register(fastifyMultipart);
 
-  fastify.register(jwt, {
+  await fastify.register(jwt, {
     secret: process.env.JWT_SECRET,
     sign: {
       iss: process.env.GATEWAY_IP,
@@ -26,7 +26,7 @@ export default function config(fastify) {
     }
   });
 
-  fastify.register(oauth2, {
+  await fastify.register(oauth2, {
     name: 'googleOAuth2',
     credentials: {
       client: {
@@ -46,10 +46,13 @@ export default function config(fastify) {
     }
   });
 
-  fastify.register(swagger, {
+  await fastify.register(swagger, {
     title: 'User Service API',
     description: 'Endpoints for user management',
     route: '/doc/json',
+    servers: [
+      { url: '/user/', description: 'User Service' }
+    ],
     schemes: ['http'],
     consumes: ['application/json'],
     produces: ['application/json'],

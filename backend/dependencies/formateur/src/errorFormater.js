@@ -1,9 +1,11 @@
 import { BaseError } from '@transcenduck/error'
 
-export default async function errorFormater(err, req, rep) {
+export default function errorformater(err, req, rep) {
+
   if (err instanceof BaseError || err.validation) {
-    return rep.code(err.statusCode).send({
+    return rep.status(err.statusCode).send({
       status: 'error',
+      statusCode: err.statusCode,
       message: err.message,
       code: err.code,
       ...(err.details || { details: err.details })
@@ -11,9 +13,10 @@ export default async function errorFormater(err, req, rep) {
   }
 
   console.error(err);
-  return rep.code(500).send({
+  return rep.status(500).send({
     status: 'error',
-    code: 'INT_SERV_ERR',
-    message: 'Internal Server Error',
+    statuscode: 500,
+    message: 'internal server error',
+    code: 'int_serv_err',
   });
 }

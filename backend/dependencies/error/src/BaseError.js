@@ -5,7 +5,7 @@ export class BaseError extends Error {
    * @param {string} code     – ID code (ex: 'USER_NOT_FOUND')
    * @param {object} [details] – Details
    */
-  constructor(message, statusCode = 500, code = 'INT_SERV_ERR', detauls = {}) {
+  constructor(message, statusCode = 500, code = 'INT_SERV_ERR', details = {}) {
     super(message)
     this.name = this.constructor.name
     this.statusCode = statusCode

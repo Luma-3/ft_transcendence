@@ -26,32 +26,30 @@ function swagger_pl(fastify, opts, done) {
 
     fastify.addSchema({
       $id: 'BaseSchema',
+      description: 'default Response',
       type: 'object',
       properties: {
         status: { type: 'string', enum: ['success', 'error'] },
         message: { type: 'string' },
-      }
+      },
+      required: ['status', 'message']
     })
 
-    fastify.decorate('swSchemaFormat', function({ description, headers = {}, data }) {
-      return {
-        description: description,
-        headers: headers,
-        content: data
-      }
-    })
-
-    fastify.decorate('swPayloadFormat', (refID) => {
-      return {
-        'application/json': {
-          schema: {
-            allOf: [
-              { $ref: 'BaseSchema' },
-              { properties: { data: { $ref: refID } } }
-            ]
+    fastify.decorate('addSchemaFormater', function(schema) {
+      fastify.addSchema(schema);
+      fastify.addSchema({
+        $id: schema.$id + 'Base',
+        description: schema.description + ' ( + Base Fromat )',
+        type: 'object',
+        properties: {
+          status: { type: 'string', enum: ['success', 'error'] },
+          message: { type: 'string' },
+          data: {
+            type: 'object',
+            properties: schema.properties
           }
         }
-      }
+      });
     })
 
     if (opts.route !== undefined) {

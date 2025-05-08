@@ -3,12 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "main": "main.js",
-  "imports": {
-    "#r/*": "./*"
-  },
   "scripts": {
-    "dev": "node --watch main.js",
-    "start": "node main.js",
+    "dev": "nodemon index.js",
+    "start": "node index.js",
     "stop": ""
   },
   "repository": {
@@ -22,7 +19,8 @@
   },
   "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
   "devDependencies": {
-    "@fastify/cors": "^10.0.2"
+    "@fastify/cors": "^10.0.2",
+    "nodemon": "^3.1.10"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",

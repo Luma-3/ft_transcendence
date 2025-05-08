@@ -8,10 +8,13 @@ export class NotFoundError extends BaseError {
 
 export const NotFoundSchema = {
   $id: 'NOT_FOUND_ERR',
+  description: 'Resource not found',
   type: 'object',
   properties: {
-    message: { type: 'string', description: 'Description of the missing resource' },
+    status: { type: 'string', enum: ['error'] },
     statusCode: { type: 'integer', description: 'HTTP status code of the response', examples: [404] },
     code: { type: 'string', description: 'Application-specific error identifier', examples: ['NOT_FOUND_ERR'] },
-  }
+    message: { type: 'string', description: 'Description of the missing resource' },
+  },
+  required: ['status', 'message', 'statusCode', 'code']
 }

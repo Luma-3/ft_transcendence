@@ -8,10 +8,13 @@ export class InternalServerError extends BaseError {
 
 export const InternalServerErrorSchema = {
   $id: 'INT_SERV_ERR',
+  description: 'Internal Server error',
   type: 'object',
   properties: {
-    message: { type: 'string', description: 'Generic error message for unexpected server failures' },
+    status: { type: 'string', enum: ['error'] },
     statusCode: { type: 'integer', description: 'HTTP status code of the response', examples: [500] },
-    code: { type: 'string', description: 'Application-specific error identifier', examples: ['INT_SERV_ERR'] }
-  }
+    code: { type: 'string', description: 'Application-specific error identifier', examples: ['INT_SERV_ERR'] },
+    message: { type: 'string', description: 'Generic error message for unexpected server failures' },
+  },
+  required: ['status', 'message', 'statusCode', 'code']
 }
