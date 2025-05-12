@@ -12,6 +12,8 @@ import { changePictureElement } from '../components/utils/imageEditor'
 import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 import { renderBackPage } from '../components/renderPage'
+import { toggleGameStat } from '../components/utils/toggleGameStat'
+import { toggleTruc } from '../components/utils/toggleTruc'
 
 const clickEvent: {[key: string]: () => void } = {
 
@@ -43,6 +45,8 @@ const clickEvent: {[key: string]: () => void } = {
 	// * -------------- Common Components  -------------- */
 
 	'loadBackPage': () => renderBackPage(),
+	'showGameStat': () => toggleGameStat(),
+	'showTruc': () => toggleTruc(),
 
 };
 
