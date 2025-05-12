@@ -1,8 +1,10 @@
 import { UnauthorizedError } from "@transcenduck/error";
+import { v4 as uuidv4 } from 'uuid';
 
 export class SessionService {
   constructor({ models, utils }) {
     this.UserModel = models.UserModel;
+    this.SessionModel = models.SessionModel;
     this.bcrypt = utils.bcrypt;
   }
 
@@ -17,18 +19,48 @@ export class SessionService {
       throw UnauthorizedError('Login or password incorrect');
     }
 
-    const userPayload = {
-      id: user.id,
-      username: username,
-      email: user.email
+    const [{ refreshToken, jti }, accessToken] = await Promise.all([
+      this.createRefreshToken(user.id),
+      this.createAccessToken(user),
+    ]);
+
+    await this.SessionModel.create(user.id, jti);
+
+    return { refreshToken, accessToken };
+  }
+
+  async removeSession(userID) {
+    this.SessionModel.delete(userID);
+  }
+
+  async createRefreshToken(userID) {
+    const jti = uuidv4();
+    const refreshTokenPayload = {
+      jti: jti,
+      udserID: userID,
     }
 
-    return this.jwt.sign(userPayload, this.jwt.options.sign);
+    const refreshTokenOpts = this.jwt.options;
+    refreshTokenOpts.expirsIn = '7d';
+    const refreshToken = this.jwt.sign(refreshTokenPayload, refreshTokenOpts);
+
+    return { refreshToken, jti };
   }
 
-  async removeSession() {
-    // TODO : Redis or Sqlite for invalid token 
+  async createAccessToken(user) {
+    const accessTokenPayload = {
+      userID: user.id,
+      username: user.username,
+      email: user.email,
+    }
+
+    const accessTokenOpts = this.jwt.options;
+    accessTokenOpts.expiresIn = '15m';
+    const accessToken = this.jwt.sign(accessTokenPayload, accessTokenOpts);
+
+    return accessToken;
   }
+
 
 }
 

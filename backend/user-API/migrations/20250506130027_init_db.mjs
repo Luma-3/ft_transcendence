@@ -9,7 +9,7 @@ export const up = async (knex) => {
     t.string('username', 32).notNullable().unique();
     t.string('email', 255).notNullable().unique();
     t.timestamp('created_at');
-    t.string('password', 255);
+    t.text('password');
   });
 
   await knex.schema.createTable('preferences', (t) => {
@@ -18,6 +18,12 @@ export const up = async (knex) => {
     t.enu('lang', ['en', 'fr', 'es']).defaultTo('en');
     t.text('avatar');
   })
+
+  await knex.schema.createTable('sessions', (t) => {
+    t.uuid('user_id').primary().references('id').inTable('users').onDelete('CASCADE');
+    t.uuid('jti');
+    t.timestamp('created_at');
+  });
 };
 
 /**
@@ -27,4 +33,5 @@ export const up = async (knex) => {
 export const down = async (knex) => {
   await knex.schema.dropTableIfExists('preferences');
   await knex.schema.dropTableIfExists('users');
+  await knex.schema.dropTableIfExists('sessions');
 };
