@@ -8,10 +8,11 @@ function jwt_pl(fastify, opts, done) {
     fastify.register(jwt, opts);
 
     fastify.addHook('onRequest', async function(req, rep) {
-      const isPublic = opts.publicRoutes.some(route => { 
+      console.log(req.url);
+      const isPublic = opts.publicRoutes.some(route => {
         const nethodMatch = route.method.toUpperCase() === req.method.toUpperCase();
-        const urlMatch = route.url instanceof RegExp 
-          ? route.url.test(req.url) 
+        const urlMatch = route.url instanceof RegExp
+          ? route.url.test(req.url)
           : req.url.startsWith(route.url);
         return nethodMatch && urlMatch;
       });
@@ -19,20 +20,20 @@ function jwt_pl(fastify, opts, done) {
 
       const authHeader = req.headers['authorization'] || '';
       const [_, bearerToken] = authHeader.split(' ');
-      const token = req.cookies.token || bearerToken;
+      const token = req.cookies.accessToken || bearerToken;
 
       if (!token) {
         throw new UnauthorizedError('authorization token is missing');
       }
 
       try {
-        req.user = await fastify.jwt.verify(token);
-        req.headers['x-user-id'] = req.user.id;
+        req.user = fastify.jwt.verify(token);
+        console.log(req.user);
+        req.headers['x-user-id'] = req.user.userID;
         req.headers['x-user-username'] = req.user.username;
       }
       catch (error) {
         throw new UnauthorizedError('Invalid or expired token');
-        fastify.log.warn({ err, userAgent: req.headers['user-agent'] }, 'Invalid token');
       }
     });
   }

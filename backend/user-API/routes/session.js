@@ -1,7 +1,7 @@
 import * as Controllers from '../controllers/sessionController.js'
 
 export default async function(fastify) {
-  fastify.post('/sesssion', {
+  fastify.post('/session', {
     schema: {
       summary: 'Create a Session for a user',
       description: 'Endpoint to create a Session for a user',

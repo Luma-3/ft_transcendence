@@ -10,8 +10,10 @@ import preferences from './routes/preferences.js'
 
 import { UserModel } from './models/userModel.js'
 import { PreferencesModel } from './models/preferencesModel.js'
+import { SessionModel } from './models/sessionModel.js'
 
 import { UserService } from './services/userService.js'
+import { SessionService } from './services/SessionService.js'
 
 import { userSchemas } from './schema/user.schema.js'
 import { preferencesSchema } from './schema/preferences.schema.js'
@@ -37,7 +39,18 @@ fastify.decorate('UserService', new UserService({
     knex: fastify.knex,
     bcrypt: fastify.bcrypt
   }
-}))
+}));
+
+fastify.decorate('SessionService', new SessionService({
+  models: {
+    UserModel: new UserModel(fastify.knex),
+    SessionModel: new SessionModel(fastify.knex)
+  },
+  utils: {
+    jwt: fastify.jwt,
+    bcrypt: fastify.bcrypt
+  }
+}));
 
 fastify.decorate('extractDbKeys', (schema) => {
   return Object.entries(schema.properties)

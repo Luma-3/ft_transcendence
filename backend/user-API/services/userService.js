@@ -1,4 +1,4 @@
-import { ConflictError, ForbiddenError, NotFoundError } from "@transcenduck/error";
+import { ConflictError, ForbiddenError, NotFoundError, UnauthorizedError } from "@transcenduck/error";
 import { v4 as uuidV4 } from "uuid";
 
 export class UserService {
@@ -43,14 +43,19 @@ export class UserService {
   }
 
   async deleteUser(id) {
-    return await this.UserModel.delete(id);
+    await this.UserModel.delete(id);
+    return id;
   }
 
-  async getUserbyID(id, schema) {
+  async getUserByID(id, schema) {
     const [user, preferences] = await Promise.all([
       this.UserModel.findByID(id, schema.user),
       this.PreferencesModel.findByUserID(id, schema.preferences)
     ]);
+
+    if (!user) {
+      throw new NotFoundError("User");
+    }
 
     return {
       ...user,
@@ -59,33 +64,34 @@ export class UserService {
   }
 
   async updateUserPassword(id, oldPassword, newPassword, schema) {
-    const user = await this.UserModel.findByID(id);
-    if (!user) throw new NotFoundError("User not found");
+    const user = await this.UserModel.findByID(id, ['password']);
+    if (!user) throw new NotFoundError("User");
     const isValid = await this.bcrypt.compare(oldPassword, user.password);
-    if (!isValid) throw new ForbiddenError("Invalid password");
+    if (!isValid) throw new UnauthorizedError("Invalid password");
 
     const hash_pass = await this.bcrypt.hash(newPassword);
-    const [updatedUser, updatedPreferences] = Promise.all([
+    const [[updatedUser], updatedPreferences] = await Promise.all([
       this.UserModel.update(id, { password: hash_pass }, schema.user),
       this.PreferencesModel.findByUserID(id, schema.preferences)
     ]);
+
     return {
       ...updatedUser,
-      preferences: updatePreferences
+      preferences: updatedPreferences
     }
   }
 
   async updateUserEmail(id, email, schema) {
     const user = await this.UserModel.findByID(id);
-    if (!user) throw new NotFoundError("User not found");
-
+    if (!user) throw new NotFoundError("User");
     const existingEmail = await this.UserModel.findByEmail(email);
     if (existingEmail) throw new ConflictError("Email already in use");
 
-    const [updatedUser, preferences] = await Promise.all([
+    const [[updatedUser], preferences] = await Promise.all([
       this.UserModel.update(id, { email: email }, schema.user),
       this.PreferencesModel.findByUserID(id, schema.preferences)
     ]);
+
     return {
       ...updatedUser,
       preferences: preferences
@@ -94,12 +100,12 @@ export class UserService {
 
   async updateUserUsername(id, username, schema) {
     const user = await this.UserModel.findByID(id);
-    if (!user) throw new NotFoundError("User not found");
+    if (!user) throw new NotFoundError("User");
 
     const existingUsername = await this.UserModel.findByUsername(username);
     if (existingUsername) throw new ConflictError("Username already in use");
 
-    const [updatedUser, preferences] = await Promise.all([
+    const [[updatedUser], preferences] = await Promise.all([
       this.UserModel.update(id, { username: username }, schema.user),
       this.PreferencesModel.findByUserID(id, schema.preferences)
     ]);

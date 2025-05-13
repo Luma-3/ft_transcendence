@@ -8,6 +8,11 @@ import { InternalRoute } from './middleware/InternalRoute.js'
 dotenv.config()
 
 const fastify = Fastify({
+  rewriteUrl(req) {
+    if (req.url.startsWith('/api/') && process.env.NODE_ENV === "development") {
+      return req.url.replace('/api', '');
+    }
+  },
   logger: true,
   https: {
     key: fs.readFileSync(process.env.SSL_KEY),
@@ -15,22 +20,26 @@ const fastify = Fastify({
   },
 });
 
-fastify.addHook('onRequest', async (req, rep) => {
-  if (req.url.startsWith('/api/' && process.env.NODE_ENV === 'development')) {
-    req.url = req.url.replace('/api', '');
-  }
-});
+// fastify.addHook('onRequest', (req, rep, done) => {
+//   if (req.url.startsWith('/api/')) {
+//     console.log('SALUT')
+//     let url = req.url;
+//     req.url = url.replace('/api', '');
+//     console.log(req.url);
+//   }
+//   done();
+// });
 
 const Services = [
   {
     name: 'Users Services', prefix: '/user',
-    upstream: 'https://' +  process.env.USER_IP,
+    upstream: 'https://' + process.env.USER_IP,
     url: '/user/doc/json',
     preHandler: InternalRoute
   },
   {
     name: 'Upload Services', prefix: '/upload',
-    upstream: 'https://' + process.env.UPLAOD_IP,
+    upstream: 'https://' + process.env.UPLOAD_IP,
     url: 'https://' + process.env.UPLOAD_IP + '/user/doc/json',
     preHandler: InternalRoute
   }

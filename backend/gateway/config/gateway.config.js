@@ -20,11 +20,11 @@ export default function(fastify, servers) {
       expiresIn: '3d',
     },
     publicRoutes: [
-      {method: 'POST', url: '/user/users'}, // Create user
-      {method: 'POST', url: '/user/session'}, // Create session
-      {method: 'POST', url: '/user/refresh'}, // Refresh token
-      {method: 'GET', url: '/doc'}, // Swagger doc
-      {method: 'GET', url: /^\/[^\/]+\/doc\/json$/}, // Swagger json
+      { method: 'POST', url: '/user/users' }, // Create user
+      { method: 'POST', url: '/user/session' }, // Create session
+      { method: 'POST', url: '/user/refresh' }, // Refresh token
+      { method: 'GET', url: '/doc' }, // Swagger doc
+      { method: 'GET', url: /^\/[^\/]+\/doc\/json$/ }, // Swagger json
     ]
   });
 

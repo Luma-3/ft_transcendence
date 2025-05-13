@@ -21,7 +21,7 @@ export async function deleteUser(req, rep) {
 export async function getUser(req, rep) {
   const { userID } = req.params;
 
-  const user = await this.UserService.getUserbyID(userID, {
+  const user = await this.UserService.getUserByID(userID, {
     user: this.extractDbKeys(userSchema.userInfoPublic),
     preferences: this.extractDbKeys(preferencesSchema.preferencesPublic)
   });
@@ -32,7 +32,8 @@ export async function getUser(req, rep) {
 export async function getMe(req, rep) {
   const userID = req.headers['x-user-id']
 
-  const user = await this.UserService.getUserbyID(userID, {
+  console.log(userID);
+  const user = await this.UserService.getUserByID(userID, {
     user: this.extractDbKeys(userSchema.userInfoPrivate),
     preferences: this.extractDbKeys(preferencesSchema.preferencesPrivate)
   });
@@ -63,7 +64,7 @@ export async function updateMeEmail(req, rep) {
   return rep.code(200).send({ message: 'Ok', data: user });
 }
 
-export async function updateMeUsername(req,rep) {
+export async function updateMeUsername(req, rep) {
   const userID = req.headers['x-user-id'];
   const { username } = req.body;
 

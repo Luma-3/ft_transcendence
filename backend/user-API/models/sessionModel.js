@@ -4,9 +4,9 @@ export class SessionModel {
   }
 
   async create(userID, jti) {
-    await this.knew('sessions')
-      .isert({
-        userID: userID,
+    await this.knex('sessions')
+      .insert({
+        user_id: userID,
         jti: jti,
         created_at: this.knex.fn.now()
       })

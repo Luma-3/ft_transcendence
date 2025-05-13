@@ -6,17 +6,18 @@ export class SessionService {
     this.UserModel = models.UserModel;
     this.SessionModel = models.SessionModel;
     this.bcrypt = utils.bcrypt;
+    this.jwt = utils.jwt;
   }
 
   async createSession(username, password) {
-    const user = await this.UserModel.findByUsername(username,)
+    const user = await this.UserModel.findByUsername(username, ['password', 'id'])
     if (!user) {
-      throw UnauthorizedError('Login or password incorrect');
+      throw new UnauthorizedError('Login or password incorrect');
     }
 
     const isMatch = await this.bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw UnauthorizedError('Login or password incorrect');
+      throw new UnauthorizedError('Login or password incorrect');
     }
 
     const [{ refreshToken, jti }, accessToken] = await Promise.all([
@@ -29,15 +30,17 @@ export class SessionService {
     return { refreshToken, accessToken };
   }
 
-  async removeSession(userID) {
-    this.SessionModel.delete(userID);
+  async removeSession(accessToken) {
+    const accessTokenDecode = await this.jwt.decode(accessToken);
+
+    this.SessionModel.delete(accessTokenDecode.userID);
   }
 
   async createRefreshToken(userID) {
     const jti = uuidv4();
     const refreshTokenPayload = {
       jti: jti,
-      udserID: userID,
+      userID: userID,
     }
 
     const refreshTokenOpts = this.jwt.options;
@@ -61,7 +64,26 @@ export class SessionService {
     return accessToken;
   }
 
+  async refreshSession(refreshToken) {
+    const decodeToken = await this.jwt.decode(refreshToken);
+    const session = await this.SessionModel.findByUserID(decodeToken.userID);
 
+    if (decodeToken.jti !== session.jti) {
+      throw new UnauthorizedError('Token Revoked');
+    }
+
+    const user = await this.UserModel.findByID(decodeToken.userID);
+
+    const [{ newRefreshToken, jti }, accessToken] = await Promise.all([
+      this.createRefreshToken(user.id),
+      this.createAccessToken(user),
+    ]);
+
+    console.log(jti, user);
+    await this.SessionModel.update(user.id, jti);
+
+    return { newRefreshToken, accessToken };
+  }
 }
 
 
