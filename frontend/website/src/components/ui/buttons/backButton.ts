@@ -4,7 +4,7 @@ export function backButton() {
 	w-50 p-2 lg:ml-30 md:ml-10 sm:ml-10 ml-5 transform transition-transform duration-300
 	hover:-translate-x-1 hover:scale-110">
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"
-			class="size-12 pointer-events-none">
+			class="size-12 md:size-18 lg:size-20 pointer-events-none">
   			<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 		</svg>
 	</div>`
@@ -19,7 +19,7 @@ export function backButtonPublicPage(actualPage: string) {
 	w-50 p-2 lg:ml-30 md:ml-10 sm:ml-10 ml-5 transform transition-transform duration-300
 	hover:-translate-x-1 hover:scale-110">
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"
-			class="size-12 pointer-events-none">
+			class="size-12 md:size-18 lg:size-20 pointer-events-none">
   			<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 		</svg>
 	</div>`

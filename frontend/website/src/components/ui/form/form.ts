@@ -49,7 +49,7 @@ export function form({ name, inputs, button, button2 }: FormOptions): string {
 		.join('');
 
 	return `
-	<form id="${name}" name="${name}" class="flex flex-col justify-left items-left space-y-4 w-full lg:w-1/2 p-4">
+	<form id="${name}" name="${name}" class="flex flex-col justify-left text-responsive-size items-left space-y-4 w-3/4 sm:w-1/2 p-4 h-lg">
 		${inputFields}
 	<div class="flex flex-row gap-2 justify-between items-center">
 		${primaryButton(button)}

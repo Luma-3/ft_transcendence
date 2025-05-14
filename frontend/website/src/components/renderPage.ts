@@ -4,17 +4,16 @@ import register from '../pages/Register'
 import dashboard from '../pages/Dashboard'
 import settings from '../pages/Settings'
 import profile from '../pages/Profile'
-import { hackPage } from '../pages/Hack'
+import errorPage from '../pages/500'
+import notFoundPage from '../pages/404'
+import welcomeYouPage, { reWelcomeYouPage } from '../pages/WelcomeYou';
 
-import { setupColorTheme } from '../components/utils/setColorTheme'
 import { addToHistory } from '../main'
+import { setupColorTheme } from '../components/utils/setColorTheme'
 import { translatePage } from '../i18n/Translate'
 import { fadeIn, fadeOut } from '../components/utils/fade'
 import { User } from '../api/interfaces/User'
-import errorPage from '../pages/500'
-import notFoundPage from '../pages/404'
 import { getUserInfo } from '../api/getter'
-import welcomeYouPage, { reWelcomeYouPage } from '../pages/WelcomeYou';
 import { handleWelcomeYouPage } from '../pages/WelcomeYou';
 
 
@@ -24,7 +23,6 @@ const rendererPublicPage: {[key: string]: () => string | Promise<string>} = {
 	'login': login,
 	'register': register,
 	'500': errorPage,
-	'hacked': hackPage,
 };
 
 const rendererPrivatePage: {[key: string]: (user: User) => string | Promise<string>} = {

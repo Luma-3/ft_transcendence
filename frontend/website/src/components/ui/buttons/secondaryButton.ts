@@ -13,7 +13,7 @@ export function secondaryButton({
 }) {
 	return `
 	<button id="${id}" type="${type}" 
-	class="font-title text-sm md:text-md p-2 bg-tertiary text-primary dark:bg-dtertiary dark:text-dprimary rounded w-${weight} hover:cursor-pointer hover:ring-1 ring-secondary" translate="${translate}">
+	class="font-title text-responsive-size md:text-md p-2 bg-tertiary text-primary dark:bg-dtertiary dark:text-dprimary rounded w-${weight} hover:cursor-pointer hover:ring-1 ring-secondary" translate="${translate}">
 	${text}</button>
 	`;
 }

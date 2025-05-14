@@ -30,7 +30,7 @@ const userinfoResponse = await getUserInfo();
 					${change2FA()}
 					<br>
 					<div class="flex flex-col w-full max-w-[800px] font-title border-red-600 border-2 space-y-2 p-2 justify-center items-center rounded-lg">
-						<span class=""> Dangerous Actions </span>
+						<span class="title-responsive-size"> Dangerous Actions </span>
 						${primaryButton({id: 'deleteAccount', weight: "1/3", text: 'Delete account', translate: 'delete-account', type: 'button'})}
 					</div>
 				</div>

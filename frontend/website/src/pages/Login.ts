@@ -6,7 +6,7 @@ import { headerPage } from "../components/ui/headerPage"
 
 export function renderLoginPage() {
 	return `
-	<div class="flex flex-col font-title dark:text-dtertiary justify-center h-screen text-center">
+	<div class="flex flex-col font-title text-responsive-size dark:text-dtertiary justify-center h-screen text-center">
 		${headerPage("login", "public")}
 		${loginForm()}
 		or

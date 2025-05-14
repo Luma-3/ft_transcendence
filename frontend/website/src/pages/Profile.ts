@@ -8,7 +8,7 @@ import notfound from "./404";
 
 
 function profileName(nameProfil: string) {
-	return `<h1 class="relative w-full p-2 text-4xl justify-center font-title text-center italic
+	return `<h1 class="relative w-full p-2 title-responsive-size justify-center font-title text-center italic
 	text-tertiary dark:text-dtertiary overflow truncate">
 	${nameProfil}
 	</h1>`
@@ -44,7 +44,7 @@ import { getUserInfo } from "../api/getter"
 function profileInfos(user: User) {
 	return `
 	<div class="flex flex-col font-title w-full justify-left items-center text-tertiary dark:text-dtertiary space-y-2 pt-10">
-	 <div class="flex font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary" translate="your-informations"> 
+	 <div class="flex font-title title-responsive-size border-2 p-2 rounded-lg border-primary dark:border-dprimary" translate="your-informations"> 
 	 Your informations
 	 </div>
 

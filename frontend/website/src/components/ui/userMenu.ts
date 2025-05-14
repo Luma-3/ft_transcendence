@@ -5,7 +5,7 @@ function headerUserMenu(user: User) {
 				<div class="relative w-12 h-12 flex-shrink-0">
 					<img class="w-full h-full rounded-full" src="/images/pp.jpg" alt="User profile picture">
 				</div>
-				<span class="p-2 block text-sm font-title overflow-hidden truncate
+				<span class="p-2 block text-responsive-size font-title overflow-hidden truncate
 				 text-tertiary dark:text-dsecondary">${user.username}</span>
 			</div>`;
 }
@@ -19,7 +19,7 @@ function UserMenuOptions() {
 	];
 	const allOptions = listOption.map(element => {
 		return `<li>
-					<button id="load${element.value}" class="flex w-full items-center py-2 px-2 text-sm font-title
+					<button id="load${element.value}" class="flex w-full items-center py-2 px-2 text-responsive-size font-title
 					 hover:bg-primary dark:hover:bg-myblack dark:hover:text-dtertiary">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 						class="size-6 mr-2">
@@ -39,15 +39,18 @@ function UserMenuOptions() {
 function darkMode(theme: string) {
 	const isChecked = theme === 'light' ? 'checked' : '';
 
-	return `<div class="flex items-center justify-between py-2 px-4 text-sm ">
+	return `<div class="flex items-center text-responsive-size justify-between py-2 px-4">
 				<div translate="light-mode">Light mode</div>
 					<div class="relative inline-block w-11 h-5">
 					
 						<input ${isChecked} id="switch-component" type="checkbox"
-						class="peer appearance-none w-11 h-5 bg-slate-100 rounded-full checked:bg-primary cursor-pointer transition-colors duration-300" />
+						class="peer appearance-none w-11 h-5 md:w-14 md:h-7 bg-slate-100 rounded-full
+						 checked:bg-primary cursor-pointer transition-colors duration-300" />
 					
 						<label id="switch-component-label" for="switch-component"
-						class="absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-slate-800 cursor-pointer">
+						class="absolute top-0 left-0 w-5 h-5 md:w-7 md:h-7 bg-white rounded-full border 
+						border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6
+						 peer-checked:border-slate-800 cursor-pointer">
 						</label>
 					</div>
 				</div>`;
@@ -56,7 +59,7 @@ function darkMode(theme: string) {
 
 function logout() {
 	return `<button id="logout" translate="logout" 
-	class="flex py-2 px-4 text-sm w-full justify-left items-left
+	class="flex py-2 px-4 text-responsive-size w-full justify-left items-left
 	dark:text-dsecondary hover:bg-primary dark:hover:bg-gray-600 dark:hover:text-white">
 	Sign out
 	</button>`
@@ -67,7 +70,7 @@ export function renderUserMenu(user: User) {
 	return `
 			${headerUserMenu(user)}
 			${UserMenuOptions()}
-			<ul class="font-title py-1 text-tertiary dark:text-dsecondary" aria-labelledby="dropdown">
+			<ul class="font-title py-1 text-tertiary dark:text-dsecondary md:mr-2 lg:mr-"4 aria-labelledby="dropdown">
 				<li> ${darkMode(user.theme)}</li>
 				<li> ${logout()}</li>
 			</ul>`

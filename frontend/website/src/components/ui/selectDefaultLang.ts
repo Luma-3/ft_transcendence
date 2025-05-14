@@ -29,7 +29,7 @@ export function changeDefaultLang(langPreselect: string) {
 	}).join('')
 	
 
-	return `<div class="text-2xl p-2 font-title items-center justify-center motion-reduce:animate-pulse" translate="change-default-language">Change default language</div>
+	return `<div class="title-responsive-size p-2 font-title items-center justify-center motion-reduce:animate-pulse" translate="change-default-language">Change default language</div>
 				<div class="flex flex-col w-full max-w-[800px] rounded-xl bg-primary dark:bg-dprimary shadow">
 				<nav class="flex flex-col md:flex-row  w-full gap-1 p-2">
 				${labels}

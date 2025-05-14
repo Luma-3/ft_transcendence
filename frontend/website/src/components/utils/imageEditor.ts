@@ -1,9 +1,7 @@
 import ImageEditor from 'tui-image-editor';
-// import 'tui-color-picker/dist/tui-color-picker.css';
 import FileSaver from 'file-saver';
 import { getUserInfo } from '../../api/getter';
 import { alertTemporary } from '../ui/alert/alertTemporary';
-import { Image } from 'fabric';
 import { loadTranslation } from '../../i18n/Translate';
 
 function showEditor() {

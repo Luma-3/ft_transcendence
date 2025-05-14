@@ -1,8 +1,8 @@
 export function animateButton(id: string, message: string, messageHover: string) {
 	return `
 		<div class="flex justify-center">
-			<button id="${id}" class="font-title h-auto w-[220px] mt-2 group p-7 cursor-pointer relative text-2xl
-				border-0 flex items-center rounded justify-center bg-transparent
+			<button id="${id}" class="font-title h-[50px] md:h-[70px] w-[160px] md:w-[240px] lg:w-[440px] group p-7 cursor-pointer relative title-responsive-size	
+			border-0 flex items-center rounded justify-center bg-transparent
 				 text-tertiary dark:text-dtertiary overflow-hidden transition-all duration-100">
 
 			<span id="${id}" class="group-hover:w-full absolute left-0 h-full w-5 border-y-4 border-l-4
@@ -21,7 +21,7 @@ export function animateButton(id: string, message: string, messageHover: string)
 				${messageHover}
 			
 			</span>
-			<span id="${id}"  class="group-hover:w-1/2 absolute right-0 h-full w-5 
+			<span id="${id}" class="group-hover:w-1/2 absolute right-0 h-full w-5 
 				border-y-4 border-r-4
 				 border-secondary dark:border-dsecondary 
 				 transition-all duration-500"> </span>

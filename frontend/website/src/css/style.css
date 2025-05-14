@@ -23,6 +23,26 @@
   display: none !important;
 }
 
+.title-responsive-size {
+@apply text-xl md:text-2xl lg:text-4xl;
+}
+
+.header-responsive-size {
+  @apply text-6xl md:text-6xl lg:text-8xl;
+}
+
+.text-responsive-size {
+  @apply text-sm md:text-base lg:text-xl;
+}
+
+.navbar-responsive-size {
+  @apply text-xl md:text-2xl;
+} 
+
+.icon-responsive-size {
+  @apply size-20 md:size-24 lg:size-28;
+}
+
 @theme {
   --font-title: 'Chillax', sans-serif;
   --font-text: 'Merriweather', sans-serif;
