@@ -14,6 +14,7 @@ import { SessionModel } from './models/sessionModel.js'
 
 import { UserService } from './services/userService.js'
 import { SessionService } from './services/SessionService.js'
+import { PreferencesService } from './services/preferencesService.js'
 
 import { userSchemas } from './schema/user.schema.js'
 import { preferencesSchema } from './schema/preferences.schema.js'
@@ -29,6 +30,10 @@ const fastify = Fastify({
 });
 
 await config(fastify);
+
+fastify.addHook('onRoute', (routeOptions) => {
+  console.log(`[ROUTE] ${routeOptions.method} ${routeOptions.url}`);
+});
 
 fastify.decorate('UserService', new UserService({
   models: {
@@ -49,6 +54,12 @@ fastify.decorate('SessionService', new SessionService({
   utils: {
     jwt: fastify.jwt,
     bcrypt: fastify.bcrypt
+  }
+}));
+
+fastify.decorate('PreferencesService', new PreferencesService({
+  models: {
+    PreferencesModel: new PreferencesModel(fastify.knex)
   }
 }));
 

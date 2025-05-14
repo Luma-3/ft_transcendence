@@ -14,18 +14,6 @@ export default async function(fastify) {
     }
   }, Controller.postUser);
 
-  fastify.get('/users/:userID', {
-    schema: {
-      summary: 'Public information of user',
-      description: 'Endpoint to retrieve public informations of a user',
-      tags: ['Users'],
-      response: {
-        200: { $ref: 'userInfoPublicBase' },
-        404: { $ref: 'NOT_FOUND_ERR' }
-      }
-    }
-  }, Controller.getUser);
-
   fastify.delete('/users/me', {
     schema: {
       summary: 'delete currents user',
@@ -38,6 +26,18 @@ export default async function(fastify) {
       }
     }
   }, Controller.deleteUser);
+
+  fastify.get('/users/:userID', {
+    schema: {
+      summary: 'Public information of user',
+      description: 'Endpoint to retrieve public informations of a user',
+      tags: ['Users'],
+      response: {
+        200: { $ref: 'userInfoPublicBase' },
+        404: { $ref: 'NOT_FOUND_ERR' }
+      }
+    }
+  }, Controller.getUser);
 
   fastify.get('/users/me', {
     schema: {

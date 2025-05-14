@@ -12,6 +12,7 @@ const fastify = Fastify({
     if (req.url.startsWith('/api/') && process.env.NODE_ENV === "development") {
       return req.url.replace('/api', '');
     }
+    return req.url;
   },
   logger: true,
   https: {

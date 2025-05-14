@@ -3,7 +3,7 @@ import oauth2 from '@fastify/oauth2'
 import bcrypt from 'fastify-bcrypt'
 import fastifyMultipart from '@fastify/multipart'
 import jwt from '@fastify/jwt'
-import formateur from '@transcenduck/formateur'
+import formatter from '@transcenduck/formatter'
 
 import knex from '../plugins/knex.js'
 import swagger from '../plugins/swagger.js'
@@ -11,7 +11,7 @@ import swagger from '../plugins/swagger.js'
 import knex_config from './knex.config.js'
 
 export default async function config(fastify) {
-  await fastify.register(formateur);
+  await fastify.register(formatter);
 
   await fastify.register(knex, knex_config);
   await fastify.register(bcrypt, { saltWorkFactor: 12 });

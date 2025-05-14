@@ -32,7 +32,6 @@ export async function getUser(req, rep) {
 export async function getMe(req, rep) {
   const userID = req.headers['x-user-id']
 
-  console.log(userID);
   const user = await this.UserService.getUserByID(userID, {
     user: this.extractDbKeys(userSchema.userInfoPrivate),
     preferences: this.extractDbKeys(preferencesSchema.preferencesPrivate)
