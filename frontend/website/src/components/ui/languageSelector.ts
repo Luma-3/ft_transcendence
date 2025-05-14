@@ -28,8 +28,8 @@ export function languageSelector() {
 	const lang = sessionStorage.getItem('lang') || 'en';
 
 	return `
-		<div class='flex flex-row items-center justify-space-between'>
-			<label for='language' translate="lang_choice" class="p-3 font-title  text-secondary dark:text-dtertiary">
+		<div class='flex flex-row title-responsive-size items-center justify-space-between'>
+			<label for='language' translate="lang_choice" class="p-3 font-title text-secondary dark:text-dtertiary">
 				Choose a language :
 			</label>
 			<select name='language' id='language'

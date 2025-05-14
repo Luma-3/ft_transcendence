@@ -1,7 +1,7 @@
-import { renderPage } from '../../renderers/renderPage'
+import { renderPublicPage, renderPrivatePage, renderErrorPage } from '../../components/renderPage'
 import { fetchApi } from '../../api/fetch'
 import { API_ROUTES } from '../../api/routes';
-import { alert } from '../../components/ui/alert';
+import { alertPublic } from '../../components/ui/alert/alertPublic';
 import { User } from '../../api/interfaces/User';
 
 export async function verifPasswordAndRegisterUser() {
@@ -14,24 +14,26 @@ export async function verifPasswordAndRegisterUser() {
 	const userdata = Object.fromEntries(formData) as Record<string, string>;
 
 	if (!userdata.username || !userdata.password || !userdata.passwordVerif) {
-		 renderPage('hacked');
+		 renderErrorPage('400','400', "bad_request");
 		 return;
 	}
 
-	console.log(userdata);
 	if (userdata.password !== userdata.passwordVerif) { 
-		renderPage('register');
-		alert("passwords_dont_match", "error");
+		alertPublic("passwords_dont_match", "error");
+		renderPublicPage('register');
 		return;
 	}
 
 	const reponse = await fetchApi<User>(API_ROUTES.USERS.REGISTER,
 		{method: "POST", credentials: "include", body: JSON.stringify(userdata)});
-	if (reponse.status !== "success" ) {
-		renderPage('register');
-		alert(reponse.message, "error");
+	
+	if (reponse.status !== "success") {
+		alertPublic(reponse.message, "error");
+		renderPublicPage('register');
 		return;
 	}
-	renderPage('dashboard');
-	return;
+	renderPrivatePage('WelcomeYou');
+	setTimeout(() => {
+		renderPrivatePage('dashboard',true);
+	}, 3200);
 }

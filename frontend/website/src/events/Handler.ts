@@ -1,34 +1,53 @@
 import { changeLanguage, saveDefaultLanguage } from '../i18n/Translate'
-import { renderPage } from '../renderers/renderPage'
+import { renderPublicPage, renderPrivatePage } from '../components/renderPage'
 import { verifPasswordAndRegisterUser } from './userSession/userRegister'
 import { loginUser } from './userSession/userLogin'
 import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 import { logOutUser } from './userSession/userLogout'
-import { messageUpdateUserInfo } from '../pages/Profile'
+import { changeUserNameEmail } from '../events/userSession/userChange'
 import { changeUserPassword } from '../events/userSession/userChange'
-import { changePictureElement } from '../components/utils/changePicture'
-import { saveNewPicture } from '../components/utils/changePicture'
-import { cancelEditor } from '../components/utils/changePicture'
+import { changePictureElement } from '../components/utils/imageEditor'
+import { saveNewPicture } from '../components/utils/imageEditor'
+import { cancelEditor } from '../components/utils/imageEditor'
+import { renderBackPage } from '../components/renderPage'
+import { toggleGameStat } from '../components/utils/toggleGameStat'
+import { toggleTruc } from '../components/utils/toggleTruc'
 
 const clickEvent: {[key: string]: () => void } = {
-	'loadBackPage': () => window.history.back(),
-	'loadLoginPage': () => renderPage('login'),
-	'loadRegisterPage': () => renderPage('register'),
-	'loadSettingsPage': () => renderPage('settings'),
+
+	// * -------------- Public Page Load -------------- */
+	'loadhome': () => renderPublicPage('home'),
+	'loadlogin': () => renderPublicPage('login'),
+	'loadregister': () => renderPublicPage('register'),
 	'loginForm': () => loginUser(),
-	'changeUserInfo': () => messageUpdateUserInfo(),
-	'user-menu-button': () => toggleUserMenu(),
-	'logout': () =>  logOutUser(),
 	'google': () => {
 		window.location.href = 'http://localhost:3000/api/user/login/google'
 	},
+	
+	// * -------------- Profile Page  -------------- */
+	'loadprofile': () => renderPrivatePage('profile'),
+	'changeUserInfo': () => changeUserNameEmail(),
 	'change-password': () => changeUserPassword(),
-	'saveLang': saveDefaultLanguage,
-	'file-upload': () => changePictureElement(),
-	'save-image': () => saveNewPicture(),
-	'cancel-image': () => cancelEditor(),
+	'user-menu-button': () => toggleUserMenu(),
+	
+		// * ---- Image Editor  ---- */
+		'cancel-image': () => cancelEditor(),
+		'save-image': () => saveNewPicture(),
+		'file-upload': () => changePictureElement(),
+	
+	// * -------------- Settings Page  -------------- */
+	'loadsettings': () => renderPrivatePage('settings'),
+	'saveLang': () => saveDefaultLanguage(),
+	'logout': () =>  logOutUser(),
+
+	// * -------------- Common Components  -------------- */
+
+	'loadBackPage': () => renderBackPage(),
+	'showGameStat': () => toggleGameStat(),
+	'showTruc': () => toggleTruc(),
+
 };
 
 const changeEvent: {[key: string]: () => void } = {
@@ -38,7 +57,7 @@ const changeEvent: {[key: string]: () => void } = {
 
 const submitEvent: {[key: string]: () => void } = {
 	'loginForm': loginUser,
-	'registerUser': verifPasswordAndRegisterUser,
+	'registerForm': verifPasswordAndRegisterUser,
 };
 
 

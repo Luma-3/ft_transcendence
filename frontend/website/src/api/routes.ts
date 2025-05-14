@@ -12,7 +12,8 @@ export const API_ROUTES = {
 		INFOS: `${SERVICES_URL.USER}/me`,
 		UPDATE_PREF: `${SERVICES_URL.USER}/preferences`,  //Theme et les langues
 		UPDATE_PASSWD: `${SERVICES_URL.USER}/changePassword`,
-		UPDATE_PICTURE: `${SERVICES_URL.USER}/changePP`
+		UPDATE_PICTURE: `${SERVICES_URL.USER}/changePP`,
+		UPDATE_EMAIL: `${SERVICES_URL.USER}/changeEmail`,
 	}
 };
 
