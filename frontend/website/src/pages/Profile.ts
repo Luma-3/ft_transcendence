@@ -4,7 +4,7 @@ import { User } from "../api/interfaces/User"
 import { primaryButton } from "../components/ui/buttons/primaryButton"
 import { form } from "../components/ui/form/form"
 import { headerPage } from "../components/ui/headerPage"
-import notfound from "./404";
+import notfound from "./4xx";
 
 
 function profileName(nameProfil: string) {
@@ -66,7 +66,7 @@ function profileInfos(user: User) {
 			{
 				name: "username",
 				type: "text",
-				labelClass: "font-title text-primary dark:text-dprimary",
+				labelClass: "font-title text-tertiary dark:text-dtertiary",
 				value: user.username,
 				autocomplete: "off",
 				required: true,
@@ -75,7 +75,7 @@ function profileInfos(user: User) {
 			{
 				name: "email",
 				type: "email",
-				labelClass: "font-title text-primary dark:text-dprimary",
+				labelClass: "font-title text-tertiary dark:text-dtertiary",
 				placeholder: user.email,
 				value: user.email,
 				autocomplete: "off",
@@ -104,7 +104,6 @@ function profileInfos(user: User) {
 async function renderProfilePage() {
 
 	const userInfoResponse = await getUserInfo();
-	console.log(userInfoResponse);
 	
 	if (userInfoResponse.status === "success" && userInfoResponse.data) {
 		const userInfos = userInfoResponse.data;

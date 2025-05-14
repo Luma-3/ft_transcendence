@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 		}
 		return renderPrivatePage(page, false);
 	}
-	console.log('user not found');
 	return renderPublicPage(page);
 
 });

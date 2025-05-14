@@ -10,7 +10,7 @@ export function registerForm() {
 				type: "text",
 				placeholder: "Username",
 				autocomplete: "username",
-				required: false,
+				required: true,
 				translate: "username",
 			},
 			{

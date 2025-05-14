@@ -56,6 +56,7 @@ export async function alertChangePasword() {
 		}
 	}).then(async (result) => {
 		if (result.isConfirmed) {
+			//TODO : Update with the new API
 			const response = await fetchApi(API_ROUTES.USERS.UPDATE_PASSWD, {
 				method: "PUT",
 				body: JSON.stringify({

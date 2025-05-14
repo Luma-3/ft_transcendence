@@ -2,7 +2,7 @@ import { getUserInfo } from "../../../api/getter";
 import { alertTemporary } from "./alertTemporary";
 
 export async function getCustomAlertTheme(needUser: boolean = true, theme: string = "dark") {
-	let lang = "en";
+	let lang = sessionStorage.getItem('lang') || 'en';
 	
 	if (needUser) {
 		const userInfo = await getUserInfo();

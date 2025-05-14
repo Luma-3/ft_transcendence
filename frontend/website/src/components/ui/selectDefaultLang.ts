@@ -34,7 +34,7 @@ export function changeDefaultLang(langPreselect: string) {
 				<nav class="flex flex-col md:flex-row  w-full gap-1 p-2">
 				${labels}
 				<div class="flex justify-center items-center min-w-[200px]">
-				${secondaryButton({id: 'saveLang', weight: "1/2", text: 'Save', translate: 'save', type: 'button'})}
+				${secondaryButton({id: 'saveLang', weight: "3/4", text: 'Save', translate: 'save', type: 'button'})}
 				</div>
 				</div>
 				</nav>`

@@ -16,6 +16,7 @@
 	"create_account": "Crear una cuenta",
 	"login": "Iniciar sesión",
 	"google_login": "Iniciar sesión con Google",
+	"User Already Exist": "El usuario ya existe",
 	"passwords_dont_match": "Las contraseñas no coinciden",
 	"username_or_password_incorrect": "Nombre de usuario o contraseña incorrectos",
 	

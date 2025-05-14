@@ -1,7 +1,7 @@
 import { renderPublicPage, renderPrivatePage, renderErrorPage } from '../../components/renderPage'
 import { fetchApi } from '../../api/fetch'
 import { API_ROUTES } from '../../api/routes';
-import { alert } from '../../components/ui/alert/alert';
+import { alertPublic } from '../../components/ui/alert/alertPublic';
 import { User } from '../../api/interfaces/User';
 
 export async function verifPasswordAndRegisterUser() {
@@ -19,16 +19,17 @@ export async function verifPasswordAndRegisterUser() {
 	}
 
 	if (userdata.password !== userdata.passwordVerif) { 
+		alertPublic("passwords_dont_match", "error");
 		renderPublicPage('register');
-		alert("passwords_dont_match", "error");
 		return;
 	}
 
 	const reponse = await fetchApi<User>(API_ROUTES.USERS.REGISTER,
 		{method: "POST", credentials: "include", body: JSON.stringify(userdata)});
-	if (reponse.status !== "success" ) {
+	
+	if (reponse.status !== "success") {
+		alertPublic(reponse.message, "error");
 		renderPublicPage('register');
-		alert(reponse.message, "error");
 		return;
 	}
 	renderPrivatePage('WelcomeYou');

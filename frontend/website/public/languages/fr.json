@@ -17,6 +17,8 @@
 	"login": "Connexion",
 	"logout": "Se déconnecter",
 	"google_login": "Connexion avec Google",
+	"User Already Exist": "L'utilisateur existe déjà",
+	"email_already_used": "Email déjà utilisé",
 	"passwords_dont_match": "Les mots de passe ne sont pas identiques",
 	"username_or_password_incorrect": "Nom d'utilisateur ou mot de passe incorrect",
 	

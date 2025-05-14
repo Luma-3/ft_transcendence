@@ -6,7 +6,7 @@ import { footer } from "../components/ui/footer";
 import { primaryButton } from "../components/ui/buttons/primaryButton";
 import { headerPage } from "../components/ui/headerPage";
 (window as any).changeLanguage = changeLanguage;
-import notfound from "./404";
+import notfound from "./4xx";
 import { getUserInfo } from "../api/getter";
 import { animateButton } from "../components/ui/buttons/animateButton";
 

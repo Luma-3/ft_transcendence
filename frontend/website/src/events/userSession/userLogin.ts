@@ -2,7 +2,7 @@ import { renderPrivatePage } from '../../components/renderPage'
 import { fetchApi } from '../../api/fetch';
 import { User } from '../../api/interfaces/User';
 import { API_ROUTES } from '../../api/routes';
-import { alert } from '../../components/ui/alert/alert';
+import { alertPublic } from '../../components/ui/alert/alertPublic';
 
 export async function loginUser() {
 
@@ -22,11 +22,11 @@ export async function loginUser() {
 			{method: "POST", credentials: "include", body: JSON.stringify(userdata)})
 	
 	if (response.status === "error") {
-		alert("username_or_password_incorrect", "error");
+		alertPublic("username_or_password_incorrect", "error");
 		return;
 	}
 	renderPrivatePage('reWelcomeYou');
 	setTimeout(() => {
 		renderPrivatePage('dashboard',true);
-	}, 3200);
+	}, 1200);
 }

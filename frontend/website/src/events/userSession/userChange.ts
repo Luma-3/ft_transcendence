@@ -67,8 +67,9 @@ export async function changeUserNameEmail() {
 		username: formData.get("username"),
 		email: formData.get("email"),
 	}
+	//TODO : Update with the new API
 	const updateResponse = await patchUserInfo(API_ROUTES.USERS.UPDATE_EMAIL, data);
-	console.log(updateResponse);
+
 	if (updateResponse.status === "success") {
 		messageUpdateUserInfo("success", user.lang, user.theme);
 	} else {

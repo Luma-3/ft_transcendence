@@ -4,8 +4,8 @@ import register from '../pages/Register'
 import dashboard from '../pages/Dashboard'
 import settings from '../pages/Settings'
 import profile from '../pages/Profile'
-import errorPage from '../pages/500'
-import notFoundPage from '../pages/404'
+import errorPage from '../pages/5xx'
+import notFoundPage from '../pages/4xx'
 import welcomeYouPage, { reWelcomeYouPage } from '../pages/WelcomeYou';
 
 import { addToHistory } from '../main'

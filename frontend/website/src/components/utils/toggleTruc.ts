@@ -1,5 +1,4 @@
 export function toggleTruc() {
-	console.log("truc");
 	const gameStat = document.getElementById('truc');
 	if (!gameStat) {
 		return;

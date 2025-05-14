@@ -4,7 +4,7 @@ export function footer() {
 	bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary
 	flex items-center justify-between rounded-sm">
 		<div class="text-responsive-size justify-start ml-2 font-title">
-			<div class="p-2 underline">Transcenduck <br> </div>
+			<div class="p-2">Transcenduck <br> </div>
 			<div class="text-xs space-y-2 p-2">
 				<span translate="version">Version</span> 0.0.0 <br> 
 				<span translate="no-duck-hurt">No duck was hurt</span>

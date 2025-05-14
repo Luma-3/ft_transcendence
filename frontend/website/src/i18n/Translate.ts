@@ -63,7 +63,7 @@ export async function saveLanguage(lang_select: string) {
 		alertTemporary("error", 'Error while getting user info', 'dark');
 		return;
 	}
-	console.log("lang: " + lang_select)
+	//TODO : Update with the new API
 	const response = await fetchApi(API_ROUTES.USERS.UPDATE_PREF, {
 		method: "PATCH",
 		body: JSON.stringify({

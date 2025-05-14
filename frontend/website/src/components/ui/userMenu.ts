@@ -48,7 +48,7 @@ function darkMode(theme: string) {
 						 checked:bg-primary cursor-pointer transition-colors duration-300" />
 					
 						<label id="switch-component-label" for="switch-component"
-						class="absolute top-0 left-0 w-5 h-5 md:w-7 md:h-7 bg-white rounded-full border 
+						class="absolute top-0 left-0 w-5 h-5 md:w-8 md:h-7 bg-white rounded-full border 
 						border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6
 						 peer-checked:border-slate-800 cursor-pointer">
 						</label>
