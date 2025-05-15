@@ -12,13 +12,14 @@ export async function getMePreferences(req, rep) {
 
 export async function updatePreferences(req, rep) {
   const userID = req.headers['x-user-id'];
-  const { preferences } = req.body;
+  const { theme, lang, avatar } = req.body;
 
-  const updatedPreferences = await this.PreferencesService.updatePreferences(userID, preferences, {
+  const [preferences] = await this.PreferencesService.updatePreferences(userID, { theme, lang, avatar }, {
     preferences: this.extractDbKeys(preferencesSchema.preferencesPrivate)
   });
 
-  return rep.code(200).send({ message: 'Ok', data: updatedPreferences });
+
+  return rep.code(200).send({ message: 'Ok', data: preferences });
 }
 
 export async function getUserPreferences(req, rep) {

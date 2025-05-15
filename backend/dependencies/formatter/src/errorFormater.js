@@ -8,7 +8,7 @@ export default function errorformater(err, req, rep) {
       statusCode: err.statusCode,
       message: err.message,
       code: err.code,
-      ...(err.details || { details: err.details })
+      details: err.details
     });
   }
 
