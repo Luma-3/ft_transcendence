@@ -1,4 +1,4 @@
-import { ConflictError, ForbiddenError, NotFoundError, UnauthorizedError } from "@transcenduck/error";
+import { ConflictError, NotFoundError, UnauthorizedError } from "@transcenduck/error";
 import { v4 as uuidV4 } from "uuid";
 
 export class UserService {
