@@ -26,6 +26,6 @@ export class PreferencesModel {
     return await this.knex('preferences')
       .select(schema)
       .where('user_id', userID)
-      .update(data)
+      .update(data, schema)
   }
 }

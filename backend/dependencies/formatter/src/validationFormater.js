@@ -1,12 +1,12 @@
+import { ValidationError } from '@transcenduck/error'
+
 export default function validationFromater(errors, dataVar) {
-  return {
-    status: 'error',
-    statusCode: 422,
-    code: 'VAL_ERR',
-    message: 'Invalid input',
-    details: errors.map(e => ({
-      field: e.instancePath,
-      message: e.message,
-    })),
-  }
+  return new ValidationError(
+    'Validation Error',
+    errors.map(e => ({
+      why: e.keyword,
+      fields: e.instancePath,
+      message: e.message
+    }))
+  );
 }
