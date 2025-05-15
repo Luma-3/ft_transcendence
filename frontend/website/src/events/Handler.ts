@@ -1,6 +1,6 @@
 import { changeLanguage, saveDefaultLanguage } from '../i18n/Translate'
 import { renderPublicPage, renderPrivatePage } from '../components/renderPage'
-import { verifPasswordAndRegisterUser } from './user/userRegister'
+import { registerUser } from './user/userRegister'
 import { loginUser } from './user/userLogin'
 import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
@@ -58,7 +58,7 @@ const changeEvent: {[key: string]: () => void } = {
 
 const submitEvent: {[key: string]: () => void } = {
 	'loginForm': loginUser,
-	'registerForm': verifPasswordAndRegisterUser,
+	'registerForm': registerUser,
 };
 
 

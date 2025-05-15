@@ -1,5 +1,5 @@
 import { renderPrivatePage } from '../../components/renderPage'
-import { fetchApi } from '../../api/fetch';
+import { fetchWithNoToken } from '../../api/fetch';
 import { User } from '../../api/interfaces/User';
 import { API_SESSION } from '../../api/routes';
 import { alertPublic } from '../../components/ui/alert/alertPublic';
@@ -18,7 +18,7 @@ export async function loginUser() {
 		return;
 	}
 
-	const response = await fetchApi<User>(API_SESSION.CREATE,
+	const response = await fetchWithNoToken<User>(API_SESSION.CREATE,
 			{method: "POST", body: JSON.stringify(userdata)})
 	
 	if (response.status === "error") {

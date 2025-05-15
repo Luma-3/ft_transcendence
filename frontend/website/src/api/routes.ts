@@ -25,6 +25,9 @@ export const API_SESSION = {
 
 	CREATE: `${SERVICES.SESSION}`,
 	DELETE: `${SERVICES.SESSION}`,
+	VERIFY_ACCESS: `${SERVICES.SESSION}/verify/accessToken`,
+	VERIFY_REFRESH: `${SERVICES.SESSION}/verify/refreshToken`,
+
 	REFRESH: `${SERVICES.SESSION}/refresh`,
 
 }

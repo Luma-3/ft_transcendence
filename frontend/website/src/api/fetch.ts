@@ -1,7 +1,15 @@
 import { renderPublicPage } from "../components/renderPage";
 import { IApiResponce } from "./interfaces/IApiResponse";
+import { verifySession } from "./verifier";
 
 export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IApiResponce<T>> {
+	
+	const token = await fetchToken();
+	if (token.status === "error") {
+		renderPublicPage('login', false);
+		return {status: "error", message: "Session expired" };
+	}
+
 	try {
 		const response = await fetch(url, {
 			headers: {"Content-Type": "application/json",
@@ -20,10 +28,29 @@ export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IAp
 		return {status: "500", message: "Internal Server Error"}};
 }
 
-export async function fetchApiWithNoBody<T>(url:string, option?: RequestInit): Promise<IApiResponce<T>> {
+export async function fetchApiWithNoBody(url:string, option?: RequestInit) {
 	try {
 		const response = await fetch(url, {
 			headers: {"Content-Type": "text/plain",
+			},
+			credentials: "include",
+			...option,
+		});
+		if (!response.ok) {
+			const errorData = await response.json();
+			return {status: "error", message: errorData.message, details: errorData.details};
+		}
+		return { status: "success" };
+	} 
+	catch (error) {
+		renderPublicPage('500', false)
+		return {status: "500", message: "Internal Server Error"}};
+}
+
+export async function fetchWithNoToken<T>(url:string, option?: RequestInit): Promise<IApiResponce<T>> {
+	try {
+		const response = await fetch(url, {
+			headers: {"Content-Type": "application/json",
 			},
 			credentials: "include",
 			...option,
@@ -37,6 +64,14 @@ export async function fetchApiWithNoBody<T>(url:string, option?: RequestInit): P
 	catch (error) {
 		renderPublicPage('500', false)
 		return {status: "500", message: "Internal Server Error"}};
+}
+
+export async function fetchToken() {
+	const verifyToken = await verifySession();
+	if (verifyToken.status === "error") {
+		return {status: "error", message: "Session expired" };
+	}
+	return {status: "success", message: "Token valid" };
 }
 
 

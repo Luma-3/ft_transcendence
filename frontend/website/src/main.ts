@@ -1,6 +1,8 @@
 import { renderPrivatePage, renderPublicPage } from './components/renderPage'
 import { addAllEventListenOnPage } from './events/Handler'
 import { getUserInfo } from './api/getter'
+import { verifySession } from './api/verifier'
+import { fetchToken } from './api/fetch'
 
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
@@ -21,14 +23,12 @@ addAllEventListenOnPage(main_container);
 document.addEventListener('DOMContentLoaded', async () => {
 	
 	const page =  window.location.pathname.substring(1) || 'home'
-	const user = await getUserInfo();
-	if (user.status === "success" && user.data) {
+	
+	const user = await fetchToken();
+	if (user.status === "success") {
 		if (publicPages.includes(page)) {
-			renderPrivatePage('reWelcomeYou', false);
-			setTimeout(() => {
-				renderPrivatePage('dashboard', true);
-			}, 3200);
-			return;
+			renderPrivatePage('dashboard', true);
+			return ;
 		}
 		return renderPrivatePage(page, false);
 	}

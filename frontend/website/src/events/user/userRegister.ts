@@ -1,5 +1,5 @@
 import { renderPrivatePage, renderErrorPage } from '../../components/renderPage'
-import { fetchApi } from '../../api/fetch'
+import { fetchWithNoToken } from '../../api/fetch'
 import { API_USER, API_SESSION } from '../../api/routes';
 import { alertPublic } from '../../components/ui/alert/alertPublic';
 import { User } from '../../api/interfaces/User';
@@ -23,7 +23,7 @@ function verifValueForm(userData: Record<string, string>) {
 	return true;
 }
 
-export async function verifPasswordAndRegisterUser() {
+export async function registerUser() {
 	
 	const form = document.forms.namedItem("registerForm") as HTMLFormElement | null;
 	if (!form) {
@@ -47,7 +47,7 @@ export async function verifPasswordAndRegisterUser() {
 		}
 	}
 	const trad = await loadTranslation(lang);
-	const response = await fetchApi<User>(API_USER.BASIC.REGISTER, {
+	const response = await fetchWithNoToken<User>(API_USER.BASIC.REGISTER, {
 		method: 'POST',
 		body: JSON.stringify(userData)
 	});
@@ -57,7 +57,7 @@ export async function verifPasswordAndRegisterUser() {
 	}
 
 	const sessionData = { username: userData.username, password:userData.password };
-	const responseSession = await fetchApi(API_SESSION.CREATE, {
+	const responseSession = await fetchWithNoToken(API_SESSION.CREATE, {
 		method: "POST",
 		body: JSON.stringify(sessionData)
 	});
