@@ -1,4 +1,4 @@
-import { UnauthorizedError } from "@transcenduck/error";
+import { NotFoundError, UnauthorizedError } from "@transcenduck/error";
 import { v4 as uuidv4 } from 'uuid';
 
 export class SessionService {
@@ -25,6 +25,11 @@ export class SessionService {
       this.createAccessToken(user),
     ]);
 
+    const session = await this.SessionModel.findByUserID(user.id);
+    if (session) {
+      await this.SessionModel.delete(user.id);
+    }
+
     await this.SessionModel.create(user.id, jti);
 
     return { refreshToken, accessToken };
@@ -33,7 +38,7 @@ export class SessionService {
   async removeSession(accessToken) {
     const accessTokenDecode = await this.jwt.decode(accessToken);
 
-    this.SessionModel.delete(accessTokenDecode.userID);
+    await this.SessionModel.delete(accessTokenDecode.userID);
   }
 
   async createRefreshToken(userID) {
@@ -64,9 +69,13 @@ export class SessionService {
     return accessToken;
   }
 
-  async refreshSession(refreshToken) {
-    const decodeToken = await this.jwt.decode(refreshToken);
+  async refreshSession(oldRefreshToken) {
+    const decodeToken = await this.jwt.decode(oldRefreshToken);
     const session = await this.SessionModel.findByUserID(decodeToken.userID);
+
+    if (!session) {
+      throw new NotFoundError('Session');
+    }
 
     if (decodeToken.jti !== session.jti) {
       throw new UnauthorizedError('Token Revoked');
@@ -74,16 +83,48 @@ export class SessionService {
 
     const user = await this.UserModel.findByID(decodeToken.userID);
 
-    const [{ newRefreshToken, jti }, accessToken] = await Promise.all([
+    const [{ refreshToken, jti }, accessToken] = await Promise.all([
       this.createRefreshToken(user.id),
       this.createAccessToken(user),
     ]);
 
-    console.log(jti, user);
     await this.SessionModel.update(user.id, jti);
 
-    return { newRefreshToken, accessToken };
+    return { refreshToken, accessToken };
+  }
+
+  async verifyAccessToken(accessToken) {
+    if (!accessToken) {
+      throw new UnauthorizedError('No Token');
+    }
+
+    try {
+      await this.jwt.verify(accessToken);
+    } catch (err) {
+      throw new UnauthorizedError(err.message);
+    }
+  }
+
+  async verifyRefreshToken(refreshToken) {
+    if (!refreshToken) {
+      throw new UnauthorizedError('No Token');
+    }
+
+    let refreshTokenDecode;
+    try {
+      refreshTokenDecode = this.jwt.verify(refreshToken);
+    } catch (err) {
+      throw new UnauthorizedError(err.message);
+    }
+
+    const session = await this.SessionModel.findByUserID(refreshTokenDecode.userID);
+    if (!session) {
+      throw new NotFoundError('Session');
+    }
+
+    if (refreshTokenDecode.jti !== session.jti) {
+      throw new UnauthorizedError('Session revoked or invalid');
+    }
   }
 }
-
 
