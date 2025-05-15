@@ -2,7 +2,7 @@ import Swal, { SweetAlertIcon } from "sweetalert2";
 import { getCustomAlertTheme } from "./alertTheme";
 
 export async function alertTemporary(level: string, message: string, theme: string) {
-	const customTheme = await getCustomAlertTheme(false, theme);
+	const customTheme = await getCustomAlertTheme(true, theme);
 	if (!customTheme) {
 		alertTemporary("error", "Error while getting user alert theme", 'dark');
 		return;

@@ -1,11 +1,12 @@
 import Swal from "sweetalert2";
 import { fetchApi } from "../../../api/fetch";
-import { API_ROUTES } from "../../../api/routes";
+import { API_USER } from "../../../api/routes";
 import { alertTemporary } from "./alertTemporary";
 import { getCustomAlertTheme } from "./alertTheme";
 import { loadTranslation } from "../../../i18n/Translate";
+import { verifRegexNewPassword } from "../../utils/regex";
 
-export async function alertChangePasword() {
+export async function alertChangePassword() {
 	
 	const customTheme = await getCustomAlertTheme();
 	if (!customTheme) {
@@ -13,6 +14,7 @@ export async function alertChangePasword() {
 		return;
 	}
 	const trad = await loadTranslation(customTheme.lang);
+	let messageError = "";
 	Swal.fire({
 		title: trad["change-your-password"],
 		position: "center",
@@ -47,21 +49,24 @@ export async function alertChangePasword() {
 			const newPassword = (document.getElementById('newPassword') as HTMLInputElement).value;
 			const repeatNewPassword = (document.getElementById('confirmPassword') as HTMLInputElement).value;
 			if (!oldPassword || !newPassword || !repeatNewPassword) {
-				Swal.showValidationMessage('Please enter all fields');
+				messageError = trad['please-enter-all-fields'];
+				Swal.showValidationMessage(messageError);
 			} else if (newPassword !== repeatNewPassword) {
-				Swal.showValidationMessage('New password and confirm password do not match');
+				messageError = trad['new-password-and-confirm-password-are-different'];
+				Swal.showValidationMessage(messageError);
+			} else if(verifRegexNewPassword(newPassword) === false) {
+				messageError = trad['password_must_include'];
+				Swal.showValidationMessage(messageError);
 			}
 			return { oldPassword, newPassword };
-			// TODO: Rajoute un fetch pour verifier le old password et verifier si le nouveau password correspond a notre police
 		}
 	}).then(async (result) => {
 		if (result.isConfirmed) {
-			//TODO : Update with the new API
-			const response = await fetchApi(API_ROUTES.USERS.UPDATE_PASSWD, {
-				method: "PUT",
+			const response = await fetchApi(API_USER.UPDATE.PASSWORD, {
+				method: "PATCH",
 				body: JSON.stringify({
 					oldPassword: result.value?.oldPassword,
-					newPassword: result.value?.newPassword,
+					password: result.value?.newPassword,
 				}),
 			});
 			if (response.status === "success") {

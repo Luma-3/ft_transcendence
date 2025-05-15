@@ -58,7 +58,7 @@ function profileInfos(user: User) {
 				${secondaryButton({id: "cancel-image", text: "Cancel",  translate: "cancel", weight: "1/2"})}
 			</div>
 		</div>
-	${profilePhotoChanger(user.pp_url)}
+	${profilePhotoChanger(user.preferences.avatar)}
 
 		${form({
 		name : "saveChangeBasicUserInfo",
@@ -95,7 +95,7 @@ function profileInfos(user: User) {
 			text: "Change password",
 			weight: "1/2",
 			translate: "change-password",
-			type: "button",
+		type: "button"
 		},
 	})}
 	</div>`
@@ -104,7 +104,7 @@ function profileInfos(user: User) {
 async function renderProfilePage() {
 
 	const userInfoResponse = await getUserInfo();
-	
+	console.log(userInfoResponse);
 	if (userInfoResponse.status === "success" && userInfoResponse.data) {
 		const userInfos = userInfoResponse.data;
 

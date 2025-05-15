@@ -9,7 +9,7 @@ export default function(fastify, servers) {
   fastify.register(cookie);
 
   fastify.register(cors, {
-    orgin: `https://${process.env.AUTHORIZED_IP}`,
+    origin: `https://${process.env.AUTHORIZED_IP}`,
     credentials: true
   });
 

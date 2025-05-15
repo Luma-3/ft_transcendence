@@ -31,10 +31,6 @@ const fastify = Fastify({
 
 await config(fastify);
 
-fastify.addHook('onRoute', (routeOptions) => {
-  console.log(`[ROUTE] ${routeOptions.method} ${routeOptions.url}`);
-});
-
 fastify.decorate('UserService', new UserService({
   models: {
     UserModel: new UserModel(fastify.knex),

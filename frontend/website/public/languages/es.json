@@ -19,7 +19,11 @@
 	"User Already Exist": "El usuario ya existe",
 	"passwords_dont_match": "Las contraseñas no coinciden",
 	"username_or_password_incorrect": "Nombre de usuario o contraseña incorrectos",
-	
+	"password_must_include": "La contraseña debe incluir al menos: 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1 número y 1 carácter especial",
+	"no_changes_detected": "No se detectaron cambios",
+	"user_info_updated": "Información actualizada",
+	"play": "Jugar",
+
 	"profil": "Perfil",
 	"stats": "Estadísticas de juegos",
 	"logout": "Cerrar sesión",
@@ -53,6 +57,8 @@
 	"password-changed": "Contraseña cambiada",
 	"user-infos-updated": "Información actualizada",
 	"user-infos-not-updated": "Información no actualizada",
+	"please-enter-all-fields": "Por favor, completa todos los campos",
+	"new-password-and-confirm-password-are-different": "La nueva contraseña y la confirmación de la contraseña son diferentes",
 
 	"version": "Versión",
 	"no-duck-hurt": "No se hirió a ningún pato",

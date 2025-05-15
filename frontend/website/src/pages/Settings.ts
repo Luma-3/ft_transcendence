@@ -25,7 +25,7 @@ const userinfoResponse = await getUserInfo();
 			${headerPage("settings")}
 				<div class="flex flex-col items-center ml-15 mr-15 justify-center space-y-4 space-x-4 pt-10
 				text-tertiary dark:text-dtertiary">
-					${changeDefaultLang(userInfos.lang)}
+					${changeDefaultLang(userInfos.preferences.lang)}
 					<br>
 					${change2FA()}
 					<br>

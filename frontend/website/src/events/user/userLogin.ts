@@ -1,7 +1,7 @@
 import { renderPrivatePage } from '../../components/renderPage'
 import { fetchApi } from '../../api/fetch';
 import { User } from '../../api/interfaces/User';
-import { API_ROUTES } from '../../api/routes';
+import { API_SESSION } from '../../api/routes';
 import { alertPublic } from '../../components/ui/alert/alertPublic';
 
 export async function loginUser() {
@@ -18,8 +18,8 @@ export async function loginUser() {
 		return;
 	}
 
-	const response = await fetchApi<User>(API_ROUTES.USERS.LOGIN,
-			{method: "POST", credentials: "include", body: JSON.stringify(userdata)})
+	const response = await fetchApi<User>(API_SESSION.CREATE,
+			{method: "POST", body: JSON.stringify(userdata)})
 	
 	if (response.status === "error") {
 		alertPublic("username_or_password_incorrect", "error");

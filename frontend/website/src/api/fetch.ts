@@ -19,3 +19,24 @@ export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IAp
 		renderPublicPage('500', false)
 		return {status: "500", message: "Internal Server Error"}};
 }
+
+export async function fetchApiWithNoBody<T>(url:string, option?: RequestInit): Promise<IApiResponce<T>> {
+	try {
+		const response = await fetch(url, {
+			headers: {"Content-Type": "text/plain",
+			},
+			credentials: "include",
+			...option,
+		});
+		if (!response.ok) {
+			const errorData = await response.json();
+			return {status: "error", message: errorData.message, details: errorData.details};
+		}
+		return response.json() as Promise<IApiResponce<T>>;
+	} 
+	catch (error) {
+		renderPublicPage('500', false)
+		return {status: "500", message: "Internal Server Error"}};
+}
+
+

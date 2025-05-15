@@ -1,4 +1,4 @@
-import { API_ROUTES } from "../api/routes";
+import { API_USER } from "../api/routes";
 import { fetchApi } from "../api/fetch";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
 import { getUserInfo } from "../api/getter";
@@ -64,7 +64,7 @@ export async function saveLanguage(lang_select: string) {
 		return;
 	}
 	//TODO : Update with the new API
-	const response = await fetchApi(API_ROUTES.USERS.UPDATE_PREF, {
+	const response = await fetchApi(API_USER.UPDATE.PREF, {
 		method: "PATCH",
 		body: JSON.stringify({
 			lang: lang_select,

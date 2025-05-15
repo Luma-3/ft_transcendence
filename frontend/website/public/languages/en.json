@@ -19,6 +19,9 @@
 	"google_login": "Login with Google",
 	"passwords_dont_match": "Passwords do not match",
 	"username_or_password_incorrect": "Username or password incorrect",
+	"password_must_include": "Password must include at least: 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
+	"no_changes_detected": "No changes detected",
+	"user_info_updated": "Informations updated",
 
 	"profil": "Profile",
 	"stats": "Games stats",

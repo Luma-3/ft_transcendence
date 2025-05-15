@@ -1,20 +1,20 @@
 import { changeLanguage, saveDefaultLanguage } from '../i18n/Translate'
 import { renderPublicPage, renderPrivatePage } from '../components/renderPage'
-import { verifPasswordAndRegisterUser } from './userSession/userRegister'
-import { loginUser } from './userSession/userLogin'
+import { verifPasswordAndRegisterUser } from './user/userRegister'
+import { loginUser } from './user/userLogin'
 import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
-import { logOutUser } from './userSession/userLogout'
-import { changeUserNameEmail } from '../events/userSession/userChange'
-import { changeUserPassword } from '../events/userSession/userChange'
+import { logOutUser } from './user/userLogout'
+import { changeUserNameEmail } from './user/userChange'
+import { changeUserPassword } from './user/userChange'
 import { changePictureElement } from '../components/utils/imageEditor'
 import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 import { renderBackPage } from '../components/renderPage'
 import { toggleGameStat } from '../components/utils/toggleGameStat'
 import { toggleTruc } from '../components/utils/toggleTruc'
-
+import { deleteUser } from '../events/user/userDelete'
 const clickEvent: {[key: string]: () => void } = {
 
 	// * -------------- Public Page Load -------------- */
@@ -40,6 +40,7 @@ const clickEvent: {[key: string]: () => void } = {
 	// * -------------- Settings Page  -------------- */
 	'loadsettings': () => renderPrivatePage('settings'),
 	'saveLang': () => saveDefaultLanguage(),
+	'deleteAccount': () => deleteUser(),
 	'logout': () =>  logOutUser(),
 
 	// * -------------- Common Components  -------------- */

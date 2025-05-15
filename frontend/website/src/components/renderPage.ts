@@ -81,8 +81,8 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 	if (response.status === "error" || !response.data) {
 		return renderErrorPage('404', '404', 'not_found');
 	}
-	const lang = response.data.lang;
-	const theme = response.data.theme;
+	const lang = response.data.preferences.lang;;
+	const theme = response.data.preferences.theme;
 
 	fadeOut(main_container);
 	
@@ -122,8 +122,8 @@ export async function renderErrorPage(codePage: string, code: string, message: s
 		return notFoundPage();
 	}
 	const user = await getUserInfo();
-	const lang = user.status === "error" ? 'en' : user.data?.lang || 'en';
-	const theme = user.status === "error" ? 'dark' : user.data?.theme || 'dark';
+	const lang = user.status === "error" ? 'en' : user.data?.preferences.lang || 'en';
+	const theme = user.status === "error" ? 'dark' : user.data?.preferences.theme || 'dark';
 	setupColorTheme(theme);
 	fadeOut(main_container);
 
