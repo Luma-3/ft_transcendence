@@ -16,7 +16,8 @@
 	"create_account": "Crear una cuenta",
 	"login": "Iniciar sesión",
 	"google_login": "Iniciar sesión con Google",
-	"User Already Exist": "El usuario ya existe",
+	"Username already Exist": "El usuario ya existe",
+	"Email already in use": "El correo electrónico ya está en uso",
 	"passwords_dont_match": "Las contraseñas no coinciden",
 	"username_or_password_incorrect": "Nombre de usuario o contraseña incorrectos",
 	"password_must_include": "La contraseña debe incluir al menos: 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1 número y 1 carácter especial",
@@ -31,6 +32,7 @@
 	"light-mode": "Modo claro",
 	"settings": "Configuraciones",
 	"change-default-language": "Cambiar idioma predeterminado",
+	"language-update": "Idioma actualizado",
 	
 	"activate-2fa": "Activar 2FA",
 	"disable-2fa": "Desactivar 2FA",

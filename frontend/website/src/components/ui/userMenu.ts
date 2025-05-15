@@ -38,7 +38,7 @@ function UserMenuOptions() {
 
 function darkMode(theme: string) {
 	const isChecked = theme === 'light' ? 'checked' : '';
-
+	console.log('isChecked', isChecked);
 	return `<div class="flex items-center text-responsive-size justify-between py-2 px-4">
 				<div translate="light-mode">Light mode</div>
 					<div class="relative inline-block w-11 h-5">
@@ -71,7 +71,7 @@ export function renderUserMenu(user: User) {
 			${headerUserMenu(user)}
 			${UserMenuOptions()}
 			<ul class="font-title py-1 text-tertiary dark:text-dsecondary md:mr-2 lg:mr-"4 aria-labelledby="dropdown">
-				<li> ${darkMode(user.theme)}</li>
+				<li> ${darkMode(user.preferences.theme)}</li>
 				<li> ${logout()}</li>
 			</ul>`
 }

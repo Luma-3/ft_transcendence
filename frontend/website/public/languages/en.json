@@ -30,6 +30,7 @@
 	"light-mode": "Light mode",
 	"settings": "Settings",
 	"change-default-language": "Change default language",
+	"language-update": "Language updated",
 
 	"activate-2fa": "Activate 2FA",
 	"disable-2fa": "Disable 2FA",

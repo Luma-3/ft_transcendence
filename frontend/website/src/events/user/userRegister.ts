@@ -4,6 +4,7 @@ import { API_USER, API_SESSION } from '../../api/routes';
 import { alertPublic } from '../../components/ui/alert/alertPublic';
 import { User } from '../../api/interfaces/User';
 import { verifRegexPassword } from '../../components/utils/regex';
+import { loadTranslation } from '../../i18n/Translate';
 
 function error(message: string) {
 	alertPublic(message, "error");
@@ -29,7 +30,6 @@ export async function verifPasswordAndRegisterUser() {
 		return;
 	}
 	const lang = sessionStorage.getItem('lang') || 'en';
-	console.log("lang", lang);
 	const formData = new FormData(form);
 	const formEntry = Object.fromEntries(formData) as Record<string, string>;
 	
@@ -46,13 +46,14 @@ export async function verifPasswordAndRegisterUser() {
 			lang: lang,
 		}
 	}
-
+	const trad = await loadTranslation(lang);
 	const response = await fetchApi<User>(API_USER.BASIC.REGISTER, {
 		method: 'POST',
 		body: JSON.stringify(userData)
 	});
 	if (response.status !== "success") {
-		return error(response.message)
+		const errorMessage = trad[response.message] || response.message;
+		return error(errorMessage)
 	}
 
 	const sessionData = { username: userData.username, password:userData.password };
@@ -61,7 +62,8 @@ export async function verifPasswordAndRegisterUser() {
 		body: JSON.stringify(sessionData)
 	});
 	if (responseSession.status !== "success") {
-		return error(responseSession.message)
+		const errorMessage = trad[responseSession.message] || responseSession.message;
+		return error(errorMessage)
  	}
 
  	renderPrivatePage('WelcomeYou');

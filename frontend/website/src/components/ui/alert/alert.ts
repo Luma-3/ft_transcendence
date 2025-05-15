@@ -36,7 +36,7 @@ export async function alert(reason: string, level: string) {
 					cancelButtonColor: customTheme.cancelButtonColor,
 					confirmButtonText: trad['yes'],
 					cancelButtonText: trad['cancel'],
-					position: 'top',
+					position: 'center',
 					toast: true,
 				});
 			break;

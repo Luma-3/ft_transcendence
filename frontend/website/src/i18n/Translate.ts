@@ -54,7 +54,7 @@ export function changeLanguage(lang: string | undefined) {
 
 export async function saveLanguage(lang_select: string) {
 	
-	if (autorizedLangs.includes(lang_select)) {
+	if (!autorizedLangs.includes(lang_select)) {
 		alertTemporary("error",'Language not autorized', 'dark');
 	}
 	
@@ -63,19 +63,18 @@ export async function saveLanguage(lang_select: string) {
 		alertTemporary("error", 'Error while getting user info', 'dark');
 		return;
 	}
-	//TODO : Update with the new API
 	const response = await fetchApi(API_USER.UPDATE.PREF, {
 		method: "PATCH",
 		body: JSON.stringify({
 			lang: lang_select,
 		})
 	});
-	if (response.status !== "success") {
+	if (response.status === "error") {
 		alertTemporary("error",'Error while updating language' + response.message, 'dark');
 		return;
 	}
-
-	alertTemporary("success", 'Language updated', user.data.theme);
+	const trad = await loadTranslation(lang_select);
+	alertTemporary("success", trad['language-update'], user.data.preferences.theme);
 }
 
 export function saveDefaultLanguage() {
