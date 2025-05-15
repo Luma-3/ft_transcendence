@@ -38,4 +38,27 @@ export default async function(fastify) {
       }
     }
   }, Controllers.refreshSession);
+
+  fastify.get('/session/verify/accessToken', {
+    schema: {
+      summary: 'Verify access token session for a user',
+      description: 'Endpoint to verify access token',
+      tags: ['Sessions'],
+      response: {
+        200: {}
+      }
+    }
+  }, Controllers.verifyAccessToken);
+
+  fastify.get('/session/verify/refreshToken', {
+    schema: {
+      summary: 'Verify refresh token session for a user',
+      description: 'Endpoint to verify refresh token',
+      tags: ['Sessions'],
+      response: {
+        200: {}
+      }
+    }
+  }, Controllers.verifyRefreshToken);
 }
+

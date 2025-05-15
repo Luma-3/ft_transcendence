@@ -24,6 +24,7 @@ export default function(fastify, servers) {
       { method: 'POST', url: '/user/session' }, // Create session
       { method: 'POST', url: '/user/refresh' }, // Refresh token
       { method: 'GET', url: '/doc' }, // Swagger doc
+      { method: 'GET', url: '/user/session/verify' },
       { method: 'GET', url: /^\/[^\/]+\/doc\/json$/ }, // Swagger json
     ]
   });

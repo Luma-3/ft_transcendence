@@ -39,16 +39,16 @@ export async function deleteSession(req, rep) {
 }
 
 export async function refreshSession(req, rep) {
-  const refreshToken = req.cookies.refreshToken;
+  const oldRefreshToken = req.cookies.refreshToken;
 
-  if (!refreshToken) {
+  if (!oldRefreshToken) {
     throw new UnauthorizedError('Token undefined');
   }
 
-  const { accessToken, newRefreshToken } = await this.SessionService.refreshSession(refreshToken);
+  const { refreshToken, accessToken } = await this.SessionService.refreshSession(oldRefreshToken);
 
   return rep.code(200)
-    .setCookie("refreshToken", newRefreshToken, {
+    .setCookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.COOKIE_SECURE,
       sameSite: process.env.NODE_ENV == 'production' ? 'node' : undefined,
@@ -65,4 +65,15 @@ export async function refreshSession(req, rep) {
     .send({ message: 'Session Successfully Refreshed' });
 }
 
+export async function verifyAccessToken(req, rep) {
+  const accessToken = req.cookies.accessToken;
+  await this.SessionService.verifyAccessToken(accessToken);
+  return rep.code(200).send({ message: 'Ok' });
+}
+
+export async function verifyRefreshToken(req, rep) {
+  const refreshToken = req.cookies.refreshToken;
+  await this.SessionService.verifyRefreshToken(refreshToken);
+  return rep.code(200).send({ message: 'Ok' });
+}
 
