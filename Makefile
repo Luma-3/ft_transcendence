@@ -11,4 +11,10 @@ run-dev:
 run-prod:
 	@$(COMPOSE) up --build
 
-PHONY: install-dev run-dev run-prod
+migrate:
+	@bash $(SH_DEV) migrate
+
+fclean:
+	@bash $(SH_DEV) fclean
+
+PHONY: install-dev run-dev run-prod fclean
