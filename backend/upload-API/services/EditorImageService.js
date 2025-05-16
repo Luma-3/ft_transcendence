@@ -1,9 +1,4 @@
-import { ForbiddenError, InvalidTypeError, NotFoundError } from "@transcenduck/error";
-import path from "path"
-import fs from "fs";
-import { randomUUID } from "crypto";
 import sharp from "sharp";
-import * as mine from "mime-types";
 
 export class EditorImageService {
   constructor() {}
@@ -141,7 +136,11 @@ export class EditorImageService {
     try{
       await this.rotateImage(image, options.rotate ?? null);
     }catch(_) {}
-    return await image.ptr.toBuffer();
+    try{
+      return await image.ptr.toBuffer();
+    }catch(_) {
+      return buffer;
+    }
   }
 }
 

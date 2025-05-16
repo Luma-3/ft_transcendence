@@ -1,5 +1,5 @@
-import path from 'path'
-import * as mine from 'mime-types'
+import path from 'path';
+import * as mine from 'mime-types';
 
 export async function uplaodFile(req, rep) {
   const file = await req.file({
