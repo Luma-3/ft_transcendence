@@ -104,7 +104,6 @@ function profileInfos(user: User) {
 async function renderProfilePage() {
 
 	const userInfoResponse = await getUserInfo();
-	console.log(userInfoResponse);
 	if (userInfoResponse.status === "success" && userInfoResponse.data) {
 		const userInfos = userInfoResponse.data;
 

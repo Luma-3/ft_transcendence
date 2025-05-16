@@ -2,15 +2,13 @@ import { secondaryButton } from './buttons/secondaryButton'
 
 export function changeDefaultLang(langPreselect: string) {
 
-	const all_langs = [
-		"fr",
-		"en",
-		"es"]
+	const all_langs = ["fr", "en", "es"];
 
 	
 	const labels = all_langs.map((lang) => {
 
 		const isChecked = (lang === langPreselect) ? 'checked' : ''
+
 		return `<div role="button" class="group/item flex w-full justify-center items-center rounded-lg p-0 transition-all
 		hover:bg-tertiary hover:dark:bg-dsecondary focus:bg-slate-100 active:bg-slate-100 relative peer-checked:border-2
 		 peer-checked:border-tertiary dark:border-dsecondary">
@@ -24,10 +22,10 @@ export function changeDefaultLang(langPreselect: string) {
 			</span>
 			<input type="radio" name="lang-selector" class="absolute peer h-5 w-5 cursor-pointer transition-all
 				appearance-none"
-			id="${lang}-changer" name="langSelect" ${isChecked} onchange="changeLanguage('${lang}')"/>
+			id="${lang}-changer" name="langSelect" data-lang="${lang}" ${isChecked}"/>
 			</label>
 			</div>`
-	}).join('')
+		}).join('')
 
 	return `<div class="title-responsive-size p-2 font-title items-center justify-center motion-reduce:animate-pulse" translate="change-default-language">Change default language</div>
 				<div class="flex flex-col w-full max-w-[800px] rounded-xl bg-primary dark:bg-dprimary shadow">

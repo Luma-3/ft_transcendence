@@ -13,7 +13,7 @@ function divHomePage() {
 		<div class='flex flex-col items-center justify-center h-screen space-y-8'>
 			${logo()}
 			${languageSelector()}
-			${animateButton("loadlogin", "welcome", "get_started")}
+			${animateButton("loadlogin", "welcome", "get-started")}
 		</div>`;
 }
 

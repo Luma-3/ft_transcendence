@@ -10,7 +10,7 @@ export async function deleteUser() {
 			method: 'DELETE',
 		});
 		if (response.status === "error") {
-			alert("cannot_delete_user", "error");
+			alert("cannot-delete-user", "error");
 			return;
 		}
 		window.location.href = '/';

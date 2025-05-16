@@ -75,11 +75,11 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
 	if (!main_container) {
-		return renderErrorPage('404', '404', 'not_found');
+		return renderErrorPage('404', '404', 'not-found');
 	}
 	const response = await getUserInfo();
 	if (response.status === "error" || !response.data) {
-		return renderErrorPage('404', '404', 'not_found');
+		return renderErrorPage('404', '404', 'not-found');
 	}
 	const lang = response.data.preferences.lang;;
 	const theme = response.data.preferences.theme;
@@ -90,7 +90,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		
 		const rendererFunction = rendererPrivatePage[page];
 		if (!rendererFunction) {
-			return renderErrorPage('404', '404', 'not_found');
+			return renderErrorPage('404', '404', 'not-found');
 		}
 		const page_content = await Promise.resolve(rendererFunction(response.data as User));
 		

@@ -29,7 +29,7 @@ export function languageSelector() {
 
 	return `
 		<div class='flex flex-row text-responsive-size items-center justify-space-between'>
-			<label for='language' translate="lang_choice" class="p-3 font-title text-secondary dark:text-dtertiary">
+			<label for='language' translate="lang-choice" class="p-3 font-title text-secondary dark:text-dtertiary">
 				Choose a language :
 			</label>
 			<select name='language' id='language'

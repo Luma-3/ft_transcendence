@@ -3,8 +3,7 @@ import { alertChangePassword } from "../../components/ui/alert/alertChangePasswo
 
 export async function changeUserPassword() {
 
-	const response = await alertChangePassword();
-	console.log(response);
+	await alertChangePassword();
 	return ;
 }
 
@@ -35,7 +34,7 @@ export async function changeUserNameEmail() {
 	
 	if (user.username === dataEntry.username 
 		&& user.email === dataEntry.email) {
-		const message = trad["no_changes_detected"];
+		const message = trad["no-changes-detected"];
 		alertTemporary("info", message, user.preferences.theme);
 		return;
 	}
@@ -53,7 +52,7 @@ export async function changeUserNameEmail() {
 			return;
 		}
 	}
-	alertTemporary("success", trad["user_info_updated"], user.preferences.theme);
+	alertTemporary("success", trad["user-info-updated"], user.preferences.theme);
 	renderPrivatePage('profile', false);
 	return;
 }

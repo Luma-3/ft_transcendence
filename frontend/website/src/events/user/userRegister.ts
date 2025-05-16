@@ -13,11 +13,11 @@ function error(message: string) {
 
 function verifValueForm(userData: Record<string, string>) {
 	if (!userData.username || !userData.password || !userData.passwordVerif) {
-		renderErrorPage('400','400', "bad_request");
+		renderErrorPage('400','400', "bad-request");
 		return false;
 	}
 	if (userData.password !== userData.passwordVerif) { 
-		error("passwords_dont_match");
+		error("passwords-dont-match");
 		return false;
 	}
 	return true;

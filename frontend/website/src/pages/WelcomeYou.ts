@@ -1,7 +1,13 @@
 import { User } from '../api/interfaces/User';
 
+/**
+ * Page de bienvenue lorsque l'utilisateur se connecte pour la première fois (Welcome)
+ * Ou sinon lorsqu'il se reconnecte (ReWelcome)
+ */
+
+
 export default function welcomeYouPage(user: User) {
-    const name = user?.username ? `, ${user.username}` : '';
+    const name = ' ' + user?.username;
     return `
     <div id="welcome-transition"
         class="flex flex-col h-screen w-screen font-title items-center justify-center text-white text-6xl transition-opacity duration-1000 opacity-0">
@@ -24,6 +30,9 @@ export function reWelcomeYouPage(user: User) {
     `;
 }
 
+/**
+ * Effet de fondu pour la page 
+ */
 export function handleWelcomeYouPage() {
 
     const welcome = document.getElementById('welcome-transition');

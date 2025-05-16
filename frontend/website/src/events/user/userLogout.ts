@@ -1,5 +1,5 @@
 import { API_SESSION } from "../../api/routes";
-import { fetchApi, fetchApiWithNoBody } from "../../api/fetch";
+import { fetchApiWithNoBody } from "../../api/fetch";
 import { alert } from "../../components/ui/alert/alert";
 
 export async function logOutUser() {

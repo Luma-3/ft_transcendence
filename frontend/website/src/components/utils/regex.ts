@@ -7,7 +7,7 @@ export function verifRegexPassword(password: string) {
 	let regexExpression = new RegExp(regex);
 	let match = regexExpression.test(password);
 	if (!match) {
-		alertPublic("password_must_include", "error");
+		alertPublic("password-must-include", "error");
 		return false;
 	}
 	return true;

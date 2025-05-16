@@ -28,3 +28,11 @@ export async function verifySession() {
 	return { status: "error", data: null };
 
 }
+
+export async function fetchToken() {
+	const verifyToken = await verifySession();
+	if (verifyToken.status === "error") {
+		return {status: "error", message: "Session expired" };
+	}
+	return {status: "success", message: "Token valid" };
+}

@@ -55,7 +55,7 @@ export async function alertChangePassword() {
 				messageError = trad['new-password-and-confirm-password-are-different'];
 				Swal.showValidationMessage(messageError);
 			} else if(verifRegexNewPassword(newPassword) === false) {
-				messageError = trad['password_must_include'];
+				messageError = trad['password-must-include'];
 				Swal.showValidationMessage(messageError);
 			}
 			return { oldPassword, newPassword };

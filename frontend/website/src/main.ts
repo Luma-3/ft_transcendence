@@ -1,12 +1,8 @@
 import { renderPrivatePage, renderPublicPage } from './components/renderPage'
 import { addAllEventListenOnPage } from './events/Handler'
-import { getUserInfo } from './api/getter'
-import { verifySession } from './api/verifier'
-import { fetchToken } from './api/fetch'
-
+import { fetchToken } from './api/fetchToken'
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
-const publicPages = ['home', 'login', 'register']
 
 export function addToHistory(page: string, updateHistory: boolean = true) {
 	if (updateHistory && page !== history.state?.page) {
@@ -17,9 +13,11 @@ export function addToHistory(page: string, updateHistory: boolean = true) {
 
 addAllEventListenOnPage(main_container);
 
+const publicPages = ['home', 'login', 'register']
 // * Au chargement initial ou refresh de la page
-// * On initialise le client Google
-// * On affiche la page courante ou la page d'accueil par défaut avec un leger delai
+// * On verfie si l'utilisateur a une session active
+// * On affiche la page prive si l'utilisateur est connecté
+// * Sinon on affiche la page publique
 document.addEventListener('DOMContentLoaded', async () => {
 	
 	const page =  window.location.pathname.substring(1) || 'home'

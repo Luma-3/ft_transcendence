@@ -42,7 +42,6 @@ export async function translatePage(lang : string = 'en') {
 export function changeLanguage(lang: string | undefined) {
 
 	let language;
-
 	if (!lang) {
 		language = (document.getElementById('language') as HTMLSelectElement).value;
 		sessionStorage.setItem('lang', language);

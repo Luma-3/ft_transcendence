@@ -1,6 +1,6 @@
 import { renderPublicPage } from "../components/renderPage";
 import { IApiResponce } from "./interfaces/IApiResponse";
-import { verifySession } from "./verifier";
+import { fetchToken } from "./fetchToken";
 
 export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IApiResponce<T>> {
 	
@@ -66,12 +66,6 @@ export async function fetchWithNoToken<T>(url:string, option?: RequestInit): Pro
 		return {status: "500", message: "Internal Server Error"}};
 }
 
-export async function fetchToken() {
-	const verifyToken = await verifySession();
-	if (verifyToken.status === "error") {
-		return {status: "error", message: "Session expired" };
-	}
-	return {status: "success", message: "Token valid" };
-}
+
 
 

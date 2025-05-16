@@ -40,7 +40,7 @@ async function initImageEditor(): Promise<ImageEditor | null> {
     return null;
   }
 
-  const theme = user.data.theme;
+  const theme = user.data.preferences.theme;
   const headerColor = theme === 'dark' ? '#000000' : '#FFFFFF';
   const loadButtonColor = theme === 'dark' ? '#FF8904' : '#44BBA4';
   const backgroundColor = theme === 'dark' ? '#000000' : '#FFFFFF';
@@ -94,7 +94,7 @@ async function translateImageEditorLabel() {
     alertTemporary("error", "Error while fetching user info", 'dark');
     return;
   }
-  const lang = infos.data.lang;
+  const lang = infos.data.preferences.lang;
   if (lang === "en") {
     return;
   }
@@ -152,7 +152,6 @@ export async function saveNewPicture() {
   const blob = await (await fetch(new_image)).blob();
   FileSaver.saveAs(blob, 'image.png');
   const file = new Blob([new_image], { type: 'image/png' });
-  console.log(file);
 }
 
 export function cancelEditor() {

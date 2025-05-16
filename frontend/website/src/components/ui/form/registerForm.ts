@@ -35,7 +35,7 @@ export function registerForm() {
 				placeholder: "Verify Password",
 				autocomplete: "current-password",
 				required: true,
-				translate: "verif_password",
+				translate: "verif-password",
 			},
 		],
 		button: {

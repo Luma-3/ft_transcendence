@@ -61,6 +61,13 @@ const submitEvent: {[key: string]: () => void } = {
 	'registerForm': registerUser,
 };
 
+/**
+ * Gestion des appels lors de gestion dynamique de fonction avec des listes
+ * ou plusieurs elements dynamiques
+ */
+const inputEvent: {[key: string]: (inputValue: string) => void } = {
+	'lang-selector': (inputValue: string) => changeLanguage(inputValue),
+}
 
 export function addAllEventListenOnPage(container : HTMLDivElement) {
 
@@ -88,6 +95,17 @@ export function addAllEventListenOnPage(container : HTMLDivElement) {
 
 		if (target.id in submitEvent) {
 			submitEvent[target.id]();
+		}
+	});
+	container.addEventListener('change', (event) => {
+		event.preventDefault();
+		const target = event.target as HTMLInputElement;
+		if (target.name in inputEvent){
+			const inputValue = target.dataset.lang;
+			if (inputValue) {
+				console.log(inputValue);
+				inputEvent[target.name](inputValue);
+			}
 		}
 	});
 

@@ -22,7 +22,7 @@ export async function loginUser() {
 			{method: "POST", body: JSON.stringify(userdata)})
 	
 	if (response.status === "error") {
-		alertPublic("username_or_password_incorrect", "error");
+		alertPublic("username-or-password-incorrect", "error");
 		return;
 	}
 	renderPrivatePage('reWelcomeYou');
