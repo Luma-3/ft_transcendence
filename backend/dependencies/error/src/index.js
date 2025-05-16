@@ -16,7 +16,6 @@ import { InternalServerErrorSchema } from './InternalServerError.js'
 import { InvalidTypeSchema } from './InvalidTypeError.js'
 import { UnauthorizedSchema } from './UnauthorizedError.js'
 import { ValidationSchema } from './ValidationError.js'
-import { InvalidTypeSchema } from './InvalidTypeError.js'
 
 export function registerErrorSchema(fastify) {
   fastify.addSchema(NotFoundSchema);
