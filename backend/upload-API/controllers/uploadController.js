@@ -2,20 +2,27 @@ import { randomUUID } from 'crypto'
 import path from 'path'
 import sharp from 'sharp'
 import fs from 'fs'
+import { assert } from 'console';
 
 export async function uplaodFile(req, rep) {
   const file = await req.file();
-  const { path } = req.params;
-  const fileurl = await this.UploadService.uploadFile(file, path);
+  const { typePath } = req.params;
+  const fileurl = await this.UploadService.uploadFile(typePath, file);
 
   return rep.code(200).send({ message: 'file uploaded successfully', data: { Url: fileurl } })
 }
 
-export async function deleteFile(req, rep) {
-  const { filename } = req.params;
-  const __dirname = import.meta.dirname;
+export async function getFile(req, rep) {
+  const url = req.url;
+  const { typePath } = req.params;
+  const buffer = await this.UploadService.getFile(typePath, Object.keys(req.query).length ? req.url.substring(0, req.url.indexOf("?")) : req.url , req.query);
+  return rep.code(200).header('Content-Type', 'image/webp').send(buffer);
+}
 
-  const formatedPath = path.join(__dirname, '../uploads/', filename);
-  fs.unlink(formatedPath);
+export async function deleteFile(req , rep) {
+  const path = req.url;
+  const { typePath } = req.params;
+  await this.UploadService.deleteFile(typePath, path);
+  return rep.code(200).send({ message: 'file deleted successfully' })
 }
 

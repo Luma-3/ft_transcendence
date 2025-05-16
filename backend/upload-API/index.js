@@ -1,7 +1,9 @@
 import Fastify from 'fastify'
 import fs from 'fs'
 import dotenv from 'dotenv'
-import uplaodRoute from './handler/Routes.mjs'
+import uplaodRoute from './routes/upload.js'
+import { UploadService } from './services/UploadService.js'
+import config from './config/fastify.config.js'
 
 dotenv.config()
 
@@ -12,9 +14,9 @@ const fastify = Fastify({
     cert: fs.readFileSync(process.env.SSL_CERT),
   },
 });
-
+await config(fastify);
 fastify.register(uplaodRoute);
-
+fastify.decorate('UploadService', new UploadService());
 const start = async () => {
   try {
     await fastify.listen({ port: 3002, host: '0.0.0.0' });

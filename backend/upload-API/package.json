@@ -31,6 +31,7 @@
     "dotenv": "^16.5.0",
     "fastify": "^5.2.2",
     "fs": "^0.0.1-security",
+    "node-cache": "^5.1.2",
     "sharp": "^0.34.1"
   },
   "type": "module"
