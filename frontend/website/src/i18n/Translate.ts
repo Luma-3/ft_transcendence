@@ -5,13 +5,19 @@ import { getUserInfo } from "../api/getter";
 
 const autorizedLangs = ['en', 'fr', 'es']
 
-// * Chargement des traductions
+/**
+* Chargement des traductions
+*/
 export async function loadTranslation(lang: string) {
 	const reponse = await fetch(`languages/${lang}.json`)
 	return reponse.json()
 	
 }
 
+/**
+* Traduction de la page en pacourant tout les elements avec l'attribut translate
+* Verif si l'element est un input pour traduire le placeholder
+*/
 export async function translatePage(lang : string = 'en') {
 
 	if (!autorizedLangs.includes(lang))
@@ -38,8 +44,10 @@ export async function translatePage(lang : string = 'en') {
 	})
 }
 
-// * Changement de langue sur la Home page
-export function changeLanguage(lang: string | undefined) {
+/**
+* Changement de langue sur la Home page (Quand on a pas encore de preference pour le profil)
+*/
+export function changeLanguage(lang: string) {
 
 	let language;
 	if (!lang) {
@@ -51,6 +59,20 @@ export function changeLanguage(lang: string | undefined) {
 	translatePage(language);
 }
 
+/** 
+ * Changement de la langue lors de changement sur les checkbox sur la page settings
+ */
+export function changeLanguageSettings(dataset: DOMStringMap) {
+	const lang = dataset.lang;
+	if (lang) {
+		changeLanguage(lang);
+	}
+}
+
+
+/**
+* Changement de langue sur la page settings avec preference user et verification si la langue est autorisée
+*/
 export async function saveLanguage(lang_select: string) {
 	
 	if (!autorizedLangs.includes(lang_select)) {
@@ -76,6 +98,10 @@ export async function saveLanguage(lang_select: string) {
 	alertTemporary("success", trad['language-update'], user.data.preferences.theme);
 }
 
+
+/**
+* Fonction appelée lors du click sur le bouton sauvgarder (sur la page settings)
+*/
 export function saveDefaultLanguage() {
 
 	const choice = (document.querySelector('input[name="lang-selector"]:checked') as HTMLInputElement)

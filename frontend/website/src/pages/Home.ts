@@ -1,4 +1,4 @@
-import { languageSelector } from '../components/ui/languageSelector.ts';
+import { languageSelectorHome } from '../components/ui/languageSelector.ts';
 import { animateButton } from '../components/ui/buttons/animateButton.ts';
 
 function logo() {
@@ -12,7 +12,7 @@ function divHomePage() {
 	return `
 		<div class='flex flex-col items-center justify-center h-screen space-y-8'>
 			${logo()}
-			${languageSelector()}
+			${languageSelectorHome()}
 			${animateButton("loadlogin", "welcome", "get-started")}
 		</div>`;
 }

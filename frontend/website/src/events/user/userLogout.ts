@@ -1,8 +1,10 @@
-import { API_SESSION } from "../../api/routes";
-import { fetchApiWithNoBody } from "../../api/fetch";
 import { alert } from "../../components/ui/alert/alert";
 
+import { API_SESSION } from "../../api/routes";
+import { fetchApiWithNoBody } from "../../api/fetch";
+
 export async function logOutUser() {
+
 	const confirmResponse = await alert("are-you-sure", "warning");
 	if (confirmResponse) {
 		
@@ -10,12 +12,11 @@ export async function logOutUser() {
 			method: 'DELETE',
 			body: JSON.stringify({}),
 		});
-		if (responseApi.status === "success") {
-			sessionStorage.removeItem("backPage");
-			window.location.href = "/";
-			return;
+		if (responseApi.status === "error") {
+			return alert(responseApi.message, "error");
+		
 		}
-		alert(responseApi.message, "error");
+		sessionStorage.removeItem("backPage");
+		window.location.href = "/";
 	} 
-	return;
 }

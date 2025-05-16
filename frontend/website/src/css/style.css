@@ -1,8 +1,10 @@
 @import "tailwindcss";
 @import 'tui-image-editor/dist/tui-image-editor.css';
 
+/* Bypass du mode dark deja present qui prend en compte le theme du syteme(ce que je ne veux pas) */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Import de la police Chillax */
 @font-face {
   font-family: 'Chillax';
   font-style: normal;
@@ -10,6 +12,7 @@
   src: url('./font/Chillax-Variable.ttf') format('truetype');
 }
 
+/* Edit du css de l'image editor pour eviter d'afficher certains elements que je ne veux pas */
 .tui-image-editor-header-logo {
   display: none !important;
 }
@@ -23,6 +26,7 @@
   display: none !important;
 }
 
+/* Gestion de la responsivité des elements de l'application pour uniformiser les tailles de police et d'icones */
 .title-responsive-size {
 @apply text-xl md:text-2xl lg:text-4xl;
 }
@@ -43,14 +47,15 @@
   @apply size-20 md:size-24 lg:size-28;
 }
 
+/* Theme general de l'application et mise en place d'alias pour les classes tailwind */
 @theme {
   --font-title: 'Chillax', sans-serif;
   --font-text: 'Merriweather', sans-serif;
   /* F4D06F */
   /* White mode */
-  --color-primary:#E3B1AE; /* Bleu/Vert */
-  --color-secondary: #FFFFFF; /* Noir */
-  --color-tertiary: #1F1918; /* Blanc */
+  --color-primary:#E3B1AE; /* Rose pale */
+  --color-secondary: #FFFFFF; /* Blanc */
+  --color-tertiary: #1F1918; /* Noir tire du rose pale */
 
   /* Dark mode */
   --color-dprimary: #744FAC; /* Violet */
@@ -60,8 +65,8 @@
   --color-myblack: #000000;
 }
 
-/* Vert emeraude 69DC9E */
-
+/* Gestion du body pour ameliorer le chargement du DOM mais surtout pour l'image de fond et le flou
+  pour eviter les effets desagrables lors du chargement de ces elements */
 @layer base {
   body {
     visibility: hidden;

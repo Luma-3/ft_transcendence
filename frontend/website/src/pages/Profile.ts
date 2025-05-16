@@ -1,17 +1,19 @@
+import notfound from "./4xx";
+
 import { navbar } from "../components/ui/navbar"
 import { footer } from "../components/ui/footer"
-import { User } from "../api/interfaces/User"
+
 import { primaryButton } from "../components/ui/buttons/primaryButton"
 import { form } from "../components/ui/form/form"
 import { headerPage } from "../components/ui/headerPage"
-import notfound from "./4xx";
 
+import { User } from "../api/interfaces/User"
 
 function profileName(nameProfil: string) {
-	return `<h1 class="relative w-full p-2 title-responsive-size justify-center font-title text-center italic
-	text-tertiary dark:text-dtertiary overflow truncate">
-	${nameProfil}
-	</h1>`
+return `<h1 class="relative w-full p-2 title-responsive-size justify-center font-title text-center italic
+		text-tertiary dark:text-dtertiary overflow truncate">
+			${nameProfil}
+		</h1>`;
 }
 
 function profilePicture(photoProfil: string) {
@@ -22,7 +24,7 @@ function profilePicture(photoProfil: string) {
 		 class="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out">
 		  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
 		</svg>
-	</div>`
+	</div>`;
 }
 
 function profilePhotoChanger(userPicture: string) {
@@ -33,7 +35,7 @@ function profilePhotoChanger(userPicture: string) {
 		${profilePicture(userPicture)}
 		</label>
 		</div>
-	`}
+	`};
 
 
 
@@ -103,15 +105,15 @@ function profileInfos(user: User) {
 
 async function renderProfilePage() {
 
-	const userInfoResponse = await getUserInfo();
-	if (userInfoResponse.status === "success" && userInfoResponse.data) {
-		const userInfos = userInfoResponse.data;
+	const response = await getUserInfo();
+	if (response.status === "success" && response.data) {
+		const user = response.data;
 
 		return `
-			${navbar(userInfos)}
+			${navbar(user)}
 			${headerPage("profile")}
-			${profileName(userInfos.username)}
-			${profileInfos(userInfos)}
+			${profileName(user.username)}
+			${profileInfos(user)}
 			${footer()}`
 	}
 	return notfound();

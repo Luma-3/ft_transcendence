@@ -1,23 +1,30 @@
-import { renderPrivatePage } from '../../components/renderPage'
+import { renderErrorPage, renderPrivatePage } from '../../components/renderPage'
+
+import { alertPublic } from '../../components/ui/alert/alertPublic';
+
 import { fetchWithNoToken } from '../../api/fetch';
 import { User } from '../../api/interfaces/User';
 import { API_SESSION } from '../../api/routes';
-import { alertPublic } from '../../components/ui/alert/alertPublic';
 
 export async function loginUser() {
 
+	/**
+	 * Validation du formulaire de connexion
+	 * Verification si le formulaire est pas corrompu
+	 */
 	const form = document.forms.namedItem("LoginForm") as HTMLFormElement | null;
-	if (!form) {
-		return;
-	}
+	if (!form) { return; }
 
 	const formData = new FormData(form);
 	const userdata = Object.fromEntries(formData) as Record<string, string>;
 
 	if (userdata.username === "" || userdata.password === "") {
-		return;
+		return renderErrorPage('400','400', "bad-request");
 	}
 
+	/**
+	 * Creation de session
+	 */
 	const response = await fetchWithNoToken<User>(API_SESSION.CREATE,
 			{method: "POST", body: JSON.stringify(userdata)})
 	
@@ -25,6 +32,10 @@ export async function loginUser() {
 		alertPublic("username-or-password-incorrect", "error");
 		return;
 	}
+
+	/**
+	 * Page de ReWelcome (car l'utilisateur a deja un compte)
+	 */
 	renderPrivatePage('reWelcomeYou');
 	setTimeout(() => {
 		renderPrivatePage('dashboard',true);

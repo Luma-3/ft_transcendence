@@ -1,10 +1,12 @@
 import { renderPrivatePage, renderErrorPage } from '../../components/renderPage'
-import { fetchWithNoToken } from '../../api/fetch'
-import { API_USER, API_SESSION } from '../../api/routes';
+
 import { alertPublic } from '../../components/ui/alert/alertPublic';
-import { User } from '../../api/interfaces/User';
 import { verifRegexPassword } from '../../components/utils/regex';
 import { loadTranslation } from '../../i18n/Translate';
+
+import { API_USER, API_SESSION } from '../../api/routes';
+import { User } from '../../api/interfaces/User';
+import { fetchWithNoToken } from '../../api/fetch'
 
 function error(message: string) {
 	alertPublic(message, "error");
@@ -12,31 +14,50 @@ function error(message: string) {
 }
 
 function verifValueForm(userData: Record<string, string>) {
+	/**
+	 * Verification si le formulaire est pas corrompu
+	 */
 	if (!userData.username || !userData.password || !userData.passwordVerif) {
-		renderErrorPage('400','400', "bad-request");
-		return false;
+		return renderErrorPage('400','400', "bad-request"), false;
 	}
+	/**
+	 * Verification si les mots de passe sont identiques
+	 */
 	if (userData.password !== userData.passwordVerif) { 
-		error("passwords-dont-match");
-		return false;
+		return error("passwords-dont-match"), false;
 	}
 	return true;
 }
 
 export async function registerUser() {
 	
-	const form = document.forms.namedItem("registerForm") as HTMLFormElement | null;
-	if (!form) {
-		return;
-	}
+	const form = document.forms.namedItem("registerForm") as HTMLFormElement;
+	
+	if (!form) { return; }
+
+	/**
+	 * Recuperation de la langue precedemment selectionne par l'utilisateur
+	 * et suppression de la valeur dans le sessionStorage
+	 */
 	const lang = sessionStorage.getItem('lang') || 'en';
+	sessionStorage.removeItem('lang');
+
+	
 	const formData = new FormData(form);
 	const formEntry = Object.fromEntries(formData) as Record<string, string>;
 	
-	if (verifValueForm(formEntry) === false 
-		|| verifRegexPassword(formEntry.password) === false) {
+	/**
+	 * Verification des valeurs du formulaire directement avec les entrees
+	 */
+	if (verifValueForm(formEntry) === false || verifRegexPassword(formEntry.password) === false) {
 		return;
 	}
+	
+	/**
+	 * Chargement des traductions dans la langue selectionne
+	 * Chargement des donnees utilisateur pour les fetchs
+	 */
+	const trad = await loadTranslation(lang);
 	const userData = {
 		username: formEntry.username,
 		password: formEntry.password,
@@ -46,7 +67,10 @@ export async function registerUser() {
 			lang: lang,
 		}
 	}
-	const trad = await loadTranslation(lang);
+
+	/**
+	 * Creation de l'utilisateur
+	 */
 	const response = await fetchWithNoToken<User>(API_USER.BASIC.REGISTER, {
 		method: 'POST',
 		body: JSON.stringify(userData)
@@ -56,6 +80,9 @@ export async function registerUser() {
 		return error(errorMessage)
 	}
 
+	/**
+	 * Creation de la session
+	 */
 	const sessionData = { username: userData.username, password:userData.password };
 	const responseSession = await fetchWithNoToken(API_SESSION.CREATE, {
 		method: "POST",
@@ -64,10 +91,13 @@ export async function registerUser() {
 	if (responseSession.status !== "success") {
 		const errorMessage = trad[responseSession.message] || responseSession.message;
 		return error(errorMessage)
- 	}
+	}
 
- 	renderPrivatePage('WelcomeYou');
+	/**
+	 * Affichage de la page de welcome avant le dashboard(car nouvel utilisateur)
+	 */
+	renderPrivatePage('WelcomeYou');
 	setTimeout(() => {
 		renderPrivatePage('dashboard',true);
-	}, 3200);
+	}, 1200);
 }

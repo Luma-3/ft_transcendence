@@ -1,3 +1,6 @@
+/**
+ * Bouton qui ouvre les backrooms
+ */
 export function backdoor() {
 	return `<div class="flex flex-row items-center justify-center">
 			<a href="/dashboard" class="p-3 font-title text-center text-secondary
