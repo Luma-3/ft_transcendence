@@ -4,10 +4,8 @@ import staticFile from "@fastify/static";
 import path from "path";
 
 import swagger from '../plugins/swagger.js'
-import { registerErrorSchema } from '@transcenduck/error';
 
 export default async function config(fastify) {
-  const __dirname = import.meta.dirname;
 
   await fastify.register(formatter);
   await fastify.register(fastifyMultipart);

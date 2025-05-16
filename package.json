@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "mime-types": "^3.0.1",
     "node-cache": "^5.1.2"
   }
 }
