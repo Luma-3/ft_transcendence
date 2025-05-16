@@ -1,5 +1,5 @@
 ![Image](https://github.com/user-attachments/assets/e4c03e25-58a4-44c7-ac64-25a611172768)
-# 🦆 TranscenDuck
+# 🦆🦆🦆🦆 Transcenduck 🦆🦆🦆🦆
 
 Welcome to **Transcenduck**, a web app for the *ft\_transcendance* project from 42 school. Everything here is duck-themed.
 
@@ -42,8 +42,7 @@ Don’t forget to add your `.env` file with your secrets (OAuth, JWT, etc).
 3. Play, chat, challenge others, toggle dark mode
 4. Enjoy the duck world
 
-# Transcenduck 🦆
-## Ft_transcendance of 42 school
+
 ## Modules
 	- [x] Backend 1
 	- [x] Frontend 0.5
