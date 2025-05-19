@@ -1,7 +1,10 @@
-![Image](https://github.com/user-attachments/assets/e4c03e25-58a4-44c7-ac64-25a611172768)
-# 🦆🦆🦆🦆 Transcenduck 🦆🦆🦆🦆
-
-Welcome to **Transcenduck**, a web app for the *ft\_transcendance* project from 42 school. Everything here is duck-themed.
+<p align="center">
+	<img src="https://github.com/user-attachments/assets/e4c03e25-58a4-44c7-ac64-25a611172768" /><br>
+	<h1 align="center"> 🦆🦆🦆🦆 Transcenduck 🦆🦆🦆🦆 </h1>
+</p>
+<h2>
+Welcome to Transcenduck, a web app for the ft_transcendance project from 42 school. Everything here is duck-themed.
+</h2>
 
 ## 🌟 Main Features
 
