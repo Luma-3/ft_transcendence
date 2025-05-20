@@ -3,7 +3,7 @@
 set -e
 
 ARG=$1
-servers=("gateway" "user-API" "upload-API")
+servers=("gateway" "user-API" "upload-API", "game-API")
 
 servers_data=("user-API/data")
 
