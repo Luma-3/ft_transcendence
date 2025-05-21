@@ -42,24 +42,24 @@ function startGameIfReady() {
 function init_all(socket, request) {
   const uid = request.data.uuid;
   if (!uid) {
-    socket.send(JSON.stringify({ action: "error", message: "uuid required" }));
-    socket.close();
+    connection.socket.send(JSON.stringify({ action: "error", message: "uuid required" }));
+    connection.socket.close();
     return null;
   }
 
   if (Object.keys(players).length >= MAXPLAYERS) {
-    socket.send(JSON.stringify({ type: "error", message: "Salle pleine" }));
-    socket.close();
+    connection.socket.send(JSON.stringify({ type: "error", message: "Salle pleine" }));
+    connection.socket.close();
     return null;
   }
 
   if (players[uid]) {
-    socket.send(JSON.stringify({ type: "error", message: "uuid already connected" }));
-    socket.close();
+    connection.socket.send(JSON.stringify({ type: "error", message: "uuid already connected" }));
+    connection.socket.close();
     return null;
   }
 
-  socket.extra.playerId = uid;
+  connection.socket.extra.playerId = uid;
   players[uid] = socket;
   playerOrder.push(uid);
   console.log(`Joueur connecté : ${uid}`);
@@ -68,30 +68,30 @@ function init_all(socket, request) {
   return uid;
 }
 
-export async function getGame(socket, req) {
-  socket.on("message", (msg) => {
+export async function getGame(connection, request) {
+  connection.socket.on("message", (msg) => {
     let request;
 
     try {
       request = JSON.parse(msg);
     } catch {
-      socket.send(JSON.stringify({ action: "error", message: "JSON Invalide" }));
-      socket.close();
+      connection.socket.send(JSON.stringify({ action: "error", message: "JSON Invalide" }));
+      connection.socket.close();
       return;
     }
 
     if (request.action === "init") {
       const result = init_all(socket, request);
       if (!result) {
-        socket.send(JSON.stringify({ action: "error", message: "Player not initialised" }));
-        socket.close();
+        connection.socket.send(JSON.stringify({ action: "error", message: "Player not initialised" }));
+        connection.socket.close();
       }
       return;
     }
 
     if (request.action === "move") {
       const dir = request.data.direction;
-      const player = socket.extra.playerId === game.player1.uid ? game.player1 : game.player2;
+      const player = connection.socket.extra.playerId === game.player1.uid ? game.player1 : game.player2;
 
       if (dir === "up") player.speed = -5;
       else if (dir === "down") player.speed = 5;
@@ -110,16 +110,16 @@ export async function getGame(socket, req) {
     }
   });
 
-  socket.on("close", () => {
-    if (socket.extra.playerId) {
-      console.log(`Player disconnected : ${socket.extra.playerId}`);
-      delete players[socket.extra.playerId];
-      const idx = playerOrder.indexOf(socket.extra.playerId);
+  connection.socket.on("close", () => {
+    if (connection.socket.extra.playerId) {
+      console.log(`Player disconnected : ${connection.socket.extra.playerId}`);
+      delete players[connection.socket.extra.playerId];
+      const idx = playerOrder.indexOf(connection.socket.extra.playerId);
       if (idx !== -1) playerOrder.splice(idx, 1);
-      delete playersState[socket.extra.playerId];
+      delete playersState[connection.socket.extra.playerId];
       broadcast({
         action: "end",
-        message: `Player ${socket.extra.playerId} has been disconnected`
+        message: `Player ${connection.socket.extra.playerId} has been disconnected`
       }, players);
     }
   });
