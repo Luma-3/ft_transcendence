@@ -17,7 +17,7 @@ function startGameIfReady(playerOrder, players, playersState) {
     playerOrder.forEach((pid, index) => {
       players[pid].send(JSON.stringify({
         type: "start",
-        payload: { playerId: index + 1, pid }
+        data: { playerId: index + 1, pid }
       }));
       playersState[pid] = { direction: "stop", y: 0 };
     });
@@ -48,7 +48,7 @@ export async function getGame() {
       }
 
       if (data.type === "init") {
-        const pid = data.payload.pid;
+        const pid = data.data.pid;
 
         if (!pid) {
           ws.send(JSON.stringify({ type: "error", message: "uid requis" }));
@@ -73,7 +73,7 @@ export async function getGame() {
         playerOrder.push(pid);
         console.log(`Joueur connecté : ${pid}`);
 
-        ws.send(JSON.stringify({ type: "init_ack", payload: { pid } }));
+        ws.send(JSON.stringify({ type: "init_ack", data: { pid } }));
         startGameIfReady(playerOrder, players, playersState);
         return;
       }
@@ -84,7 +84,7 @@ export async function getGame() {
       }
 
       if (data.type === "move") {
-        const dir = data.payload.direction;
+        const dir = data.data.direction;
         const player = playerPid === game.player1.uid ? game.player1 : game.player2;
 
         if (dir === "up") player.speed = -5;
@@ -96,8 +96,15 @@ export async function getGame() {
 
         broadcast({
           type: "state",
-          payload: JSON.parse(game.step())
+          data: JSON.parse(game.step())
         }, players);
+      }
+
+      if (game.gameOver) {
+        if (game.player1.score == 11)
+          broadcast({ type: "end", data: { message: `Joueur ${game.player1.uid} a gagne.` } }, players);
+        else
+          broadcast({ type: "end", data: { message: `Joueur ${game.player2.uid} a gagne.` } }, players);
       }
     });
 
@@ -108,7 +115,7 @@ export async function getGame() {
         const idx = playerOrder.indexOf(playerPid);
         if (idx !== -1) playerOrder.splice(idx, 1);
         delete playersState[playerPid];
-        broadcast({ type: "end", payload: { message: `Joueur ${playerPid} a quitté.` } }, players);
+        broadcast({ type: "end", data: { message: `Joueur ${playerPid} a quitté.` } }, players);
       }
     });
   });

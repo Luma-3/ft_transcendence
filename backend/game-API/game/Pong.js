@@ -9,7 +9,7 @@ class Ball {
   }
 
   toJSON() {
-    return { x: this.x, y: this.y, vx: this.vx, vy: this.vy, size: this.size };
+    return { x: this.x, y: this.y, size: this.size };
   }
 }
 
@@ -26,13 +26,11 @@ class Player {
 
   toJSON() {
     return {
-      name: this.name,
       score: this.score,
       width: this.width,
       height: this.height,
       x: this.x,
       y: this.y,
-      speed: this.speed
     };
   }
 }
@@ -143,8 +141,6 @@ export class Pong {
       player1: this.player1,
       player2: this.player2,
       ball: this.ball,
-      sizeX: this.sizeX,
-      sizeY: this.sizeY
     };
   }
 }
