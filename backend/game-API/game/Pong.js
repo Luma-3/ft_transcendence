@@ -1,4 +1,3 @@
-import fs from 'fs';
 
 class Ball {
   constructor(x, y, vx = 0, vy = 0, size = 1) {
@@ -15,8 +14,8 @@ class Ball {
 }
 
 class Player {
-  constructor(name, width, height, x, y, score = 0) {
-    this.name = name;
+  constructor(uid, width, height, x, y, score = 0) {
+    this.uid = uid;
     this.score = score;
     this.width = width;
     this.height = height;
@@ -39,15 +38,15 @@ class Player {
 }
 
 export class Pong {
-  constructor(player1, player2, width, height) {
-    this.sizeX = width;
-    this.sizeY = height;
+  constructor(p1_uid, p2_uid) {
+    this.sizeX = 800;
+    this.sizeY = 600;
 
     const centerX = 0;
     const centerY = 0;
 
-    this.player1 = new Player(player1, 10, 100, -width / 2 + 10, centerY);
-    this.player2 = new Player(player2, 10, 100, width / 2 - 10, centerY);
+    this.player1 = new Player(p1_uid, 10, 100, -width / 2 + 10, centerY);
+    this.player2 = new Player(p2_uid, 10, 100, width / 2 - 10, centerY);
     this.ball = new Ball(centerX, centerY, 1, 1);
 
     this.gameOver = false;
@@ -108,7 +107,6 @@ export class Pong {
       this.ball.vx *= -1;
       this.ball.vy *= -1;
     }
-    const WIN_SCORE = 11;
   }
 
   step() {
