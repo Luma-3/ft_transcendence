@@ -4,7 +4,10 @@ import fs from 'fs'
 
 import config from './config/fastify.config.js'
 
+import game from './routes/game.js'
+
 dotenv.config()
+
 const fastify = Fastify({
     logger: true,
     https: {
@@ -14,6 +17,8 @@ const fastify = Fastify({
 });
 
 await config(fastify);
+
+fastify.register(game);
 
 const start = async () => {
     try {

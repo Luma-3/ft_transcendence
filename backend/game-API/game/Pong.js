@@ -1,27 +1,81 @@
 
 class Ball {
-  constructor(x, y, vx = 0, vy = 0, size = 1) {
+  constructor(x, y, vector_x = 0, vector_y = 0, size = 1) {
     this.x = x;
     this.y = y;
-    this.vx = vx;
-    this.vy = vy;
+    this.vector_x = vector_x;
+    this.vector_y = vector_y;
     this.size = size;
   }
 
+  check_collision_player(player) {
+    return (
+      this.ball.x >= player.x &&
+      this.ball.x <= player.x + player.width &&
+      this.ball.y >= player.y - player.height / 2 &&
+      this.ball.y <= player.y + player.height / 2
+    );
+  }
+
+  mouv_ball(top, bottom, player1, player2) {
+    this.ball.x += this.ball.vx;
+    this.ball.y += this.ball.vy;
+
+    if (this.ball.y >= top || this.ball.y <= bottom) {
+      this.ball.vy *= -1;
+    }
+
+    if (this.check_collision_player(this.player1) ||
+      this.check_collision_player(this.player2)) {
+      this.ball.vx *= -1;
+    }
+  }
+
+  set_vectors_ball(rand) {
+    if (rand === 1) {
+      this.ball.vy *= -1;
+    } else if (rand === 2) {
+      this.ball.vx *= -1;
+    } else if (rand === 3) {
+      this.ball.vx *= -1;
+      this.ball.vy *= -1;
+    }
+  }
+
+  reset_ball() {
+    this.ball.x = 0;
+    this.ball.y = 0;
+  }
+
   toJSON() {
-    return { x: this.x, y: this.y, size: this.size };
+    return { 
+      x: this.x,
+      y: this.y,
+      size: this.size
+    };
   }
 }
 
 class Player {
-  constructor(uid, width, height, x, y, score = 0) {
+  constructor(uid, width, height, x, y) {
     this.uid = uid;
-    this.score = score;
+    this.score = 0;
     this.width = width;
     this.height = height;
     this.x = x;
     this.y = y;
     this.speed = 0;
+    this.halfHeight = player.height / 2;
+  }
+
+  mouv_player(top, bottom) {
+    this.player.y += this.player.speed;
+
+    if (this.player.y + this.halfHeight > top) {
+      this.player.y = top - halfHeight;
+    } else if (this.player.y - this.halfHeight < bottom) {
+      this.player.y = bottom + halfHeight;
+    }
   }
 
   toJSON() {
@@ -43,84 +97,33 @@ export class Pong {
     const centerX = 0;
     const centerY = 0;
 
-    this.player1 = new Player(p1_uid, 10, 100, -width / 2 + 10, centerY);
-    this.player2 = new Player(p2_uid, 10, 100, width / 2 - 10, centerY);
+    this.top = this.sizeY / 2;
+    this.bottom = -this.sizeY / 2;
+    this.left = -this.sizeX / 2;
+    this.right = this.sizeX / 2;
+
+    this.player1 = new Player(p1_uid, 10, 100, left + 10, centerY);
+    this.player2 = new Player(p2_uid, 10, 100, right - 10, centerY);
     this.ball = new Ball(centerX, centerY, 1, 1);
 
     this.gameOver = false;
     this.WIN_SCORE = 11;
   }
 
-  check_collision_player(player) {
-    return (
-      this.ball.x >= player.x &&
-      this.ball.x <= player.x + player.width &&
-      this.ball.y >= player.y - player.height / 2 &&
-      this.ball.y <= player.y + player.height / 2
-    );
-  }
-
-  mouv_ball() {
-    this.ball.x += this.ball.vx;
-    this.ball.y += this.ball.vy;
-
-    const top = this.sizeY / 2;
-    const bottom = -this.sizeY / 2;
-
-    if (this.ball.y >= top || this.ball.y <= bottom) {
-      this.ball.vy *= -1;
-    }
-
-    if (this.check_collision_player(this.player1) ||
-      this.check_collision_player(this.player2)) {
-      this.ball.vx *= -1;
-    }
-  }
-
-  reset_ball() {
-    this.ball.x = 0;
-    this.ball.y = 0;
-  }
-
-  mouv_player(player) {
-    player.y += player.speed;
-
-    const halfHeight = player.height / 2;
-    const topLimit = this.sizeY / 2;
-    const bottomLimit = -this.sizeY / 2;
-
-    if (player.y + halfHeight > topLimit) {
-      player.y = topLimit - halfHeight;
-    }
-    if (player.y - halfHeight < bottomLimit) {
-      player.y = bottomLimit + halfHeight;
-    }
-  }
-
   start() {
     const rand = Math.floor(Math.random() * 4) + 1;
-    if (rand === 1) this.ball.vy *= -1;
-    else if (rand === 2) this.ball.vx *= -1;
-    else if (rand === 3) {
-      this.ball.vx *= -1;
-      this.ball.vy *= -1;
-    }
+    this.ball.set_vectors_ball(rand);
   }
 
   step() {
-    this.mouv_ball();
+    this.mouv_ball(this.top, this.bottom, this.player1, this.player2);
 
-    const left = -this.sizeX / 2;
-    const right = this.sizeX / 2;
-
-    if (this.ball.x <= left) {
+    if (this.ball.x <= this.left) {
       this.player2.score++;
-      this.ball.x = 0;
-    }
-
-    if (this.ball.x >= right) {
+      this.ball.reset_ball();
+    } else if (this.ball.x >= this.right) {
       this.player1.score++;
-      this.ball.x = 0;
+      this.ball.reset_ball();
     }
 
     if (this.player1.score >= this.WIN_SCORE || this.player2.score >= this.WIN_SCORE) {

@@ -43,6 +43,12 @@ const Services = [
     upstream: 'https://' + process.env.UPLOAD_IP,
     url: 'https://' + process.env.UPLOAD_IP + '/user/doc/json',
     preHandler: InternalRoute
+  },
+  {
+    name: 'Game Services', prefix: '/game',
+    upstream: 'https://' + process.env.GAME_IP,
+    url: '/game/doc/json',
+    preHandler: InternalRoute
   }
 ]
 
