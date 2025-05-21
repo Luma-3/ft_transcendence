@@ -53,6 +53,7 @@ const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => renderBackPage(),
 	'showGameStat': () => toggleGameStat(),
 	'showTruc': () => toggleTruc(),
+	'launchGame': () => renderPrivatePage('game'),
 
 };
 

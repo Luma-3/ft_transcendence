@@ -14,13 +14,11 @@ export async function verifySession() {
 	response = await fetchApiWithNoBody(API_SESSION.VERIFY_REFRESH, {
 		method: 'GET',
 	});
-	console.log(response);
-	if (response.status ===  'success') {
-		
+	if (response.status ===  'error') {
+		console.log("coucou", response);
 		response = await fetchApiWithNoBody(API_SESSION.REFRESH, {
-			method: 'GET',
+			method: 'POST',
 		})
-		console.log("refresh response: ", response);
 		if (response.status ===  'success') {
 			return { status: 'success', data: null };
 		}

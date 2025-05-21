@@ -61,7 +61,7 @@ async function renderDashboard(user:User) {
 			<label for="gameName" class="text-2xl font-title text-zinc-600 mb-4" translate="game-name">Game name</label>
 			<input type="text" id="gameName" class="w-1/2 p-2 border-2 border-zinc-300 rounded-lg" placeholder="Game name" />
 			${listFriends(user)}
-			${primaryButton({id: 'toggleGame', weight: "1/2", text: "Play", translate: "play", type: "button"})}
+			${primaryButton({id: 'launchGame', weight: "1/2", text: "Play", translate: "play", type: "button"})}
 			
 			<div class="flex flex-row justify-center items-center w-full h-full p-4 space-x-4 rounded-lg">
 			

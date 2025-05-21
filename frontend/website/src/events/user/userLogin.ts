@@ -19,7 +19,7 @@ export async function loginUser() {
 	const userdata = Object.fromEntries(formData) as Record<string, string>;
 
 	if (userdata.username === "" || userdata.password === "") {
-		return renderErrorPage('400','400', "bad-request");
+		return;
 	}
 
 	/**

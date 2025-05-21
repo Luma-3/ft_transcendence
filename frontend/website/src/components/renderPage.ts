@@ -6,6 +6,7 @@ import settings from '../pages/Settings'
 import profile from '../pages/Profile'
 import errorPage from '../pages/5xx'
 import notFoundPage from '../pages/4xx'
+import game from '../pages/Game'
 import welcomeYouPage, { reWelcomeYouPage } from '../pages/WelcomeYou';
 
 import { addToHistory } from '../main'
@@ -17,6 +18,9 @@ import { handleWelcomeYouPage } from '../pages/WelcomeYou';
 
 import { User } from '../api/interfaces/User'
 import { getUserInfo } from '../api/getter'
+
+
+import { handleStartGame } from '../pages/Game'
 
 /**
  * Associe les pages publics aux fonctions de rendu
@@ -66,6 +70,7 @@ const rendererPrivatePage: {[key: string]: (user: User) => string | Promise<stri
 	'dashboard': dashboard,
 	'settings': settings,
 	'profile': profile,
+	'game': game,
 }
 
 /**
@@ -81,7 +86,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		return renderErrorPage('400', '401', 'Unauthorized');
 	}
 	
-	const lang = response.data.preferences.lang;;
+	const lang = response.data.preferences.lang;
 	const theme = response.data.preferences.theme;
 
 	fadeOut(main_container);
@@ -106,6 +111,9 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		if (page === 'WelcomeYou' || page === 'reWelcomeYou') {
 			handleWelcomeYouPage();
 		}
+		// if (page === 'game') {
+		// 	handleStartGame(response.data);
+		// }
 	}
 	, 250);
 }
