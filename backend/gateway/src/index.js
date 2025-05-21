@@ -21,16 +21,6 @@ const fastify = Fastify({
   },
 });
 
-// fastify.addHook('onRequest', (req, rep, done) => {
-//   if (req.url.startsWith('/api/')) {
-//     console.log('SALUT')
-//     let url = req.url;
-//     req.url = url.replace('/api', '');
-//     console.log(req.url);
-//   }
-//   done();
-// });
-
 const Services = [
   {
     name: 'Users Services', prefix: '/user',
@@ -58,8 +48,8 @@ const start = async () => {
     await fastify.listen({ port: 3000, host: '0.0.0.0' })
     console.log(`Gateway listening on ${fastify.server.address().port}`)
   } catch (err) {
-    fastify.log.error(err)
-    process.exit(1)
+    console.error(err);
+    process.exit(1);
   }
 };
 

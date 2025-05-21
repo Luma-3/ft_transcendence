@@ -1,0 +1,19 @@
+services:
+  redis:
+    build:
+      context: ./redis/
+      dockerfile: Dockerfile
+    container_name: redis
+    ports:
+      - "6380:6379"
+
+  gateway:
+    build:
+      context: ./backend/gateway/
+      dockerfile: Dockerfile.dev
+    container_name: gateway
+    volumes:
+      - ./backend/gateway/src:/app/src:z
+      - ./backend/dependencies/:/app/dependencies:z
+    depends_on:
+      - redis
