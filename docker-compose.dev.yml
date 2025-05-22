@@ -12,8 +12,23 @@ services:
       context: ./backend/gateway/
       dockerfile: Dockerfile.dev
     container_name: gateway
+    env_file:
+        - ./.dev.env
     volumes:
       - ./backend/gateway/src:/app/src:z
+      - ./backend/dependencies/:/app/dependencies:z
+    depends_on:
+      - redis
+
+  user-api:
+    build:
+      context: ./backend/user-API/
+      dockerfile: Dockerfile.dev
+    container_name: user-API
+    env_file:
+        - ./.dev.env
+    volumes:
+      - ./backend/user-API/src:/app/src:z
       - ./backend/dependencies/:/app/dependencies:z
     depends_on:
       - redis

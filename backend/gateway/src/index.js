@@ -1,25 +1,12 @@
 import Fastify from 'fastify'
 import http_proxy from '@fastify/http-proxy';
-import gateway_config from './config/gateway.config.js'
-import fs from 'fs'
+import { config_dev, registerPlugin } from './config/config.js'
 import dotenv from 'dotenv'
 import { InternalRoute } from './middleware/InternalRoute.js'
 
 dotenv.config()
 
-const fastify = Fastify({
-  rewriteUrl(req) {
-    if (req.url.startsWith('/api/') && process.env.NODE_ENV === "development") {
-      return req.url.replace('/api', '');
-    }
-    return req.url;
-  },
-  logger: true,
-  https: {
-    key: fs.readFileSync(process.env.SSL_KEY),
-    cert: fs.readFileSync(process.env.SSL_CERT),
-  },
-});
+const fastify = Fastify(config_dev);
 
 const Services = [
   {
@@ -36,7 +23,7 @@ const Services = [
   }
 ]
 
-gateway_config(fastify, Services);
+registerPlugin(fastify, Services);
 
 Services.forEach((value) => {
   console.log(value);

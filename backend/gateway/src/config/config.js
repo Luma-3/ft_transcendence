@@ -1,11 +1,24 @@
 import cookie from "@fastify/cookie";
 import cors from "@fastify/cors";
 import swaggerUi from "@fastify/swagger-ui";
+import fs from "fs";
 
 import jwt from "../plugins/jwt.js";
 import swagger from "../plugins/swagger.js";
 
-export default function(fastify, servers) {
+// export const config = {
+//   logger: true,
+//   https: {
+//     key: fs.readFileSync(process.env.SSL_KEY),
+//     cert: fs.readFileSync(process.env.SSL_CERT),
+//   }
+// };
+
+export const config_dev = {
+  logger: true,
+};
+
+export function registerPlugin(fastify, servers) {
   fastify.register(cookie);
 
   fastify.register(cors, {

@@ -2,10 +2,10 @@
   "name": "transcenduck_user-services",
   "version": "0.0.1",
   "description": "",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
     "stop": ""
   },
   "repository": {
@@ -28,8 +28,8 @@
     "@fastify/multipart": "^9.0.3",
     "@fastify/oauth2": "^8.1.2",
     "@fastify/swagger": "^9.4.2",
-    "@transcenduck/error": "file:../dependencies/error",
-    "@transcenduck/formatter": "file:../dependencies/formatter",
+    "@transcenduck/error": "file:./dependencies/error",
+    "@transcenduck/formatter": "file:./dependencies/formatter",
     "dotenv": "^16.4.7",
     "fastify": "^5.2.2",
     "fastify-bcrypt": "^1.0.1",
