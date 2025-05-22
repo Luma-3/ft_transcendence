@@ -29,7 +29,6 @@
 	"password-must-include": "Le mot de passe doit inclure au moins : 8 caractères, 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
 	"no-changes-detected": "Aucun changement détecté",
 	"user-info-updated": "Informations mises à jour",
-	"play": "Jouer",
 
 	"profil": "Profil",
 	"stats": "Statistiques de jeux",
@@ -52,6 +51,14 @@
 	"delete-account": "Supprimer le compte",
 	"cannot-delete-user": "Impossible de supprimer l'utilisateur",
 	"user-deleted": "Utilisateur supprimé",
+	
+	"play": "Jouer",
+	"player1": "Joueur 1",
+	"player2": "Joueur 2",
+	"online": "En ligne",
+	"local": "Local",
+	"search-friend": "Rechercher un ami",
+	"enter-username": "Entrez le nom d'utilisateur",
 
 	"profile": "Profil",
 	"your-informations": "Vos informations",

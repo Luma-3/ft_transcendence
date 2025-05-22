@@ -50,6 +50,14 @@
 	"cannot-delete-user": "Cannot delete user",
 	"user-deleted": "User deleted",
 
+	"player1": "Player 1",
+	"player2": "Player 2",
+	"play": "Play",
+	"online": "Online",
+	"local": "Local",
+	"search-friend": "Search friend",
+	"enter-username": "Enter username",
+
 	"profile": "Profile",
 	"your-informations": "Your informations",
 	"save-changes": "Save changes",

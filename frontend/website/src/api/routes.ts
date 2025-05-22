@@ -3,6 +3,7 @@ const API_URL = "https://localhost:3000";
 const SERVICES = {
 	USER: `${API_URL}/api/user/users`,
 	SESSION: `${API_URL}/api/user/session`,
+	GAME: `${API_URL}/api/game`,
 }
 
 export const API_USER = {
@@ -31,4 +32,6 @@ export const API_SESSION = {
 	REFRESH: `${SERVICES.SESSION}/refresh`,
 
 }
+
+export const API_GAME = `${API_URL}/api/game`;
 

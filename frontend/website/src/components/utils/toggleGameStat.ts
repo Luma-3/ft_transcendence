@@ -1,17 +1,17 @@
 export function toggleGameStat() {
-	console.log("toggleGameStat");
+	
 	const gameStat = document.getElementById('gameStat');
 	if (!gameStat) {
 		return;
 	}
-
 	if (gameStat.classList.contains('-translate-x-full')) {
-		gameStat.classList.remove('opacity-0');
-		gameStat.classList.add('opacity-100');
-		gameStat.classList.remove('absolute');
-		gameStat.classList.add('flex');
+		
 		gameStat.classList.remove('-translate-x-full');
-		console.log("dans le if");
+		setTimeout(() => {
+			gameStat.classList.remove('opacity-0');
+			gameStat.classList.add('opacity-100');
+		}, 100);
+
 		return;
 	}
 	// Laisse le temps au navigateur d’appliquer les classes avant d’enlever translate/opacity
@@ -19,7 +19,5 @@ export function toggleGameStat() {
 	setTimeout(() => {
 		gameStat.classList.remove('opacity-100');
 		gameStat.classList.add('opacity-0');
-		gameStat.classList.remove('flex');
-		gameStat.classList.add('absolute');
-	}, 300);
+	}, 200);
 }

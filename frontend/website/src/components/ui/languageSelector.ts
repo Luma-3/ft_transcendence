@@ -63,9 +63,8 @@ export function languageSelectorSettings(langPreselect: string) {
 			dark:text-dtertiary text-xs rounded py-1 px-2 z-10">
 			<img src="icons/${lang}.webp" alt="${lang}" class="max-w-[20px] rounded-full saturate-200" />
 			</span>
-			<input type="radio" name="lang-selector" class="absolute peer h-5 w-5 cursor-pointer transition-all
-				appearance-none"
-			id="${lang}-changer" name="langSelect" data-lang="${lang}" ${isChecked}"/>
+			<input type="radio" name="lang-selector" class="absolute peer h-5 w-5 cursor-pointer transition-all appearance-none"
+			id="${lang}-changer" data-lang="${lang}" ${isChecked}"/>
 			</label>
 			</div>`
 		}).join('')

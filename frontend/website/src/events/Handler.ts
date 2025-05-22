@@ -11,6 +11,7 @@ import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
 import { toggleGameStat } from '../components/utils/toggleGameStat'
 import { toggleTruc } from '../components/utils/toggleTruc'
+import { toggleGameSettings } from '../components/utils/toggleGameSettings'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 
 import { changeUserNameEmail } from './user/userChange'
@@ -18,6 +19,8 @@ import { changeUserPassword } from './user/userChange'
 import { showEditorPicture } from '../components/utils/imageEditor'
 import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
+
+import startGame from '../events/game/startGame'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: {[key: string]: () => void } = {
@@ -53,7 +56,7 @@ const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => renderBackPage(),
 	'showGameStat': () => toggleGameStat(),
 	'showTruc': () => toggleTruc(),
-	'launchGame': () => renderPrivatePage('game'),
+	'launchGame': () => startGame(),
 
 };
 
@@ -75,6 +78,8 @@ const submitEvent: {[key: string]: () => void } = {
  */
 const inputEvent: {[key: string]: (inputValue: DOMStringMap) => void } = {
 	'lang-selector': (inputValue) => changeLanguageSettings(inputValue),
+	'game-type': (inputValue) => toggleGameSettings(inputValue),
+	'local': (inputValue) => toggleGameSettings(inputValue),
 }
 
 /**
@@ -114,7 +119,7 @@ export function addAllEventListenOnPage(container : HTMLDivElement) {
 	 */
 	container.addEventListener('change', (event) => {
 		const target = event.target as HTMLInputElement;
-		
+		console.log(target.name);
 		if (target.name in inputEvent){
 			
 			if (target.dataset) {

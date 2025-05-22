@@ -3,15 +3,54 @@ import { navbar } from "../components/ui/navbar";
 import { fetchToken } from "../api/fetchToken";
 import { alert } from "../components/ui/alert/alert";
 import notFoundPage from "./4xx";
+import { API_GAME } from "../api/routes";
 import { User } from "../api/interfaces/User";
 
 //TODO : Prevoir une variable pour le deuxieme joueur qui sera fetch dans le fonction principale
-function setupGame(socket: WebSocket, user: User) {
+function setupGame(socket: WebSocket, user: User, gameData: any) {
 	socket.send(JSON.stringify({
+		type: "init",
 		user1: user.username,
-		user2: "JEanMIchMIch",
+		user2: gameData.player2,
+		gameType: gameData.gameType,
 	}));
+
 	
+}
+
+function drawGame(posUser1: number, posUSer2: number, ballX: number, ballY: number) {
+	
+	const game = document.getElementById("gamePong") as HTMLCanvasElement;
+	const ctx = game.getContext("2d");
+	
+	if (!ctx) { return; }
+	ctx.clearRect(0, 0, game.width, game.height);
+	ctx.save();
+	ctx.translate(game.width / 2, game.height / 2);
+
+	//Raquette user left
+	ctx.beginPath();
+	ctx.rect(-game.width / 2 + 10, posUser1 - 20, 10, 40);
+	ctx.fillStyle = "blue";
+	ctx.fill();
+
+	//Raquette user right
+	ctx.restore();
+	ctx.save();
+	ctx.translate(game.width / 2, game.height / 2);
+	ctx.beginPath();
+	ctx.rect(game.width / 2 - 20, posUSer2 - 20, 10, 40);
+	ctx.fillStyle = "red";
+	ctx.fill();
+
+	//BALL
+	ctx.restore();
+	ctx.save();
+	ctx.translate(game.width / 2, game.height / 2);
+	ctx.beginPath();
+	ctx.arc(ballX, ballY, 2, 0, Math.PI * 2);
+	ctx.fill();
+	ctx.restore();
 }
 
 class Paddle {
@@ -30,68 +69,49 @@ class Paddle {
 	}
 }
 
-
 let positionUser1 = 0;
 let positionUser2 = 0;
 let ballX = 0;
 let ballY = 0;
+let socket: WebSocket;
 
 
-addEventListener('keypress', (event) => {})
+export default async function Game(gameData: any) {
 
-onkeydown = (event) => {
-	const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
-	if (divGame.classList.contains("opacity-0")) {
-		const startInfos = document.getElementById("startGameInfos") as HTMLDivElement;
-		startInfos.classList.remove("opacity-100");
-		startInfos.classList.add("opacity-0");
-		setTimeout(() => {
-			startInfos.classList.add("hidden");
-			divGame.classList.add("opacity-100");
-		}
-		, 500);
+	addEventListener('keypress', (event) => {})
+	
+	onkeydown = (event) => {
 		
-	}
-	const game = document.getElementById("gamePong") as HTMLCanvasElement;
-	const ctx = game.getContext("2d");
-	if (!ctx) { return; }
-	
-	//Modification des coordonnees du canvas pour placer le (0, 0) au centre
-	ctx.clearRect(0, 0, game.width, game.height);
-	ctx.save();
-	ctx.translate(game.width / 2, game.height / 2);
-	console.log("game width : ", game.width);
-	
-	//Raquette user left
-	ctx.beginPath();
-	ctx.rect(-game.width / 2 + 10, positionUser1 - 20, 10, 40);
-	ctx.fillStyle = "blue";
-	ctx.fill();
-	
-	//POur mettre de la couleur sans changer tout les elements par la duite
-	//Du coup je fais un save et restore et un translate
-	ctx.restore();
-	ctx.save();
-	ctx.translate(game.width / 2, game.height / 2);
+		const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
+		if (divGame.classList.contains("opacity-0")) {
+			
+			const startInfos = document.getElementById("startGameInfos") as HTMLDivElement;
+			
+			startInfos.classList.remove("opacity-100");
+			startInfos.classList.add("opacity-0");
+			
+			setTimeout(() => {
+				startInfos.classList.add("hidden");
+				divGame.classList.remove("opacity-0");
+				divGame.classList.add("opacity-100");
+			}
+			, 500);
+			drawGame(positionUser1, positionUser2, ballX, ballY);
+			return;
+		}
+		actionGame(event);
+		sendActionGame(event);
+		// if (event.key === "ArrowUp") {
+		// 	positionUser1 -= 10;
+		// } else if (event.key === "ArrowDown") {
+		// 	positionUser1 += 10;
+		// }
+		drawGame(positionUser1, positionUser2, ballX, ballY);
+	 }
 
-	//Raquette user right
-	ctx.beginPath();
-	ctx.rect(game.width / 2 - 20, positionUser2 - 20, 10, 40);
-	ctx.fillStyle = "red";
-	ctx.fill();
-	ctx.restore();
-	ctx.save();
-	ctx.translate(game.width / 2, game.height / 2);
-
-	//BALL
-	ctx.beginPath();
-	ctx.arc(ballX, ballY, 2, 0, Math.PI * 2);
-	ctx.fill();
-	ctx.restore();
- }
-
-export default async function Game() {
-
+	/**
+	 * Verification que le joueur est bien connecté
+	 */
 	const token = await fetchToken();
 	if (token.status === "error") {
 		return notFoundPage();
@@ -102,24 +122,33 @@ export default async function Game() {
 		return notFoundPage();
 	}
 
-	const socket = new WebSocket("http://localhost:3000/api/game/");
+	/**
+	 * Creation du websocket
+	 * TODO : Mettre l'url dans un fichier de config
+	 */
+	const socket = new WebSocket(API_GAME);
 	socket.addEventListener('error', (event) => {
 		alert("WebSocket error: " + event, "error");
 	})
 
-	socket.addEventListener('open', () => setupGame(socket, user.data));
+	socket.addEventListener('open', () => setupGame(socket, user.data, gameData));
 	
 	socket.addEventListener('message', (event) => {
-		console.log("message: ", event);
 		const data = JSON.parse(event.data);
-		const game = document.getElementById("gamePong") as HTMLCanvasElement;
-		const ctx = game.getContext("2d");
-		ctx?.beginPath();
-		ctx?.arc(data.ballX, data.ballY, 2, 0, Math.PI);
-		ctx?.fill();
+		updateGame(data);
 
 	});
 
+	// const gameServerInfo = await fetchAllDataGameInfo(user.data);
+	// if (gameServerInfo.status === "error") {
+	// 	alert("Error while fetching game info", "error");
+	// 	return;
+	// }
+	
+
+	/**
+	 * Contenu HTML de la page
+	 */
 	return `
 	${navbar(user.data)}
 	<div class="flex flex-col justify-center items-center text-tertiary dark:text-dtertiary">
@@ -132,7 +161,7 @@ export default async function Game() {
 					<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2
 					mb-4
 					border-primary dark:border-dprimary" />
-					${user.data.username}
+					${gameData.player1}
 				</div>
 				<div class="flex flex-col justify-center items-center">
 					VS
@@ -140,7 +169,7 @@ export default async function Game() {
 				<div class="flex flex-col justify-center items-center">
 					<img src="/images/500Logo.png" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2
 					mb-4 border-primary dark:border-dprimary" />
-					${"JEanMIchMIch"}
+					${gameData.player2}
 				</div>
 			</div>
 

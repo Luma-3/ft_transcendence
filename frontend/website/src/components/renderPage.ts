@@ -20,7 +20,7 @@ import { User } from '../api/interfaces/User'
 import { getUserInfo } from '../api/getter'
 
 
-import { handleStartGame } from '../pages/Game'
+import { fetchToken } from '../api/fetchToken'
 
 /**
  * Associe les pages publics aux fonctions de rendu
@@ -70,7 +70,6 @@ const rendererPrivatePage: {[key: string]: (user: User) => string | Promise<stri
 	'dashboard': dashboard,
 	'settings': settings,
 	'profile': profile,
-	'game': game,
 }
 
 /**
@@ -81,6 +80,11 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
 	
+	const token = await fetchToken();
+	if (token.status === "error") {
+		return renderErrorPage('400', '401', 'Unauthorized');
+	}
+
 	const response = await getUserInfo();
 	if (response.status === "error" || !response.data) {
 		return renderErrorPage('400', '401', 'Unauthorized');
@@ -111,12 +115,48 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		if (page === 'WelcomeYou' || page === 'reWelcomeYou') {
 			handleWelcomeYouPage();
 		}
-		// if (page === 'game') {
-		// 	handleStartGame(response.data);
-		// }
 	}
 	, 250);
 }
+
+export async function renderGame(gameData: any) {
+
+	const main_container = document.querySelector<HTMLDivElement>('#app')!
+	
+	const token = await fetchToken();
+	if (token.status === "error") {
+		return renderErrorPage('400', '401', 'Unauthorized');
+	}
+
+	const response = await getUserInfo();
+	if (response.status === "error" || !response.data) {
+		return renderErrorPage('400', '401', 'Unauthorized');
+	}
+	
+	const lang = response.data.preferences.lang;
+	const theme = response.data.preferences.theme;
+
+	fadeOut(main_container);
+	
+	setTimeout(async () => {
+		
+		const newContainer = await game(gameData);
+		if (!newContainer) {
+			return;
+		}
+		
+		main_container.innerHTML = newContainer;
+		setupColorTheme(theme);
+		
+		translatePage(lang);
+		
+		removeLoadingScreen();
+		
+		fadeIn(main_container);
+	}
+	, 250);
+}
+
 
 /**
  * Render des pages d'erreur

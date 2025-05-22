@@ -14,7 +14,8 @@ export async function verifySession() {
 	response = await fetchApiWithNoBody(API_SESSION.VERIFY_REFRESH, {
 		method: 'GET',
 	});
-	if (response.status ===  'error') {
+	console.log("verify si on a la refresh", response);
+	if (response.status ===  'success') {
 		console.log("coucou", response);
 		response = await fetchApiWithNoBody(API_SESSION.REFRESH, {
 			method: 'POST',
