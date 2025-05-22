@@ -23,7 +23,7 @@ function startGameIfReady() {
   if (playerOrder.length === MAXPLAYERS) {
     game = new Pong(playerOrder[0], playerOrder[1]);
 
-    playerOrder.forEach((uid, index) => {
+    playerOrder.forEach((uid) => {
       players[uid].send(JSON.stringify({
         type: "start",
         data: {
@@ -42,24 +42,23 @@ function startGameIfReady() {
 function init_all(socket, request) {
   const uid = request.data.uuid;
   if (!uid) {
-    connection.socket.send(JSON.stringify({ action: "error", message: "uuid required" }));
-    connection.socket.close();
+    socket.send(JSON.stringify({ action: "error", message: "uuid required" }));
+    socket.close();
     return null;
   }
 
   if (Object.keys(players).length >= MAXPLAYERS) {
-    connection.socket.send(JSON.stringify({ type: "error", message: "Salle pleine" }));
-    connection.socket.close();
+    socket.send(JSON.stringify({ type: "error", message: "Salle pleine" }));
+    socket.close();
     return null;
   }
 
   if (players[uid]) {
-    connection.socket.send(JSON.stringify({ type: "error", message: "uuid already connected" }));
-    connection.socket.close();
+    socket.send(JSON.stringify({ type: "error", message: "uuid already connected" }));
+    socket.close();
     return null;
   }
 
-  connection.socket.extra.playerId = uid;
   players[uid] = socket;
   playerOrder.push(uid);
   console.log(`Joueur connecté : ${uid}`);
@@ -68,59 +67,71 @@ function init_all(socket, request) {
   return uid;
 }
 
-export async function getGame(connection, request) {
-  connection.socket.on("message", (msg) => {
-    let request;
+export async function launchGame(connection, req) {
+  console.log("connection: ", connection);
 
+  const socket = connection.socket;
+  let playerId = null;
+
+  console.log("Client connecté via WebSocket");
+  socket.send("OK");
+
+  /*socket.on("message", (msg) => {
+    let parsed;
     try {
-      request = JSON.parse(msg);
+      parsed = JSON.parse(msg);
     } catch {
-      connection.socket.send(JSON.stringify({ action: "error", message: "JSON Invalide" }));
-      connection.socket.close();
+      socket.send(JSON.stringify({ action: "error", message: "JSON invalide" }));
+      socket.close();
       return;
     }
 
-    if (request.action === "init") {
-      const result = init_all(socket, request);
+    if (parsed.action === "init") {
+      const result = init_all(socket, parsed);
       if (!result) {
-        connection.socket.send(JSON.stringify({ action: "error", message: "Player not initialised" }));
-        connection.socket.close();
+        socket.send(JSON.stringify({ action: "error", message: "Initialisation échouée" }));
+        socket.close();
+        return;
       }
+      playerId = result;
       return;
     }
 
-    if (request.action === "move") {
-      const dir = request.data.direction;
-      const player = connection.socket.extra.playerId === game.player1.uid ? game.player1 : game.player2;
+    if (parsed.action === "move") {
+      if (!playerId || !game) return;
+
+      const dir = parsed.data?.direction;
+      const player = playerId === game.player1.uid ? game.player1 : game.player2;
 
       if (dir === "up") player.speed = -5;
       else if (dir === "down") player.speed = 5;
       else player.speed = 0;
 
-      player.mouv_player(game.top, game.bottom);
+      player.move_player(game.top, game.bottom);
+
       broadcast({
         action: "state",
         data: JSON.parse(game.step())
       }, players);
 
       if (game.gameOver) {
-        const winner = game.player1.score == 11 ? game.player1.uid : game.player2.uid;
+        const winner = game.player1.score === 11 ? game.player1.uid : game.player2.uid;
         broadcast({ action: "end", message: `Joueur ${winner} a gagné.` }, players);
       }
     }
   });
 
-  connection.socket.on("close", () => {
-    if (connection.socket.extra.playerId) {
-      console.log(`Player disconnected : ${connection.socket.extra.playerId}`);
-      delete players[connection.socket.extra.playerId];
-      const idx = playerOrder.indexOf(connection.socket.extra.playerId);
+  socket.on("close", () => {
+    if (playerId) {
+      console.log(`Player disconnected : ${playerId}`);
+      delete players[playerId];
+      const idx = playerOrder.indexOf(playerId);
       if (idx !== -1) playerOrder.splice(idx, 1);
-      delete playersState[connection.socket.extra.playerId];
+      delete playersState[playerId];
       broadcast({
         action: "end",
-        message: `Player ${connection.socket.extra.playerId} has been disconnected`
+        message: `Player ${playerId} has been disconnected`
       }, players);
     }
-  });
+  });*/
 }

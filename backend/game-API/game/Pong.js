@@ -17,7 +17,7 @@ class Ball {
     );
   }
 
-  mouv_ball(top, bottom, player1, player2) {
+  move_ball(top, bottom, player1, player2) {
     this.ball.x += this.ball.vx;
     this.ball.y += this.ball.vy;
 
@@ -25,20 +25,26 @@ class Ball {
       this.ball.vy *= -1;
     }
 
-    if (this.check_collision_player(this.player1) ||
-      this.check_collision_player(this.player2)) {
+    if (this.check_collision_player(player1) ||
+      this.check_collision_player(player2)) {
       this.ball.vx *= -1;
     }
   }
 
   set_vectors_ball(rand) {
-    if (rand === 1) {
-      this.ball.vy *= -1;
-    } else if (rand === 2) {
-      this.ball.vx *= -1;
-    } else if (rand === 3) {
-      this.ball.vx *= -1;
-      this.ball.vy *= -1;
+    switch (rand) {
+        case 1:
+            this.ball.vy *= -1;            
+            break;
+        case 2:
+            this.ball.vx *= -1;
+            break;
+        case 3:
+            this.ball.vx *= -1;
+            this.ball.vy *= -1;
+            break;  
+        default:
+            break;
     }
   }
 
@@ -68,7 +74,7 @@ class Player {
     this.halfHeight = player.height / 2;
   }
 
-  mouv_player(top, bottom) {
+  move_player(top, bottom) {
     this.player.y += this.player.speed;
 
     if (this.player.y + this.halfHeight > top) {
@@ -116,7 +122,7 @@ export class Pong {
   }
 
   step() {
-    this.mouv_ball(this.top, this.bottom, this.player1, this.player2);
+    this.move_ball(this.top, this.bottom, this.player1, this.player2);
 
     if (this.ball.x <= this.left) {
       this.player2.score++;
