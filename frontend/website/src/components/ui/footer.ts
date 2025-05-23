@@ -1,3 +1,7 @@
+/**
+ * Je vais pas dire ce qu'est un footer, demerde toi pour trouver
+ */
+
 export function footer() {
 	return `
 	<div class="bottom-0 left-0 w-full h-50 md:h-40 lg:h-30 mt-10

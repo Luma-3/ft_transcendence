@@ -1,19 +1,37 @@
 const API_URL = "https://localhost:3000";
 
-const SERVICES_URL = {
-	USER: `${API_URL}/api/user`
+const SERVICES = {
+	USER: `${API_URL}/api/user/users`,
+	SESSION: `${API_URL}/api/user/session`,
+	GAME: `${API_URL}/api/game`,
 }
 
-export const API_ROUTES = {
-	USERS: {
-		REGISTER: `${SERVICES_URL.USER}/register`,
-		LOGIN: `${SERVICES_URL.USER}/login`,
-		LOGOUT: `${SERVICES_URL.USER}/logout`,
-		INFOS: `${SERVICES_URL.USER}/me`,
-		UPDATE_PREF: `${SERVICES_URL.USER}/preferences`,  //Theme et les langues
-		UPDATE_PASSWD: `${SERVICES_URL.USER}/changePassword`,
-		UPDATE_PICTURE: `${SERVICES_URL.USER}/changePP`,
-		UPDATE_EMAIL: `${SERVICES_URL.USER}/changeEmail`,
+export const API_USER = {
+
+	BASIC: {
+		REGISTER: `${SERVICES.USER}`,
+		DELETE: `${SERVICES.USER}/me`,
+		INFOS: `${SERVICES.USER}/me`,
+		PREFERENCES: `${SERVICES.USER}/me/preferences`,
+	},
+	UPDATE: {
+		PREF: `${SERVICES.USER}/me/preferences`,  //Theme et les langues
+		PASSWORD: `${SERVICES.USER}/me/password`,
+		EMAIL: `${SERVICES.USER}/me/email`,
+		USERNAME: `${SERVICES.USER}/me/username`,
 	}
-};
+}
+
+export const API_SESSION = {
+
+	CREATE: `${SERVICES.SESSION}`,
+	DELETE: `${SERVICES.SESSION}`,
+	VERIFY_ACCESS: `${SERVICES.SESSION}/verify/accessToken`,
+	VERIFY_REFRESH: `${SERVICES.SESSION}/verify/refreshToken`,
+
+	REFRESH: `${SERVICES.SESSION}/refresh`,
+
+}
+
+export const API_GAME = `${API_URL}/api/game`;
 

@@ -1,20 +1,28 @@
-import { changeLanguage, saveDefaultLanguage } from '../i18n/Translate'
+import { registerUser } from './user/userRegister'
+import { loginUser } from './user/userLogin'
+import { logOutUser } from './user/userLogout'
+import { deleteUser } from '../events/user/userDelete'
+import { changeLanguage, changeLanguageSettings, saveDefaultLanguage } from '../i18n/Translate'
+
 import { renderPublicPage, renderPrivatePage } from '../components/renderPage'
-import { verifPasswordAndRegisterUser } from './userSession/userRegister'
-import { loginUser } from './userSession/userLogin'
+import { renderBackPage } from '../components/renderPage'
+
 import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
-import { hideToggleElements } from '../components/utils/hideToggleElements'
-import { logOutUser } from './userSession/userLogout'
-import { changeUserNameEmail } from '../events/userSession/userChange'
-import { changeUserPassword } from '../events/userSession/userChange'
-import { changePictureElement } from '../components/utils/imageEditor'
-import { saveNewPicture } from '../components/utils/imageEditor'
-import { cancelEditor } from '../components/utils/imageEditor'
-import { renderBackPage } from '../components/renderPage'
 import { toggleGameStat } from '../components/utils/toggleGameStat'
 import { toggleTruc } from '../components/utils/toggleTruc'
+import { toggleGameSettings } from '../components/utils/toggleGameSettings'
+import { hideToggleElements } from '../components/utils/hideToggleElements'
 
+import { changeUserNameEmail } from './user/userChange'
+import { changeUserPassword } from './user/userChange'
+import { showEditorPicture } from '../components/utils/imageEditor'
+import { saveNewPicture } from '../components/utils/imageEditor'
+import { cancelEditor } from '../components/utils/imageEditor'
+
+import startGame from '../events/game/startGame'
+
+/** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: {[key: string]: () => void } = {
 
 	// * -------------- Public Page Load -------------- */
@@ -35,11 +43,12 @@ const clickEvent: {[key: string]: () => void } = {
 		// * ---- Image Editor  ---- */
 		'cancel-image': () => cancelEditor(),
 		'save-image': () => saveNewPicture(),
-		'file-upload': () => changePictureElement(),
+		'file-upload': () => showEditorPicture(),
 	
 	// * -------------- Settings Page  -------------- */
 	'loadsettings': () => renderPrivatePage('settings'),
 	'saveLang': () => saveDefaultLanguage(),
+	'deleteAccount': () => deleteUser(),
 	'logout': () =>  logOutUser(),
 
 	// * -------------- Common Components  -------------- */
@@ -47,20 +56,35 @@ const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => renderBackPage(),
 	'showGameStat': () => toggleGameStat(),
 	'showTruc': () => toggleTruc(),
+	'launchGame': () => startGame(),
 
 };
 
+/** Si l'utilisateur change la valeur de l'element id = key on appelle la fonction associée */
 const changeEvent: {[key: string]: () => void } = {
-	'language': () => changeLanguage(undefined),
+	'language': () => changeLanguage(""),
 	'switch-component': changeLightMode,
 };
 
+/** Si l'utilisateur soumet le formulaire id = key on appelle la fonction associée */
 const submitEvent: {[key: string]: () => void } = {
 	'loginForm': loginUser,
-	'registerForm': verifPasswordAndRegisterUser,
+	'registerForm': registerUser,
 };
 
+/**
+ * Gestion des appels lors de gestion dynamique de fonction avec des listes
+ * ou plusieurs elements dynamiques
+ */
+const inputEvent: {[key: string]: (inputValue: DOMStringMap) => void } = {
+	'lang-selector': (inputValue) => changeLanguageSettings(inputValue),
+	'game-type': (inputValue) => toggleGameSettings(inputValue),
+	'local': (inputValue) => toggleGameSettings(inputValue),
+}
 
+/**
+ * Gestionnaire principale des evenements de la page
+ */
 export function addAllEventListenOnPage(container : HTMLDivElement) {
 
 	container.addEventListener('click', (event) => {
@@ -87,6 +111,20 @@ export function addAllEventListenOnPage(container : HTMLDivElement) {
 
 		if (target.id in submitEvent) {
 			submitEvent[target.id]();
+		}
+	});
+	/** 
+	 * ! Gestion des input pour les elements qui ont un id variable (list, checkbox ...etc)
+	 * 
+	 */
+	container.addEventListener('change', (event) => {
+		const target = event.target as HTMLInputElement;
+		console.log(target.name);
+		if (target.name in inputEvent){
+			
+			if (target.dataset) {
+				inputEvent[target.name](target.dataset);
+			}
 		}
 	});
 

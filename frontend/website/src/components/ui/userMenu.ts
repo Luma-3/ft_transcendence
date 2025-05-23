@@ -1,5 +1,8 @@
 import { User } from '../../api/interfaces/User';
 
+/**
+ * Partie du menu situe en haut avec le nom de l'utilisateur et la photo de profil
+ */
 function headerUserMenu(user: User) {
 	return `<div class="flex flex-row py-3 px-2 items-center gap-2">
 				<div class="relative w-12 h-12 flex-shrink-0">
@@ -10,6 +13,9 @@ function headerUserMenu(user: User) {
 			</div>`;
 }
 
+/**
+ * Partie du menu qui contient les options Profile, Stats, Settings
+ */
 function UserMenuOptions() {
 
 	const listOption = [
@@ -35,10 +41,11 @@ function UserMenuOptions() {
 			</ul>`;
 		
 }
-
+/**
+ * Fonction qui prent en charge le cursor sur le dark mode et le positionne a droite ou a gauche si le theme est dark ou light
+ */
 function darkMode(theme: string) {
 	const isChecked = theme === 'light' ? 'checked' : '';
-
 	return `<div class="flex items-center text-responsive-size justify-between py-2 px-4">
 				<div translate="light-mode">Light mode</div>
 					<div class="relative inline-block w-11 h-5">
@@ -71,7 +78,7 @@ export function renderUserMenu(user: User) {
 			${headerUserMenu(user)}
 			${UserMenuOptions()}
 			<ul class="font-title py-1 text-tertiary dark:text-dsecondary md:mr-2 lg:mr-"4 aria-labelledby="dropdown">
-				<li> ${darkMode(user.theme)}</li>
+				<li> ${darkMode(user.preferences.theme)}</li>
 				<li> ${logout()}</li>
 			</ul>`
 }

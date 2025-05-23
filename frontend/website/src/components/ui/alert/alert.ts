@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+
 import { loadTranslation } from "../../../i18n/Translate";
 import { getCustomAlertTheme } from "./alertTheme";
 import { alertTemporary } from "./alertTemporary";
@@ -36,7 +37,7 @@ export async function alert(reason: string, level: string) {
 					cancelButtonColor: customTheme.cancelButtonColor,
 					confirmButtonText: trad['yes'],
 					cancelButtonText: trad['cancel'],
-					position: 'top',
+					position: 'center',
 					toast: true,
 				});
 			break;

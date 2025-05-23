@@ -1,6 +1,9 @@
 import { primaryButton } from '../buttons/primaryButton.ts';
 import { secondaryButton } from '../buttons/secondaryButton.ts';
 
+/**
+ * Element qui constitue le formulaire
+ */
 type InputField = {
 	name: string;
 	type: string;
