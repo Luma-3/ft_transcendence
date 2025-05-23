@@ -19,6 +19,8 @@ import { userSchemas } from './schema/user.schema.js'
 import { preferencesSchema } from './schema/preferences.schema.js'
 import { sessionSchemas } from './schema/session.schema.js'
 
+import { redisPub, redisSub } from './config/redis.js'
+
 dotenv.config()
 const fastify = Fastify(config_dev);
 
@@ -65,6 +67,24 @@ await sessionSchemas(fastify);
 fastify.register(user);
 fastify.register(session);
 fastify.register(preferences);
+
+redisSub.subscribe('test.in', (message, channel) => {
+  try {
+    const { clientId, payload } = JSON.parse(message);
+    console.log(`[WS][Redis] <- ${channel} -> client ${clientId}`);
+    console.log(`[WS][Redis] Payload: ${JSON.stringify(payload)}`);
+
+    // echo the message back to the client
+
+    redisPub.publish(`${channel}.out`, JSON.stringify({
+      clientId: clientId,
+      payload: payload
+    }));
+  }
+  catch (err) {
+    console.error('Error when handle outgoing message', err);
+  }
+});
 
 const start = async () => {
   try {

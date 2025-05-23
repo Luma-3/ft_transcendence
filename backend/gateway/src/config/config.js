@@ -5,6 +5,7 @@ import fs from "fs";
 
 import jwt from "../plugins/jwt.js";
 import swagger from "../plugins/swagger.js";
+import socket from "../plugins/socket.js";
 
 // export const config = {
 //   logger: true,
@@ -40,6 +41,14 @@ export function registerPlugin(fastify, servers) {
       { method: 'GET', url: '/user/session/verify' },
       { method: 'GET', url: /^\/[^\/]+\/doc\/json$/ }, // Swagger json
     ]
+  });
+
+  fastify.register(socket, {
+    options: {
+      perMessageDeflate: {
+        threshold: 1024, // Compress Only Messages Larger Than 1KB
+      }
+    }
   });
 
   fastify.register(swagger, {
