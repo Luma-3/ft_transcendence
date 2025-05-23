@@ -1,4 +1,4 @@
-export interface IApiResponce<T> {
+export interface IApiResponse<T> {
 	status: string, //Soit error soit success
 	message: string,
 	data?: T,

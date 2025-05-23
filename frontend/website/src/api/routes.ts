@@ -33,5 +33,9 @@ export const API_SESSION = {
 
 }
 
-export const API_GAME = `${API_URL}/api/game`;
+export const API_GAME = {
+	LOCAL_CREATE: `${SERVICES.GAME}/local/init`,
+	LOCAL_SEND: `${SERVICES.GAME}/local/input`,
+	LOCAL_GET_STATE: `${SERVICES.GAME}/local/state`,
+}
 
