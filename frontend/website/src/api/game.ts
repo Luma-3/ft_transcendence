@@ -5,6 +5,7 @@ import { alert } from "../components/ui/alert/alert";
 import { renderGame } from "../components/renderPage";
 
 export async function initGame(gameData: any) {
+	console.log (gameData);
 	const user = await getUserInfo();
 	if (!user || user.status === "error") {
 		window.location.href = "/login";
@@ -22,6 +23,5 @@ export async function initGame(gameData: any) {
 		alert(response.message, "error");
 		return;
 	}
-
 	return renderGame(gameData);
 }

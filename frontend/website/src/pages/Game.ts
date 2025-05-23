@@ -7,6 +7,8 @@ import { API_GAME } from "../api/routes";
 import { User } from "../api/interfaces/User";
 import { fetchApi } from "../api/fetch";
 
+export var gameLoop = 0;
+
 //TODO : Prevoir une variable pour le deuxieme joueur qui sera fetch dans le fonction principale
 function setupGame(socket: WebSocket, user: User, gameData: any) {
 	socket.send(JSON.stringify({
@@ -15,7 +17,6 @@ function setupGame(socket: WebSocket, user: User, gameData: any) {
 		user2: gameData.player2,
 		gameType: gameData.gameType,
 	}));
-	
 }
 
 function drawGame(gameData: GameData) {
@@ -30,7 +31,7 @@ function drawGame(gameData: GameData) {
 
 	//Raquette user left
 	ctx.beginPath();
-	ctx.rect(-game.width / 2 + 10, gameData.player1.y - 20, 10, 40);
+	ctx.rect(-game.width / 2 + 10, gameData.player1.y - 50, 10, 100);
 	ctx.fillStyle = "blue";
 	ctx.fill();
 
@@ -39,7 +40,7 @@ function drawGame(gameData: GameData) {
 	ctx.save();
 	ctx.translate(game.width / 2, game.height / 2);
 	ctx.beginPath();
-	ctx.rect(game.width / 2 - 20, gameData.player2.y - 20, 10, 40);
+	ctx.rect(game.width / 2 - 20, gameData.player2.y - 50, 10, 100);
 	ctx.fillStyle = "red";
 	ctx.fill();
 
@@ -48,9 +49,16 @@ function drawGame(gameData: GameData) {
 	ctx.save();
 	ctx.translate(game.width / 2, game.height / 2);
 	ctx.beginPath();
-	ctx.arc(gameData.ball.x, gameData.ball.y, 2, 0, Math.PI * 2);
+	ctx.rect(gameData.ball.x, gameData.ball.y, 20, 20);
 	ctx.fill();
 	ctx.restore();
+
+	const player1Score = document.getElementById("user1Score");
+	player1Score!.innerHTML = gameData.player1.score.toString();
+
+	const player2Score = document.getElementById("user2Score");
+	player2Score!.innerHTML = gameData.player2.score.toString();
+
 }
 
 let positionUser1 = 0;
@@ -62,37 +70,65 @@ let ballY = 0;
 
 import { GameData } from "../api/interfaces/GameData";
 
-async function handleActionPaddle(event: KeyboardEvent) {
+let actionUser1Up = false, actionUser1Down = false, actionUser2Up = false, actionUser2Down = false;
+
+async function updateGame() {
 	let response = null;
-	const actionUser1 = (event.key === "w") ? "Up" : (event.key === "s") ? "Down" : '';
-	const actionUser2 = (event.key === "ArrowUp") ? "Up" : (event.key === "ArrowDown") ? "Down" : '';
-	
-	response = await fetchApi(API_GAME.LOCAL_SEND, {
+
+	response = await fetchApi<GameData>(API_GAME.LOCAL_SEND, {
 		method: 'POST',
 		body: JSON.stringify({
-			player1: actionUser1,
-			player2: actionUser2,
+			player1: (actionUser1Up) ? "Up" : (actionUser1Down) ? "Down" : '', 
+			player2: (actionUser2Up) ? "Up" : (actionUser2Down) ? "Down" : '',  
 		})
 	})
 	if (response.status === "error") {
-		alert("Error while sending action", "error");
+		alert("EROROROOROROR", "error");
 		return;
 	}
+
 	response = await fetchApi<GameData>(API_GAME.LOCAL_GET_STATE, {
 		method: 'GET',
 	})
-	if (response.status === "error" || !response.data) {
-		alert("Error while fetching game state", "error");
+	if (!response || response.status === "error") {
+		alert("Error while updating game", "error");
 		return;
 	}
-	drawGame(response.data);
+
+	drawGame(response.data!);
 }
 
+function onKeyDown(event: KeyboardEvent) {
+	if (event.key === "w") actionUser1Up = true;
+	if (event.key === "s") actionUser1Down = true;
+	if (event.key === "ArrowUp") actionUser2Up = true;
+	if (event.key === "ArrowDown") actionUser2Down = true;
+	if (event.key === "Escape") {
+		if (gameLoop) {
+			clearTimeout(gameLoop);
+			gameLoop = 0;
+		} else {
+			gameLoop = setInterval(() => {
+				updateGame();
+			}, 1000/60);
+		}
+	}
+}
+
+function onKeyUp(event: KeyboardEvent) {
+	if (event.key === "w") actionUser1Up = false;
+	if (event.key === "s") actionUser1Down = false;
+	if (event.key === "ArrowUp") actionUser2Up = false;
+	if (event.key === "ArrowDown") actionUser2Down = false;
+}
 
 export default async function Game(gameData: any) {
 
 	addEventListener('keypress', (event) => {})
 	
+	onkeyup = (event) => {
+		onKeyUp(event);
+	}
 	onkeydown = (event) => {
 		
 		const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
@@ -112,18 +148,23 @@ export default async function Game(gameData: any) {
 			drawGame({
 				player1: {
 					y: 0,
+					score: 0
 				},
 				player2: {
 					y: 0,
+					score: 0
 				},
 				ball: {
 					x: 0,
 					y: 0,
 				}
 			});
+			gameLoop = setInterval(() => {
+				updateGame();
+			}, 1000/60);
 			return;
 		}
-		handleActionPaddle(event);
+		onKeyDown(event);
 	 }
 
 	/**
@@ -140,7 +181,9 @@ export default async function Game(gameData: any) {
 	}
 
 	/**
-	 * Creation du websocket
+	 * Creation du websocketsetInterval(() => {
+
+	}, )
 	 * TODO : Mettre l'url dans un fichier de config
 	 */
 

@@ -21,10 +21,10 @@ export default async function startGame() {
 	const player1 = (document.getElementById('player1-name') as HTMLInputElement).value;
 	let player2;
 
-	if (gameType.value === "online") {
+	if (gameType.id === "online") {
 		player2 = (document.getElementById('searchFriend') as HTMLInputElement).value;
 	}
-	else if (gameType.value === "local-PVP") {
+	else if (gameType.id === "local-pvp") {
 		player2 = (document.getElementById('player2-name') as HTMLInputElement).value;
 		if (!player2) {
 			alert("Please enter a name for player 2", "error");
@@ -37,10 +37,12 @@ export default async function startGame() {
 		return;
 	}
 
+	console.log(gameType.id);
+
 	const gameData = {
 		player1: player1,
 		player2: player2,
-		gameType: gameType.value,
+		gameType: gameType.id,
 	}
 	return initGame(gameData);
 }

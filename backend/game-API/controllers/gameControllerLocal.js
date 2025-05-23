@@ -3,30 +3,26 @@ import { Pong } from '../game/Pong.js';
 let game;
 
 export async function initGame(req, rep) {
-	const { player1Name, player2Name } = req.body;
-	game = new Pong({ name: player1Name }, { name: player2Name });
+	const { player1, player2 } = req.body;
+	game = new Pong({ name: player1 }, { name: player2 });
 
 	return rep.code(200).send({ message: 'Game created' });
 }
 
 export async function HandleInput(req, rep) {
-	const { player1Action, player2Action } = req.body;
+	const { player1, player2 } = req.body;
 
 	if (game instanceof Pong) {
-		if (player1Action === "Up") game.player1.speed = -5;
-		else if (player1Action === "Down") game.player1.speed = 5;
-		else if (player1Action === "") game.player1.speed = 0;
+		if (player1 === "Up") game.player1.speed = -5;
+		else if (player1 === "Down") game.player1.speed = 5;
+		else if (player1 === "") game.player1.speed = 0;
+		game.player1.move_player(game.top, game.bottom);
 		
-		if (player2Action === "Up") game.player2.speed = -5;
-		else if (player2Action === "Down") game.player2.speed = 5;
-		else if (player2Action === "") game.player2.speed = 0;
-	}
-
-	return rep.code(200);
-}
-
-export async function getState(req, rep) {
-	if (game instanceof Pong) {
+		if (player2 === "Up") game.player2.speed = -5;
+		else if (player2 === "Down") game.player2.speed = 5;
+		else if (player2 === "") game.player2.speed = 0;
+		game.player2.move_player(game.top, game.bottom);
+	
 		if (game.gameOver) {
 			if (game.player1.score === game.WIN_SCORE) {
 				return rep.code(200).send({ message: `${game.player1.name} win game` });
@@ -42,6 +38,37 @@ export async function getState(req, rep) {
 				},
 				player2: {
 					y: game.player2.y
+				},
+				ball: {
+					x: game.ball.x,
+					y: game.ball.y
+				}
+			}
+		});
+	};
+	return rep.code(500);
+}
+
+export async function getState(req, rep) {
+	if (game instanceof Pong) {
+		game.step();
+		if (game.gameOver) {
+			if (game.player1.score === game.WIN_SCORE) {
+				return rep.code(200).send({ message: `player1 win game` });
+			} else if (game.player2.score === game.WIN_SCORE) {
+				return rep.code(200).send({ message: `player2 win game` });
+			}
+		}
+		return rep.code(200).send({
+			message: "Update game",
+			data: {
+				player1: {
+					y: game.player1.y,
+					score: game.player1.score
+				},
+				player2: {
+					y: game.player2.y,
+					score: game.player2.score
 				},
 				ball: {
 					x: game.ball.x,

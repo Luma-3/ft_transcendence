@@ -1,6 +1,6 @@
 
 class Ball {
-  constructor(x, y, vector_x = 0, vector_y = 0, size = 1) {
+  constructor(x = 0, y = 0, vector_x = 0, vector_y = 0, size = 1) {
     this.x = x;
     this.y = y;
     this.vector_x = vector_x;
@@ -10,38 +10,38 @@ class Ball {
 
   check_collision_player(player) {
     return (
-      this.ball.x >= player.x &&
-      this.ball.x <= player.x + player.width &&
-      this.ball.y >= player.y - player.height / 2 &&
-      this.ball.y <= player.y + player.height / 2
+      this.x >= player.x &&
+      this.x <= player.x + player.width &&
+      this.y >= player.y - player.height / 2 &&
+      this.y <= player.y + player.height / 2
     );
   }
 
   move_ball(top, bottom, player1, player2) {
-    this.ball.x += this.ball.vx;
-    this.ball.y += this.ball.vy;
+    this.x += this.vector_x;
+    this.y += this.vector_y;
 
-    if (this.ball.y >= top || this.ball.y <= bottom) {
-      this.ball.vy *= -1;
+    if (this.y >= top || this.y <= bottom) {
+      this.vector_y *= -1;
     }
 
     if (this.check_collision_player(player1) ||
       this.check_collision_player(player2)) {
-      this.ball.vx *= -1;
+      this.vector_x *= -1;
     }
   }
 
   set_vectors_ball(rand) {
     switch (rand) {
         case 1:
-            this.ball.vy *= -1;            
+            this.vector_y *= -1;            
             break;
         case 2:
-            this.ball.vx *= -1;
+            this.vector_x *= -1;
             break;
         case 3:
-            this.ball.vx *= -1;
-            this.ball.vy *= -1;
+            this.vector_x *= -1;
+            this.vector_y *= -1;
             break;  
         default:
             break;
@@ -49,8 +49,8 @@ class Ball {
   }
 
   reset_ball() {
-    this.ball.x = 0;
-    this.ball.y = 0;
+    this.x = 0;
+    this.y = 0;
   }
 
   toJSON() {
@@ -77,12 +77,12 @@ class Player {
   }
 
   move_player(top, bottom) {
-    this.player.y += this.player.speed;
+    this.y += this.speed;
 
-    if (this.player.y + this.halfHeight > top) {
-      this.player.y = top - halfHeight;
-    } else if (this.player.y - this.halfHeight < bottom) {
-      this.player.y = bottom + halfHeight;
+    if (this.y + this.halfHeight > top) {
+      this.y = top - this.halfHeight;
+    } else if (this.y - this.halfHeight < bottom) {
+      this.y = bottom + this.halfHeight;
     }
   }
 
@@ -98,12 +98,7 @@ class Player {
 }
 
 export class Pong {
-  constructor({
-    sizeX = 800,
-    sizeY = 600,
-    player1 = {},
-    player2 = {}
-  } = {}) {
+  constructor({ sizeX = 800, sizeY = 600, player1 = {}, player2 = {} } = {}) {
     this.sizeX = sizeX;
     this.sizeY = sizeY;
 
@@ -115,23 +110,9 @@ export class Pong {
     this.left = -this.sizeX / 2;
     this.right = this.sizeX / 2;
 
-    this.player1 = new Player({
-      uid: player1.uid ?? null,
-      name: player1.name ?? null,
-      width: player1.width ?? 10,
-      height: player1.height ?? 100,
-      x: this.left + 10,
-      y: centerY
-    });
+    this.player1 = new Player({ uid: player1.uid ?? null, name: player1.name ?? null, width: player1.width ?? 10, height: player1.height ?? 100, x: this.left + 10, y: centerY });
 
-    this.player2 = new Player({
-      uid: player2.uid ?? null,
-      name: player2.name ?? null,
-      width: player2.width ?? 10,
-      height: player2.height ?? 100,
-      x: this.right - 10,
-      y: centerY
-    });
+    this.player2 = new Player({ uid: player2.uid ?? null, name: player2.name ?? null, width: player2.width ?? 10, height: player2.height ?? 100, x: this.right - 10, y: centerY });
 
     this.ball = new Ball(centerX, centerY, 1, 1);
 
@@ -145,7 +126,7 @@ export class Pong {
   }
 
   step() {
-    this.move_ball(this.top, this.bottom, this.player1, this.player2);
+    this.ball.move_ball(this.top, this.bottom, this.player1, this.player2);
 
     if (this.ball.x <= this.left) {
       this.player2.score++;

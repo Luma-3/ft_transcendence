@@ -27,8 +27,8 @@ function localPVPSettings(user: User) {
 function gameTypeButton() {
 	return `<div class="flex flex-row w-full h-full p-4 space-x-4 rounded-lg">
 				<div class="flex w-full h-full">
-					<input type="radio" id="local-pve" name="game-type" data-gameType="local-PVP" class="hidden peer" />
-					<label for="local-pve" class="flex w-full justify-center items-center p-2 text-sm font-title
+					<input type="radio" id="local-pvp" name="game-type" data-gameType="local-PVP" class="hidden peer" />
+					<label for="local-pvp" class="flex w-full justify-center items-center p-2 text-sm font-title
 			 		text-zinc-600 bg-zinc-200 rounded-lg cursor-pointer
 					 peer-checked:bg-primary peer-checanimateked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
 					  translate="local-pvp">
@@ -39,8 +39,8 @@ function gameTypeButton() {
 				</div>
 
 				<div class="flex w-full h-full">
-					<input type="radio" id="local-pvp" name="game-type" data-gameType="local-PVE" class="hidden peer" checked />
-					<label for="local-pvp" class="flex w-full justify-center items-center p-2 text-sm font-title
+					<input type="radio" id="local-pve" name="game-type" data-gameType="local-PVE" class="hidden peer" checked />
+					<label for="local-pve" class="flex w-full justify-center items-center p-2 text-sm font-title
 			 		text-zinc-600 bg-zinc-200 rounded-lg cursor-pointer
 					 peer-checked:bg-primary peer-checanimateked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
 					  translate="local-pve">

@@ -1,69 +1,69 @@
-// import Fastify from "fastify";
-// import dotenv from 'dotenv'
-// import websocketPlugin from '@fastify/websocket';
-// import fs from 'fs'
-
-// import config from './config/fastify.config.js'
-
-// import game from './routes/game.js'
-
-// dotenv.config()
-
-// const fastify = Fastify({
-//     logger: true,
-//     https: {
-//         key: fs.readFileSync(process.env.SSL_KEY),
-//         cert: fs.readFileSync(process.env.SSL_CERT),
-//     },
-// });
-
-// await config(fastify);
-
-// fastify.register(websocketPlugin);
-// fastify.register(game);
-
-// fastify.addHook('onRoute', (routeOptions) => {
-//     console.log(`Route registered: ${routeOptions.method} ${routeOptions.url}`);
-// });
-
-// console.log(fastify.websocketPlugin);
-
-// const start = async () => {
-//     try {
-//         await fastify.listen({ port:3003, host: '0.0.0.0' })
-//         console.log(`Server listening on ${fastify.server.address().port}`)
-//     } catch (err) {
-//         console.error(err)
-//         process.exit(1)
-//     }
-// }
-
-// start()
-
 import Fastify from "fastify";
+import dotenv from 'dotenv'
 import websocketPlugin from '@fastify/websocket';
+import fs from 'fs'
 
-const fastify = Fastify({});
+import config from './config/fastify.config.js'
+
+import game from './routes/game.js'
+
+dotenv.config()
+
+const fastify = Fastify({
+    logger: true,
+    https: {
+        key: fs.readFileSync(process.env.SSL_KEY),
+        cert: fs.readFileSync(process.env.SSL_CERT),
+    },
+});
+
+await config(fastify);
 
 fastify.register(websocketPlugin);
+fastify.register(game);
 
-fastify.register(async function(fastify) {
-    fastify.get('/', { websocket: true }, async (socket, req) => {
-        console.log("socket: ", socket);
-        socket.on('message', message => {
-            console.log('Received message:', message);
-            socket.send(`Echo: ${message}`);
-        });
-    });
-})
+fastify.addHook('onRoute', (routeOptions) => {
+    console.log(`Route registered: ${routeOptions.method} ${routeOptions.url}`);
+});
+
+console.log(fastify.websocketPlugin);
 
 const start = async () => {
-  try {
-    await fastify.listen({ port: 3003 })
-    console.log(`Server listening on ${fastify.server.address().port}`)
+    try {
+        await fastify.listen({ port:3003, host: '0.0.0.0' })
+        console.log(`Server listening on ${fastify.server.address().port}`)
     } catch (err) {
         console.error(err)
         process.exit(1)
     }
 }
+
 start()
+
+// import Fastify from "fastify";
+// import websocketPlugin from '@fastify/websocket';
+
+// const fastify = Fastify({});
+
+// fastify.register(websocketPlugin);
+
+// fastify.register(async function(fastify) {
+//     fastify.get('/', { websocket: true }, async (socket, req) => {
+//         console.log("socket: ", socket);
+//         socket.on('message', message => {
+//             console.log('Received message:', message);
+//             socket.send(`Echo: ${message}`);
+//         });
+//     });
+// })
+
+// const start = async () => {
+//   try {
+//     await fastify.listen({ port: 3003 })
+//     console.log(`Server listening on ${fastify.server.address().port}`)
+//     } catch (err) {
+//         console.error(err)
+//         process.exit(1)
+//     }
+// }
+// start()
