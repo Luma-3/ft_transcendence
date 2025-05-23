@@ -1,8 +1,8 @@
 import { fetchApi } from './fetch';
-import { IApiResponce } from './interfaces/IApiResponse';
+import { IApiResponse } from './interfaces/IApiResponse';
 
 
-export async function patchUserInfo(routeElementToUpdate: string, elementUpdate: any, elementToUpdate: string ): Promise<IApiResponce<any>> {
+export async function patchUserInfo(routeElementToUpdate: string, elementUpdate: any, elementToUpdate: string ): Promise<IApiResponse<any>> {
 	const response = await fetchApi(routeElementToUpdate , {
 		method: "PATCH",
 		body: JSON.stringify({

@@ -1,11 +1,18 @@
 import { alert } from "../../components/ui/alert/alert";
-import { renderGame } from "../../components/renderPage";
+import { fetchToken } from "../../api/fetchToken";
+import { initGame } from "../../api/game";
 
 /**
  * Recuperation des infos necessaires pour le lancement de la partie avant de lancer le jeu
  */
-export default function startGame() {
-	
+export default async function startGame() {
+
+	const token = await fetchToken();
+	if (token && token.status === "error") {
+		window.location.href = "/login";
+		return;
+	}
+
 	const gameType = document.querySelector('input[name="game-type"]:checked') as HTMLInputElement;
 	if (!gameType) {
 		alert("Error while getting game type (local-online)", "error");
@@ -13,15 +20,19 @@ export default function startGame() {
 	}
 	const player1 = (document.getElementById('player1-name') as HTMLInputElement).value;
 	let player2;
-	
+
 	if (gameType.value === "online") {
 		player2 = (document.getElementById('searchFriend') as HTMLInputElement).value;
-	} 
-	else {
-		player2 = (document.getElementById('player2-name') as HTMLInputElement).value;
 	}
-	
-	if (player1 === "" || player2 === "") {
+	else if (gameType.value === "local-PVP") {
+		player2 = (document.getElementById('player2-name') as HTMLInputElement).value;
+		if (!player2) {
+			alert("Please enter a name for player 2", "error");
+			return;
+		}
+	}
+
+	if (!player1) {
 		alert("Please enter a name for both players", "error");
 		return;
 	}
@@ -31,5 +42,5 @@ export default function startGame() {
 		player2: player2,
 		gameType: gameType.value,
 	}
-	return renderGame(gameData);
+	return initGame(gameData);
 }

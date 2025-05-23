@@ -1,8 +1,8 @@
 import { renderPublicPage } from "../components/renderPage";
-import { IApiResponce } from "./interfaces/IApiResponse";
+import { IApiResponse } from "./interfaces/IApiResponse";
 import { fetchToken } from "./fetchToken";
 
-export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IApiResponce<T>> {
+export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IApiResponse<T>> {
 	
 	const token = await fetchToken();
 	if (token.status === "error") {
@@ -21,7 +21,7 @@ export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IAp
 			const errorData = await response.json();
 			return {status: "error", message: errorData.message, details: errorData.details};
 		}
-		return response.json() as Promise<IApiResponce<T>>;
+		return response.json() as Promise<IApiResponse<T>>;
 	} 
 	catch (error) {
 		renderPublicPage('500', false)
@@ -47,7 +47,7 @@ export async function fetchApiWithNoBody(url:string, option?: RequestInit) {
 		return {status: "500", message: "Internal Server Error"}};
 }
 
-export async function fetchWithNoToken<T>(url:string, option?: RequestInit): Promise<IApiResponce<T>> {
+export async function fetchWithNoToken<T>(url:string, option?: RequestInit): Promise<IApiResponse<T>> {
 	try {
 		const response = await fetch(url, {
 			headers: {"Content-Type": "application/json",
@@ -59,7 +59,7 @@ export async function fetchWithNoToken<T>(url:string, option?: RequestInit): Pro
 			const errorData = await response.json();
 			return {status: "error", message: errorData.message, details: errorData.details};
 		}
-		return response.json() as Promise<IApiResponce<T>>;
+		return response.json() as Promise<IApiResponse<T>>;
 	} 
 	catch (error) {
 		renderPublicPage('500', false)

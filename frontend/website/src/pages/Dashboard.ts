@@ -12,19 +12,40 @@ function onlineSettings(user: User) {
 	  <label for="search-friend" class="text-2xl font-title text-zinc-600 mb-4" translate="search-friend">Search friend</label>
 	<input type="text" id="search-friend" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="enter-username" placeholder="enter-username"/>
 	</div>`
+}
 
+function localPVPSettings(user: User) { 
+	return `
+	<div id="local-PVP-settings" class="flex hidden flex-col w-full h-full p-4 space-y-4 mb-10
+	 bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-500 ease-in-out">
+
+	<label for="player2-name" class="text-2xl font-title text-zinc-600 mb-4" translate="player2">Player 2</label>
+	<input type="text" id="player2-name" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="username" placeholder="username"/>
+	</div>`
 }
 
 function gameTypeButton() {
 	return `<div class="flex flex-row w-full h-full p-4 space-x-4 rounded-lg">
 				<div class="flex w-full h-full">
-					<input type="radio" id="local" name="game-type" data-gameType="local" class="hidden peer" checked />
-					<label for="local" class="flex w-full justify-center items-center p-2 text-sm font-title
+					<input type="radio" id="local-pve" name="game-type" data-gameType="local-PVP" class="hidden peer" />
+					<label for="local-pve" class="flex w-full justify-center items-center p-2 text-sm font-title
 			 		text-zinc-600 bg-zinc-200 rounded-lg cursor-pointer
 					 peer-checked:bg-primary peer-checanimateked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
-					  translate="local">
+					  translate="local-pvp">
 
-					Local
+					Local 2 Joueurs
+
+					</label>
+				</div>
+
+				<div class="flex w-full h-full">
+					<input type="radio" id="local-pvp" name="game-type" data-gameType="local-PVE" class="hidden peer" checked />
+					<label for="local-pvp" class="flex w-full justify-center items-center p-2 text-sm font-title
+			 		text-zinc-600 bg-zinc-200 rounded-lg cursor-pointer
+					 peer-checked:bg-primary peer-checanimateked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
+					  translate="local-pve">
+
+					Local 1 Joueur
 
 					</label>
 				</div>
@@ -42,15 +63,6 @@ function gameTypeButton() {
 				</div>
 			</div>`
 
-}
-function localSettings(user: User) { 
-	return `
-	<div id="local-settings" class="flex flex-col w-full h-full p-4 space-y-4 mb-10
-	 bg-zinc-150 rounded-lg opacity-100 transition-opacity duration-500 ease-in-out">
-
-	<label for="player2-name" class="text-2xl font-title text-zinc-600 mb-4" translate="player2">Player 2</label>
-	<input type="text" id="player2-name" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="username" placeholder="username"/>
-	</div>`
 }
 
 function gameUserStat(user: User) {
@@ -92,12 +104,13 @@ async function renderDashboard(user:User) {
 				<img src="/images/dashboard.png" alt="Bienvenue" class="w-40 mb-8 drop-shadow-lg" />
 
 				<label for="player1-name" class="text-2xl font-title text-zinc-600 mb-4" translate="player1">Player 1</label>
-				<input type="text" id="player1-name" class="w-1/2 p-2 font-title border-2 border-zinc-300 rounded-lg" translate="username" placeholder="username" />
+				<input type="text" id="player1-name" class="w-1/2 p-2 font-title border-2 border-zinc-300 rounded-lg" translate="username" placeholder="username" value=${user.username} />
 
 				${gameTypeButton()}
 
 				${onlineSettings(user)}
-				${localSettings(user)}
+				${localPVPSettings(user)}
+
 				
 				${primaryButton({id: 'launchGame', weight: "1/2", text: "Play", translate: "play", type: "button"})}
 			
@@ -112,6 +125,12 @@ async function renderDashboard(user:User) {
 					</div>
 			
 				</div>
+			</div>
+			<div id="truc" class="absolute left-0 mt-4 opacity-0 flex min-h-[400px] min-w-[400px] mx-4 p-4 space-y-4
+			bg-zinc-50 rounded-lg justify-center items-center transition-transform duration-500 ease-in-out -translate-x-full">
+			
+				${gameUserStat(user)}
+			
 			</div>
 		</div>
 
@@ -128,12 +147,6 @@ async function renderDashboard(user:User) {
 		
 		</div>
 
-		<div id="truc" class="absolute left-0 mt-4 opacity-0 flex min-h-[400px] min-w-[400px] mx-4 p-4 space-y-4
-		bg-zinc-50 rounded-lg justify-center items-center transition-transform duration-500 ease-in-out -translate-x-full">
-		
-			${gameUserStat(user)}
-		
-		</div>
 		
 	</div>
 	</div>

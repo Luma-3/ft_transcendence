@@ -5,6 +5,7 @@ import { alert } from "../components/ui/alert/alert";
 import notFoundPage from "./4xx";
 import { API_GAME } from "../api/routes";
 import { User } from "../api/interfaces/User";
+import { fetchApi } from "../api/fetch";
 
 //TODO : Prevoir une variable pour le deuxieme joueur qui sera fetch dans le fonction principale
 function setupGame(socket: WebSocket, user: User, gameData: any) {
@@ -14,11 +15,10 @@ function setupGame(socket: WebSocket, user: User, gameData: any) {
 		user2: gameData.player2,
 		gameType: gameData.gameType,
 	}));
-
 	
 }
 
-function drawGame(posUser1: number, posUSer2: number, ballX: number, ballY: number) {
+function drawGame(gameData: GameData) {
 	
 	const game = document.getElementById("gamePong") as HTMLCanvasElement;
 	const ctx = game.getContext("2d");
@@ -30,7 +30,7 @@ function drawGame(posUser1: number, posUSer2: number, ballX: number, ballY: numb
 
 	//Raquette user left
 	ctx.beginPath();
-	ctx.rect(-game.width / 2 + 10, posUser1 - 20, 10, 40);
+	ctx.rect(-game.width / 2 + 10, gameData.player1.y - 20, 10, 40);
 	ctx.fillStyle = "blue";
 	ctx.fill();
 
@@ -39,7 +39,7 @@ function drawGame(posUser1: number, posUSer2: number, ballX: number, ballY: numb
 	ctx.save();
 	ctx.translate(game.width / 2, game.height / 2);
 	ctx.beginPath();
-	ctx.rect(game.width / 2 - 20, posUSer2 - 20, 10, 40);
+	ctx.rect(game.width / 2 - 20, gameData.player2.y - 20, 10, 40);
 	ctx.fillStyle = "red";
 	ctx.fill();
 
@@ -48,32 +48,45 @@ function drawGame(posUser1: number, posUSer2: number, ballX: number, ballY: numb
 	ctx.save();
 	ctx.translate(game.width / 2, game.height / 2);
 	ctx.beginPath();
-	ctx.arc(ballX, ballY, 2, 0, Math.PI * 2);
+	ctx.arc(gameData.ball.x, gameData.ball.y, 2, 0, Math.PI * 2);
 	ctx.fill();
 	ctx.restore();
-}
-
-class Paddle {
-	x: number;
-	y: number;
-	width: number;
-	height: number;
-	color: string;
-
-	constructor(x: number, y: number, width: number, height: number, color: string) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.color = color;
-	}
 }
 
 let positionUser1 = 0;
 let positionUser2 = 0;
 let ballX = 0;
 let ballY = 0;
-let socket: WebSocket;
+// let socket: WebSocket;
+
+
+import { GameData } from "../api/interfaces/GameData";
+
+async function handleActionPaddle(event: KeyboardEvent) {
+	let response = null;
+	const actionUser1 = (event.key === "w") ? "Up" : (event.key === "s") ? "Down" : '';
+	const actionUser2 = (event.key === "ArrowUp") ? "Up" : (event.key === "ArrowDown") ? "Down" : '';
+	
+	response = await fetchApi(API_GAME.LOCAL_SEND, {
+		method: 'POST',
+		body: JSON.stringify({
+			player1: actionUser1,
+			player2: actionUser2,
+		})
+	})
+	if (response.status === "error") {
+		alert("Error while sending action", "error");
+		return;
+	}
+	response = await fetchApi<GameData>(API_GAME.LOCAL_GET_STATE, {
+		method: 'GET',
+	})
+	if (response.status === "error" || !response.data) {
+		alert("Error while fetching game state", "error");
+		return;
+	}
+	drawGame(response.data);
+}
 
 
 export default async function Game(gameData: any) {
@@ -96,17 +109,21 @@ export default async function Game(gameData: any) {
 				divGame.classList.add("opacity-100");
 			}
 			, 500);
-			drawGame(positionUser1, positionUser2, ballX, ballY);
+			drawGame({
+				player1: {
+					y: 0,
+				},
+				player2: {
+					y: 0,
+				},
+				ball: {
+					x: 0,
+					y: 0,
+				}
+			});
 			return;
 		}
-		actionGame(event);
-		sendActionGame(event);
-		// if (event.key === "ArrowUp") {
-		// 	positionUser1 -= 10;
-		// } else if (event.key === "ArrowDown") {
-		// 	positionUser1 += 10;
-		// }
-		drawGame(positionUser1, positionUser2, ballX, ballY);
+		handleActionPaddle(event);
 	 }
 
 	/**
@@ -126,18 +143,22 @@ export default async function Game(gameData: any) {
 	 * Creation du websocket
 	 * TODO : Mettre l'url dans un fichier de config
 	 */
-	const socket = new WebSocket(API_GAME);
-	socket.addEventListener('error', (event) => {
-		alert("WebSocket error: " + event, "error");
-	})
 
-	socket.addEventListener('open', () => setupGame(socket, user.data, gameData));
-	
-	socket.addEventListener('message', (event) => {
-		const data = JSON.parse(event.data);
-		updateGame(data);
+	if (gameData.gameType === "online") {
+		const socket = new WebSocket(API_GAME);
+		socket.addEventListener('error', (event) => {
+			alert("WebSocket error: " + event, "error");
+		})
 
-	});
+		socket.addEventListener('open', () => setupGame(socket, user.data, gameData));
+		
+		socket.addEventListener('message', (event) => {
+			const data = JSON.parse(event.data);
+			updateGame(data);
+
+		});
+
+	}
 
 	// const gameServerInfo = await fetchAllDataGameInfo(user.data);
 	// if (gameServerInfo.status === "error") {
