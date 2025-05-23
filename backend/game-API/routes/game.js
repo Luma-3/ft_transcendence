@@ -1,7 +1,11 @@
-import * as Controller from '../controllers/gameController.js';
+import * as ControllerOnline from '../controllers/gameControllerOnline.js';
+import * as ControllerLocal from '../controllers/gameControllerLocal.js';
 
 export default async function(fastify) {
-  fastify.get('/ws', { websocket: true }, async (connection, req) => {
-      console.log("connection: ", connection);
-  })
+  fastify.get('/online/', { websocket: true }, ControllerOnline.launchGame);
+
+
+  fastify.post('/local/init', ControllerLocal.initGame);
+  fastify.post('/local/input', ControllerLocal.HandleInput);
+  fastify.get('/local/state', ControllerLocal.getState);
 }

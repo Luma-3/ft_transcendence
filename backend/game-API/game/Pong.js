@@ -57,21 +57,23 @@ class Ball {
     return { 
       x: this.x,
       y: this.y,
-      size: this.size
+      // size: this.size
     };
   }
 }
 
 class Player {
-  constructor(uid, width, height, x, y) {
-    this.uid = uid;
+  constructor({ uid = null, name = null, width = 10, height = 100, x = 0, y = 0 } = {}) {
+    if (uid !== null) this.uid = uid;
+    if (name !== null) this.name = name;
+
     this.score = 0;
     this.width = width;
     this.height = height;
     this.x = x;
     this.y = y;
     this.speed = 0;
-    this.halfHeight = player.height / 2;
+    this.halfHeight = this.height / 2;
   }
 
   move_player(top, bottom) {
@@ -86,19 +88,24 @@ class Player {
 
   toJSON() {
     return {
-      score: this.score,
-      width: this.width,
-      height: this.height,
-      x: this.x,
+      // score: this.score,
+      // width: this.width,
+      // height: this.height,
+      // x: this.x,
       y: this.y,
     };
   }
 }
 
 export class Pong {
-  constructor(p1_uid, p2_uid) {
-    this.sizeX = 800;
-    this.sizeY = 600;
+  constructor({
+    sizeX = 800,
+    sizeY = 600,
+    player1 = {},
+    player2 = {}
+  } = {}) {
+    this.sizeX = sizeX;
+    this.sizeY = sizeY;
 
     const centerX = 0;
     const centerY = 0;
@@ -108,8 +115,24 @@ export class Pong {
     this.left = -this.sizeX / 2;
     this.right = this.sizeX / 2;
 
-    this.player1 = new Player(p1_uid, 10, 100, left + 10, centerY);
-    this.player2 = new Player(p2_uid, 10, 100, right - 10, centerY);
+    this.player1 = new Player({
+      uid: player1.uid ?? null,
+      name: player1.name ?? null,
+      width: player1.width ?? 10,
+      height: player1.height ?? 100,
+      x: this.left + 10,
+      y: centerY
+    });
+
+    this.player2 = new Player({
+      uid: player2.uid ?? null,
+      name: player2.name ?? null,
+      width: player2.width ?? 10,
+      height: player2.height ?? 100,
+      x: this.right - 10,
+      y: centerY
+    });
+
     this.ball = new Ball(centerX, centerY, 1, 1);
 
     this.gameOver = false;

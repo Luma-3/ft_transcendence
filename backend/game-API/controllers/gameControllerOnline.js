@@ -76,7 +76,7 @@ export async function launchGame(connection, req) {
   console.log("Client connecté via WebSocket");
   socket.send("OK");
 
-  /*socket.on("message", (msg) => {
+  socket.on("message", (msg) => {
     let parsed;
     try {
       parsed = JSON.parse(msg);
@@ -133,5 +133,5 @@ export async function launchGame(connection, req) {
         message: `Player ${playerId} has been disconnected`
       }, players);
     }
-  });*/
+  });
 }
