@@ -1,170 +1,37 @@
-import { getUserInfo } from "../api/getter";
 import { navbar } from "../components/ui/navbar";
-import { fetchToken } from "../api/fetchToken";
-import { alert } from "../components/ui/alert/alert";
 import notFoundPage from "./4xx";
-import { API_GAME } from "../api/routes";
-import { User } from "../api/interfaces/User";
-import { fetchApi } from "../api/fetch";
+
+import { getUserInfo } from "../api/getter";
+import { fetchToken } from "../api/fetchToken";
+
+import { onKeyDown, onKeyUp } from "../game/gameUpdate";
+import { launchGame } from "../game/gameStart";
+
 
 export var gameLoop = 0;
 
 //TODO : Prevoir une variable pour le deuxieme joueur qui sera fetch dans le fonction principale
-function setupGame(socket: WebSocket, user: User, gameData: any) {
-	socket.send(JSON.stringify({
-		type: "init",
-		user1: user.username,
-		user2: gameData.player2,
-		gameType: gameData.gameType,
-	}));
-}
-
-function drawGame(gameData: GameData) {
-	
-	const game = document.getElementById("gamePong") as HTMLCanvasElement;
-	const ctx = game.getContext("2d");
-	
-	if (!ctx) { return; }
-	ctx.clearRect(0, 0, game.width, game.height);
-	ctx.save();
-	ctx.translate(game.width / 2, game.height / 2);
-
-	//Raquette user left
-	ctx.beginPath();
-	ctx.rect(-game.width / 2 + 10, gameData.player1.y - 50, 10, 100);
-	ctx.fillStyle = "blue";
-	ctx.fill();
-
-	//Raquette user right
-	ctx.restore();
-	ctx.save();
-	ctx.translate(game.width / 2, game.height / 2);
-	ctx.beginPath();
-	ctx.rect(game.width / 2 - 20, gameData.player2.y - 50, 10, 100);
-	ctx.fillStyle = "red";
-	ctx.fill();
-
-	//BALL
-	ctx.restore();
-	ctx.save();
-	ctx.translate(game.width / 2, game.height / 2);
-	ctx.beginPath();
-	ctx.rect(gameData.ball.x, gameData.ball.y, 20, 20);
-	ctx.fill();
-	ctx.restore();
-
-	const player1Score = document.getElementById("user1Score");
-	player1Score!.innerHTML = gameData.player1.score.toString();
-
-	const player2Score = document.getElementById("user2Score");
-	player2Score!.innerHTML = gameData.player2.score.toString();
-
-}
-
-let positionUser1 = 0;
-let positionUser2 = 0;
-let ballX = 0;
-let ballY = 0;
-// let socket: WebSocket;
-
-
 import { GameData } from "../api/interfaces/GameData";
 
-let actionUser1Up = false, actionUser1Down = false, actionUser2Up = false, actionUser2Down = false;
-
-async function updateGame() {
-	let response = null;
-
-	response = await fetchApi<GameData>(API_GAME.LOCAL_SEND, {
-		method: 'POST',
-		body: JSON.stringify({
-			player1: (actionUser1Up) ? "Up" : (actionUser1Down) ? "Down" : '', 
-			player2: (actionUser2Up) ? "Up" : (actionUser2Down) ? "Down" : '',  
-		})
-	})
-	if (response.status === "error") {
-		alert("EROROROOROROR", "error");
-		return;
-	}
-
-	response = await fetchApi<GameData>(API_GAME.LOCAL_GET_STATE, {
-		method: 'GET',
-	})
-	if (!response || response.status === "error") {
-		alert("Error while updating game", "error");
-		return;
-	}
-
-	drawGame(response.data!);
-}
-
-function onKeyDown(event: KeyboardEvent) {
-	if (event.key === "w") actionUser1Up = true;
-	if (event.key === "s") actionUser1Down = true;
-	if (event.key === "ArrowUp") actionUser2Up = true;
-	if (event.key === "ArrowDown") actionUser2Down = true;
-	if (event.key === "Escape") {
-		if (gameLoop) {
-			clearTimeout(gameLoop);
-			gameLoop = 0;
-		} else {
-			gameLoop = setInterval(() => {
-				updateGame();
-			}, 1000/60);
-		}
-	}
-}
-
-function onKeyUp(event: KeyboardEvent) {
-	if (event.key === "w") actionUser1Up = false;
-	if (event.key === "s") actionUser1Down = false;
-	if (event.key === "ArrowUp") actionUser2Up = false;
-	if (event.key === "ArrowDown") actionUser2Down = false;
-}
-
-export default async function Game(gameData: any) {
+export default async function Game(gameData: GameData) {
 
 	addEventListener('keypress', (event) => {})
 	
 	onkeyup = (event) => {
-		onKeyUp(event);
+		onKeyUp(event, gameLoop);
 	}
+	
 	onkeydown = (event) => {
 		
 		const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
+		/**
+		 * Pour le premier evenement clavier, je fais apparaitre la div du jeu 
+		 * et je recuperer les infos transmise dans le dashboard
+		 */
 		if (divGame.classList.contains("opacity-0")) {
-			
-			const startInfos = document.getElementById("startGameInfos") as HTMLDivElement;
-			
-			startInfos.classList.remove("opacity-100");
-			startInfos.classList.add("opacity-0");
-			
-			setTimeout(() => {
-				startInfos.classList.add("hidden");
-				divGame.classList.remove("opacity-0");
-				divGame.classList.add("opacity-100");
-			}
-			, 500);
-			drawGame({
-				player1: {
-					y: 0,
-					score: 0
-				},
-				player2: {
-					y: 0,
-					score: 0
-				},
-				ball: {
-					x: 0,
-					y: 0,
-				}
-			});
-			gameLoop = setInterval(() => {
-				updateGame();
-			}, 1000/60);
-			return;
+			return launchGame(divGame, gameLoop);
 		}
-		onKeyDown(event);
+		onKeyDown(event, gameLoop);
 	 }
 
 	/**
@@ -184,31 +51,24 @@ export default async function Game(gameData: any) {
 	 * Creation du websocketsetInterval(() => {
 
 	}, )
-	 * TODO : Mettre l'url dans un fichier de config
-	 */
+	//  * TODO : Mettre l'url dans un fichier de config
+	//  */
+	// if (gameData.gameType === "online") {
+	// 	const socket = new WebSocket(API_GAME);
+	// 	socket.addEventListener('error', (event) => {
+	// 		alert("WebSocket error: " + event, "error");
+	// 	})
 
-	if (gameData.gameType === "online") {
-		const socket = new WebSocket(API_GAME);
-		socket.addEventListener('error', (event) => {
-			alert("WebSocket error: " + event, "error");
-		})
-
-		socket.addEventListener('open', () => setupGame(socket, user.data, gameData));
+	// 	socket.addEventListener('open', () => setupGame(socket, user.data, gameData));
 		
-		socket.addEventListener('message', (event) => {
-			const data = JSON.parse(event.data);
-			updateGame(data);
+	// 	socket.addEventListener('message', (event) => {
+	// 		const data = JSON.parse(event.data);
+	// 		updateGame(data);
 
-		});
+	// 	});
 
-	}
-
-	// const gameServerInfo = await fetchAllDataGameInfo(user.data);
-	// if (gameServerInfo.status === "error") {
-	// 	alert("Error while fetching game info", "error");
-	// 	return;
 	// }
-	
+
 
 	/**
 	 * Contenu HTML de la page

@@ -6,7 +6,6 @@ export async function verifySession() {
 	let response = await fetchApiWithNoBody(API_SESSION.VERIFY_ACCESS, {
 		method: 'GET',
 	});
-	console.log(response);
 	if (response.status ===  'success') {
 		return { status: 'success', data: null };
 	}
@@ -14,9 +13,7 @@ export async function verifySession() {
 	response = await fetchApiWithNoBody(API_SESSION.VERIFY_REFRESH, {
 		method: 'GET',
 	});
-	console.log("verify si on a la refresh", response);
 	if (response.status ===  'success') {
-		console.log("coucou", response);
 		response = await fetchApiWithNoBody(API_SESSION.REFRESH, {
 			method: 'POST',
 		})

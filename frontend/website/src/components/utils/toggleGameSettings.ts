@@ -3,8 +3,7 @@ export function toggleGameSettings(inputValue: DOMStringMap) {
 	if (!type) {
 		return;
 	}
-	console.log(type);
-	
+
 	const localPVPSettings = document.getElementById('local-PVP-settings');
 	const onlineSettings = document.getElementById('online-settings');
 	

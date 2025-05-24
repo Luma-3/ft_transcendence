@@ -10,7 +10,6 @@ export function toggleTruc() {
 		gameStat.classList.remove('absolute');
 		gameStat.classList.add('flex');
 		gameStat.classList.remove('-translate-x-full');
-		console.log("dans le if");
 		return;
 	}
 	// Laisse le temps au navigateur d’appliquer les classes avant d’enlever translate/opacity

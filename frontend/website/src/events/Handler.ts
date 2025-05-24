@@ -20,7 +20,7 @@ import { showEditorPicture } from '../components/utils/imageEditor'
 import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 
-import startGame from '../events/game/startGame'
+import { initGameData } from '../game/gameInit'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: {[key: string]: () => void } = {
@@ -56,7 +56,7 @@ const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => renderBackPage(),
 	'showGameStat': () => toggleGameStat(),
 	'showTruc': () => toggleTruc(),
-	'launchGame': () => startGame(),
+	'launchGame': () => initGameData(),
 
 };
 
@@ -119,7 +119,6 @@ export function addAllEventListenOnPage(container : HTMLDivElement) {
 	 */
 	container.addEventListener('change', (event) => {
 		const target = event.target as HTMLInputElement;
-		console.log(target.name);
 		if (target.name in inputEvent){
 			
 			if (target.dataset) {
