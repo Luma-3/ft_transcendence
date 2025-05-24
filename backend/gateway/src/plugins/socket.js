@@ -2,6 +2,8 @@ import websocketPlugin from '@fastify/websocket';
 import fp from 'fastify-plugin';
 import { redisPub, redisSub } from '../config/redis.js';
 
+// 
+
 function socket(fastify, opts, done) {
   if (!fastify.websocket) {
     fastify.register(websocketPlugin, opts);
@@ -18,11 +20,10 @@ function socket(fastify, opts, done) {
 
       socket.on('message', (raw) => {
         try {
-          const msg = JSON.parse(raw);
-          const { type, payload } = msg;
+          const { type, payload } = JSON.parse(raw);
 
           console.log(`[WS] client ${clientId} -> ${type} -> Redis`);
-          redisPub.publish(`${type}.in`, JSON.stringify({
+          redisPub.publish(`ws.${type}.in`, JSON.stringify({
             clientId: clientId,
             payload: payload
           }));
@@ -39,7 +40,7 @@ function socket(fastify, opts, done) {
     })
   });
 
-  redisSub.pSubscribe('*.out', (message, channel) => {
+  redisSub.pSubscribe('ws.*.out', (message, channel) => {
     try {
       const { clientId, payload } = JSON.parse(message);
       console.log(`[WS][Redis] <- ${channel} -> client ${clientId}`);

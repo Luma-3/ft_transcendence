@@ -68,7 +68,7 @@ fastify.register(user);
 fastify.register(session);
 fastify.register(preferences);
 
-redisSub.subscribe('test.in', (message, channel) => {
+redisSub.subscribe('ws.test.in', (message, channel) => {
   try {
     const { clientId, payload } = JSON.parse(message);
     console.log(`[WS][Redis] <- ${channel} -> client ${clientId}`);
@@ -76,7 +76,7 @@ redisSub.subscribe('test.in', (message, channel) => {
 
     // echo the message back to the client
 
-    redisPub.publish(`${channel}.out`, JSON.stringify({
+    redisPub.publish(`ws.${channel}.out`, JSON.stringify({
       clientId: clientId,
       payload: payload
     }));
