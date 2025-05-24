@@ -23,7 +23,7 @@ export function registerPlugin(fastify, servers) {
   fastify.register(cookie);
 
   fastify.register(cors, {
-    orgin: `https://${process.env.AUTHORIZED_IP}`,
+    origin: `https://${process.env.AUTHORIZED_IP}`,
     credentials: true
   });
 
@@ -57,7 +57,7 @@ export function registerPlugin(fastify, servers) {
     version: '1.0.0',
     servers: servers.map((value) => {
       return {
-        url: value.prefix + '/',
+        url: value.prefix + '/api',
         description: value.name
       }
     }),

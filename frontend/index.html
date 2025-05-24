@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" class="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href="icons/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+		<!-- If Javascript available load script -->
+		<link rel="preload" href="src/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<!-- If no Javascript available load css like this -->
+		<noscript><link rel="stylesheet" href="src/css/style.css"></noscript>
+		
+		<link rel="stylesheet" href="/node_modules/tui-image-editor/dist/tui-image-editor.css">
+		
+		<title>Transcenduck</title>
+	</head>
+	<body>
+		
+		<!--- Loading Page-->
+		<div id="loading" class="absolute inset-0 h-screen flex items-center justify-center z-10">
+			<div class="flex flex-col items-center justify-center">
+				<div class="animate-spin rounded-full h-46 w-46 border-t-4 border-primary dark:border-dprimary"></div>
+				<p class="text-white font-title text-lg mt-4">Loading...</p>
+			</div>
+		</div>
+
+		<!--- Main div-->
+		<div id="app" class="relative z-10 h-full opacity-0 scale-95 transition-all duration-200"></div>
+		<script type="module" src="src/main.ts" defer></script>
+	
+	</body>
+</html>

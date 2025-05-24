@@ -1,15 +1,9 @@
-COMPOSE = docker compose
+COMPOSE = docker-compose
 
 SH_DEV = launch.dev.sh
 
-install-dev:
-	@bash $(SH_DEV) install
-
 run-dev:
-	@bash $(SH_DEV) run
-
-run-prod:
-	@$(COMPOSE) up --build
+	@$(COMPOSE) -f docker-compose.dev.yml up --build
 
 migrate:
 	@bash $(SH_DEV) migrate

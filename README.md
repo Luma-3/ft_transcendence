@@ -1,4 +1,50 @@
-# ft_transcendence
+<p align="center">
+	<img src="https://github.com/user-attachments/assets/e4c03e25-58a4-44c7-ac64-25a611172768" /><br>
+	<h1 align="center"> 🦆🦆🦆🦆 Transcenduck 🦆🦆🦆🦆 </h1>
+</p>
+<h2>
+Welcome to Transcenduck, a web app for the ft_transcendance project from 42 school. Everything here is duck-themed.
+</h2>
+
+## 🌟 Main Features
+
+* ⚙️ Fast backend with Fastify + Knex
+* 🎨 Stylish frontend using TypeScript + Tailwind CSS
+* 🗃️ SQLite database
+* ⛓ Blockchain integration (even ducks go crypto)
+* 👤 User management system
+* 🔐 Google Auth + 2FA (extra secure)
+* 🕹 Remote player support
+* 💬 Real-time chat
+* 📜 GDPR-friendly features
+* 🌐 Multilanguage interface
+* 🧠 Microservices architecture
+* 🌙 Dark mode support
+* 🧪 Multi-browser sessions
+
+## 🧱 Tech Stack
+
+* **Frontend**: TypeScript, Tailwind CSS
+* **Backend**: Node.js (CommonJS), Fastify
+* **Database**: SQLite (light and efficient)
+
+## 🚀 Quick Install
+
+```bash
+git clone https://github.com/your-username/transcenduck.git
+cd transcenduck
+make
+```
+
+Don’t forget to add your `.env` file with your secrets (OAuth, JWT, etc).
+
+## 🕹 How to Use
+
+1. Open `http://localhost:3000`
+2. Log in with Google or create an account
+3. Play, chat, challenge others, toggle dark mode
+4. Enjoy the duck world
+
 
 ## Modules
 	- [x] Backend 1

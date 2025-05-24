@@ -3,43 +3,6 @@ set -e
 
 ARG=$1
 
-install() {
-  echo "📦 Installing dev dependencies..."
-
-  echo "➡️ Frontend"
-  cd frontend/website && npm install && cd ../..
-
-  echo "➡️ Backend"
-  cd backend && bash ./utils.dev.sh install && cd ..
-
-  echo "✅ All dev dependencies installed!"
-}
-
-run() {
-  echo "🚀 Running dev server..."
-
-  cd frontend/website
-  npm run dev &
-  cd ../..
-  echo "➡️ Frontend started"
-
-  cd "backend"
-  bash ./utils.dev.sh run &
-  echo "➡️ Backend started"
-  cd ..
-
-  echo "➡️ Docker Services"
-  docker-compose -f docker/docker-compose.dev.yml up -d --build
-
-  echo "✅ All dev servers running!"
-  echo "📝 Logs are available in the logs directory."
-  echo "📝 To stop the servers, CTRL+C"
-
-  wait
-  echo "Stopping all servers..."
-  docker-compose -f docker/docker-compose.dev.yml down
-}
-
 fclean() {
   echo " Cleanning all..."
 

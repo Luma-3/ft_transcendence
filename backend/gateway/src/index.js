@@ -4,8 +4,6 @@ import { config_dev, registerPlugin } from './config/config.js'
 import dotenv from 'dotenv'
 import { InternalRoute } from './middleware/InternalRoute.js'
 
-import { redisPub, redisSub } from './config/redis.js'
-
 dotenv.config()
 
 const fastify = Fastify(config_dev);
@@ -15,14 +13,19 @@ const Services = [
   {
     name: 'Users Services', prefix: '/user',
     upstream: 'http://' + process.env.USER_IP,
-    url: '/user/doc/json',
+    url: '/api/user/doc/json',
     preHandler: InternalRoute
   },
   {
     name: 'Upload Services', prefix: '/upload',
     upstream: 'http://' + process.env.UPLOAD_IP,
-    url: 'http://' + process.env.UPLOAD_IP + '/user/doc/json',
+    url: '/api/upload/doc/json',
     preHandler: InternalRoute
+  },
+  {
+    name: 'Game Services', prefix: '/game',
+    upstream: 'http://' + process.env.GAME_IP,
+    url: '/api/game/doc/json',
   }
 ]
 

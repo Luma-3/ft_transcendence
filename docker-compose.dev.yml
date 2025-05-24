@@ -27,6 +27,7 @@ services:
     networks:
       - backend-net
       - redis-net
+      - frontend-net
 
   user-api:
     build:
@@ -47,8 +48,66 @@ services:
       - backend-net
       - redis-net
 
+  upload-api:
+    build:
+      context: ./backend/upload-API/
+      dockerfile: Dockerfile.dev
+    container_name: upload-API
+    env_file:
+        - ./.dev.env
+    volumes:
+      - ./backend/upload-API/data:/app/data:z
+      - ./backend/upload-API/src:/app/src:z
+      - ./backend/dependencies/:/app/dependencies:z
+    depends_on:
+      - redis
+    expose:
+      - "3002"
+    networks:
+      - backend-net
+      - redis-net
+
+  game-api:
+    build:
+      context: ./backend/game-API/
+      dockerfile: Dockerfile.dev
+    container_name: game-API
+    env_file:
+        - ./.dev.env
+    volumes:
+      - ./backend/game-API/data:/app/data:z
+      - ./backend/game-API/src:/app/src:z
+      - ./backend/dependencies/:/app/dependencies:z
+    depends_on:
+      - redis
+    expose:
+      - "3003"
+    networks:
+      - backend-net
+      - redis-net
+
+  frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile.dev
+    container_name: frontend
+    env_file:
+        - ./.dev.env
+    volumes:
+      - ./frontend/src:/app/src:z
+      - ./frontend/public:/app/public:z
+    ports:
+      - "5173:5173"
+    depends_on:
+      - gateway
+    networks:
+      - frontend-net
+
+
 networks:
   redis-net:
     driver: bridge
   backend-net:
+    driver: bridge
+  frontend-net:
     driver: bridge
