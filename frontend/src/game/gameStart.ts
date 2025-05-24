@@ -11,6 +11,7 @@ import { User } from "../api/interfaces/User";
 import { updateGame } from "./gameUpdate";
 import { drawGame } from "./gameDraw";
 import { startGameLoop } from "./gameLoop";
+import { DisplayGameWin } from "./gameWin";
 
 
 export function launchGame(gameContainer: HTMLDivElement, gameLoop: number) {
@@ -23,11 +24,13 @@ export function launchGame(gameContainer: HTMLDivElement, gameLoop: number) {
 		startInfos.classList.add("hidden");
 		gameContainer.classList.remove("opacity-0");
 		gameContainer.classList.add("opacity-100");
+		drawGame({player1: { y: 0, score: 0 },
+				player2: { y: 0, score: 0 },
+				ball: { x: 0, y: 0 }});
+	
+		// startGameLoop();
+		console.log("Game started");
+		DisplayGameWin("Player 1 wins!");
 	}, 500);
 	
-	drawGame({player1: { y: 0, score: 0 },
-			player2: { y: 0, score: 0 },
-			ball: { x: 0, y: 0 }});
-
-	startGameLoop();
 }

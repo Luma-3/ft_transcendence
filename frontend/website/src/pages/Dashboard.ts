@@ -7,7 +7,7 @@ import { secondaryButton } from "../components/ui/buttons/secondaryButton";
 function onlineSettings(user: User) {
 	return `
 	<div id="online-settings" class="flex hidden flex-col w-full h-full p-4 space-y-4 mb-10
-	  bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
+	  bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-500 ease-in-out">
 
 	  <label for="search-friend" class="text-2xl font-title text-zinc-600 mb-4" translate="search-friend">Search friend</label>
 	<input type="text" id="search-friend" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="enter-username" placeholder="enter-username"/>
@@ -17,7 +17,7 @@ function onlineSettings(user: User) {
 function localPVPSettings(user: User) { 
 	return `
 	<div id="local-PVP-settings" class="flex hidden flex-col w-full h-full p-4 space-y-4 mb-10
-	 bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
+	 bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-500 ease-in-out">
 
 	<label for="player2-name" class="text-2xl font-title text-zinc-600 mb-4" translate="player2">Player 2</label>
 	<input type="text" id="player2-name" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="username" placeholder="username"/>
@@ -30,19 +30,20 @@ function gameTypeButton() {
 					<input type="radio" id="local-pvp" name="game-type" data-gameType="local-PVP" class="hidden peer" />
 					<label for="local-pvp" class="flex w-full justify-center items-center p-2 text-sm font-title
 			 		text-zinc-600 bg-zinc-200 rounded-lg cursor-pointer
-					 peer-checked:bg-primary peer-checked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
+					 peer-checked:bg-primary peer-checanimateked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
 					  translate="local-pvp">
 
 					Local 2 Joueurs
 
 					</label>
+					
 				</div>
 
 				<div class="flex w-full h-full">
 					<input type="radio" id="local-pve" name="game-type" data-gameType="local-PVE" class="hidden peer" checked />
 					<label for="local-pve" class="flex w-full justify-center items-center p-2 text-sm font-title
 			 		text-zinc-600 bg-zinc-200 rounded-lg cursor-pointer
-					 peer-checked:bg-primary peer-checked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
+					 peer-checked:bg-primary peer-checanimateked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
 					  translate="local-pve">
 
 					Local 1 Joueur
@@ -68,7 +69,7 @@ function gameTypeButton() {
 function gameUserStat(user: User) {
 	return `<div class="flex flex-col w-full h-full max-h-[600px] max-w-[400px] mx-4 overflow-auto
 		p-4 space-y-4 rounded-lg
-		transition-transform duration-300 ease-in-out">
+		transition-transform duration-500 ease-in-out">
 		
 		
 		<div class="flex flex-col font-title justify-between items-center w-full h-full p-4 space-x-4 bg-primary dark:bg-dprimary rounded-lg">

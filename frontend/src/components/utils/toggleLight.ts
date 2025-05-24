@@ -1,5 +1,4 @@
 import { alert } from "../../components/ui/alert/alert";
-import { loadTranslation } from "../../i18n/Translate";
 
 import { fetchApi } from "../../api/fetch";
 import { API_USER } from "../../api/routes";
@@ -14,7 +13,6 @@ export async function changeLightMode() {
 		
 		document.documentElement.classList.toggle('dark');
 		const choice_theme = switchComponent.checked ? 'light' : 'dark';
-		const trad = await loadTranslation(choice_theme);
 
 		const response = await fetchApi(API_USER.UPDATE.PREF, {
 			method: 'PATCH',
@@ -23,7 +21,7 @@ export async function changeLightMode() {
 			}),
 		});
 		if (response.status === "error") {
-			alert(trad["theme-cannot-be-updated"], "error");
+			alert("Error while changing theme" + response.message, "error");
 		}
 	}
 }

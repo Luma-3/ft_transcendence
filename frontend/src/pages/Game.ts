@@ -118,5 +118,6 @@ export default async function Game(gameData: GameData) {
 			</div>
 			</div>
 		</div>
+		<div id="gameWin"></div>
 	</div>`
 }

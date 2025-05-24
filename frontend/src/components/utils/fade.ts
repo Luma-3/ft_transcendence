@@ -1,5 +1,3 @@
-
-
 /**
  * Wrapper pour l'apparition d'une div (qui a une transform animation)
  * @param HTMLDivElement
