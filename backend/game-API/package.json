@@ -4,31 +4,33 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-      "dev": "nodemon src/index.js",
-      "start": "node src/index.js",
-      "stop": ""
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "stop": ""
   },
   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/Luma-3/ft_transcendence.git"
+    "type": "git",
+    "url": "git+https://github.com/Luma-3/ft_transcendence.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-      "url": "https://github.com/Luma-3/ft_transcendence/issues"
+    "url": "https://github.com/Luma-3/ft_transcendence/issues"
   },
   "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
   "devDependencies": {
-      "@fastify/cors": "^10.0.2",
-      "nodemon": "^3.1.10"
+    "@fastify/cors": "^10.0.2",
+    "nodemon": "^3.1.10"
   },
   "dependencies": {
-      "@fastify/swagger": "^9.4.2",
-      "@fastify/websocket": "^11.0.2",
-      "@transcenduck/error": "file:./dependencies/error",
-      "@transcenduck/formatter": "file:./dependencies/formatter",
-      "dotenv": "^16.5.0",
-      "fastify": "^5.2.2"
+    "@fastify/swagger": "^9.4.2",
+    "@fastify/websocket": "^11.0.2",
+    "@transcenduck/error": "file:./dependencies/error",
+    "@transcenduck/formatter": "file:./dependencies/formatter",
+    "dotenv": "^16.5.0",
+    "fastify": "^5.2.2",
+    "redis": "^5.1.0",
+    "uuid": "^11.1.0"
   },
   "type": "module"
 }

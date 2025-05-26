@@ -21,12 +21,6 @@ export class GameService {
       case 'move':
         game.movePlayer(clientId, event.payload.direction);
         break;
-      case 'hit':
-        game.hitBall(clientId);
-        break;
-      case 'reset':
-        game.resetBall();
-        break;
       default:
         throw new Error('Unknown event type');
     }
