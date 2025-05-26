@@ -5,12 +5,14 @@ import { primaryButton } from "../components/ui/buttons/primaryButton";
 import { secondaryButton } from "../components/ui/buttons/secondaryButton";
 
 function onlineSettings(user: User) {
+	const list_friends = `<li class="text-zinc-600 font-title">You have no friends</li>`;
 	return `
 	<div id="online-settings" class="flex hidden flex-col w-full h-full p-4 space-y-4 mb-10
 	  bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
 
 	  <label for="search-friend" class="text-2xl font-title text-zinc-600 mb-4" translate="search-friend">Search friend</label>
 	<input type="text" id="search-friend" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="enter-username" placeholder="enter-username"/>
+	${list_friends}
 	</div>`
 }
 
@@ -61,6 +63,18 @@ function gameTypeButton() {
 
 					</label>
 				</div>
+				
+				<div class="flex w-full h-full">
+				<input type="radio" id="tournament" name="game-type" data-gameType="tournament" class="hidden peer" />
+				<label for="tournament" class="flex w-full justify-center items-center p-2 text-sm font-title
+				text-zinc-600 bg-zinc-200 rounded-lg cursor-pointer
+					peer-checked:bg-primary peer-checked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
+				translate="tournament">
+
+				Tournament
+
+				</label>
+			</div>
 			</div>`
 
 }

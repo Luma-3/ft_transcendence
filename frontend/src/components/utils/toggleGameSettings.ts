@@ -30,6 +30,11 @@ export function toggleGameSettings(inputValue: DOMStringMap) {
 			hideContainer(onlineSettings as HTMLDivElement);
 			hideContainer(localPVPSettings as HTMLDivElement);
 			break;
+		
+		case 'tournament':
+			hideContainer(onlineSettings as HTMLDivElement);
+			hideContainer(localPVPSettings as HTMLDivElement);
+			break;
 
 		case 'online':
 			hideContainer(localPVPSettings as HTMLDivElement);

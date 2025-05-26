@@ -44,7 +44,10 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 	fadeOut(main_container);
 	setTimeout(async () => {
 
-		const rendererFunction = rendererPublicPage[page] || notFoundPage;
+		const rendererFunction = rendererPublicPage[page];
+		if (!rendererFunction) {
+			return renderErrorPage('404', '404', 'not-found');
+		}
 		const page_content = await Promise.resolve(rendererFunction());
 
 		main_container.innerHTML = page_content;
@@ -97,7 +100,10 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 	
 	setTimeout(async () => {
 		
-		const rendererFunction = rendererPrivatePage[page] || notFoundPage;
+		const rendererFunction = rendererPrivatePage[page];
+		if (!rendererFunction) {
+			return renderErrorPage('404', '404', 'not-found');
+		}
 		const page_content = await Promise.resolve(rendererFunction(response.data as User));
 		
 		main_container.innerHTML = page_content;

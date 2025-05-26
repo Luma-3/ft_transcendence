@@ -18,7 +18,7 @@ export default async function Game(gameData: GameData) {
 	addEventListener('keypress', (event) => {})
 	
 	onkeyup = (event) => {
-		onKeyUp(event, gameLoop);
+		onKeyUp(event);
 	}
 	
 	onkeydown = (event) => {
@@ -31,7 +31,7 @@ export default async function Game(gameData: GameData) {
 		if (divGame.classList.contains("opacity-0")) {
 			return launchGame(divGame, gameLoop);
 		}
-		onKeyDown(event, gameLoop);
+		onKeyDown(event);
 	 }
 
 	/**
@@ -46,28 +46,6 @@ export default async function Game(gameData: GameData) {
 	if (user.status === "error" || !user.data) {
 		return notFoundPage();
 	}
-
-	/**
-	 * Creation du websocketsetInterval(() => {
-
-	}, )
-	//  * TODO : Mettre l'url dans un fichier de config
-	//  */
-	// if (gameData.gameType === "online") {
-	// 	const socket = new WebSocket(API_GAME);
-	// 	socket.addEventListener('error', (event) => {
-	// 		alert("WebSocket error: " + event, "error");
-	// 	})
-
-	// 	socket.addEventListener('open', () => setupGame(socket, user.data, gameData));
-		
-	// 	socket.addEventListener('message', (event) => {
-	// 		const data = JSON.parse(event.data);
-	// 		updateGame(data);
-
-	// 	});
-
-	// }
 
 
 	/**

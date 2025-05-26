@@ -1,7 +1,5 @@
-export default function notFoundPage(code?: string, message?: string) {
-	
-	const error_code = code || '404';
-	const message_error = message || 'not-found';
+export default function notFoundPage(code: string = "404", message: string = "not-found") {
+
 	
 	return `
 		<div class="flex flex-col font-title justify-center items-center h-screen text-center
@@ -12,10 +10,10 @@ export default function notFoundPage(code?: string, message?: string) {
 			</div>
 			
 			<div class="flex text-2xl text-secondary dark:text-dtertiary font-bold animate-fade-in-down animate-bounce">
-				${error_code}
+				${code}
 			</div>
 		
-			<div translate="${message_error}" class="text-2xl font-bold animate-fade-in-down">TEXT</div>
+			<div translate="${message}" class="text-2xl font-bold animate-fade-in-down">TEXT</div>
 			
 			<button onClick="window.location.href='/'" class="flex flex-row rounded-full items-center justify-center mt-4 py-2 px-4
 			text-secondary dark:text-dtertiary bg-primary dark:bg-dprimary hover:bg-secondary dark:hover:bg-dtertiary hover:text-primary dark:hover:text-dprimary 
