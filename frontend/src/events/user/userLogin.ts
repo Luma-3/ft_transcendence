@@ -5,6 +5,7 @@ import { alertPublic } from '../../components/ui/alert/alertPublic';
 import { fetchWithNoToken } from '../../api/fetch';
 import { User } from '../../api/interfaces/User';
 import { API_SESSION } from '../../api/routes';
+import { createSocketConnection } from '../../socket/createSocket';
 
 export async function loginUser() {
 
@@ -32,12 +33,16 @@ export async function loginUser() {
 		alertPublic("username-or-password-incorrect", "error");
 		return;
 	}
-
+	
+	/**
+	 * Creation du socket qui sera bien utile pour le pong
+	 * le chat et toutes communications bidirectionnelles
+	 * entre le client et le serveur qui ont besoin d'etre en temps reel
+	 */
+	createSocketConnection();
+	
 	/**
 	 * Page de ReWelcome (car l'utilisateur a deja un compte)
 	 */
 	renderPrivatePage('reWelcomeYou');
-	setTimeout(() => {
-		renderPrivatePage('dashboard',true);
-	}, 1200);
 }

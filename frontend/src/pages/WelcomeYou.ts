@@ -1,4 +1,5 @@
 import { User } from '../api/interfaces/User';
+import { renderPrivatePage } from '../components/renderPage';
 
 /**
  * * Page de bienvenue lorsque l'utilisateur se connecte pour la première fois (Welcome)
@@ -34,5 +35,6 @@ export function handleWelcomeYouPage() {
 	if (welcome) {
 		setTimeout(() => { welcome.style.opacity = '1'; }, 100);
 		setTimeout(() => { welcome.style.opacity = '0'; }, 2200);
+		setTimeout(() => { renderPrivatePage('dashboard',true); }, 2500);
 	}
 }

@@ -8,6 +8,8 @@ import { API_USER, API_SESSION } from '../../api/routes';
 import { User } from '../../api/interfaces/User';
 import { fetchWithNoToken } from '../../api/fetch'
 
+import { createSocketConnection } from '../../socket/createSocket';
+
 function error(message: string) {
 	alertPublic(message, "error");
 	return;
@@ -94,10 +96,14 @@ export async function registerUser() {
 	}
 
 	/**
+	 * Creation du socket qui sera bien utile pour le pong
+	 * le chat et toutes communications bidirectionnelles
+	 * entre le client et le serveur qui ont besoin d'etre en temps reel
+	 */
+	createSocketConnection();
+	
+	/**
 	 * Affichage de la page de welcome avant le dashboard(car nouvel utilisateur)
 	 */
 	renderPrivatePage('WelcomeYou');
-	setTimeout(() => {
-		renderPrivatePage('dashboard',true);
-	}, 1200);
 }

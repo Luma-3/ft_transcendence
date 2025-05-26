@@ -1,5 +1,6 @@
 import { fetchApiWithNoBody } from "./fetch";
 import { API_SESSION } from "./routes";
+import { socket } from "../socket/createSocket";
 
 export async function verifySession() {
 
@@ -26,9 +27,12 @@ export async function verifySession() {
 }
 
 export async function fetchToken() {
-	const verifyToken = await verifySession();
-	if (verifyToken.status === "error") {
-		return {status: "error", message: "Session expired" };
+	if (socket) {
+		const verifyToken = await verifySession();
+		if (verifyToken.status === "error") {
+			return {status: "error", message: "Session expired" };
+		}
+		return {status: "success", message: "Token valid" };
 	}
-	return {status: "success", message: "Token valid" };
+	return {status: "error", message: "No websocket found for this session" };
 }

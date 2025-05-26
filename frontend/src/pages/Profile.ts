@@ -103,6 +103,23 @@ function profileInfos(user: User) {
 	</div>`
 }
 
+function notifications() {
+	//TODO: Implementer fetch user waiting
+	let content: string = "";
+	const userWaiting = 0;
+
+	if (userWaiting === 0) {
+		content = '<span class="text-secondary dark:text-dtertiary" translate="no-notifications">No notifications</span>';
+	}
+
+	return `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
+			<span traslate="notifications" >Notifications</span>
+			<div class="flex flex-row font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
+			${content}
+			</div>
+			</div>`
+}
+
 async function renderProfilePage() {
 
 	const response = await getUserInfo();
@@ -114,6 +131,7 @@ async function renderProfilePage() {
 			${headerPage("profile")}
 			${profileName(user.username)}
 			${profileInfos(user)}
+			${notifications()}
 			${footer()}`
 	}
 	return notfound();

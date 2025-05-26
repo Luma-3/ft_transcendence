@@ -1,33 +1,41 @@
-import { fetchApi } from "../api/fetch";
-import { fetchToken } from "../api/fetchToken";
-import { getUserInfo } from "../api/getter";
-import { API_GAME } from "../api/routes";
-import { alert } from "../components/ui/alert/alert";
 import { renderGame } from "../components/renderPage";
+import { getEventAndSendGameData } from "./gameUpdate";
 
-async function createGameServer(gameData: any) {
-	
-	const user = await getUserInfo();
-	if (!user || user.status === "error") {
-		window.location.href = "/login";
-		return;
-	}
-	
-	const response = await fetchApi(API_GAME.LOCAL_CREATE, {
-		method: 'POST',
-		body: JSON.stringify({
-			player1: gameData.player1,
-			player2: gameData.player2,
-			gameType: gameData.gameType,
-		})
+import { alert } from "../components/ui/alert/alert";
+import { fetchToken } from "../api/fetchToken";
+import { drawGame } from "./gameDraw";
+import { GameData } from "../api/interfaces/GameData";
+
+function connectGameSocket(gameData: GameData) {
+
+	const socket = new WebSocket('ws://localhost:5173/api/ws');
+
+	socket.addEventListener("open", () => {
+
+		socket.send(JSON.stringify({
+			type: "game",
+			payload: gameData,
+		}));
 	});
-	if (response && response.status === "error") {
-		alert(response.message, "error");
-		return;
-	}
-	return renderGame(gameData);
-}
 
+	socket.addEventListener("message", (e) => {
+		//TODO: Comprend tout les types de messages pour pouvoir les renvoyer
+		drawGame(JSON.parse(e.data));
+	});
+
+	socket.addEventListener('error', (event) => {
+		alert("WebSocket error: " + event, "error");
+	});
+
+	socket.addEventListener('close', (event) => {
+		if (event.wasClean) {
+			console.log(`WebSocket closed cleanly, code=${event.code}, reason=${event.reason}`);
+		} else {
+			console.error(`WebSocket connection closed unexpectedly, code=${event.code}`);
+	}});
+
+	return socket;
+}
 
 /**
  * Recuperation des infos necessaires dans le dashboard
@@ -75,14 +83,18 @@ export async function initGameData() {
 		
 		default:
 			break;
-	}
-
+		}
+		
 	const gameData = {
 		player1: player1,
 		player2: player2,
 		gameType: gameType.id,
 	}
-	return createGameServer(gameData);
+
+	// TODO: Voir si on a besoin de stocker le socket
+	const socket = connectGameSocket(gameData);
+	
+	// return renderGame(gameData);
 }
 
 

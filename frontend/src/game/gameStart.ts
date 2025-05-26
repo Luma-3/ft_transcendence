@@ -1,20 +1,9 @@
-import { User } from "../api/interfaces/User";
-
-// export function setupGame(socket: WebSocket, user: User, gameData: any) {
-// 	socket.send(JSON.stringify({
-// 		type: "init",
-// 		user1: user.username,
-// 		user2: gameData.player2,
-// 		gameType: gameData.gameType,
-// 	}));
-// }
-import { updateGame } from "./gameUpdate";
 import { drawGame } from "./gameDraw";
-import { startGameLoop } from "./gameLoop";
 import { DisplayGameWin } from "./gameWin";
 
 
 export function launchGame(gameContainer: HTMLDivElement, gameLoop: number) {
+
 	const startInfos = document.getElementById("startGameInfos") as HTMLDivElement;
 
 	startInfos.classList.remove("opacity-100");
@@ -27,10 +16,8 @@ export function launchGame(gameContainer: HTMLDivElement, gameLoop: number) {
 		drawGame({player1: { y: 0, score: 0 },
 				player2: { y: 0, score: 0 },
 				ball: { x: 0, y: 0 }});
-	
 		// startGameLoop();
-		console.log("Game started");
-		DisplayGameWin("Player 1 wins!");
+		// DisplayGameWin("Player 1 wins!");
 	}, 500);
 	
 }

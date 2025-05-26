@@ -30,7 +30,7 @@ function gameWinContainer() {
 	${primaryButton({id: 'playAgain', weight: "1/2", text: "Play Again", translate: "play-again", type: "button"})}
 	${secondaryButton({id: 'backToDashboard', weight: "1/2", text: "Back to Dashboard", translate: "back-to-dashboard", type: "button"})}
 	</div>
-
+	
 	
 
 	</div>
