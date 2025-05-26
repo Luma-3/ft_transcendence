@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+import { redisPub } from '../config/redis.js';
 
 class Ball {
   constructor(x = 0, y = 0, vector_x = 0, vector_y = 0, size = 1) {
@@ -33,18 +35,18 @@ class Ball {
 
   set_vectors_ball(rand) {
     switch (rand) {
-        case 1:
-            this.vector_y *= -1;            
-            break;
-        case 2:
-            this.vector_x *= -1;
-            break;
-        case 3:
-            this.vector_x *= -1;
-            this.vector_y *= -1;
-            break;  
-        default:
-            break;
+      case 1:
+        this.vector_y *= -1;
+        break;
+      case 2:
+        this.vector_x *= -1;
+        break;
+      case 3:
+        this.vector_x *= -1;
+        this.vector_y *= -1;
+        break;
+      default:
+        break;
     }
   }
 
@@ -54,7 +56,7 @@ class Ball {
   }
 
   toJSON() {
-    return { 
+    return {
       x: this.x,
       y: this.y,
       // size: this.size
@@ -63,13 +65,12 @@ class Ball {
 }
 
 class Player {
-  constructor({ uid = null, name = null, width = 10, height = 100, x = 0, y = 0 } = {}) {
-    if (uid !== null) this.uid = uid;
-    if (name !== null) this.name = name;
+  constructor({ uid, x = 0, y = 0 } = {}) {
+    this.uid = uid;
 
     this.score = 0;
-    this.width = width;
-    this.height = height;
+    this.width = 10;
+    this.height = 100;
     this.x = x;
     this.y = y;
     this.speed = 0;
@@ -86,6 +87,10 @@ class Player {
     }
   }
 
+  add_score() {
+    this.score++;
+  }
+
   toJSON() {
     return {
       // score: this.score,
@@ -98,7 +103,9 @@ class Player {
 }
 
 export class Pong {
-  constructor({ sizeX = 800, sizeY = 600, player1 = {}, player2 = {} } = {}) {
+  constructor({ sizeX = 800, sizeY = 600, player1_uid, player2_uid } = {}) {
+    this.id = uuidv4();
+
     this.sizeX = sizeX;
     this.sizeY = sizeY;
 
@@ -110,43 +117,72 @@ export class Pong {
     this.left = -this.sizeX / 2;
     this.right = this.sizeX / 2;
 
-    this.player1 = new Player({ uid: player1.uid ?? null, name: player1.name ?? null, width: player1.width ?? 10, height: player1.height ?? 100, x: this.left + 10, y: centerY });
+    this.player1 = new Player({ uid: player1_uid, x: this.left + 10, y: centerY });
 
-    this.player2 = new Player({ uid: player2.uid ?? null, name: player2.name ?? null, width: player2.width ?? 10, height: player2.height ?? 100, x: this.right - 10, y: centerY });
+    this.player2 = new Player({ uid: player2_uid, x: this.right - 10, y: centerY });
 
     this.ball = new Ball(centerX, centerY, 1, 1);
 
-    this.gameOver = false;
+    this.gameIsStart = false;
     this.WIN_SCORE = 11;
+
+    this.interval = 0;
   }
 
   start() {
     const rand = Math.floor(Math.random() * 4) + 1;
     this.ball.set_vectors_ball(rand);
+    this.gameIsStart = true;
+    this.interval = setInterval(update, 1000 / 30);
   }
 
-  step() {
-    this.ball.move_ball(this.top, this.bottom, this.player1, this.player2);
-
-    if (this.ball.x <= this.left) {
-      this.player2.score++;
-      this.ball.reset_ball();
-    } else if (this.ball.x >= this.right) {
-      this.player1.score++;
-      this.ball.reset_ball();
-    }
-
+  check_win() {
     if (this.player1.score >= this.WIN_SCORE || this.player2.score >= this.WIN_SCORE) {
       const winner =
         this.player1.score >= this.WIN_SCORE
           ? this.player1.name
           : this.player2.name;
       console.log(`${winner} wins the game!`);
-      this.gameOver = true;
+      clearInterval(this.interval);
+    }
+  }
+
+  update() {
+    this.ball.move_ball(this.top, this.bottom, this.player1, this.player2);
+
+    if (this.ball.x <= this.left) {
+      this.player2.add_score();
+      this.check_win();
+    } else if (this.ball.x >= this.right) {
+      this.player1.add_score();
+      this.check_win();
+    }
+    this.ball.reset_ball();
+
+    redisPub.publish('ws.game.out', this.toJSON());
+  }
+
+  movePlayer(uid, direction) {
+    let player;
+
+    if (uid === this.player1.uid) {
+      player = this.player1;
+    } else if (uid === this.player2.uid) {
+      player = this.player2;
     }
 
-    const jsonData = JSON.stringify(this, null, 2);
-    return jsonData
+    switch (direction) {
+      case 'up':
+        player.speed = -5;
+        break;
+      case 'down':
+        player.speed = 5;
+        break;
+      default:
+        player.speed = 0;
+        break;
+    }
+    player.move_player(this.top, this.bottom);
   }
 
   toJSON() {
