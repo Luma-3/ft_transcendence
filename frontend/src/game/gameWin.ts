@@ -8,7 +8,7 @@ export function DisplayGameWin(winnerMessage: string) {
 	game.classList.add("opacity-0");
 	setTimeout(() => {
 		game.classList.add("hidden");
-		document.getElementById("gameWin")!.innerHTML = gameLoseContainer();
+		document.getElementById("gameWin")!.innerHTML = gameWinContainer();
 	}, 500);
 
 }
