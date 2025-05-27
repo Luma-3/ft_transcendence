@@ -8,6 +8,7 @@ class Ball {
     this.vector_x = vector_x;
     this.vector_y = vector_y;
     this.size = size;
+    this.speed = 4;
   }
 
   check_collision_player(player) {
@@ -20,8 +21,8 @@ class Ball {
   }
 
   move_ball(top, bottom, player1, player2) {
-    this.x += this.vector_x;
-    this.y += this.vector_y;
+    this.x += this.vector_x * this.speed;
+    this.y += this.vector_y * this.speed;
 
     if (this.y >= top || this.y <= bottom) {
       this.vector_y *= -1;
@@ -93,7 +94,7 @@ class Player {
 
   toJSON() {
     return {
-      // score: this.score,
+      score: this.score,
       // width: this.width,
       // height: this.height,
       // x: this.x,
@@ -148,31 +149,31 @@ export class Pong {
   }
 
   update() {
-    console.log("Update game", this.ball);
     this.ball.move_ball(this.top, this.bottom, this.player1, this.player2);
 
     if (this.ball.x <= this.left) {
       this.player2.add_score();
       this.check_win();
+      this.ball.reset_ball();
     } else if (this.ball.x >= this.right) {
       this.player1.add_score();
       this.check_win();
+      this.ball.reset_ball();
     }
-    this.ball.reset_ball();
 
-    redisPub.publish('ws.game.out', JSON
+    redisPub.publish('ws.this.out', JSON
       .stringify({
         clientId: this.player1.uid,
-        payload: this.toJSON(),
+        payload: {
+          action: 'move',
+          gameData: this.toJSON(),
+        }
       }));
   }
 
   movePlayer(uid, direction) {
     let player;
-
-    console.log("Move player", uid, direction);
-    console.log("Player1", this.player1.uid, "Player2", this.player2.uid);
-
+    
     if (uid === this.player1.uid) {
       player = this.player1;
     } else if (uid === this.player2.uid) {

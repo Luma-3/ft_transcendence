@@ -11,9 +11,10 @@ export function createSocketConnection() {
     console.log("WebSocket connection established successfully.");
   });
   socket.addEventListener("message", (e) => {
-    console.log(e.data);
-    const message = e.data;
-    drawGame(message);
+    const message = JSON.parse(e.data);
+    if (message.payload.action === 'move') {
+      drawGame(message.payload.gameData);
+    }
   });
 
   socket.addEventListener('error', (event) => {

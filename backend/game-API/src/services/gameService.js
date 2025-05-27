@@ -1,7 +1,6 @@
 import { fastify } from '../fastify.js';
 import { Pong } from '../game/Pong.js';
 
-
 class GameService {
   constructor() {
     this.games = new Map();
@@ -20,7 +19,7 @@ class GameService {
     console.log(gameId)
     const game = this.games.get(gameId);
     if (!game) {
-      throw new Error('Game not found for the given client ID');
+      // throw new Error('Game not found for the given client ID');
     }
 
     switch (event.type) {

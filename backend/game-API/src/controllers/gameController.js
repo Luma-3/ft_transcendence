@@ -14,7 +14,6 @@ export async function postGame(req, rep) {
 export async function handlerEvent() {
   redisSub.subscribe('ws.game.in', (raw) => {
     const message = JSON.parse(raw);
-    console.log("MEssage handkler event", message);
     gameService.handleEvent(message.clientId, message.payload);
   })
 }

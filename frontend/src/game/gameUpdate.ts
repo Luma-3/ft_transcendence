@@ -12,7 +12,6 @@ export async function getEventAndSendGameData() {
     console.error("WebSocket connection is not established.");
     return;
   }
-  console.log("Sending game data:", gameData);
   socket.send(JSON.stringify({
     type: "game",
     payload: {

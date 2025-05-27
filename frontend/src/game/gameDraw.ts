@@ -1,7 +1,6 @@
 import { GameData } from "../api/interfaces/GameData";
 
 export function drawGame(gameData: any) {
-  console.log("Drawing game with data:", gameData);
   const game = document.getElementById("gamePong") as HTMLCanvasElement;
   const ctx = game.getContext("2d");
 
