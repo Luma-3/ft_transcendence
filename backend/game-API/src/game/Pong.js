@@ -1,110 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import { redisPub } from '../config/redis.js';
 
-class Ball {
-  constructor(x = 0, y = 0, vector_x = 0, vector_y = 0, size = 1) {
-    this.x = x;
-    this.y = y;
-    this.vector_x = vector_x;
-    this.vector_y = vector_y;
-    this.size = size;
-    this.speed = 4;
-  }
-
-  check_collision_player(player) {
-    return (
-      this.x >= player.x &&
-      this.x <= player.x + player.width &&
-      this.y >= player.y - player.height / 2 &&
-      this.y <= player.y + player.height / 2
-    );
-  }
-
-  move_ball(top, bottom, player1, player2) {
-    this.x += this.vector_x * this.speed;
-    this.y += this.vector_y * this.speed;
-
-    if (this.y >= top || this.y <= bottom) {
-      this.vector_y *= -1;
-    }
-
-    if (this.check_collision_player(player1) ||
-      this.check_collision_player(player2)) {
-      this.vector_x *= -1;
-    }
-  }
-
-  set_vectors_ball(rand) {
-    switch (rand) {
-      case 1:
-        this.vector_y *= -1;
-        break;
-      case 2:
-        this.vector_x *= -1;
-        break;
-      case 3:
-        this.vector_x *= -1;
-        this.vector_y *= -1;
-        break;
-      default:
-        break;
-    }
-  }
-
-  reset_ball() {
-    this.x = 0;
-    this.y = 0;
-  }
-
-  toJSON() {
-    return {
-      x: this.x,
-      y: this.y,
-      // size: this.size
-    };
-  }
-}
-
-class Player {
-  constructor({ uid, x = 0, y = 0 } = {}) {
-    this.uid = uid;
-
-    this.score = 0;
-    this.width = 10;
-    this.height = 100;
-    this.x = x;
-    this.y = y;
-    this.speed = 0;
-    this.halfHeight = this.height / 2;
-  }
-
-  move_player(top, bottom) {
-    this.y += this.speed;
-
-    if (this.y + this.halfHeight > top) {
-      this.y = top - this.halfHeight;
-    } else if (this.y - this.halfHeight < bottom) {
-      this.y = bottom + this.halfHeight;
-    }
-  }
-
-  add_score() {
-    this.score++;
-  }
-
-  toJSON() {
-    return {
-      score: this.score,
-      // width: this.width,
-      // height: this.height,
-      // x: this.x,
-      y: this.y,
-    };
-  }
-}
+import { Ball } from './Ball.js'
+import { Player } from './Player.js'
 
 export class Pong {
-  constructor({ sizeX = 800, sizeY = 600, player1_uid, player2_uid } = {}) {
+  constructor({ player1_uid, player2_uid, sizeX = 800, sizeY = 600 } = {}) {
     this.id = uuidv4();
 
     this.sizeX = sizeX;
@@ -113,10 +14,10 @@ export class Pong {
     const centerX = 0;
     const centerY = 0;
 
-    this.top = this.sizeY / 2;
+    this.top    = this.sizeY / 2;
     this.bottom = -this.sizeY / 2;
-    this.left = -this.sizeX / 2;
-    this.right = this.sizeX / 2;
+    this.right  = this.sizeX / 2;
+    this.left   = -this.sizeX / 2;
 
     this.player1 = new Player({ uid: player1_uid, x: this.left + 10, y: centerY });
 
@@ -150,6 +51,7 @@ export class Pong {
 
   update() {
     this.ball.move_ball(this.top, this.bottom, this.player1, this.player2);
+    this.player2.y = this.ball.y;
 
     if (this.ball.x <= this.left) {
       this.player2.add_score();
