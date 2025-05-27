@@ -17,6 +17,10 @@ import socket from "../plugins/socket.js";
 
 export const config_dev = {
   logger: true,
+  https: {
+    key: fs.readFileSync('cert/key.dev.pem'),
+    cert: fs.readFileSync('cert/cert.dev.pem'),
+  }
 };
 
 export function registerPlugin(fastify, servers) {

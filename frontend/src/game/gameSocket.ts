@@ -1,11 +1,7 @@
 import { renderGame } from "../components/renderPage";
+import { drawGame } from "./gameDraw";
 
 export function handleGameSocketMessage(data: any) {
-	switch(data.gameData.action) {
-		case 'game-started':
-			renderGame(data.gameData);
-			break;
-		case 'game-updated':
-			
-	}
+  drawGame(data.payload);
+
 }

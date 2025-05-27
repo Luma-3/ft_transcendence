@@ -47,7 +47,7 @@ function socket(fastify, opts, done) {
       const socket = fastify.ws_clients.get(clientId);
       if (socket) {
         socket.send(JSON.stringify({
-          type: channel.split('.')[0],
+          type: channel.split('.')[1],
           payload: payload
         }));
       }

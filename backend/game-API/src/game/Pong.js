@@ -133,7 +133,7 @@ export class Pong {
     const rand = Math.floor(Math.random() * 4) + 1;
     this.ball.set_vectors_ball(rand);
     this.gameIsStart = true;
-    this.interval = setInterval(update, 1000 / 30);
+    this.interval = setInterval(this.update.bind(this), 1000 / 30);
   }
 
   check_win() {
@@ -148,6 +148,7 @@ export class Pong {
   }
 
   update() {
+    console.log("Update game", this.ball);
     this.ball.move_ball(this.top, this.bottom, this.player1, this.player2);
 
     if (this.ball.x <= this.left) {
@@ -159,11 +160,18 @@ export class Pong {
     }
     this.ball.reset_ball();
 
-    redisPub.publish('ws.game.out', this.toJSON());
+    redisPub.publish('ws.game.out', JSON
+      .stringify({
+        clientId: this.player1.uid,
+        payload: this.toJSON(),
+      }));
   }
 
   movePlayer(uid, direction) {
     let player;
+
+    console.log("Move player", uid, direction);
+    console.log("Player1", this.player1.uid, "Player2", this.player2.uid);
 
     if (uid === this.player1.uid) {
       player = this.player1;

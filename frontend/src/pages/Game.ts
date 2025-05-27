@@ -13,45 +13,45 @@ export var gameLoop = 0;
 //TODO : Prevoir une variable pour le deuxieme joueur qui sera fetch dans le fonction principale
 import { GameData } from "../api/interfaces/GameData";
 
-export default async function Game(gameData: GameData) {
+export default async function Game() {
 
-	addEventListener('keypress', (event) => {})
-	
-	onkeyup = (event) => {
-		onKeyUp(event);
-	}
-	
-	onkeydown = (event) => {
-		
-		const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
-		/**
-		 * Pour le premier evenement clavier, je fais apparaitre la div du jeu 
-		 * et je recuperer les infos transmise dans le dashboard
-		 */
-		if (divGame.classList.contains("opacity-0")) {
-			return launchGame(divGame, gameLoop);
-		}
-		onKeyDown(event);
-	 }
+  addEventListener('keypress', (event) => { })
 
-	/**
-	 * Verification que le joueur est bien connecté
-	 */
-	const token = await fetchToken();
-	if (token.status === "error") {
-		return notFoundPage();
-	}
+  onkeyup = (event) => {
+    onKeyUp(event);
+  }
 
-	const user = await getUserInfo();
-	if (user.status === "error" || !user.data) {
-		return notFoundPage();
-	}
+  onkeydown = (event) => {
+
+    const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
+    /**
+     * Pour le premier evenement clavier, je fais apparaitre la div du jeu 
+     * et je recuperer les infos transmise dans le dashboard
+     */
+    if (divGame.classList.contains("opacity-0")) {
+      return launchGame(divGame, gameLoop);
+    }
+    onKeyDown(event);
+  }
+
+  /**
+   * Verification que le joueur est bien connecté
+   */
+  const token = await fetchToken();
+  if (token.status === "error") {
+    return notFoundPage();
+  }
+
+  const user = await getUserInfo();
+  if (user.status === "error" || !user.data) {
+    return notFoundPage();
+  }
 
 
-	/**
-	 * Contenu HTML de la page
-	 */
-	return `
+  /**
+   * Contenu HTML de la page
+   */
+  return `
 	${navbar(user.data)}
 	<div class="flex flex-col justify-center items-center text-tertiary dark:text-dtertiary">
 		
@@ -63,7 +63,7 @@ export default async function Game(gameData: GameData) {
 					<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2
 					mb-4
 					border-primary dark:border-dprimary" />
-					${gameData.player1}
+				  BOB
 				</div>
 				<div class="flex flex-col justify-center items-center">
 					VS
@@ -71,7 +71,7 @@ export default async function Game(gameData: GameData) {
 				<div class="flex flex-col justify-center items-center">
 					<img src="/images/500Logo.png" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2
 					mb-4 border-primary dark:border-dprimary" />
-					${gameData.player2}
+					ALICE
 				</div>
 			</div>
 

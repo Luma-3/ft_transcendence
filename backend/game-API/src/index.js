@@ -1,27 +1,31 @@
-import Fastify from "fastify";
+import { fastify } from './fastify.js';
 import dotenv from 'dotenv'
 import websocketPlugin from '@fastify/websocket';
 
 import config from './config/fastify.config.js'
 
-import game from './routes/game.js'
+import game from './routes/game.js';
+
+import { handlerEvent } from './controllers/gameController.js';
 
 dotenv.config()
 
-const fastify = Fastify({
-  logger: true,
-});
+// const fastify = Fastify({
+//   logger: true,
+// });
 
 await config(fastify);
 
 fastify.register(websocketPlugin);
 fastify.register(game);
 
+await handlerEvent();
+
 fastify.addHook('onRoute', (routeOptions) => {
   console.log(`Route registered: ${routeOptions.method} ${routeOptions.url}`);
 });
 
-console.log(fastify.websocketPlugin);
+// console.log(fastify.websocketPlugin);
 
 const start = async () => {
   try {
