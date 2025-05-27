@@ -1,5 +1,6 @@
 import { fastify } from '../fastify.js';
 import { Pong } from '../game/Pong.js';
+import { InternalServerError } from '@transcenduck/error'
 
 class GameService {
   constructor() {
@@ -16,10 +17,9 @@ class GameService {
 
   async handleEvent(clientId, event) {
     const gameId = event.gameId;
-    console.log(gameId)
     const game = this.games.get(gameId);
     if (!game) {
-      // throw new Error('Game not found for the given client ID');
+      throw new InternalServerError('Game not found for the given client ID');
     }
 
     switch (event.type) {
@@ -27,7 +27,7 @@ class GameService {
         game.movePlayer(clientId, event.direction);
         break;
       default:
-        throw new Error('Unknown event type');
+        throw new InternalServerError('Unknown event type');
     }
   }
 
