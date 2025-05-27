@@ -11,6 +11,7 @@ export function createSocketConnection() {
 	socket.addEventListener("open", () => {
 		console.log("WebSocket connection established successfully.");
 	});
+	
 	socket.addEventListener("message", (e) => {
 		const message = JSON.parse(e.data).payload;
 
