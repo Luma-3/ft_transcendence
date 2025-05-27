@@ -13,7 +13,7 @@ export var gameLoop = 0;
 //TODO : Prevoir une variable pour le deuxieme joueur qui sera fetch dans le fonction principale
 import { GameData } from "../api/interfaces/GameData";
 
-export default async function Game() {
+export default async function Game(gameData: any) {
 
   addEventListener('keypress', (event) => { })
 
@@ -63,7 +63,7 @@ export default async function Game() {
 					<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2
 					mb-4
 					border-primary dark:border-dprimary" />
-				  BOB
+					${gameData.player1_name}
 				</div>
 				<div class="flex flex-col justify-center items-center">
 					VS
@@ -71,7 +71,7 @@ export default async function Game() {
 				<div class="flex flex-col justify-center items-center">
 					<img src="/images/500Logo.png" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2
 					mb-4 border-primary dark:border-dprimary" />
-					ALICE
+					${gameData.player2_name}
 				</div>
 			</div>
 

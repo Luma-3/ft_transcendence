@@ -2,6 +2,9 @@ import { GameData } from "../api/interfaces/GameData";
 
 export function drawGame(gameData: any) {
   const game = document.getElementById("gamePong") as HTMLCanvasElement;
+  if (!game) {
+    return;
+  }
   const ctx = game.getContext("2d");
 
   if (!ctx) { return; }

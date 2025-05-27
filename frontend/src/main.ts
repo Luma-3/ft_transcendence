@@ -5,6 +5,7 @@ import { fetchToken } from './api/fetchToken'
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 
 import { gameLoop } from './pages/Game'
+import { createSocketConnection } from './socket/createSocket'
 
 //* Ajout de la page dans l'historique de navigation et enregistrement de la page precedente pour le button back
 export function addToHistory(page: string, updateHistory: boolean = true) {
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			return ;
 		}
 		return renderPrivatePage(page, false);
-	}
+	} 
 	return renderPublicPage(page);
 
 });

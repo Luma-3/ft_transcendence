@@ -11,38 +11,6 @@ import { User } from "../api/interfaces/User";
 
 export let gameID: string;
 
-// function connectGameSocket(gameData: GameData) {
-
-//   const socket = new WebSocket('ws://localhost:5173/api/ws');
-
-//   socket.addEventListener("open", () => {
-
-//     socket.send(JSON.stringify({
-//       type: "game",
-//       payload: gameData,
-//     }));
-//   });
-
-//   socket.addEventListener("message", (e) => {
-//     //TODO: Comprend tout les types de messages pour pouvoir les renvoyer
-//     drawGame(JSON.parse(e.data));
-//   });
-
-//   socket.addEventListener('error', (event) => {
-//     alert("WebSocket error: " + event, "error");
-//   });
-
-//   socket.addEventListener('close', (event) => {
-//     if (event.wasClean) {
-//       console.log(`WebSocket closed cleanly, code=${event.code}, reason=${event.reason}`);
-//     } else {
-//       console.error(`WebSocket connection closed unexpectedly, code=${event.code}`);
-//     }
-//   });
-
-//   return socket;
-// }
-
 /**
  * Recuperation des infos necessaires dans le dashboard
  * pour le lancement de la partie
@@ -104,6 +72,8 @@ export async function initGameData() {
   const gameData = {
     player1_uid: user.data.id!,
     player2_uid: 'c08d80a1-d355-4536-aea2-bc62ca252479',
+    player1_name: player1,
+    player2_name: player2,
   }
   const response = await fetchApi<gameId>(API_GAME.CREATE, {
     method: 'POST',
@@ -113,9 +83,9 @@ export async function initGameData() {
     alert("Error while creating game", "error");
     return;
   }
-  console.log("Game created successfully:", response.data);
+  
   gameID = response.data.id;
-  renderGame();
+  renderGame(gameData);
 }
 
 
