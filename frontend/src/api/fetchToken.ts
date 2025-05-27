@@ -27,16 +27,12 @@ export async function verifySession() {
 
 }
 
-export async function fetchToken() {
-	
-	if (socket) {
+export async function fetchToken(publicPage: boolean = false) {
+		
 		const verifyToken = await verifySession();
 		if (verifyToken.status === "error") {
 			return {status: "error", message: "Session expired" };
 		}
 		return {status: "success", message: "Token valid" };
-	}
-	console.log("No websocket found, creating a new one");
-	createSocketConnection();
-	return fetchToken();
+
 }

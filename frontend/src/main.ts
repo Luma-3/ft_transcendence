@@ -25,12 +25,9 @@ const publicPages = ['home', 'login', 'register']
 // * Sinon on affiche la page publique
 document.addEventListener('DOMContentLoaded', async () => {
 	
-	if (gameLoop) {
-		clearTimeout(gameLoop);
-	}
 	const page =  window.location.pathname.substring(1) || 'home'
 	
-	const user = await fetchToken();
+	const user = await fetchToken(publicPages.includes(page) ? false : true);
 	if (user.status === "success") {
 		if (publicPages.includes(page)) {
 			renderPrivatePage('dashboard', true);
