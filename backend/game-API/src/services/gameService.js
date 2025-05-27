@@ -9,10 +9,104 @@ class GameService {
 
   async createGame(player1_uid, player2_uid) {
     const game = new Pong({ player1_uid, player2_uid });
-    console.log("Game created", game);
+    // console.log("Game created", game);
     this.games.set(game.id, game);
-    game.start();
+    
+    // Start the game immediately after creation
+    this.startGame(game.id);
+
     return game.id;
+  }
+
+  async startGame(gameId) {
+    const game = this.games.get(gameId);
+
+    if (!game) {
+      throw new InternalServerError('Game not found');
+    }
+
+    // Start the game only if it is not already started
+    if (!game.gameIsStart) {
+      console.log(`
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        Game ${gameId} started
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        `);
+      game.start();
+    } else {
+      throw new InternalServerError('Game is already started');
+    }
+  }
+
+  async stopGame(gameId) {
+    const game = this.games.get(gameId);
+    if (!game) {
+      throw new InternalServerError('Game not found');
+    }
+
+    // Stop the game only if it is currently started
+    if (game.gameIsStart) {
+      console.log(`
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        Game ${gameId} stopped
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        `);
+      game.stop();
+    } else {
+      throw new InternalServerError('Game is not started');
+    }
   }
 
   async handleEvent(clientId, event) {
@@ -46,7 +140,9 @@ class GameService {
 
   async deleteGame(gameId) {
     if (this.games.has(gameId)) {
+      this.stopGame(gameId);
       this.games.delete(gameId);
+      console.log(`Game ${gameId} deleted`);
     }
   }
 }

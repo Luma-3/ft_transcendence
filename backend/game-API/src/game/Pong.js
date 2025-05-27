@@ -38,6 +38,12 @@ export class Pong {
     this.interval = setInterval(this.update.bind(this), 1000 / 30);
   }
 
+  stop() {
+    this.gameIsStart = false;
+    clearInterval(this.interval);
+    this.interval = 0;
+  }
+
   check_win() {
     if (this.player1.score >= this.WIN_SCORE || this.player2.score >= this.WIN_SCORE) {
       const winner =
@@ -45,7 +51,7 @@ export class Pong {
           ? this.player1.name
           : this.player2.name;
       console.log(`${winner} wins the game!`);
-      clearInterval(this.interval);
+      this.stop();
     }
   }
 
