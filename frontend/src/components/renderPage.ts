@@ -21,6 +21,7 @@ import { getUserInfo } from '../api/getter'
 
 
 import { fetchToken } from '../api/fetchToken'
+import { createSocketConnection } from '../socket/createSocket'
 
 /**
  * Associe les pages publics aux fonctions de rendu
@@ -86,6 +87,9 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
   const token = await fetchToken();
   if (token.status === "error") {
     return renderErrorPage('400', '401', 'Unauthorized');
+  } else if (token.status === "socket error") {
+    console.log("No websocket found for this session, creating a new one");
+    createSocketConnection();
   }
 
   const response = await getUserInfo();
@@ -125,7 +129,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     , 250);
 }
 
-export async function renderGame() {
+export async function renderGame(GameData?: any) {
 
   const main_container = document.querySelector<HTMLDivElement>('#app')!
 
@@ -146,7 +150,7 @@ export async function renderGame() {
 
   setTimeout(async () => {
 
-    const newContainer = await game();
+    const newContainer = await game(GameData);
     if (!newContainer) {
       return;
     }

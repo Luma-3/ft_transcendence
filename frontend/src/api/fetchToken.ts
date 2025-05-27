@@ -1,6 +1,7 @@
 import { fetchApiWithNoBody } from "./fetch";
 import { API_SESSION } from "./routes";
 import { socket } from "../socket/createSocket";
+import { createSocketConnection } from "../socket/createSocket";
 
 export async function verifySession() {
 
@@ -27,6 +28,7 @@ export async function verifySession() {
 }
 
 export async function fetchToken() {
+	
 	if (socket) {
 		const verifyToken = await verifySession();
 		if (verifyToken.status === "error") {
@@ -34,5 +36,7 @@ export async function fetchToken() {
 		}
 		return {status: "success", message: "Token valid" };
 	}
-	return {status: "error", message: "No websocket found for this session" };
+	console.log("No websocket found, creating a new one");
+	createSocketConnection();
+	return fetchToken();
 }
