@@ -31,6 +31,19 @@ class GameService {
     }
   }
 
+  async getGame(clientId) {
+    for (const game of this.games.values()) {
+      if (game.player1.uid === clientId || game.player2.uid === clientId) {
+        return game;
+      }
+    }
+    throw new InternalServerError('Game not found for the given client ID');
+  }
+
+  async getGameId(clientId) {
+    return this.getGame(clientId).id;
+  }
+
   async deleteGame(gameId) {
     if (this.games.has(gameId)) {
       this.games.delete(gameId);

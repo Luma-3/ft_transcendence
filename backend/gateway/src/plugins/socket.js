@@ -35,6 +35,10 @@ function socket(fastify, opts, done) {
 
       socket.on('close', () => {
         fastify.ws_clients.delete(clientId);
+        redisPub.publish('ws.broadcast.disconnect', JSON.stringify({
+          clientId: clientId,
+          payload: {}
+        }));
         console.log(`[WS] client ${clientId} disconnected`);
       });
     })

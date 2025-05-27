@@ -15,4 +15,9 @@ export async function handlerEvent() {
     const message = JSON.parse(raw);
     gameService.handleEvent(message.clientId, message.payload);
   })
+
+  redisSub.subscribe('ws.broadcast.disconnect', (raw) => {
+    const message = JSON.parse(raw);
+    gameService.deleteGame(gameService.getGameId(message.clientId));
+  })
 }
