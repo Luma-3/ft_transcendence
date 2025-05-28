@@ -82,6 +82,8 @@ export class Room {
 
   isJoinable() { return (!this.isFull && this.status === 'waiting'); }
 
+  isReadyToStart() { return (this.isFull && this.status === 'readyToStart'); }
+
   usersInfos() {
 	return {
 	  id: this.id,

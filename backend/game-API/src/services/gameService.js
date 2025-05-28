@@ -47,6 +47,26 @@ class GameService {
     return room.id; // Return the ID of the room joined
   }
 
+  // leaveRoom(roomId, playerId) {
+  //   const room = this.getRoom(roomId);
+  //   if (!room) {
+  //     throw new InternalServerError('Room not found');
+  //   }
+  //   const playerIndex = room.players.findIndex(p => p.uid === playerId);
+  //   if (playerIndex === -1) {
+  //     throw new InternalServerError('Player not found in the room');
+  //   }
+  //   room.players.splice(playerIndex, 1);
+  //   if (room.players.length === 0) {
+  //     this.deleteRoom(roomId); // Delete the room if no players left
+  //   } else if (room.players.length < room.maxPlayers) {
+  //     room.isFull = false; // Room is no longer full
+  //     room.status = 'waiting'; // Change status to waiting
+  //   }
+  //   console.log(`Player ${playerId} left room ${roomId}`);
+  //   return roomId; // Return the ID of the room left
+  // }
+
   findJoinableRoom(typeGame) {
     console.log('nb rooms : ', this.rooms.size);
     for (const room of this.rooms.values()) {
@@ -90,13 +110,11 @@ class GameService {
     const data = event.data;
     const roomId = data.roomId;
     const room = this.getRoom(roomId);
-    console.log('room : ', room, 'roomId : ', roomId, 'clientId : ', clientId);
     if (!room) {
       throw new InternalServerError('Room not found for the given client ID');
     }
 
     switch (event.type) {
-
       case 'init':
         const player = room.getPlayerById(data.uid);
         if (!player) {
@@ -115,6 +133,18 @@ class GameService {
               },
             }
           }));
+        if (room.isReadyToStart()) {
+          for (const p of room.players) {
+            redisPub.publish('ws.game.out', JSON
+              .stringify({
+                clientId: p.clientId,
+                payload: {
+                  action: 'gameReady',
+                }
+              })
+            );
+          }
+        }
         break;
 
       case 'move':

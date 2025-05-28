@@ -43,6 +43,6 @@ export async function handlerEvent() {
 
   redisSub.subscribe('ws.broadcast.disconnect', (raw) => {
     const message = JSON.parse(raw);
-    gameService.deleteGame(gameService.getGameId(message.clientId));
+    gameService.deleteRoom(gameService.getRoom(message.clientId));
   })
 }
