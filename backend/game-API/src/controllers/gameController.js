@@ -1,19 +1,48 @@
 import { redisSub } from '../config/redis.js';
 import { gameService } from '../services/gameService.js';
 
+// req: { uid, gameName, typeGame }
+export async function postPlayer(req, rep) {
+  const data = req.body;
 
-export async function postGame(req, rep) {
-  const { player1_uid, player2_uid } = req.body;
+  const player = { uid: data.uid, gameName: data.gameName };
+  const roomId = gameService.joinRoom(player, data.typeGame);
 
-  console.log("Creating game with players:", player1_uid, player2_uid);
-  const gameId = await gameService.createGame(player1_uid, player2_uid);
-  console.log("Game created with ID:", gameId);
-  return rep.code(201).send({ message: 'Game created', data: { id: gameId } });
+  if (!roomId) {
+    return rep.code(500).send({ message: 'Failed to join room' });
+  }
+  rep.code(201).send({ message: 'Player added to room', data: { id: roomId } });
 }
 
+export async function getRoomInfo(req, rep) {
+  const roomId = req.params.roomId;
+  const room = gameService.getRoom(roomId);
+
+  if (!room) {
+    return rep.code(500).send({ message: 'Room not found' });
+  }
+
+  return rep.code(200).send({ message: 'Room info retrieved', data: room.usersInfos() });
+}
+
+// export async function postGame(req, rep) {
+//   const { player1_uid, player2_uid } = req.body;
+
+//   const gameId = await gameService.createGame(player1_uid, player2_uid);
+//   console.log("Game created with ID:", gameId);
+//   return rep.code(201).send({ message: 'Game created', data: { id: gameId } });
+// }
+
+// payload: { type: 'init', data: { uid, roomId } }
 export async function handlerEvent() {
   redisSub.subscribe('ws.game.in', (raw) => {
+    console.log('ws.game.in', raw);
     const message = JSON.parse(raw);
     gameService.handleEvent(message.clientId, message.payload);
+  })
+
+  redisSub.subscribe('ws.broadcast.disconnect', (raw) => {
+    const message = JSON.parse(raw);
+    gameService.deleteGame(gameService.getGameId(message.clientId));
   })
 }

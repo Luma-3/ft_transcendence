@@ -23,6 +23,7 @@ migrate() {
 
   for dir in "${servers_data[@]}"; do
     echo "➡️ $dir"
+    mkdir -p $dir;
     cd $dir/.. && knex migrate:latest && cd ..
   done
 

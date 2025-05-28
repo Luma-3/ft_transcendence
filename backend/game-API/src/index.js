@@ -10,10 +10,6 @@ import { handlerEvent } from './controllers/gameController.js';
 
 dotenv.config()
 
-// const fastify = Fastify({
-//   logger: true,
-// });
-
 await config(fastify);
 
 fastify.register(websocketPlugin);
@@ -24,8 +20,6 @@ await handlerEvent();
 fastify.addHook('onRoute', (routeOptions) => {
   console.log(`Route registered: ${routeOptions.method} ${routeOptions.url}`);
 });
-
-// console.log(fastify.websocketPlugin);
 
 const start = async () => {
   try {
@@ -38,31 +32,3 @@ const start = async () => {
 }
 
 start()
-
-// import Fastify from "fastify";
-// import websocketPlugin from '@fastify/websocket';
-
-// const fastify = Fastify({});
-
-// fastify.register(websocketPlugin);
-
-// fastify.register(async function(fastify) {
-//     fastify.get('/', { websocket: true }, async (socket, req) => {
-//         console.log("socket: ", socket);
-//         socket.on('message', message => {
-//             console.log('Received message:', message);
-//             socket.send(`Echo: ${message}`);
-//         });
-//     });
-// })
-
-// const start = async () => {
-//   try {
-//     await fastify.listen({ port: 3003 })
-//     console.log(`Server listening on ${fastify.server.address().port}`)
-//     } catch (err) {
-//         console.error(err)
-//         process.exit(1)
-//     }
-// }
-// start()
