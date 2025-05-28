@@ -1,4 +1,4 @@
-import { gameID } from "./gameInit";
+import { gameInfo } from "./gameInit";
 import { socket } from "../events/Socket";
 
 let actionUser1Up = false, actionUser1Down = false, actionUser2Up = false, actionUser2Down = false;
@@ -17,7 +17,7 @@ export async function getEventAndSendGameData() {
   socket.send(JSON.stringify({
     type: "game",
     payload: {
-      gameId: gameID,
+      gameId: gameInfo.gameId,
       type: 'move',
       direction: gameData.playerAction,
     },

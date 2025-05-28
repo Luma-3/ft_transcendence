@@ -63,7 +63,16 @@ async function createGameAndFetchData(gameInfo: GameInfo, user: User) {
 	gameInfo.gameId = response.data.id;
 
 	alertTemporary("success", "Game created successfully. Waiting for players to join...", user.preferences.theme);
-
+	socket!.send(JSON.stringify({
+		type: "game",
+		payload: {
+			type: 'init',
+			data: {
+				uid: gameInfo.uid,
+				roomId: gameInfo.gameId,
+			}
+		}
+	}))
 	// renderGame(gameInfo);
 }
 
@@ -81,6 +90,7 @@ export async function initGameData() {
 		alert("WebSocket connection is not open. Please try again later.", "error");
 		return;
 	}
+
 
 	/**
 	 * Verification de la session utilisateur
@@ -109,10 +119,10 @@ export async function initGameData() {
 	switch (gameType.id) {
 
 		case "online":
-			player2 = (document.getElementById('searchFriend') as HTMLInputElement).value;
-			if (!player2) {
-				return alert("Please invite a friend to play with you", "error");
-			}
+			// player2 = (document.getElementById('searchFriend') as HTMLInputElement).value || null;
+			// if (!player2) {
+			// 	return alert("Please invite a friend to play with you", "error");
+			// }
 			break;
 
 		case "local-pvp":
