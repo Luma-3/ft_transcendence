@@ -28,12 +28,13 @@ export interface RoomData {
   id: string;
   gameName: string;
   typeGame: string;
-  opponents: Opponents;
+  opponents: player[];
 }
 
 
 export interface Opponents {
-  all: player[];
+  roomId: string;
+  players: player[];
 }
 
 interface player {

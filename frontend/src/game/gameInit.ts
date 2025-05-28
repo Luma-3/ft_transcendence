@@ -150,7 +150,7 @@ export async function initGameData() {
 	 * Creation d'un objet contenant les donnees de la partie
 	 * et l'envoi de la requete pour creer la partie
 	 */
-	const gameInfo = {
+	gameInfo = {
 		uid: user.data.id!.toString(),
 		gameName: player1,
 		typeGame : gameType.id,

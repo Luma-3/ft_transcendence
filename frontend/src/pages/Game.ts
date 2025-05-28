@@ -55,12 +55,13 @@ export default async function Game(gameData: GameInfo) {
   const opponent = await fetchApi<Opponents>(API_GAME.ROOM_INFO + `/${gameData.gameId}`, {
 	method: 'GET',
 	});
+	console.log("opponent", opponent);
 
 	roomData = {
 		id: gameData.gameId!,
 		gameName: gameData.gameName,
 		typeGame: gameData.typeGame,
-		opponents: opponent.data!,
+		opponents : opponent.data?.players! || null,
 	};
   /**
    * Contenu HTML de la page
@@ -85,7 +86,7 @@ export default async function Game(gameData: GameInfo) {
 				<div class="flex flex-col justify-center items-center">
 					<img src="/images/500Logo.png" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2
 					mb-4 border-primary dark:border-dprimary" />
-					${roomData.opponents.all[0].gameName}
+					${roomData.opponents[0].gameName}
 				</div>
 			</div>
 

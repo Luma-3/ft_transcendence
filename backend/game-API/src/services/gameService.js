@@ -95,7 +95,7 @@ class GameService {
   }
 
   deleteRoom(roomId) {
-    const room = getRoom(roomId);
+    const room = this.getRoom(roomId);
     if (room) {
       room.stopGame();
       this.rooms.delete(roomId);
@@ -128,7 +128,7 @@ class GameService {
               action: 'init',
               data: {
                 uid: player.uid,
-                other_uids: room.players.filter(p => p.uid !== player.uid),
+                opponents: room.players.filter(p => p.uid !== player.uid),
                 roomId: room.id,
               },
             }
