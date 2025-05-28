@@ -1,8 +1,6 @@
 import { drawGame } from "./gameDraw";
-import { DisplayGameWin } from "./gameWin";
 
-
-export function launchGame(gameContainer: HTMLDivElement, gameLoop: number) {
+export function launchGame(gameContainer: HTMLDivElement) {
 
 	const startInfos = document.getElementById("startGameInfos") as HTMLDivElement;
 
@@ -16,8 +14,6 @@ export function launchGame(gameContainer: HTMLDivElement, gameLoop: number) {
 		drawGame({player1: { y: 0, score: 0 },
 				player2: { y: 0, score: 0 },
 				ball: { x: 0, y: 0 }});
-		// startGameLoop();
-		// DisplayGameWin("Player 1 wins!");
 	}, 500);
 	
 }

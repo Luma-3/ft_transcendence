@@ -1,6 +1,8 @@
-let actionUser1Up = false, actionUser1Down = false, actionUser2Up = false, actionUser2Down = false;
 import { gameID } from "./gameInit";
-import { socket } from "../socket/createSocket";
+import { socket } from "../events/Socket";
+
+let actionUser1Up = false, actionUser1Down = false, actionUser2Up = false, actionUser2Down = false;
+
 export async function getEventAndSendGameData() {
 
   const gameData = {

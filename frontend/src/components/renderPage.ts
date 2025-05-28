@@ -19,10 +19,11 @@ import { handleWelcomeYouPage } from '../pages/WelcomeYou';
 import { User } from '../api/interfaces/User'
 import { getUserInfo } from '../api/getter'
 
-import { socket } from '../socket/createSocket'
+import { socket } from '../events/Socket'
 
 import { fetchToken } from '../api/fetchToken'
-import { createSocketConnection } from '../socket/createSocket'
+import { socketConnection } from '../events/Socket'
+import { GameInfo } from '../api/interfaces/GameData'
 
 /**
  * Associe les pages publics aux fonctions de rendu
@@ -85,7 +86,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 
   if (!socket) {
     console.log("No websocket found for this session, creating a new one");
-    createSocketConnection();
+    socketConnection();
   }
 
   const main_container = document.querySelector<HTMLDivElement>('#app')!
@@ -122,7 +123,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     if (updateHistory) {
       addToHistory(page, updateHistory);
     }
-
+    
     removeLoadingScreen();
 
     fadeIn(main_container);
@@ -134,7 +135,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     , 250);
 }
 
-export async function renderGame(GameData?: any) {
+export async function renderGame(gameInfo: GameInfo) {
 
   const main_container = document.querySelector<HTMLDivElement>('#app')!
 
@@ -155,7 +156,7 @@ export async function renderGame(GameData?: any) {
 
   setTimeout(async () => {
 
-    const newContainer = await game(GameData);
+    const newContainer = await game(gameInfo);
     if (!newContainer) {
       return;
     }

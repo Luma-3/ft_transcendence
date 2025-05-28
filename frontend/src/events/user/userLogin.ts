@@ -5,7 +5,7 @@ import { alertPublic } from '../../components/ui/alert/alertPublic';
 import { fetchWithNoToken } from '../../api/fetch';
 import { User } from '../../api/interfaces/User';
 import { API_SESSION } from '../../api/routes';
-import { createSocketConnection } from '../../socket/createSocket';
+import { socketConnection } from '../Socket';
 
 export async function loginUser() {
 
@@ -39,7 +39,7 @@ export async function loginUser() {
    * le chat et toutes communications bidirectionnelles
    * entre le client et le serveur qui ont besoin d'etre en temps reel
    */
-  createSocketConnection();
+  socketConnection();
 
   /**
    * Page de ReWelcome (car l'utilisateur a deja un compte)

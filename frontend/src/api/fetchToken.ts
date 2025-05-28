@@ -1,7 +1,5 @@
 import { fetchApiWithNoBody } from "./fetch";
 import { API_SESSION } from "./routes";
-import { socket } from "../socket/createSocket";
-import { createSocketConnection } from "../socket/createSocket";
 
 export async function verifySession() {
 
@@ -24,15 +22,13 @@ export async function verifySession() {
 		}
 	}
 	return { status: "error", data: null };
-
 }
 
-export async function fetchToken(publicPage: boolean = false) {
+export async function fetchToken() {
 		
-		const verifyToken = await verifySession();
-		if (verifyToken.status === "error") {
-			return {status: "error", message: "Session expired" };
-		}
-		return {status: "success", message: "Token valid" };
-
+	const verifyToken = await verifySession();
+	if (verifyToken.status === "error") {
+		return {status: "error", message: "Session expired" };
+	}
+	return {status: "success", message: "Token valid" };
 }

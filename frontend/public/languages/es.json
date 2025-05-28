@@ -62,6 +62,9 @@
 	"local-pvp": "Local 2 Jugadores",
 	"local-pve": "Local 1 Jugador",
 	"tournament": "Torneo",
+	"enter-both-players-names": "Ingresa los nombres de ambos jugadores",
+	"enter-name-player2": "Ingresa el nombre del jugador 2",
+	"game-created": "Juego creado con éxito. Esperando a que los jugadores se unan...",
 
 	"profile": "Perfil",
 	"your-informations": "Tu información",

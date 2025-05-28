@@ -1,13 +1,14 @@
+import { renderGame } from "../components/renderPage";
 import { alertPublic } from "../components/ui/alert/alertPublic";
-import { handleGameSocketMessage } from "../game/gameSocket";
 import { drawGame } from "../game/gameDraw";
-import { renderErrorPage } from "../components/renderPage";
+import { gameInfo } from "../game/gameInit";
 
 export let socket: WebSocket | null = null;
 
-export function createSocketConnection() {
+export function socketConnection() {
 	socket = new WebSocket('/api/ws');
 
+	console.log("Attempting to establish WebSocket connection...");
 	socket.addEventListener("open", () => {
 		console.log("WebSocket connection established successfully.");
 	});
@@ -15,7 +16,9 @@ export function createSocketConnection() {
 	socket.addEventListener("message", (e) => {
 		const message = JSON.parse(e.data).payload;
 
-		if (message.action === 'move') {
+		if (message.action === 'init') {
+			renderGame(gameInfo)
+		} else if (message.action === 'move') {
 			drawGame(message.gameData);
 		}
 	});

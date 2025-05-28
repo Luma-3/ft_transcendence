@@ -60,6 +60,10 @@
 	"local-pvp": "Local 2 Players",
 	"local-pve": "Local 1 Player",
 	"tournament": "Tournament",
+	"enter-both-players-names": "Enter both players names",
+	"enter-name-player2": "Enter name of player 2",
+	"game-created": "Game created successfully. Waiting for players to join...",
+
 
 	"profile": "Profile",
 	"your-informations": "Your informations",
