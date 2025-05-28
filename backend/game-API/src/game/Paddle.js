@@ -1,5 +1,5 @@
-export class Player {
-  constructor({ uid, x = 0, y = 0 } = {}) {
+export class Paddle {
+  constructor({ uid = 0, x = 0, y = 0 } = {}) {
 	this.uid = uid;
 
 	this.score = 0;
@@ -11,7 +11,7 @@ export class Player {
 	this.halfHeight = this.height / 2;
   }
 
-  move_player(top, bottom) {
+  move_paddle(top, bottom) {
 	this.y += this.speed;
 
 	if (this.y + this.halfHeight > top) {

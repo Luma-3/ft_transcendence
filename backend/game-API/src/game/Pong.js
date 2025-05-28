@@ -1,13 +1,10 @@
-import { v4 as uuidv4 } from 'uuid';
 import { redisPub } from '../config/redis.js';
 
 import { Ball } from './Ball.js'
-import { Player } from './Player.js'
+import { Paddle } from './Paddle.js'
 
 export class Pong {
   constructor({ player1_uid, player2_uid, sizeX = 800, sizeY = 600 } = {}) {
-    this.id = uuidv4();
-
     this.sizeX = sizeX;
     this.sizeY = sizeY;
 
@@ -19,9 +16,8 @@ export class Pong {
     this.right  = this.sizeX / 2;
     this.left   = -this.sizeX / 2;
 
-    this.player1 = new Player({ uid: player1_uid, x: this.left + 10, y: centerY });
-
-    this.player2 = new Player({ uid: player2_uid, x: this.right - 10, y: centerY });
+    this.paddle1 = new Paddle({ uid: player1_uid, x: this.left + 10, y: centerY });
+    this.paddle2 = new Paddle({ uid: player2_uid, x: this.right - 10, y: centerY });
 
     this.ball = new Ball(centerX, centerY, 1, 1);
 
@@ -45,67 +41,67 @@ export class Pong {
   }
 
   check_win() {
-    if (this.player1.score >= this.WIN_SCORE || this.player2.score >= this.WIN_SCORE) {
+    if (this.paddle1.score >= this.WIN_SCORE || this.paddle2.score >= this.WIN_SCORE) {
       const winner =
-        this.player1.score >= this.WIN_SCORE
-          ? this.player1.name
-          : this.player2.name;
+        this.paddle1.score >= this.WIN_SCORE
+          ? this.paddle1.name
+          : this.paddle2.name;
       console.log(`${winner} wins the game!`);
       this.stop();
     }
   }
 
   update() {
-    this.ball.move_ball(this.top, this.bottom, this.player1, this.player2);
-    this.player2.y = this.ball.y;
+    this.ball.move_ball(this.top, this.bottom, this.paddle1, this.paddle2);
+    this.paddle2.y = this.ball.y;
 
     if (this.ball.x <= this.left) {
-      this.player2.add_score();
+      this.paddle2.add_score();
       this.check_win();
       this.ball.reset_ball();
     } else if (this.ball.x >= this.right) {
-      this.player1.add_score();
+      this.paddle1.add_score();
       this.check_win();
       this.ball.reset_ball();
     }
 
-    redisPub.publish('ws.this.out', JSON
+    redisPub.publish('ws.game.out', JSON
       .stringify({
-        clientId: this.player1.uid,
+        clientId: this.paddle1.uid,
         payload: {
-          action: 'move',
+          action: 'update',
           gameData: this.toJSON(),
         }
       }));
   }
 
-  movePlayer(uid, direction) {
-    let player;
+  movePaddle(uid, direction) {
+    let paddle;
     
-    if (uid === this.player1.uid) {
-      player = this.player1;
-    } else if (uid === this.player2.uid) {
-      player = this.player2;
+    if (uid === this.paddle1.uid) {
+      paddle = this.paddle1;
+    } else if (uid === this.paddle2.uid) {
+      paddle = this.paddle2;
     }
 
     switch (direction) {
       case 'up':
-        player.speed = -5;
+        paddle.speed = -5;
         break;
       case 'down':
-        player.speed = 5;
+        paddle.speed = 5;
         break;
       default:
-        player.speed = 0;
+        paddle.speed = 0;
         break;
     }
-    player.move_player(this.top, this.bottom);
+    paddle.move_paddle(this.top, this.bottom);
   }
 
   toJSON() {
     return {
-      player1: this.player1,
-      player2: this.player2,
+      paddle1: this.paddle1,
+      paddle2: this.paddle2,
       ball: this.ball,
     };
   }

@@ -23,6 +23,7 @@ function socket(fastify, opts, done) {
           const { type, payload } = JSON.parse(raw);
 
           console.log(`[WS] client ${clientId} -> ${type} -> Redis`);
+          console.log("payload : ", payload);
           redisPub.publish(`ws.${type}.in`, JSON.stringify({
             clientId: clientId,
             payload: payload

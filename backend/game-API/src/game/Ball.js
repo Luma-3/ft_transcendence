@@ -8,25 +8,25 @@ export class Ball {
 	this.speed = 4;
   }
 
-  check_collision_player(player) {
-	if (player.x < 0) {
+  check_collision_paddle(paddle) {
+	if (paddle.x < 0) {
 		return (
-			this.x <= player.x + player.width &&
-			this.x >= player.x &&
-			this.y >= player.y - player.height / 2 &&
-			this.y <= player.y + player.height / 2
+			this.x <= paddle.x + paddle.width &&
+			this.x >= paddle.x &&
+			this.y >= paddle.y - paddle.height / 2 &&
+			this.y <= paddle.y + paddle.height / 2
 		);
 	} else {
 		return (
-			this.x >= player.x - player.width &&
-			this.x <= player.x &&
-			this.y >= player.y - player.height / 2 &&
-			this.y <= player.y + player.height / 2
+			this.x >= paddle.x - paddle.width &&
+			this.x <= paddle.x &&
+			this.y >= paddle.y - paddle.height / 2 &&
+			this.y <= paddle.y + paddle.height / 2
 		);
 	}
   }
 
-  move_ball(top, bottom, player1, player2) {
+  move_ball(top, bottom, paddle1, paddle2) {
 	this.x += this.vector_x * this.speed;
 	this.y += this.vector_y * this.speed;
 
@@ -34,8 +34,8 @@ export class Ball {
 		this.vector_y *= -1;
 	}
 
-	if (this.check_collision_player(player1) ||
-	  this.check_collision_player(player2)) {
+	if (this.check_collision_paddle(paddle1) ||
+	  this.check_collision_paddle(paddle2)) {
 	  this.vector_x *= -1;
 	}
   }
