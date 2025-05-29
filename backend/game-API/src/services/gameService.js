@@ -111,7 +111,9 @@ class GameService {
     const roomId = data.roomId;
     const room = this.getRoom(roomId);
     if (!room) {
-      throw new InternalServerError('Room not found for the given client ID');
+      console.error(`Room not found for clientId: ${clientId}, roomId: ${roomId}`);
+      return;
+      // throw new InternalServerError('Room not found for the given client ID');
     }
 
     switch (event.type) {
@@ -134,6 +136,7 @@ class GameService {
             }
           }));
         if (room.isReadyToStart()) {
+          console.log(`Room ${room.id} is ready to start the game`);
           for (const p of room.players) {
             redisPub.publish('ws.game.out', JSON
               .stringify({
@@ -148,6 +151,7 @@ class GameService {
         break;
 
       case 'move':
+        console.log(`Client ${clientId} is moving paddle in room ${roomId}`);
         room.game.movePaddle(clientId, event.direction);
         break;
       default:

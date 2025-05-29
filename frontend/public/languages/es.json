@@ -59,12 +59,14 @@
 	"local": "Local",
 	"search-friend": "Buscar amigo",
 	"enter-username": "Ingresa el nombre de usuario",
-	"local-pvp": "Local 2 Jugadores",
-	"local-pve": "Local 1 Jugador",
+	"localpvp": "Local 2 Jugadores",
+	"localpve": "Local 1 Jugador",
 	"tournament": "Torneo",
 	"enter-both-players-names": "Ingresa los nombres de ambos jugadores",
 	"enter-name-player2": "Ingresa el nombre del jugador 2",
-	"game-created": "Juego creado con éxito. Esperando a que los jugadores se unan...",
+	"game-created-successfully": "Juego creado con éxito. Esperando a que los jugadores se unan...",
+	"game-creation-failed": "Error al crear el juego",
+
 
 	"profile": "Perfil",
 	"your-informations": "Tu información",

@@ -29,11 +29,11 @@ function localPVPSettings(user: User) {
 function gameTypeButton() {
 	return `<div class="flex flex-row w-full h-full p-4 space-x-4 rounded-lg">
 				<div class="flex w-full h-full">
-					<input type="radio" id="local-pvp" name="game-type" data-gameType="local-PVP" class="hidden peer" />
-					<label for="local-pvp" class="flex w-full justify-center items-center p-2 text-sm font-title
+					<input type="radio" id="localpvp" name="game-type" data-gameType="localPVP" class="hidden peer" />
+					<label for="localpvp" class="flex w-full justify-center items-center p-2 text-sm font-title
 			 		text-zinc-600 bg-zinc-200 rounded-lg cursor-pointer
 					 peer-checked:bg-primary peer-checked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
-					  translate="local-pvp">
+					  translate="localpvp">
 
 					Local 2 Joueurs
 
@@ -41,11 +41,11 @@ function gameTypeButton() {
 				</div>
 
 				<div class="flex w-full h-full">
-					<input type="radio" id="local-pve" name="game-type" data-gameType="local-PVE" class="hidden peer" checked />
-					<label for="local-pve" class="flex w-full justify-center items-center p-2 text-sm font-title
+					<input type="radio" id="localpve" name="game-type" data-gameType="localPVE" class="hidden peer" checked />
+					<label for="localpve" class="flex w-full justify-center items-center p-2 text-sm font-title
 			 		text-zinc-600 bg-zinc-200 rounded-lg cursor-pointer
 					 peer-checked:bg-primary peer-checked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
-					  translate="local-pve">
+					  translate="localpve">
 
 					Local 1 Joueur
 
@@ -126,7 +126,7 @@ async function renderDashboard(user:User) {
 				${localPVPSettings(user)}
 
 				
-				${primaryButton({id: 'launchGame', weight: "1/2", text: "Play", translate: "play", type: "button"})}
+				${primaryButton({id: 'createGame', weight: "1/2", text: "Play", translate: "play", type: "button"})}
 			
 				<div class="flex flex-row justify-center items-center w-full h-full p-4 space-x-4 rounded-lg">
 			

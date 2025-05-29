@@ -22,6 +22,7 @@ export interface GameInfo {
   gameName: string;
   typeGame: string;
   gameId?: string;
+  gameNameOpponent?: string;
 }
 
 export interface RoomData {
@@ -37,7 +38,7 @@ export interface Opponents {
   players: player[];
 }
 
-interface player {
+export interface player {
   id: string;
   gameName: string;
 }

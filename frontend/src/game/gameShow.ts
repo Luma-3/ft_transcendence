@@ -1,6 +1,6 @@
 import { drawGame } from "./gameDraw";
 
-export function launchGame(gameContainer: HTMLDivElement) {
+export function showGame(gameContainer: HTMLDivElement) {
 
 	const startInfos = document.getElementById("startGameInfos") as HTMLDivElement;
 

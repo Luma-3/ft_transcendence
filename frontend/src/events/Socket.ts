@@ -1,7 +1,7 @@
 import { renderGame } from "../components/renderPage";
 import { alertPublic } from "../components/ui/alert/alertPublic";
 import { drawGame } from "../game/gameDraw";
-import { gameInfo } from "../game/gameInit";
+import { gameInfo } from "../game/gameCreation";
 
 export let socket: WebSocket | null = null;
 
