@@ -14,10 +14,10 @@ export class Paddle {
   move_paddle(top, bottom) {
 	this.y += this.speed;
 
-	if (this.y + this.halfHeight > top) {
-	  this.y = top - this.halfHeight;
-	} else if (this.y - this.halfHeight < bottom) {
-	  this.y = bottom + this.halfHeight;
+	if (this.y + this.halfHeight < top) {
+	  this.y = top + this.halfHeight;
+	} else if (this.y - this.halfHeight > bottom) {
+	  this.y = bottom - this.halfHeight;
 	}
   }
 

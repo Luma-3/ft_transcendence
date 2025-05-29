@@ -98,6 +98,7 @@ export async function createGame() {
 			}
 			break;
 		case "localpve":
+			//TODO: tableau de nom de bot a choisir aleatoirement
 			player2 = "MichMich the crazy duck";
 			break;
 		default:

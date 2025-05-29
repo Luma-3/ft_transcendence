@@ -8,13 +8,13 @@ export class Pong {
     this.sizeX = sizeX;
     this.sizeY = sizeY;
 
-    const centerX = 0;
-    const centerY = 0;
+    const centerX = sizeX / 2;
+    const centerY = sizeY / 2;
 
-    this.top    = this.sizeY / 2;
-    this.bottom = -this.sizeY / 2;
-    this.right  = this.sizeX / 2;
-    this.left   = -this.sizeX / 2;
+    this.top    = 0;
+    this.bottom = this.sizeY;
+    this.left   = 0;
+    this.right  = this.sizeX;
 
     this.paddle1 = new Paddle({ uid: player1_uid, x: this.left + 10, y: centerY });
     this.paddle2 = new Paddle({ uid: player2_uid, x: this.right - 10, y: centerY });
@@ -24,6 +24,8 @@ export class Pong {
     this.gameIsStart = false;
     this.WIN_SCORE = 11;
 
+    this.isAgainstBot = false; // This can be used to determine if the game is against a bot or not
+
     this.interval = 0;
   }
 
@@ -31,7 +33,7 @@ export class Pong {
     const rand = Math.floor(Math.random() * 4) + 1;
     this.ball.set_vectors_ball(rand);
     this.gameIsStart = true;
-    this.interval = setInterval(this.update.bind(this), 1000 / 30);
+    this.interval = setInterval(this.update, 1000 / 30, this);
   }
 
   stop() {
@@ -44,43 +46,83 @@ export class Pong {
     if (this.paddle1.score >= this.WIN_SCORE || this.paddle2.score >= this.WIN_SCORE) {
       const winner =
         this.paddle1.score >= this.WIN_SCORE
-          ? this.paddle1.name
-          : this.paddle2.name;
-      console.log(`${winner} wins the game!`);
+          ? this.paddle1.uid
+          : this.paddle2.uid;
+      const loser =
+        this.paddle1.score < this.WIN_SCORE
+          ? this.paddle1.uid
+          : this.paddle2.uid;
+        
+      winner !== 0 ? console.log(`${winner} wins the game!`) : console.log(`bot wins the game!`);
+      console.log(`${loser} loses the game!`);
+
+      redisPub.publish('ws.game.out', JSON
+        .stringify({
+          clientId: winner,
+          payload: {
+            action: 'win',
+          }
+        })
+      );
+
+      redisPub.publish('ws.game.out', JSON
+        .stringify({
+          clientId: loser,
+          payload: {
+            action: 'lose',
+          }
+        })
+      );
+
       this.stop();
     }
   }
 
-  update() {
-    this.ball.move_ball(this.top, this.bottom, this.paddle1, this.paddle2);
-    this.paddle2.y = this.ball.y;
+  update(game) { 
+    game.ball.move_ball(game.top, game.bottom, game.paddle1, game.paddle2, this.sizeX);
 
-    if (this.ball.x <= this.left) {
-      this.paddle2.add_score();
-      this.check_win();
-      this.ball.reset_ball();
-    } else if (this.ball.x >= this.right) {
-      this.paddle1.add_score();
-      this.check_win();
-      this.ball.reset_ball();
+    console.log('Is againts bot ? ', game.isAgainstBot);
+    if (game.isAgainstBot) {
+      game.paddle2.y = game.ball.y;
+    }
+
+    if (game.ball.x <= game.left) {
+      game.paddle2.add_score();
+      game.check_win();
+      game.ball.reset_ball(this.centerX, this.centerY);
+    } else if (game.ball.x >= game.right) {
+      game.paddle1.add_score();
+      game.check_win();
+      game.ball.reset_ball(this.centerX, this.centerY);
     }
 
     redisPub.publish('ws.game.out', JSON
       .stringify({
-        clientId: this.paddle1.uid,
+        clientId: game.paddle1.uid,
         payload: {
           action: 'update',
-          gameData: this.toJSON(),
+          gameData: game.toJSON(),
         }
-      }));
+      })
+    );
+
+    redisPub.publish('ws.game.out', JSON
+      .stringify({
+        clientId: game.paddle2.uid,
+        payload: {
+          action: 'update',
+          gameData: game.toJSON(),
+        }
+      })
+    );
   }
 
   movePaddle(uid, direction) {
     let paddle;
     
-    if (uid === this.paddle1.uid) {
+    if ( uid !== "" && uid === this.paddle1.uid ) {
       paddle = this.paddle1;
-    } else if (uid === this.paddle2.uid) {
+    } else if ( !this.isAgainstBot ) {
       paddle = this.paddle2;
     }
 

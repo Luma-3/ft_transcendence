@@ -36,13 +36,12 @@ export async function getRoomInfo(req, rep) {
 // payload: { type: 'init', data: { uid, roomId } }
 export async function handlerEvent() {
   redisSub.subscribe('ws.game.in', (raw) => {
-    console.log('ws.game.in', raw);
     const message = JSON.parse(raw);
     gameService.handleEvent(message.clientId, message.payload);
   })
 
   redisSub.subscribe('ws.broadcast.disconnect', (raw) => {
     const message = JSON.parse(raw);
-    gameService.deleteRoom(gameService.getRoom(message.clientId));
+    // gameService.deleteRoom(gameService.getRoom(message.clientId));
   })
 }

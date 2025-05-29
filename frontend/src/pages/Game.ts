@@ -27,11 +27,11 @@ function showGameOpponent(roomData: RoomData) {
 		</div>
 	`).join('');
 
-	if (roomData.opponents.length === 0) {
+	if (roomData.opponents.length === 1) {
 		return `<div class="flex flex-col justify-center items-center">
 		<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
 		border-primary dark:border-dprimary" />
-		MichMich the crazy duck
+		${roomData.gameNameOpponent || "Waiting for opponent" }
 		</div>`;
 	} 
 	return listOpponents;
@@ -40,7 +40,7 @@ function showGameOpponent(roomData: RoomData) {
 
 
 
-export default async function Game(gameData: GameInfo, user: User) {
+export default async function Game(gameInfo: GameInfo, user: User) {
 
   addEventListener('keypress', (event) => { })
 	/**
@@ -67,12 +67,13 @@ export default async function Game(gameData: GameInfo, user: User) {
 		onKeyDown(event);
 	}
 
-	const opponent = await fetchApi<Opponents>(API_GAME.ROOM_INFO + `/${gameData.gameId}`, { method: 'GET'});
+	const opponent = await fetchApi<Opponents>(API_GAME.ROOM_INFO + `/${gameInfo.gameId}`, { method: 'GET'});
 
 	roomData = {
-		id: gameData.gameId!,
-		gameName: gameData.gameName,
-		typeGame: gameData.typeGame,
+		id: gameInfo.gameId!,
+		gameName: gameInfo.gameName,
+		typeGame: gameInfo.typeGame,
+		gameNameOpponent: gameInfo.gameNameOpponent || "",
 		opponents : opponent.data?.players! || null,
 	};
 

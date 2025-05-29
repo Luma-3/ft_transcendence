@@ -18,5 +18,5 @@ export function resizeCanvas() {
 	newHeight = newWidth / gameRatio;
   }
 	canvas.style.width = (newWidth > 800) ? `800px` : `${newWidth}px`;
-	canvas.style.height = (newHeight > 600) ? `400px` : `${newHeight}px`;
+	canvas.style.height = (newHeight > 600) ? `600px` : `${newHeight}px`;
 }

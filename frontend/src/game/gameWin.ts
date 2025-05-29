@@ -1,5 +1,5 @@
-export function DisplayGameWin(winnerMessage: string) {
-	
+export function DisplayGameWinLose(isWin: boolean) {
+
 	console.log("Game Win Displayed");
 	
 	const game = document.getElementById("hiddenGame") as HTMLDivElement;
@@ -8,7 +8,7 @@ export function DisplayGameWin(winnerMessage: string) {
 	game.classList.add("opacity-0");
 	setTimeout(() => {
 		game.classList.add("hidden");
-		document.getElementById("gameWin")!.innerHTML = gameWinContainer();
+		document.getElementById("gameWin")!.innerHTML = isWin ? gameWinContainer() : gameLoseContainer();
 	}, 500);
 
 }

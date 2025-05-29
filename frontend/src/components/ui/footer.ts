@@ -19,8 +19,8 @@ export function footer() {
 			<div class="text-xs p-2">
 				<a class="text-responsive-size underline" href="https://github.com/Luma-3"> Github</a> <br>
 				<a class="hover:underline" href="https://github.com/Luma-3"> Jean-Baptiste BROUSSE</a> <br>
-				<a class="hover:underline" href="https://github.com/LeSabreDeDieu"> Sayf-allah GABSI </a> <br>
 				<a class="hover:underline" href="https://github.com/SenseiTarzan"> Gabriel CAPTARI </a> <br>
+				<a class="hover:underline" href="https://github.com/LeSabreDeDieu"> Sayf-Allah GABSI </a> <br>
 				<a class="hover:underline" href="https://github.com/monsieurCanard"> Anthony GABRIEL </a> <br>
 		</div>
 		</div>

@@ -1,9 +1,9 @@
 export interface GameData {
-  player1: {
+  paddle1: {
     y: number;
     score: number;
   }
-  player2: {
+  paddle2: {
     y: number;
     score: number;
   }
@@ -29,6 +29,7 @@ export interface RoomData {
   id: string;
   gameName: string;
   typeGame: string;
+  gameNameOpponent: string;
   opponents: player[];
 }
 

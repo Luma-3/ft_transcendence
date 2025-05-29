@@ -2,7 +2,7 @@ import { redisPub } from '../config/redis.js';
 
 import { fastify } from '../fastify.js';
 import { Room } from './Room.js';
-import { InternalServerError } from '@transcenduck/error'
+import { InternalServerError } from '@transcenduck/error';
 
 class GameService {
   constructor() {
@@ -34,7 +34,6 @@ class GameService {
 
   joinRoom(player, typeGame) {
     let room = this.getRoom(this.findJoinableRoom(typeGame));
-    console.log(this.findJoinableRoom(typeGame));
     if (!room) {
       room = this.createRoom(typeGame);
     }
@@ -47,31 +46,9 @@ class GameService {
     return room.id; // Return the ID of the room joined
   }
 
-  // leaveRoom(roomId, playerId) {
-  //   const room = this.getRoom(roomId);
-  //   if (!room) {
-  //     throw new InternalServerError('Room not found');
-  //   }
-  //   const playerIndex = room.players.findIndex(p => p.uid === playerId);
-  //   if (playerIndex === -1) {
-  //     throw new InternalServerError('Player not found in the room');
-  //   }
-  //   room.players.splice(playerIndex, 1);
-  //   if (room.players.length === 0) {
-  //     this.deleteRoom(roomId); // Delete the room if no players left
-  //   } else if (room.players.length < room.maxPlayers) {
-  //     room.isFull = false; // Room is no longer full
-  //     room.status = 'waiting'; // Change status to waiting
-  //   }
-  //   console.log(`Player ${playerId} left room ${roomId}`);
-  //   return roomId; // Return the ID of the room left
-  // }
-
   findJoinableRoom(typeGame) {
-    console.log('nb rooms : ', this.rooms.size);
     for (const room of this.rooms.values()) {
       if (room.typeGame === typeGame && room.isJoinable()) {
-        console.log(`Joinable room found: ${room.id}`);
         return room.id; // Return the first joinable room found
       }
     }
@@ -89,8 +66,15 @@ class GameService {
     }
 
     const game = room.createGame();
+    console.log('Game created in room:', roomId, 'Game:', game);
     if (!game) {
       throw new InternalServerError('Game creation failed');
+    }
+    
+    if (room.typeGame === 'localpve') {
+      // If the game is a local player vs. environment (PVE) game, set it to be against a bot
+      game.isAgainstBot = true;
+      console.log('Game is set to be against a bot\nGame :', game);
     }
   }
 
@@ -101,17 +85,16 @@ class GameService {
       this.rooms.delete(roomId);
       console.log(`Room ${roomId} deleted`);
     } else {
-      throw new InternalServerError('Room not found');
+      //throw new InternalServerError('Room not found');
     }
   }
 
   async handleEvent(clientId, event) {
-    console.log('handleEvent', event);
     const data = event.data;
     const roomId = data.roomId;
     const room = this.getRoom(roomId);
     if (!room) {
-      console.error(`Room not found for clientId: ${clientId}, roomId: ${roomId}`);
+      //console.error(`Room not found for clientId: ${clientId}, roomId: ${roomId}`);
       return;
       // throw new InternalServerError('Room not found for the given client ID');
     }
@@ -135,8 +118,7 @@ class GameService {
               },
             }
           }));
-        if (room.isReadyToStart()) {
-          console.log(`Room ${room.id} is ready to start the game`);
+          if (room.isReadyToStart()) {
           for (const p of room.players) {
             redisPub.publish('ws.game.out', JSON
               .stringify({
@@ -150,82 +132,51 @@ class GameService {
         }
         break;
 
+      case 'startGame':
+        room.playerReady++;
+        if (room.playerReady === room.maxPlayers) this.createGameInRoom(roomId);
+        break;
+
       case 'move':
-        console.log(`Client ${clientId} is moving paddle in room ${roomId}`);
-        room.game.movePaddle(clientId, event.direction);
+        let whois = room.getPlayerByClientId(clientId);
+        if (!whois) {
+          return ;
+        }
+        
+        if (!room.pong) {
+          console.error(`Pong game not found in room ${roomId}`);
+          return ;
+        }
+        room.pong.movePaddle(whois.uid, data.direction);
+        
+        if (room.typeGame === 'localpvp') {
+          room.pong.movePaddle("", data.direction2);
+        }
         break;
       default:
         throw new InternalServerError('Unknown event type');
     }
   }
+
+  // leaveRoom(roomId, playerId) {
+  //   const room = this.getRoom(roomId);
+  //   if (!room) {
+  //     throw new InternalServerError('Room not found');
+  //   }
+  //   const playerIndex = room.players.findIndex(p => p.uid === playerId);
+  //   if (playerIndex === -1) {
+  //     throw new InternalServerError('Player not found in the room');
+  //   }
+  //   room.players.splice(playerIndex, 1);
+  //   if (room.players.length === 0) {
+  //     this.deleteRoom(roomId); // Delete the room if no players left
+  //   } else if (room.players.length < room.maxPlayers) {
+  //     room.isFull = false; // Room is no longer full
+  //     room.status = 'waiting'; // Change status to waiting
+  //   }
+  //   console.log(`Player ${playerId} left room ${roomId}`);
+  //   return roomId; // Return the ID of the room left
+  // }
 }
-
-//   createGame(player1_uid, player2_uid) {
-//     const game = new Pong({ player1_uid, player2_uid });
-//     this.games.set(game.id, game);
-      
-//     // Start the game immediately after creation
-//     // this.startGame(game.id);
-
-//     return game.id;
-//   }
-
-//   startGame(gameId) {
-//     const game = this.games.get(gameId);
-
-//     if (!game) {
-//       throw new InternalServerError('Game not found');
-//     }
-
-//     // Start the game only if it is not already started
-//     if (!game.gameIsStart) {
-//       game.start();
-//     } else {
-//       throw new InternalServerError('Game is already started');
-//     }
-//   }
-
-//   stopGame(gameId) {
-//     const game = this.games.get(gameId);
-//     if (!game) {
-//       throw new InternalServerError('Game not found');
-//     }
-
-//     // Stop the game only if it is currently started
-//     if (game.gameIsStart) {
-//       game.stop();
-//     } else {
-//       throw new InternalServerError('Game is not started');
-//     }
-//   }
-
-//   async handleEvent(clientId, event) {
-//     const gameId = event.gameId;
-//     const game = this.games.get(gameId);
-//     if (!game) {
-//       throw new InternalServerError('Game not found for the given client ID');
-//     }
-
-//     switch (event.type) {
-//       case 'move':
-//         game.movePlayer(clientId, event.direction);
-//         break;
-//       default:
-//         throw new InternalServerError('Unknown event type');
-//     }
-//   }
-
-//   getGameId(clientId) {
-//     return this.games.get(clientId).id;
-//   }
-
-//   deleteGame(gameId) {
-//     if (this.games.has(gameId)) {
-//       this.stopGame(gameId);
-//       this.games.delete(gameId);
-//       console.log(`Game ${gameId} deleted`);
-//     }
-//   }
-// }
 
 export const gameService = new GameService(fastify);

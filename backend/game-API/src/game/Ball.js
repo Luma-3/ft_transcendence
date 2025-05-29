@@ -8,8 +8,8 @@ export class Ball {
 	this.speed = 4;
   }
 
-  check_collision_paddle(paddle) {
-	if (paddle.x < 0) {
+  check_collision_paddle(paddle, width) {
+	if (paddle.x < width / 2) {
 		return (
 			this.x <= paddle.x + paddle.width &&
 			this.x >= paddle.x &&
@@ -26,16 +26,16 @@ export class Ball {
 	}
   }
 
-  move_ball(top, bottom, paddle1, paddle2) {
+  move_ball(top, bottom, paddle1, paddle2, width = 0) {
 	this.x += this.vector_x * this.speed;
 	this.y += this.vector_y * this.speed;
 
-	if (this.y + this.size / 2 >= top || this.y - this.size / 2 <= bottom) {
+	if (this.y + this.size / 2 <= top || this.y - this.size / 2 >= bottom) {
 		this.vector_y *= -1;
 	}
 
-	if (this.check_collision_paddle(paddle1) ||
-	  this.check_collision_paddle(paddle2)) {
+	if (this.check_collision_paddle(paddle1, width) ||
+	  this.check_collision_paddle(paddle2, width)) {
 	  this.vector_x *= -1;
 	}
   }
@@ -57,9 +57,9 @@ export class Ball {
 	}
   }
 
-  reset_ball() {
-	this.x = 0;
-	this.y = 0;
+  reset_ball(centerX = 400, centerY = 300) {
+	this.x = centerX;
+	this.y = centerY;
   }
 
   toJSON() {

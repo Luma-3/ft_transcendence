@@ -1,4 +1,6 @@
+import { socket } from "../events/Socket";
 import { drawGame } from "./gameDraw";
+import { gameInfo } from "./gameCreation";
 
 export function showGame(gameContainer: HTMLDivElement) {
 
@@ -14,6 +16,15 @@ export function showGame(gameContainer: HTMLDivElement) {
 		drawGame({player1: { y: 0, score: 0 },
 				player2: { y: 0, score: 0 },
 				ball: { x: 0, y: 0 }});
-	}, 500);
-	
+			}, 500);
+	socket?.send(JSON.stringify({
+		type: "game",
+		payload: {
+			type: 'startGame',
+			data: {
+				roomId: gameInfo.gameId,
+			}
+		},
+	}))
+			
 }

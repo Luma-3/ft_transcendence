@@ -2,6 +2,7 @@ import { renderGame } from "../components/renderPage";
 import { alertPublic } from "../components/ui/alert/alertPublic";
 import { drawGame } from "../game/gameDraw";
 import { gameInfo } from "../game/gameCreation";
+import { DisplayGameWinLose } from "../game/gameWin";
 
 export let socket: WebSocket | null = null;
 
@@ -18,8 +19,12 @@ export function socketConnection() {
 		console.log("Received message from WebSocket:", message);
 		if (message.action === 'gameReady') {
 			renderGame(gameInfo)
-		} else if (message.action === 'move') {
+		} else if (message.action === 'update') {
 			drawGame(message.gameData);
+		} else if (message.action === 'win') {
+			DisplayGameWinLose(true)
+		} else if (message.action === 'lose') {
+			DisplayGameWinLose(false)
 		}
 	});
 

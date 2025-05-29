@@ -17,7 +17,8 @@ export class Room {
 	this.pong = null; // Instance of Pong game
 	this.isFull = false;
 	this.createdAt = new Date();
-	this.maxPlayers = typeGame === 'tournament' ? 8 : 2; // Maximum number of players in the room
+	this.maxPlayers = typeGame === 'tournament' ? 8 : typeGame === 'online' ? 2 : 1; // Maximum number of players in the room
+	this.playerReady = 0; // Counter for players ready to start the game
   }
 
   addPlayer(player) {
@@ -30,6 +31,7 @@ export class Room {
 		this.isFull = true; // Room is now full
 		this.status = 'readyToStart';
 		//TODO: Notify players that the room is ready to start
+
 	}
 
 	if (this.name === '') {
@@ -47,22 +49,33 @@ export class Room {
 		return null; // Player not found
 	}
 
-  createGame() {
-	if (this.status !== 'readyToStart') {
-	  return null; // Cannot create game if not ready
+  getPlayerByClientId(clientId) {
+	for (const player of this.players) {
+	  if (player.clientId === clientId) {
+		return player; // Return the player if found
+	  }
 	}
+	return null; // Player not found
+  }
+
+  createGame() {
+	// if (this.status !== 'readyToStart') {
+	//   return null; // Cannot create game if not ready
+	// }
 
 	this.pong = new Pong({
 	  player1_uid: this.players[0].uid,
-	  player2_uid: this.players[1]?.uid}); // Optional player2_uid for single-player games
-	
+	  player2_uid: this.players[1]?.uid
+	}); // Optional player2_uid for single-player games
+
 	if (!this.pong) {
 	  return null; // Game creation failed
 	}
 	//TODO: Notify players that the game is created and started
 	this.pong.start(); // Start the Pong game
 	this.status = 'playing';
-	return this.pong; // Return the Pong game instance
+
+	return this.pong; // Return the game instance
   }
 
   removePlayer(playerId) {
@@ -82,7 +95,7 @@ export class Room {
 
   isJoinable() { return (!this.isFull && this.status === 'waiting'); }
 
-  isReadyToStart() { return (this.isFull && this.status === 'readyToStart'); }
+  isReadyToStart() { return (this.isFull || this.status === 'readyToStart'); }
 
   usersInfos() {
 	return {
