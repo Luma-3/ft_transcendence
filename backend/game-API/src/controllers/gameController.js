@@ -1,11 +1,11 @@
 import { redisSub } from '../config/redis.js';
 import { gameService } from '../services/gameService.js';
 
-// req: { uid, gameName, typeGame }
+// req: { playerId, gameName, typeGame }
 export async function postPlayer(req, rep) {
   const data = req.body;
 
-  const player = { uid: data.uid, gameName: data.gameName };
+  const player = { uid: data.playerId, gameName: data.gameName, ready: false };
   const roomId = gameService.joinRoom(player, data.typeGame);
 
   if (!roomId) {
@@ -22,7 +22,7 @@ export async function getRoomInfo(req, rep) {
     return rep.code(500).send({ message: 'Room not found' });
   }
 
-  return rep.code(200).send({ message: 'Room info retrieved', data: room.usersInfos() });
+  return rep.code(200).send({ message: 'Room info retrieved', data: room.roomInfos() });
 }
 
 // export async function postGame(req, rep) {

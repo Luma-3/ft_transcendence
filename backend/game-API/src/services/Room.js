@@ -5,6 +5,8 @@ import { Pong } from '../game/Pong.js';
 // 	uid: string; // Unique identifier for the player
 // 	clientId: string; // Client identifier
 // 	gameName: string; // Name of the game or player
+// 	// Additional player properties can be added here
+//  ready: boolean; // Indicates if the player is ready to start the game
 // }
 
 export class Room {
@@ -12,7 +14,7 @@ export class Room {
 	this.id = uuidv4();
 	this.name = ''; // Unique name for the room
 	this.typeGame = typeGame; // 'localpvp', 'localpve', 'online', 'tournament' 
-	this.status = typeGame === ('localpvp' || 'localpve') ? 'readyToStart' : 'waiting'; // 'waiting', 'readyToStart', 'playing', 'finished'
+	this.status = typeGame === ('localpvp' || 'localpve') ? 'readyToStart' : 'waiting'; // 'waiting', 'roomReady', 'readyToStart', 'playing', 'finished'
 	this.players = [];
 	this.pong = null; // Instance of Pong game
 	this.isFull = false;
@@ -29,9 +31,7 @@ export class Room {
 	this.players.push(player);
 	if (this.players.length === this.maxPlayers) {
 		this.isFull = true; // Room is now full
-		this.status = 'readyToStart';
-		//TODO: Notify players that the room is ready to start
-
+		this.status = 'roomReady'; // Change status to ready to start
 	}
 
 	if (this.name === '') {
@@ -71,15 +71,24 @@ export class Room {
 	if (!this.pong) {
 	  return null; // Game creation failed
 	}
-	//TODO: Notify players that the game is created and started
-	this.pong.start(); // Start the Pong game
-	this.status = 'playing';
 
 	return this.pong; // Return the game instance
   }
 
   removePlayer(playerId) {
 	//TODO: Implement player removal logic
+	if (this.typeGame === ("localpvp" || "localpve")) {
+	  this.stopGame(); // Stop the game if it's a local PvP or PvE game
+	}
+  }
+
+  startGame() {
+	if (!this.pong) {
+		return false; // Cannot start game if not created
+	}
+	this.pong.start(); // Start the Pong game
+	this.status = 'playing'; // Update room status to playing
+	return true; // Game started successfully
   }
 
   stopGame() {
@@ -97,25 +106,54 @@ export class Room {
 
   isReadyToStart() { return (this.isFull || this.status === 'readyToStart'); }
 
-  usersInfos() {
+  userInfos(player) {
 	return {
-	  id: this.id,
+		playerId: player.uid,
+		gameName: player.gameName,
+		joined: player.joined
+	};
+  }
+
+  userOpponentInfos(player) {
+	return this.players.filter(p => p.uid !== player.uid).map(p => ({
+		playerId: p.uid,
+		gameName: p.gameName,
+		joined: p.joined
+	}));
+  }
+
+  roomData(player) {
+	return {
+		roomId: this.id,
+		gameData: this.pong ? this.pong.toJSON() : null,
+		typeGame: this.typeGame,
+		self: this.userInfos(player),
+		opponents: this.userOpponentInfos(player)
+	};
+  }
+
+  roomInfos() {
+	return {
+	  roomId: this.id,
+	  typeGame: this.typeGame,
 	  players: this.players.map(player => ({
-		uid: player.uid,
-		gameName: player.gameName
+		playerId: player.uid,
+		gameName: player.gameName,
+		ready: player.ready
 	  })),
     };
   }
 
   toJSON() {
     return {
-	  id: this.id,
+	  roomId: this.id,
 	  name: this.name,
 	  typeGame: this.typeGame,
 	  status: this.status,
 	  players: this.players.map(player => ({
-		uid: player.uid,
-		gameName: player.gameName
+		playerId: player.uid,
+		gameName: player.gameName,
+		ready: player.ready,
 	  })),
 	  isFull: this.isFull,
 	  createdAt: this.createdAt.toISOString(),

@@ -9,6 +9,22 @@ class GameService {
     this.rooms = new Map();
   }
 
+  broadcast(roomId, action, data) {
+    const room = this.getRoom(roomId);
+    if (!room) {
+      throw new InternalServerError('Room not found');
+    }
+
+    for (const player of room.players) {
+      if (player.clientId) {
+        redisPub.publish('ws.game.out', JSON.stringify({
+          clientId: player.clientId,
+          payload: { action: action, data: data }
+        }));
+      }
+    }
+  }
+
   createRoom(typeGame) {
     const room = new Room(typeGame);
     this.rooms.set(room.id, room);
@@ -29,7 +45,13 @@ class GameService {
       return false; // Room not found
     }
 
-    return room.addPlayer(player);
+    let status = room.addPlayer(player);
+
+    if (room.status === 'roomReady') {
+      this.broadcast(roomId, 'roomReady', room.usersInfos());
+    }
+
+    return status;
   }
 
   joinRoom(player, typeGame) {
@@ -38,7 +60,7 @@ class GameService {
       room = this.createRoom(typeGame);
     }
 
-    const success = room.addPlayer(player);
+    const success = this.addPlayerToRoom(room.id, player);
     if (!success) {
       return -1;
     }
@@ -62,7 +84,7 @@ class GameService {
     }
 
     if (room.status !== 'readyToStart') {
-      throw new InternalServerError('Room is not ready to start a game');
+      // throw new InternalServerError('Room is not ready to start a game');
     }
 
     const game = room.createGame();
@@ -101,7 +123,7 @@ class GameService {
 
     switch (event.type) {
       case 'init':
-        const player = room.getPlayerById(data.uid);
+        const player = room.getPlayerById(data.playerId);
         if (!player) {
           throw new InternalServerError('Player not found in the room');
         }
@@ -112,29 +134,39 @@ class GameService {
             payload: {
               action: 'init',
               data: {
-                uid: player.uid,
-                opponents: room.players.filter(p => p.uid !== player.uid),
                 roomId: room.id,
+                playerId: player.uid,
               },
             }
           }));
-          if (room.isReadyToStart()) {
-          for (const p of room.players) {
-            redisPub.publish('ws.game.out', JSON
-              .stringify({
-                clientId: p.clientId,
-                payload: {
-                  action: 'gameReady',
-                }
-              })
-            );
+          if (room.status === 'roomReady') {
+            this.broadcast(roomId, 'roomReady', room.roomData());
           }
-        }
         break;
 
-      case 'startGame':
+      case 'playerJoin':
+        const playerJoin = room.getPlayerByClientId(clientId);
+        if (!playerJoin) {
+          //throw new InternalServerError('Player not found in the room');
+        }
+        playerReady.joined = true;
+        this.broadcast(roomId, 'playerJoin', room.roomData(playerJoin));
+        break;
+
+      case 'playerReady':
+        const playerReady = room.getPlayerByClientId(clientId);
+
         room.playerReady++;
-        if (room.playerReady === room.maxPlayers) this.createGameInRoom(roomId);
+        if (room.isReadyToStart()) {
+          room.status = 'readyToStart';
+          this.createGameInRoom(roomId);
+          this.broadcast(roomId, 'readyToStart', room.roomData(playerReady));
+        }
+      
+      case 'startGame':
+        if (room.status === 'readyToStart')
+          if (room.startGame() === false)
+            throw new InternalServerError('Game start failed');
         break;
 
       case 'move':
