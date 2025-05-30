@@ -23,7 +23,7 @@ import { socket } from '../events/Socket'
 
 import { fetchToken } from '../api/fetchToken'
 import { socketConnection } from '../events/Socket'
-import { GameInfo } from '../api/interfaces/GameData'
+import { RoomData } from '../api/interfaces/GameData'
 
 /**
  * Associe les pages publics aux fonctions de rendu
@@ -135,7 +135,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		, 250);
 }
 
-export async function renderGame(gameInfo: GameInfo) {
+export async function renderGame(roomData: RoomData) {
 	
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
 
@@ -156,7 +156,7 @@ export async function renderGame(gameInfo: GameInfo) {
 
 	setTimeout(async () => {
 
-		const newContainer = await game(gameInfo, response.data!);
+		const newContainer = await game(roomData, response.data!);
 		if (!newContainer) {
 			return;
 		}

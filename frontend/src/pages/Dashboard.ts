@@ -118,7 +118,7 @@ function chat(user: User) {
 		transition-transform duration-300 ease-in-out">
 		<div class="flex flex-row font-title title-responsive-size justify-between items-center space-x-4">
 		Quack'n Talk
-		<img src="/images/duckHappy.png" alt="Duck Chat" class="w-20 drop-shadow-lg" />
+		<img src="/images/duckChat.png" alt="Duck Chat" class="w-20 drop-shadow-lg" />
 		</div>
 		<div class="flex flex-col font-title justify-between items-center w-full h-full p-4 space-x-4 border-4 border-primary dark:border-dprimary rounded-lg">
 		<div id="chat-messages" class="flex flex-col w-full h-full max-h-[400px] overflow-auto p-2 space-y-2 bg-zinc-50 rounded-lg">
@@ -129,8 +129,8 @@ function chat(user: User) {
 			${otherMessages}This is a test message.</div></div>
 		
 			</div>
-		<div class="flex flex-row bottom-0 w-full p-4 space-x-4">
-			<input type="text" id="chat-input" class="w-full p-2 font-title border-2 border-zinc-300 rounded-lg overflow-auto" translate="enter-message" placeholder="Enter your message..." />
+		<div class="flex flex-row bottom-0 w-full space-x-4">
+			<input type="text" id="chat-input" class="w-full p-2 font-title border-2 border-zinc-300 rounded-lg overflow-scroll" translate="enter-message" placeholder="Enter your message..." />
 			<button id="send-chat" class="p-2 font-title bg-primary dark:bg-dprimary text-white rounded-lg hover:bg-primary/80 dark:hover:bg-dprimary/80" translate="send">Send</button>
 		</div>
 	</div>

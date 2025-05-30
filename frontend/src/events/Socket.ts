@@ -12,12 +12,14 @@ export function socketConnection() {
 	});
 	
 	socket.addEventListener("message", (e) => {
-		const message = JSON.parse(e.data).payload;
+		
+		const data = JSON.parse(e.data).payload;
+		
 		const type = JSON.parse(e.data).type;
-		console.log("WebSocket message received:",type );
+		
 		switch (type) {
 			case 'game':
-				handleGameSocketMessage(message);
+				handleGameSocketMessage(data);
 				break;
 			default:
 				console.warn("Unknown message type received from WebSocket:", e.data.type);

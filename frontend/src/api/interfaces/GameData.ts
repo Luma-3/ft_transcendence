@@ -17,29 +17,35 @@ export interface GameId {
   id: string;
 }
 
-export interface GameInfo {
-  uid: string;
+export interface FrontGameInfo {
+  playerId: string;
   gameName: string;
   typeGame: string;
   gameId?: string;
   gameNameOpponent?: string;
 }
 
-export interface RoomData {
+export interface initInfo {
   id: string;
-  gameName: string;
+  roomId: string;
+}
+
+export interface RoomData {
+  roomId: string;
+  gameData?: GameData;
   typeGame: string;
-  gameNameOpponent: string;
+  self: player;
   opponents: player[];
 }
 
-
-export interface Opponents {
-  roomId: string;
-  players: player[];
-}
-
 export interface player {
-  id: string;
+  playerId: string;
   gameName: string;
+  joined: boolean;
 }
+
+export interface ServerGameData {
+  action: string;
+  roomData: RoomData;
+}
+

@@ -1,3 +1,4 @@
+import { GameData } from "../api/interfaces/GameData";
 import { drawExplosion } from "./gameBallAnimation";
 
 const duckImage = new Image();
@@ -5,7 +6,7 @@ duckImage.src = "/images/pp.jpg";
 
 
 
-export function drawGame(gameData: any) {
+export function drawGame(gameData: GameData) {
 	const game = document.getElementById("gamePong") as HTMLCanvasElement;
 	if (!game) {
 		return;

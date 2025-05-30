@@ -1,9 +1,7 @@
-import { socket } from "../events/Socket";
 import { drawGame } from "./gameDraw";
-import { gameInfo } from "./gameCreation";
 
-export function showGame(gameContainer: HTMLDivElement) {
-
+export function showGame() {
+	const gameContainer = document.getElementById("hiddenGame") as HTMLDivElement;
 	const startInfos = document.getElementById("startGameInfos") as HTMLDivElement;
 	const userGameProfile = document.getElementById("userGameProfile") as HTMLDivElement;
 	const opponentGameProfile = document.getElementById("opponentGameProfile") as HTMLDivElement;
@@ -20,8 +18,8 @@ export function showGame(gameContainer: HTMLDivElement) {
 		startInfos.classList.add("hidden");
 		gameContainer.classList.remove("opacity-0");
 		gameContainer.classList.add("opacity-100");
-		drawGame({player1: { y: 0, score: 0 },
-				player2: { y: 0, score: 0 },
+		drawGame({paddle1: { y: 0, score: 0 },
+				paddle2: { y: 0, score: 0 },
 				ball: { x: 0, y: 0 }});
 			}, 1500);
 	
@@ -30,15 +28,4 @@ export function showGame(gameContainer: HTMLDivElement) {
 		startInfos.classList.add("opacity-0");
 	}
 	, 1000);
-
-	socket?.send(JSON.stringify({
-		type: "game",
-		payload: {
-			type: 'startGame',
-			data: {
-				roomId: gameInfo.gameId,
-			}
-		},
-	}))
-			
 }
