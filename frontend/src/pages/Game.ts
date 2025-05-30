@@ -7,27 +7,29 @@ import { RoomData } from "../api/interfaces/GameData";
 import { User } from "../api/interfaces/User";
 
 import { socket } from "../events/Socket";
+import { player } from "../api/interfaces/GameData";
+import { gameFrontInfo } from "../game/gameCreation";
 
-function showGameOpponent(roomData: RoomData) {
+function showGameOpponent(opponents: player) {
+	console.log("showGameOpponent", opponents);
+	// const listOpponents = opponents.map((opponent) => `
+	// 	<div id=${opponent.gameName} class="flex flex-col justify-center items-center">
+	// 	<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
+	// 	border-primary dark:border-dprimary" />
+	// 	<div class="flex title-responsive-size justify-center items-center">
+	// 	${opponent.gameName}
+	// 	</div>
+	// 	</div>
+	// `).join('');
 
-	const listOpponents = roomData.opponents.map((opponent) => `
-		<div id=${opponent.gameName} class="flex flex-col justify-center items-center">
-		<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
-		border-primary dark:border-dprimary" />
-		<div class="flex title-responsive-size justify-center items-center">
-		${opponent.gameName}
-		</div>
-		</div>
-	`).join('');
-
-	if (roomData.opponents.length === 1) {
+	// if (opponents. === 1) {
 		return `<div class="flex flex-col justify-center items-center">
 		<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
 		border-primary dark:border-dprimary" />
-		${roomData.opponents[0] || "Waiting for opponent" }
+		${opponents.gameName || "Waiting for opponent" }
 		</div>`;
-	} 
-	return listOpponents;
+	// } 
+	// return listOpponents;
 }
 
 
@@ -79,7 +81,8 @@ export default async function Game(roomData: RoomData, user: User) {
 
 		onKeyDown(event);
 	}
-
+	const opponentOfMyself = roomData.players.find((opponent) => opponent.playerId !== gameFrontInfo.playerId);
+	console.log("opponentOfMyself", opponentOfMyself);
 	/**
 	 * Contenu HTML de la page
 	 */
@@ -91,12 +94,12 @@ export default async function Game(roomData: RoomData, user: User) {
 			animate-transition opacity-100 duration-500 ease-in-out">
 				<div class="flex flex-row h-full w-full title-responsive-size justify-center items-center
 				space-x-4 pt-40">
-					<div id=${roomData.self.gameName} class="flex flex-col w-1/2 h-1/2 p-4 justify-center items-center">
+					<div id=${gameFrontInfo.gameName} class="flex flex-col w-1/2 h-1/2 p-4 justify-center items-center">
 						<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2
 						mb-4 transition-transform duration-800 ease-in-out
 						border-primary dark:border-dprimary" />
 						<div class="flex title-responsive-size justify-center items-center">
-						${roomData.self.gameName}
+						${gameFrontInfo.gameName}
 						</div>
 					</div>
 					<div id="vsdiv" class="flex flex-col text-9xl justify-center items-center transition-transform duration-800 ease-in-out">
@@ -104,7 +107,7 @@ export default async function Game(roomData: RoomData, user: User) {
 					</div>
 					<div id="opponentGameProfile" class="flex flex-col w-1/2 h-1/2 p-4 justify-center items-center 
 					transition-transform duration-800 ease-in-out">
-					${showGameOpponent(roomData)}
+					${showGameOpponent(opponentOfMyself)}
 					</div>
 				</div>
 

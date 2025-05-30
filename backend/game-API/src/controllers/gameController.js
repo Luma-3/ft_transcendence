@@ -5,7 +5,7 @@ import { gameService } from '../services/gameService.js';
 export async function postPlayer(req, rep) {
   const data = req.body;
 
-  const player = { uid: data.playerId, gameName: data.gameName, ready: false };
+  const player = { playerId: data.playerId, gameName: data.gameName, ready: false };
   const roomId = gameService.joinRoom(player, data.typeGame);
 
   if (!roomId) {

@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Pong } from '../game/Pong.js';
 
 // interface Player {
-// 	uid: string; // Unique identifier for the player
+// 	playerd: string; // Unique identifier for the player
 // 	clientId: string; // Client identifier
 // 	gameName: string; // Name of the game or player
 // 	// Additional player properties can be added here
@@ -42,7 +42,7 @@ export class Room {
 
 	getPlayerById(playerId) {
 		for (const player of this.players) {
-	  		if (player.uid === playerId) {
+	  		if (player.playerId === playerId) {
 				return player; // Return the player if found
 	  		}
 		}
@@ -64,8 +64,8 @@ export class Room {
 	// }
 
 	this.pong = new Pong({
-	  player1_uid: this.players[0].uid,
-	  player2_uid: this.players[1]?.uid
+	  player1_uid: this.players[0].playerId,
+	  player2_uid: this.players[1]?.playerId
 	}); // Optional player2_uid for single-player games
 
 	if (!this.pong) {
@@ -108,27 +108,27 @@ export class Room {
 
   userInfos(player) {
 	return {
-		playerId: player.uid,
+		playerId: player.playerId,
 		gameName: player.gameName,
 		joined: player.joined
 	};
   }
 
   userOpponentInfos(player) {
-	return this.players.filter(p => p.uid !== player.uid).map(p => ({
-		playerId: p.uid,
+	return this.players.filter(p => p.playerId !== player.playerId).map(p => ({
+		playerId: p.playerId,
 		gameName: p.gameName,
 		joined: p.joined
 	}));
   }
 
-  roomData(player) {
+  roomData() {
 	return {
 		roomId: this.id,
 		gameData: this.pong ? this.pong.toJSON() : null,
 		typeGame: this.typeGame,
-		self: this.userInfos(player),
-		opponents: this.userOpponentInfos(player)
+		players: this.players,
+		//opponents: this.userOpponentInfos(player)
 	};
   }
 
@@ -137,7 +137,7 @@ export class Room {
 	  roomId: this.id,
 	  typeGame: this.typeGame,
 	  players: this.players.map(player => ({
-		playerId: player.uid,
+		playerId: player.playerId,
 		gameName: player.gameName,
 		ready: player.ready
 	  })),
@@ -151,7 +151,7 @@ export class Room {
 	  typeGame: this.typeGame,
 	  status: this.status,
 	  players: this.players.map(player => ({
-		playerId: player.uid,
+		playerId: player.playerId,
 		gameName: player.gameName,
 		ready: player.ready,
 	  })),

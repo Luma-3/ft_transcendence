@@ -34,18 +34,17 @@ export interface RoomData {
   roomId: string;
   gameData?: GameData;
   typeGame: string;
-  self: player;
-  opponents: player[];
+  players: player[];
 }
 
 export interface player {
   playerId: string;
   gameName: string;
-  joined: boolean;
+  ready: boolean;
 }
 
 export interface ServerGameData {
   action: string;
-  roomData: RoomData;
+  data: RoomData;
 }
 

@@ -48,7 +48,7 @@ class GameService {
     let status = room.addPlayer(player);
 
     if (room.status === 'roomReady') {
-      this.broadcast(roomId, 'roomReady', room.usersInfos());
+      this.broadcast(roomId, 'roomReady', room.roomData(player));
     }
 
     return status;
@@ -111,6 +111,7 @@ class GameService {
     }
   }
 
+  //TODO: faire en sorte que les players set le ready a true et le renvoie au front
   async handleEvent(clientId, event) {
     const data = event.data;
     const roomId = data.roomId;
@@ -140,27 +141,31 @@ class GameService {
             }
           }));
           if (room.status === 'roomReady') {
+            console.log("room data :", room.roomData(player));
             this.broadcast(roomId, 'roomReady', room.roomData());
           }
         break;
 
       case 'playerJoin':
         const playerJoin = room.getPlayerByClientId(clientId);
+        console.log('Joined: ', playerJoin);
         if (!playerJoin) {
           //throw new InternalServerError('Player not found in the room');
         }
-        playerReady.joined = true;
-        this.broadcast(roomId, 'playerJoin', room.roomData(playerJoin));
+        playerJoin.joined = true;
+        this.broadcast(roomId, 'playerJoin', room.roomData());
         break;
 
       case 'playerReady':
         const playerReady = room.getPlayerByClientId(clientId);
+        console.log('is ready: ', playerReady);
+        playerReady.ready = true;
 
         room.playerReady++;
         if (room.isReadyToStart()) {
           room.status = 'readyToStart';
           this.createGameInRoom(roomId);
-          this.broadcast(roomId, 'readyToStart', room.roomData(playerReady));
+          this.broadcast(roomId, 'readyToStart', room.roomData());
         }
       
       case 'startGame':

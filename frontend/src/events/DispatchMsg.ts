@@ -7,9 +7,14 @@ import { showGame } from "../game/gameShow";
 import { alertGameReady } from "../components/ui/alert/alertGameReady";
 import { socket } from "./Socket";
 
-function changeStatusPlayer(playerData: player) {
-	const playerElement = document.getElementById(playerData.gameName);
-	playerElement?.classList.add("animate-bounce");
+function changeStatusPlayer(roomData: RoomData) {
+	for (const player of roomData.players) {
+		const ready = player.ready ? "ready" : "not-ready";
+		if (ready === "ready") {
+			const playerElement = document.getElementById(player.gameName);
+			playerElement?.classList.add("animate-bounce");
+		}
+	}
 }
 
 function launchGame(roomData: RoomData) {
@@ -26,33 +31,34 @@ function launchGame(roomData: RoomData) {
 	}));
 }
 
-export async function handleGameSocketMessage(data: ServerGameData ) {
-	
+import { gameId } from "../game/gameCreation";
+export async function handleGameSocketMessage(data: any ) {
+	console.log("Received game data:", data);
 	switch (data.action) {
 		case 'roomReady':
 			setTimeout(() => {
 				alertGameReady();}
 			, 500);
-			
 			setTimeout(() => {
-				renderGame(data.roomData);}
+				renderGame(data.data);
+			}
 			, 3500);
 			break;
 		
 		case 'playerJoin':
-			changeStatusPlayer(data.roomData.self);
+			changeStatusPlayer(data.data);
 			break;
 
 		case 'readyToStart':
 			showGame();
-			drawGame(data.roomData.gameData!);
+			drawGame(data.data.gameData!);
 			setTimeout(() => {
-				launchGame(data.roomData);
+				launchGame(data.data);
 			}, 3000);
 			break;
 		
 		case 'update':
-			drawGame(data.roomData.gameData!);
+			drawGame(data.data.gameData!);
 			break;
 		case 'win':
 			DisplayGameWinLose(true);

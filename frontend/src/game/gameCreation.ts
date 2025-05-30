@@ -11,9 +11,11 @@ import { socket } from "../events/Socket";
 import { GameId, FrontGameInfo } from "../api/interfaces/GameData";
 
 export let gameFrontInfo: FrontGameInfo;
-let gameId: string;
+export let gameId: string;
 
 function initGame() {
+	console.log("Game initialized with ID:", gameId);
+	console.log("Game Front Info:", gameFrontInfo);
 	socket!.send(JSON.stringify({
 		type: "game",
 		payload: {
