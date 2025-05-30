@@ -33,7 +33,10 @@ const clickEvent: {[key: string]: () => void } = {
 	'google': () => {
 		window.location.href = 'http://localhost:3000/api/user/login/google'
 	},
-	
+
+	// * -------------- Private Page Load -------------- */
+	'loaddashboard': () => renderPrivatePage('dashboard'),
+
 	// * -------------- Profile Page  -------------- */
 	'loadprofile': () => renderPrivatePage('profile'),
 	'changeUserInfo': () => changeUserNameEmail(),

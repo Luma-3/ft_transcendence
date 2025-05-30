@@ -65,6 +65,8 @@
 	"enter-both-players-names": "Entrez les noms des deux joueurs",
 	"enter-name-player2": "Entrez le nom du joueur 2",
 	"game-created": "Jeu créé avec succès. En attente de la connexion des joueurs...",
+	"connecting-game": "Connexion au jeu...",
+	"please-wait-second": "Veuillez patienter <b></b> secondes...",
 
 	"profile": "Profil",
 	"your-informations": "Vos informations",

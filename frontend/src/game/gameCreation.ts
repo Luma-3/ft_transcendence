@@ -8,9 +8,10 @@ import { API_GAME } from "../api/routes";
 
 import { socket } from "../events/Socket";
 
-import { GameId, GameInfo } from "../api/interfaces/GameData";
+import { GameId, FrontGameInfo } from "../api/interfaces/GameData";
 
-export let gameInfo: GameInfo;
+export let gameFrontInfo: FrontGameInfo;
+let gameId: string;
 
 function initGame() {
 	socket!.send(JSON.stringify({
@@ -18,12 +19,11 @@ function initGame() {
 		payload: {
 			type: 'init',
 			data: {
-				uid: gameInfo.uid,
-				roomId: gameInfo.gameId,
+				playerId: gameFrontInfo.playerId,
+				roomId: gameId,
 			}
 		}
 	}))
-
 }
 
 /**
@@ -37,15 +37,15 @@ async function sendDataToServer(userTheme: string) {
 	const response = await fetchApi<GameId>(API_GAME.CREATE, {
 		method: 'POST',
 		body: JSON.stringify({
-			uid: gameInfo.uid,
-			gameName: gameInfo.gameName,
-			typeGame: gameInfo.typeGame,
+			playerId: gameFrontInfo.playerId,
+			gameName: gameFrontInfo.gameName,
+			typeGame: gameFrontInfo.typeGame,
 		}),
 	});
 	if (!response || response.status === "error" || !response.data) {
 		return alertTemporary("error", "game-creation-failed", userTheme, true);
 	}
-	gameInfo.gameId = response.data.id;
+	gameId = response.data.id;
 	alertTemporary("success", "game-created-successfully", userTheme, true);
 }
 
@@ -118,8 +118,8 @@ export async function createGame() {
 	 * pour pouvoir stocker facilement toutes les donnees utiles au front
 	 * et l'envoi de la requete pour creer la partie
 	 */
-	gameInfo = {
-		uid: user.data.id!.toString(),
+	gameFrontInfo = {
+		playerId: user.data.id!.toString(),
 		gameName: player1,
 		typeGame : gameType.id,
 		gameNameOpponent: (player2) ? player2 : "",

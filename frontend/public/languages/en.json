@@ -64,6 +64,8 @@
 	"enter-name-player2": "Enter name of player 2",
 	"game-created-successfully": "Game created successfully. Waiting for players to join...",
 	"game-creation-failed": "Game creation failed",
+	"connecting-game": "Connecting to game...",
+	"please-wait-second": "Please wait <b></b> seconds...",
 
 	"profile": "Profile",
 	"your-informations": "Your informations",
