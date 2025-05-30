@@ -66,6 +66,8 @@
 	"enter-name-player2": "Ingresa el nombre del jugador 2",
 	"game-created-successfully": "Juego creado con éxito. Esperando a que los jugadores se unan...",
 	"game-creation-failed": "Error al crear el juego",
+	"connecting-game": "Conectando al juego...",
+	"please-wait-second": "Por favor, espera <b></b> segundos...",
 
 
 	"profile": "Perfil",

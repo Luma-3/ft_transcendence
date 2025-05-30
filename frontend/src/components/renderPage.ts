@@ -136,7 +136,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 }
 
 export async function renderGame(gameInfo: GameInfo) {
-
+	
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
 
 	const token = await fetchToken();

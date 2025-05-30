@@ -21,22 +21,22 @@ function gameWinContainer() {
 	return `<div class="flex flex-col">
 	<div class="flex flex-col items-center justify-center h-full mt-20">
 	<img src="/images/duckHappy.png" alt="Duck Happy" class="w-140 h-140" />
-	<div class="font-title text-8xl text-center font-bold mb-4"> Michel Win !</div>
+	<div class="font-title text-8xl text-center font-bold mb-4"> You Win !</div>
 		</div>
 	</div>
 	<div class="flex flex-col bottom-0 justify-center items-center w-full h-20 mt-20">
 	<img src="/images/duckHandsUpSparkles.png" alt="Duck Hands Up Sparkles" class="w-40 h-40" />
 	<div class="flex flex-col space-y-4 justify-center items-center w-full h-full p-4">
-	${primaryButton({id: 'playAgain', weight: "1/2", text: "Play Again", translate: "play-again", type: "button"})}
-	${secondaryButton({id: 'backToDashboard', weight: "1/2", text: "Back to Dashboard", translate: "back-to-dashboard", type: "button"})}
+	${secondaryButton({id: 'loaddashboard', weight: "1/2", text: "Back to Dashboard", translate: "back-to-dashboard", type: "button"})}
 	</div>
 	
 	
-
+	
 	</div>
 	</div>`;
 }
 
+// ${primaryButton({id: 'playAgain', weight: "1/2", text: "Play Again", translate: "play-again", type: "button"})}
 function gameLoseContainer() {
 	return `<div class="flex flex-col">
 	<div class="flex flex-col items-center justify-center h-full mt-20">
@@ -47,8 +47,7 @@ function gameLoseContainer() {
 	<div class="flex flex-col bottom-0 justify-center items-center w-full h-20 mt-20">
 	<img src="/images/duckSad2.png" alt="Duck Sad 2" class="w-40 h-40" />
 	<div class="flex flex-col space-y-4 justify-center items-center w-full h-full p-4">
-	${primaryButton({id: 'playAgain', weight: "1/2", text: "Play Again", translate: "play-again", type: "button"})}
-	${secondaryButton({id: 'backToDashboard', weight: "1/2", text: "Back to Dashboard", translate: "back-to-dashboard", type: "button"})}
+	${secondaryButton({id: 'loaddashboard', weight: "1/2", text: "Back to Dashboard", translate: "back-to-dashboard", type: "button"})}
 	</div>
 
 	

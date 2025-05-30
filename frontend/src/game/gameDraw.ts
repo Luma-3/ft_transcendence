@@ -1,5 +1,10 @@
 import { drawExplosion } from "./gameBallAnimation";
 
+const duckImage = new Image();
+duckImage.src = "/images/pp.jpg";
+
+
+
 export function drawGame(gameData: any) {
 	const game = document.getElementById("gamePong") as HTMLCanvasElement;
 	if (!game) {
@@ -28,7 +33,8 @@ export function drawGame(gameData: any) {
 	// ctx.translate(game.width / 4, game.height / 4);
 
 	ctx.beginPath();
-	ctx.rect(10, gameData.paddle1.y - 50, 10, 100);
+	ctx.drawImage(duckImage, 10, gameData.paddle1.y - 50, 10, 100);
+	// ctx.rect(10, gameData.paddle1.y - 50, 10, 100);
 	ctx.fillStyle = "blue";
 	ctx.fill();
 

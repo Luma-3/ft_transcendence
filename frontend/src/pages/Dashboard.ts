@@ -105,6 +105,23 @@ function gameUserStat(user: User) {
 	`;
 }
 
+function chat(user: User) {
+	return `<div class="flex flex-col w-full h-full max-h-[600px] max-w-[400px] mx-4 overflow-auto
+		p-4 space-y-4 rounded-lg
+		transition-transform duration-300 ease-in-out">
+		<div class="flex flex-row font-title title-responsive-size justify-between items-center space-x-4">
+		Quack'n Talk
+		<img src="/images/duckHappy.png" alt="Duck Chat" class="w-20 drop-shadow-lg" />
+		</div>
+		<div class="flex flex-col font-title justify-between items-center w-full h-full p-4 space-x-4 bg-primary dark:bg-dprimary rounded-lg">
+		
+		
+		</div>
+	</div>
+	`;
+}
+
+
 async function renderDashboard(user:User) {
 
 	return `
@@ -140,10 +157,10 @@ async function renderDashboard(user:User) {
 			
 				</div>
 			</div>
-			<div id="truc" class="absolute left-0 mt-4 opacity-0 flex min-h-[400px] min-w-[400px] mx-4 p-4 space-y-4
-			bg-zinc-50 rounded-lg justify-center items-center transition-transform duration-500 ease-in-out -translate-x-full">
+			<div id="truc" class="flex left-0 mt-4 opacity-100 flex min-h-[400px] min-w-[400px] mx-4 space-y-4
+			bg-zinc-50 rounded-lg justify-center items-center transition-transform duration-500 ease-in-out">
 			
-				${gameUserStat(user)}
+				${chat(user)}
 			
 			</div>
 		</div>

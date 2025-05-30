@@ -34,6 +34,7 @@ function initGame() {
  */
 async function sendDataToServer(userTheme: string) {
 
+	console.log("Sending game data to server:", gameInfo);
 	const response = await fetchApi<GameId>(API_GAME.CREATE, {
 		method: 'POST',
 		body: JSON.stringify({

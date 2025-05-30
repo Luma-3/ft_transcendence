@@ -1,8 +1,5 @@
-import { renderGame } from "../components/renderPage";
 import { alertPublic } from "../components/ui/alert/alertPublic";
-import { drawGame } from "../game/gameDraw";
-import { gameInfo } from "../game/gameCreation";
-import { DisplayGameWinLose } from "../game/gameWin";
+import { handleGameSocketMessage } from "./DispatchMsg";
 
 export let socket: WebSocket | null = null;
 
@@ -16,16 +13,15 @@ export function socketConnection() {
 	
 	socket.addEventListener("message", (e) => {
 		const message = JSON.parse(e.data).payload;
-		console.log("Received message from WebSocket:", message);
-		if (message.action === 'gameReady') {
-			renderGame(gameInfo)
-		} else if (message.action === 'update') {
-			drawGame(message.gameData);
-		} else if (message.action === 'win') {
-			DisplayGameWinLose(true)
-		} else if (message.action === 'lose') {
-			DisplayGameWinLose(false)
-		}
+		const type = JSON.parse(e.data).type;
+		console.log("WebSocket message received:",type );
+		switch (type) {
+			case 'game':
+				handleGameSocketMessage(message);
+				break;
+			default:
+				console.warn("Unknown message type received from WebSocket:", e.data.type);
+		}		
 	});
 
 	socket.addEventListener('error', () => {
