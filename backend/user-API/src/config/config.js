@@ -10,7 +10,11 @@ import swagger from '../plugins/swagger.js'
 
 import knex_config from './knex.config.js'
 
-export default async function config(fastify) {
+export const config_dev = {
+  logger: true,
+};
+
+export async function registerPlugin(fastify) {
   await fastify.register(formatter);
 
   await fastify.register(knex, knex_config);

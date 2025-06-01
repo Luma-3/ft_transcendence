@@ -27,8 +27,9 @@ function jwt_pl(fastify, opts, done) {
       }
 
       try {
+        console.log('token', token);
         req.user = fastify.jwt.verify(token);
-        console.log(req.user);
+        console.log('USER', req.user);
         req.headers['x-user-id'] = req.user.userID;
         req.headers['x-user-username'] = req.user.username;
       }

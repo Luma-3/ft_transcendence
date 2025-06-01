@@ -1,8 +1,7 @@
 import Fastify from 'fastify'
 import dotenv from 'dotenv'
-import fs from 'fs'
 
-import config from './config/fastify.config.js'
+import { config_dev, registerPlugin } from './config/config.js'
 
 import user from './routes/user.js'
 import session from './routes/session.js'
@@ -20,20 +19,12 @@ import { userSchemas } from './schema/user.schema.js'
 import { preferencesSchema } from './schema/preferences.schema.js'
 import { sessionSchemas } from './schema/session.schema.js'
 
+import { redisPub, redisSub } from './config/redis.js'
+
 dotenv.config()
-const fastify = Fastify({
-  logger: true,
-  https: {
-    key: fs.readFileSync(process.env.SSL_KEY),
-    cert: fs.readFileSync(process.env.SSL_CERT),
-  },
-});
+const fastify = Fastify(config_dev);
 
-await config(fastify);
-
-fastify.addHook('onRoute', (routeOptions) => {
-  console.log(`[ROUTE] ${routeOptions.method} ${routeOptions.url}`);
-});
+await registerPlugin(fastify);
 
 fastify.decorate('UserService', new UserService({
   models: {
@@ -76,6 +67,24 @@ await sessionSchemas(fastify);
 fastify.register(user);
 fastify.register(session);
 fastify.register(preferences);
+
+redisSub.subscribe('ws.test.in', (message, channel) => {
+  try {
+    const { clientId, payload } = JSON.parse(message);
+    console.log(`[WS][Redis] <- ${channel} -> client ${clientId}`);
+    console.log(`[WS][Redis] Payload: ${JSON.stringify(payload)}`);
+
+    // echo the message back to the client
+
+    redisPub.publish(`ws.${channel}.out`, JSON.stringify({
+      clientId: clientId,
+      payload: payload
+    }));
+  }
+  catch (err) {
+    console.error('Error when handle outgoing message', err);
+  }
+});
 
 const start = async () => {
   try {

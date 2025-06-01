@@ -1,3 +1,3 @@
-import config from "./config/knex.config.js";
+import config from "./src/config/knex.config.js";
 
 export default config;

@@ -1,0 +1,73 @@
+services:
+  redis:
+    build:
+      context: ./redis/
+      dockerfile: Dockerfile
+    container_name: redis
+    expose:
+        - "6379"
+    networks:
+        - redis-net
+
+
+  gateway:
+    build:
+      context: ./backend/gateway/
+      dockerfile: Dockerfile.dev
+    container_name: gateway
+    env_file:
+        - ./.dev.env
+    volumes:
+      - ./backend/gateway/src:/app/src:z
+      - ./backend/dependencies/:/app/dependencies:z
+    depends_on:
+      - redis
+    ports:
+      - "3000:3000"
+    networks:
+      - backend-net
+      - redis-net
+
+  user-api:
+    build:
+      context: ./backend/user-API/
+      dockerfile: Dockerfile.dev
+    container_name: user-API
+    env_file:
+        - ./.dev.env
+    volumes:
+      - ./backend/user-API/data:/app/data:z
+      - ./backend/user-API/src:/app/src:z
+      - ./backend/dependencies/:/app/dependencies:z
+    depends_on:
+      - redis
+    expose:
+      - "3001"
+    networks:
+      - backend-net
+      - redis-net
+
+  upload-api:
+    build:
+      context: ./backend/upload-API/
+      dockerfile: Dockerfile.dev
+    container_name: upload-API
+    env_file:
+        - ./.dev.env
+    volumes:
+      - ./backend/upload-API/uploads:/app/uploads:z
+      - ./backend/upload-API/src:/app/src:z
+      - ./backend/dependencies/:/app/dependencies:z
+    depends_on:
+      - redis
+    expose:
+      - "3002"
+    networks:
+      - backend-net
+      - redis-net
+
+networks:
+  redis-net:
+    driver: bridge
+  backend-net:
+    driver: bridge

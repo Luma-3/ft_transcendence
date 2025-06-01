@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
     "stop": ""
   },
   "repository": {
@@ -28,11 +28,13 @@
     "@fastify/jwt": "^9.1.0",
     "@fastify/swagger": "^9.4.2",
     "@fastify/swagger-ui": "^5.2.2",
-    "@transcenduck/error": "file:../dependencies/error",
-    "@transcenduck/formatter": "file:../dependencies/formatter",
+    "@fastify/websocket": "^11.0.2",
+    "@transcenduck/error": "file:./dependencies/error",
+    "@transcenduck/formatter": "file:./dependencies/formatter",
     "dotenv": "^16.4.7",
     "fastify": "^5.2.2",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "redis": "^5.1.0"
   },
   "type": "module"
 }

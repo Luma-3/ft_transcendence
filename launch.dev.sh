@@ -28,11 +28,16 @@ run() {
   echo "➡️ Backend started"
   cd ..
 
+  echo "➡️ Docker Services"
+  docker-compose -f docker/docker-compose.dev.yml up -d --build
+
   echo "✅ All dev servers running!"
   echo "📝 Logs are available in the logs directory."
   echo "📝 To stop the servers, CTRL+C"
 
   wait
+  echo "Stopping all servers..."
+  docker-compose -f docker/docker-compose.dev.yml down
 }
 
 fclean() {
@@ -65,4 +70,3 @@ migrate) migrate ;;
 esac
 
 exit 0
-

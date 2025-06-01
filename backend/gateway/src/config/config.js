@@ -1,11 +1,25 @@
 import cookie from "@fastify/cookie";
 import cors from "@fastify/cors";
 import swaggerUi from "@fastify/swagger-ui";
+import fs from "fs";
 
 import jwt from "../plugins/jwt.js";
 import swagger from "../plugins/swagger.js";
+import socket from "../plugins/socket.js";
 
-export default function(fastify, servers) {
+// export const config = {
+//   logger: true,
+//   https: {
+//     key: fs.readFileSync(process.env.SSL_KEY),
+//     cert: fs.readFileSync(process.env.SSL_CERT),
+//   }
+// };
+
+export const config_dev = {
+  logger: true,
+};
+
+export function registerPlugin(fastify, servers) {
   fastify.register(cookie);
 
   fastify.register(cors, {
@@ -27,6 +41,14 @@ export default function(fastify, servers) {
       { method: 'GET', url: '/user/session/verify' },
       { method: 'GET', url: /^\/[^\/]+\/doc\/json$/ }, // Swagger json
     ]
+  });
+
+  fastify.register(socket, {
+    options: {
+      perMessageDeflate: {
+        threshold: 1024, // Compress Only Messages Larger Than 1KB
+      }
+    }
   });
 
   fastify.register(swagger, {

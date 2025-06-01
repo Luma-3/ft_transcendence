@@ -12,10 +12,11 @@ export class UploadService {
     "banner"
   ];
   constructor(
-    editorImageService
+    editorImageService,
+    rootUpload
   ) {
     this._editorImageService = editorImageService;
-    this._uploadPath = path.resolve(import.meta.dirname, "../uploads/");
+    this._uploadPath = path.resolve(rootUpload, "uploads");
     UploadService._typeUpload.forEach(element => {
       fs.mkdir(path.join(this._uploadPath, element), console.debug);
     });
