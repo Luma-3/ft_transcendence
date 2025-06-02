@@ -2,11 +2,12 @@
   "name": "transcenduck_user-services",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
-    "stop": ""
+    "dev": "nodemon",
+    "start": "node dist/index.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,10 @@
   "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
   "devDependencies": {
     "@fastify/cors": "^10.0.2",
-    "nodemon": "^3.1.10"
+    "@types/node": "^22.15.23",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
@@ -28,16 +32,19 @@
     "@fastify/multipart": "^9.0.3",
     "@fastify/oauth2": "^8.1.2",
     "@fastify/swagger": "^9.4.2",
-    "@transcenduck/error": "file:./dependencies/error",
-    "@transcenduck/formatter": "file:./dependencies/formatter",
+    "@fastify/type-provider-typebox": "^5.1.0",
+    "@sinclair/typebox": "^0.34.33",
+    "@transcenduck/error": "file:./packages/error",
+    "@transcenduck/formatter": "file:./packages/formatter",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
     "fastify": "^5.2.2",
     "fastify-bcrypt": "^1.0.1",
     "fs": "^0.0.1-security",
     "knex": "^3.1.0",
+    "redis": "^5.1.0",
     "sqlite3": "^5.1.7",
-    "uuid": "^11.1.0",
-    "redis": "^5.1.0"
+    "uuid": "^11.1.0"
   },
   "type": "module"
 }
