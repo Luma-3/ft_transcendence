@@ -3,10 +3,9 @@ import formatter from '@transcenduck/formatter'
 import staticFile from "@fastify/static";
 import path from "path";
 
-import swagger from './plugins/swagger.js'
+import swagger from '../plugins/swagger.js'
 
 export default async function config(fastify) {
-  const __dirname = import.meta.dirname;
 
   await fastify.register(formatter);
   await fastify.register(fastifyMultipart);
@@ -32,9 +31,8 @@ export default async function config(fastify) {
     }
   });
 
-  await fastify.register(staticFile, {
-    root: path.join(__dirname, '../uploads/'),
-    prefix: '/uploads/',
-  })
+  // await fastify.register(staticFile, {
+  //   root: path.join(__dirname, '../uploads/'),
+  //   prefix: '/uploads/',
+  // })
 }
-

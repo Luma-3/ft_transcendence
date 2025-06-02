@@ -13,7 +13,7 @@ export const ForbiddenSchema = {
   properties: {
     status: { type: 'string', enum: ['error'] },
     statusCode: { type: 'integer', description: 'HTTP status code of the response', examples: [403] },
-    code: { type: 'string', description: 'Application-specific error identifier', examples: ['FORBIDEN_ERR'] },
+    code: { type: 'string', description: 'Application-specific error identifier', examples: ['FORBIDDEN_ERR'] },
     message: { type: 'string', description: 'Explanation of why access is denied' },
   },
   required: ['status', 'message', 'statusCode', 'code']

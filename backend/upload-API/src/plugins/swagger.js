@@ -2,6 +2,7 @@ import fp from 'fastify-plugin'
 import swagger from '@fastify/swagger'
 
 import { registerErrorSchema } from '@transcenduck/error'
+import { uploadSchema } from '../schema/upload.schema.js';
 
 function swagger_pl(fastify, opts, done) {
   if (!fastify.swagger) {
@@ -49,6 +50,7 @@ function swagger_pl(fastify, opts, done) {
       });
     })
 
+    uploadSchema(fastify);
     if (opts.route !== undefined) {
       fastify.get(opts.route, { schema: { hide: true } },
         async (_, rep) => {
