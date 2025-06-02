@@ -5,7 +5,7 @@ RUN apt-get update
 WORKDIR /app
 
 COPY package*.json ./
-COPY index.js ./
+COPY ./src/index.js ./
 
 RUN npm install
 

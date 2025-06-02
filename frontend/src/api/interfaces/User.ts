@@ -7,5 +7,6 @@ export interface User {
 		theme: string;
 		lang: string;
 		avatar: string;
+		banner: string;
 	}
 }

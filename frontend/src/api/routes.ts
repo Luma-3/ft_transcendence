@@ -3,6 +3,7 @@ const API_URL = "https://localhost:5173/api";
 const SERVICES = {
   USER: `${API_URL}/user/users`,
   SESSION: `${API_URL}/user/session`,
+  CDN: `${API_URL}/uploads`,
   GAME: `${API_URL}/game`,
 }
 
@@ -15,7 +16,12 @@ export const API_USER = {
     PREFERENCES: `${SERVICES.USER}/me/preferences`,
   },
   UPDATE: {
-    PREF: `${SERVICES.USER}/me/preferences`,  //Theme et les langues
+    PREF: {
+      AVATAR: `${SERVICES.USER}/me/preferences/avatar`,
+      BANNER: `${SERVICES.USER}/me/preferences/banner`,
+      ALL : `${SERVICES.USER}/me/preferences`,  //Toutes les preferences
+      // THEME_LANG: `${SERVICES.USER}/me/preferences/theme-lang`,  //Theme et les langues:
+    },  //Theme et les langues
     PASSWORD: `${SERVICES.USER}/me/password`,
     EMAIL: `${SERVICES.USER}/me/email`,
     USERNAME: `${SERVICES.USER}/me/username`,
@@ -41,3 +47,7 @@ export const API_GAME = {
   CREATE: `${SERVICES.GAME}/join`,
 }
 
+export const API_CDN = {
+  AVATAR: `${SERVICES.CDN}/avatar`,
+  BANNER: `${SERVICES.CDN}/banner`,
+}

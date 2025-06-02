@@ -4,13 +4,19 @@ import fs from "fs";
 import { randomUUID } from "crypto";
 import * as mine from "mime-types";
 import { pipeline } from "node:stream/promises";
+
 export class UploadService {
   _uploadPath;
   _editorImageService;
+  
+  /**
+   * Verification du type pour renvoyer sinon
+  */  
   static _typeUpload = [
     "avatar",
     "banner"
   ];
+
   constructor(
     editorImageService,
     rootUpload
@@ -48,10 +54,12 @@ export class UploadService {
     const filename = `${randomUUID()}.${extension}`;
     const outputPath = path.join(this._uploadPath, typePath, filename);
     await pipeline(data.file, fs.createWriteStream(outputPath));
-    const VirtualPath = outputPath.substring(this._uploadPath.length)
-    return `https://${process.env.GATEWAY_IP}/api/upload${VirtualPath}`;
+    return filename;
   }
 
+  /**
+   * Verification de l'existence du fichier
+   */
   async checkFile(path) {
     try {
       const stats = fs.statSync(path);
@@ -63,7 +71,11 @@ export class UploadService {
     }
   }
 
-
+  /**
+   * Verification de l'existence fichier,
+   * appelle l'editeur si besoin (si le type correspond a un fichier image)
+   * et renvoie le fichier
+   */
   async getFile(typePath, realPath, options) {
     const pathJoin = path.join(this._uploadPath, realPath);
     console.log(path.join(this._uploadPath, typePath));
@@ -79,7 +91,7 @@ export class UploadService {
       buffer = this._editorImageService.edit(buffer, options);
     }
     return buffer;
-  }
+}
 
   async deleteFile(typePath, realPath) {
     const pathJoin = path.join(this._uploadPath, realPath);
@@ -93,6 +105,3 @@ export class UploadService {
     }
   }
 }
-
-
-

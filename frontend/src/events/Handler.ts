@@ -21,6 +21,7 @@ import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 
 import { createGame } from '../game/gameCreation'
+import { addNewMessage } from '../chat/newMessage'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: {[key: string]: () => void } = {
@@ -47,12 +48,15 @@ const clickEvent: {[key: string]: () => void } = {
 		'cancel-image': () => cancelEditor(),
 		'save-image': () => saveNewPicture(),
 		'file-upload': () => showEditorPicture(),
-	
+		'banner-upload': () => showEditorPicture("BANNER"),
 	// * -------------- Settings Page  -------------- */
 	'loadsettings': () => renderPrivatePage('settings'),
 	'saveLang': () => saveDefaultLanguage(),
 	'deleteAccount': () => deleteUser(),
 	'logout': () =>  logOutUser(),
+
+	// * -------------- Chat  -------------- */
+	'send-chat': () => addNewMessage(),
 
 	// * -------------- Common Components  -------------- */
 

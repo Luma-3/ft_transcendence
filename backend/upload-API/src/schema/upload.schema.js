@@ -30,7 +30,6 @@ export const uploadFileValidation = {
 
 export async function uploadSchema(fastify) {
   fastify.addSchemaFormater(uploadFileParams);
-  console.log(uploadFileParams)
   fastify.addSchemaFormater(uploadFilePublic);
   fastify.addSchemaFormater(uploadFileValidation);
 }

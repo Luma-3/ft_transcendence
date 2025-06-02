@@ -1,20 +1,30 @@
 import path from 'path';
 import * as mine from 'mime-types';
 
-export async function uplaodFile(req, rep) {
+
+
+/**
+ * Post Image, si image > 4Mo, on accepte pas
+ */
+export async function uploadFile(req, rep) {
+  const { typePath } = req.params;
   const file = await req.file({
     limits: {
-      fileSize: 4 * 1024 * 1024,
+      fileSize: typePath == "avatar" ? (4 * 1024 * 1024) : (20 * 1024 * 1024), // 4Mio pour les images, 20Mio pour les autres types
       files: 1
     }
   });
-  const { typePath } = req.params;
   
   const fileurl = await this.UploadService.uploadFile(typePath, file);
 
   return rep.code(200).send({ message: 'file uploaded successfully', data: { Url: fileurl } })
 }
 
+/**
+ * Recuperation du URI de la requete, separation des infos (typePath, url, query)
+ * verification du content-type et si la demande et le fichier ne correspondent pas
+ * ERROR 403
+ */
 export async function getFile(req, rep) {
   const url = Object.keys(req.query).length ? req.url.substring(0, req.url.indexOf("?")) : req.url;
   const { typePath } = req.params;

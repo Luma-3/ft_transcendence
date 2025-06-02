@@ -2,7 +2,7 @@ import { renderPublicPage } from "../components/renderPage";
 import { IApiResponse } from "./interfaces/IApiResponse";
 import { fetchToken } from "./fetchToken";
 
-export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IApiResponse<T>> {
+export async function fetchApi<T>(url:string, option?: RequestInit, ): Promise<IApiResponse<T>> {
 	
 	const token = await fetchToken();
 	if (token.status === "error") {
@@ -11,9 +11,9 @@ export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IAp
 	}
 
 	try {
+		if(option && !option.headers)
+			option.headers = {"Content-Type": "application/json"};
 		const response = await fetch(url, {
-			headers: {"Content-Type": "application/json",
-			},
 			credentials: "include",
 			...option,
 		});

@@ -17,6 +17,7 @@ export const up = async (knex) => {
     t.enu('theme', ['dark', 'light']).defaultTo('dark');
     t.enu('lang', ['en', 'fr', 'es']).defaultTo('en');
     t.text('avatar');
+    t.text('banner');
   })
 
   await knex.schema.createTable('sessions', (t) => {

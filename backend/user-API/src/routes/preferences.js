@@ -13,6 +13,31 @@ export default async function(fastify) {
       }
     }
   }, Controller.getMePreferences);
+  fastify.patch('/users/me/preferences/avatar', {
+    schema: {
+      summary: 'Update current user preferences',
+      description: 'Endpoint to update current user preferences',
+      tags: ['Preferences'],
+      //body: { $ref: 'preferencesValidation' },
+      response: {
+        200: { $ref: 'preferencesPrivateBase' },
+        401: { $ref: 'UNAUTHORIZED_ERR' }
+      }
+    }
+  }, Controller.updateAvatarPreferences);
+
+  fastify.patch('/users/me/preferences/banner', {
+    schema: {
+      summary: 'Update current user preferences',
+      description: 'Endpoint to update current user preferences',
+      tags: ['Preferences'],
+      //body: { $ref: 'preferencesValidation' },
+      response: {
+        200: { $ref: 'preferencesPrivateBase' },
+        401: { $ref: 'UNAUTHORIZED_ERR' }
+      }
+    }
+  }, Controller.updateBannerPreferences);
 
   fastify.patch('/users/me/preferences', {
     schema: {

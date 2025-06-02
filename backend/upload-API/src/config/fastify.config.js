@@ -15,7 +15,7 @@ export default async function config(fastify) {
     description: 'Endpoints for upload management',
     route: '/doc/json',
     servers: [
-      { url: '/upload/', description: 'Upload Service' }
+      { url: '/uploads/', description: 'Upload Service' }
     ],
     tags: [
       { name: 'Upload', description: 'Endpoints for uploading files' },

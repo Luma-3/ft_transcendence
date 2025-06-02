@@ -49,7 +49,7 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 
 		const rendererFunction = rendererPublicPage[page];
 		if (!rendererFunction) {
-			return renderErrorPage('404', '404', 'not-found');
+			return renderErrorPage('404', '404', 'Page not found');
 		}
 		const page_content = await Promise.resolve(rendererFunction());
 

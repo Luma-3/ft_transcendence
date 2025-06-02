@@ -5,6 +5,7 @@ export const preferencesPrivate = {
     theme: { type: 'string', enum: ['dark', 'light'] },
     lang: { type: 'string', enum: ['en', 'fr', 'es'] },
     avatar: { type: 'string', format: 'uri' },
+    banner: { type: 'string', format: 'uri' },
   }
 }
 
@@ -14,6 +15,25 @@ export const preferencesPublic = {
   properties: {
     lang: { type: 'string', enum: ['en', 'fr', 'es'] },
     avatar: { type: 'string', format: 'uri' },
+    banner: { type: 'string', format: 'uri' },
+  }
+}
+
+
+export const preferencesAvatarPrivate = {
+  $id: 'preferencesAvatarPublic',
+  type: 'object',
+  properties: {
+    avatar: { type: 'string', format: 'uri' },
+  }
+}
+
+
+export const preferencesBannerPrivate = {
+  $id: 'preferencesBannerPrivate',
+  type: 'object',
+  properties: {
+    banner: { type: 'string', format: 'uri' },
   }
 }
 

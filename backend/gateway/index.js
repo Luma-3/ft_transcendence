@@ -41,7 +41,7 @@ const Services = [
   {
     name: 'Upload Services', prefix: '/upload',
     upstream: 'https://' + process.env.UPLOAD_IP,
-    url: '/upload/doc/json',
+    url: '/uploads/doc/json',
     preHandler: InternalRoute
   }
 ]

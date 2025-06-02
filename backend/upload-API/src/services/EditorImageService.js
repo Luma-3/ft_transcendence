@@ -48,32 +48,11 @@ export class EditorImageService {
 
     if (width || height) {
 
-      const aspectRatio = imageWidth / imageHeight;
-
-      const targetWidth = width ? parseInt(width, 10) : null;
-      const targetHeight = height ? parseInt(height, 10) : null;
-
-      // Calculer la nouvelle largeur et hauteur selon le ratio
-      let newWidth, newHeight;
-      if (targetWidth && targetHeight) {
-        const targetRatio = targetWidth / targetHeight;
-        if (targetRatio > aspectRatio) {
-          newHeight = targetHeight;
-          newWidth = Math.round(newHeight * aspectRatio);
-        } else {
-          newWidth = targetWidth;
-          newHeight = Math.round(newWidth / aspectRatio);
-        }
-      } else if (targetWidth) {
-        newWidth = targetWidth;
-        newHeight = Math.round(newWidth / aspectRatio);
-      } else if (targetHeight) {
-        newHeight = targetHeight;
-        newWidth = Math.round(newHeight * aspectRatio);
-      }
+      const targetWidth = width ? parseInt(width, 10) : imageWidth;
+      const targetHeight = height ? parseInt(height, 10) : imageHeight;
       image.ptr = image.ptr.resize({
-        width: newWidth,
-        height: newHeight,
+        width: targetWidth,
+        height: targetHeight,
         fit: resizeMode,
       });
       return;

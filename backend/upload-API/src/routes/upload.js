@@ -1,5 +1,10 @@
 import * as Controller from '../controllers/uploadController.js'
-
+/**
+ * typePath: c'est le type de fichier que l'on veux manipuler
+ * typePath peut etre:
+ * - avatar
+ * - banner
+ */
 export default async function(fastify) {
   fastify.post('/:typePath', {
     schema: {
@@ -17,7 +22,7 @@ export default async function(fastify) {
         415: { $ref: 'INVALID_TYPE_ERR' }
       }
     }
-  }, Controller.uplaodFile);
+  }, Controller.uploadFile);
 
   fastify.get('/:typePath/*', {
     schema: {
