@@ -8,9 +8,9 @@ function onlineSettings(user: User) {
 	const list_friends = `<li class="text-zinc-600 font-title">You have no friends</li>`;
 	return `
 	<div id="online-settings" class="flex hidden flex-col w-full h-full p-4 space-y-4 mb-10
-	  bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
+	bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
 
-	  <label for="search-friend" class="text-2xl font-title text-zinc-600 mb-4" translate="search-friend">Search friend</label>
+	<label for="search-friend" class="text-2xl font-title text-zinc-600 mb-4" translate="search-friend">Search friend</label>
 	<input type="text" id="search-friend" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="enter-username" placeholder="enter-username"/>
 	${list_friends}
 	</div>`
@@ -130,8 +130,11 @@ function chat(user: User) {
 		
 			</div>
 		<div class="flex flex-row bottom-0 w-full space-x-4">
-			<input type="text" id="chat-input" class="w-full p-2 font-title border-2 border-zinc-300 rounded-lg overflow-scroll" translate="enter-message" placeholder="Enter your message..." />
-			<button id="send-chat" class="p-2 font-title bg-primary dark:bg-dprimary text-white rounded-lg hover:bg-primary/80 dark:hover:bg-dprimary/80" translate="send">Send</button>
+		<div class="flex flex-col space-y-2 w-full">
+			<label for="chat-input" class="text-md font-title" translate="enter-message">Enter your message</label>
+			<textarea type="text" id="chat-input" class="w-full p-2 font-title border-2 border-zinc-300 rounded-lg overflow-scroll"> </textarea>
+		</div>
+			<button id="send-chat" class="relative p-2 font-title bg-primary dark:bg-dprimary text-white rounded-lg hover:bg-primary/80 dark:hover:bg-dprimary/80" translate="send">Send</button>
 		</div>
 	</div>
 	`;
@@ -144,7 +147,7 @@ async function renderDashboard(user:User) {
 		${navbar(user)}
 		<div class="flex flex-col h-full w-full lg:flex-row space-y-4 justify-center items-center">
 
-		<div class="flex max-w-[2000px]">
+		<div class="flex flex-col lg:flex-row max-w-[2000px]">
 			<div class="relative flex flex-col min-w-[400px] md:min-h-[400px] md:min-w-[800px] mx-4 p-4 space-y-4
 			bg-zinc-50 rounded-lg justify-center items-center">
 
