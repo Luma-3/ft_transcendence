@@ -5,7 +5,7 @@ import fs from "fs";
 
 import jwt from "../plugins/jwt.js";
 import swagger from "../plugins/swagger.js";
-import socket from "../plugins/socket.js";
+import socket from "../plugins/socket.ts.todo";
 
 // export const config = {
 //   logger: true,

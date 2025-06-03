@@ -1,14 +1,9 @@
 import { Knex } from 'knex';
 
-export interface IPreferences {
-  user_id: string;
-  theme: 'light' | 'dark';
-  lang: string;
-  avatar: string;
-}
+import { PreferencesBaseType } from '../schema/preferences.schema.js';
 
-export const PREFERENCES_PUBLIC_COLUMNS: (keyof IPreferences)[] = ['user_id', 'theme', 'lang', 'avatar'];
-export const PREFERENCES_PRIVATE_COLUMNS: (keyof IPreferences)[] = ['user_id', 'lang', 'avatar'];
+export const PREFERENCES_PUBLIC_COLUMNS: (keyof PreferencesBaseType)[] = ['user_id', 'theme', 'lang', 'avatar'];
+export const PREFERENCES_PRIVATE_COLUMNS: (keyof PreferencesBaseType)[] = ['user_id', 'lang', 'avatar'];
 
 export class PreferencesModel {
   constructor(private knex: Knex) { }
@@ -16,7 +11,7 @@ export class PreferencesModel {
   async create(
     trx: Knex.Transaction,
     userID: string,
-    data: Omit<IPreferences, 'user_id'>,
+    data: Omit<PreferencesBaseType, 'user_id'>,
     columns = PREFERENCES_PRIVATE_COLUMNS) {
     return await trx('preferences')
       .insert({
@@ -38,7 +33,7 @@ export class PreferencesModel {
 
   async update(
     userID: string,
-    data: Partial<Omit<IPreferences, 'user_id'>>,
+    data: Partial<Omit<PreferencesBaseType, 'user_id'>>,
     columns = PREFERENCES_PRIVATE_COLUMNS) {
     return await this.knex('preferences')
       .where('user_id', userID)

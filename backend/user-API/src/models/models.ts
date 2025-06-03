@@ -1,4 +1,4 @@
-import knex from '../config/knex';
+import knex from '../utils/knex';
 import { UserModel } from './userModel';
 import { PreferencesModel } from './preferencesModel';
 

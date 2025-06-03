@@ -1,11 +1,19 @@
 import websocketPlugin from '@fastify/websocket';
 import fp from 'fastify-plugin';
 import { redisPub, redisSub } from '../config/redis.js';
+import { FastifyPluginCallback } from 'fastify';
 
-// 
+type SocketOptions = Parameters<typeof websocketPlugin>[1];
 
-function socket(fastify, opts, done) {
-  if (!fastify.websocket) {
+declare module 'fastify' {
+  interface FastifyInstance {
+    socket: typeof websocketPlugin;
+    ws_clients: Map<string, WebSocket>;
+  }
+}
+
+const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
+  if (!fastify.socket) {
     fastify.register(websocketPlugin, opts);
   }
 
@@ -59,5 +67,5 @@ function socket(fastify, opts, done) {
   done();
 }
 
-export default fp(socket, { name: 'socket' });
+export default fp(plugin, { name: 'socket' });
 

@@ -2,11 +2,12 @@
   "name": "transcenduck",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
-    "stop": ""
+    "dev": "nodemon",
+    "start": "node dist/index.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,9 @@
   "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
   "devDependencies": {
     "@fastify/cors": "^10.0.2",
-    "nodemon": "^3.1.10"
+    "@types/node": "^22.15.29",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
@@ -29,8 +32,8 @@
     "@fastify/swagger": "^9.4.2",
     "@fastify/swagger-ui": "^5.2.2",
     "@fastify/websocket": "^11.0.2",
-    "@transcenduck/error": "file:./dependencies/error",
-    "@transcenduck/formatter": "file:./dependencies/formatter",
+    "@transcenduck/error": "file:./packages/error",
+    "@transcenduck/formatter": "file:./packages/formatter",
     "dotenv": "^16.4.7",
     "fastify": "^5.2.2",
     "fs": "^0.0.1-security",

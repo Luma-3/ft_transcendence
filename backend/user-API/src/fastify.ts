@@ -4,9 +4,9 @@ import fastifyMultipart from "@fastify/multipart";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import cookie from "@fastify/cookie";
 
-import swagger from "../plugins/swagger.js";
+import swagger from "./plugins/swagger.js";
 import formatter from "@transcenduck/formatter";
-import { destroyKnex } from "./knex.js";
+import { destroyKnex } from "./utils/knex.js";
 
 const server = fastify({
   logger: true,

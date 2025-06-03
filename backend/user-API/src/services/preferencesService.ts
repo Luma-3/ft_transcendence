@@ -1,13 +1,13 @@
 import { NotFoundError } from "@transcenduck/error";
 
 import { preferencesModel } from "../models/models"
-import { IPreferences } from "../models/preferencesModel";
+import { PreferencesBaseType } from "../schema/preferences.schema";
 
 export class PreferencesService {
   static async getPreferences(
     userID: string,
-    columns: (keyof IPreferences)[]
-  ): Promise<IPreferences> {
+    columns: (keyof PreferencesBaseType)[]
+  ): Promise<PreferencesBaseType> {
     const preferences = await preferencesModel.findByUserID(userID, columns);
     if (!preferences) throw new NotFoundError('Preferences');
     return preferences;
@@ -15,9 +15,10 @@ export class PreferencesService {
 
   static async updatePreferences(
     userID: string,
-    data: Partial<Omit<IPreferences, 'user_id'>>,
-    columns: (keyof IPreferences)[]
-  ): Promise<IPreferences[]> {
-    return await preferencesModel.update(userID, data, columns);
+    data: Partial<Omit<PreferencesBaseType, 'user_id'>>,
+    columns: (keyof PreferencesBaseType)[]
+  ): Promise<PreferencesBaseType> {
+    const [updatePreferences] = await preferencesModel.update(userID, data, columns);
+    return updatePreferences;
   }
 }

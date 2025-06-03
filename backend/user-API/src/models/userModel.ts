@@ -1,15 +1,9 @@
-import { Knex } from 'knex'
+import { Knex } from 'knex';
 
-export interface IUser {
-  id: string;
-  username: string;
-  email?: string;
-  password?: string;
-  created_at: string;
-}
+import { UserBaseType } from '../schema/user.schema.js'
 
-export const USER_PUBLIC_COLUMNS: (keyof IUser)[] = ['id', 'username', 'created_at'];
-export const USER_PRIVATE_COLUMNS: (keyof IUser)[] = ['id', 'username', 'email', 'created_at'];
+export const USER_PUBLIC_COLUMNS: (keyof UserBaseType)[] = ['id', 'username', 'created_at'];
+export const USER_PRIVATE_COLUMNS: (keyof UserBaseType)[] = ['id', 'username', 'email', 'created_at'];
 
 export class UserModel {
   private knex: Knex;
@@ -19,26 +13,26 @@ export class UserModel {
   }
 
   async findAll(columns = USER_PUBLIC_COLUMNS) {
-    return await this.knex<IUser>('users')
+    return await this.knex<UserBaseType>('users')
       .select(columns);
   }
 
-  async findByID(id: string, columns = USER_PUBLIC_COLUMNS): Promise<IUser | undefined> {
-    return await this.knex<IUser>('users')
+  async findByID(id: string, columns = USER_PUBLIC_COLUMNS): Promise<UserBaseType | undefined> {
+    return await this.knex<UserBaseType>('users')
       .select(columns)
       .where('id', id)
       .first();
   }
 
   async findByUsername(username: string, columns = USER_PUBLIC_COLUMNS) {
-    return await this.knex<IUser>('users')
+    return await this.knex<UserBaseType>('users')
       .select(columns)
       .where('username', username)
       .first();
   }
 
   async findByEmail(email: string, columns = USER_PRIVATE_COLUMNS) {
-    return await this.knex<IUser>('users')
+    return await this.knex<UserBaseType>('users')
       .select(columns)
       .where('email', email)
       .first();
@@ -47,10 +41,10 @@ export class UserModel {
   async create(
     trx: Knex.Transaction,
     id: string,
-    data: Pick<IUser, 'username' | 'email' | 'password'>,
+    data: Pick<UserBaseType, 'username' | 'email' | 'password'>,
     columns = USER_PRIVATE_COLUMNS
   ) {
-    return await trx<IUser>('users').insert({
+    return await trx<UserBaseType>('users').insert({
       id: id,
       username: data.username,
       email: data.email,
@@ -60,17 +54,17 @@ export class UserModel {
   }
 
   async delete(id: string) {
-    return await this.knex<IUser>('users')
+    return await this.knex<UserBaseType>('users')
       .where('id', id)
       .del();
   }
 
   async update(
     id: string,
-    data: Partial<Omit<IUser, 'id' | 'created_at'>>,
+    data: Partial<Omit<UserBaseType, 'id' | 'created_at'>>,
     columns = USER_PRIVATE_COLUMNS
   ) {
-    return await this.knex<IUser>('users')
+    return await this.knex<UserBaseType>('users')
       .where('id', id)
       .update(data, columns);
   }

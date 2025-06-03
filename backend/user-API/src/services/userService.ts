@@ -3,10 +3,10 @@ import { v4 as uuidV4 } from "uuid";
 import { hashPassword, comparePassword } from "../utils/bcrypt";
 
 import { knex, userModel, preferencesModel } from "../models/models";
-import { UserCreateBodyType } from "../schema/user.schema";
+import { UserCreateBodyType, UserBaseType } from "../schema/user.schema";
+import { PreferencesBaseType } from "../schema/preferences.schema";
 import { Knex } from "knex";
-import { IUser, USER_PRIVATE_COLUMNS } from "../models/userModel";
-import { IPreferences } from "../models/preferencesModel";
+import { USER_PRIVATE_COLUMNS } from "../models/userModel"
 
 
 export class UserService {
@@ -48,9 +48,9 @@ export class UserService {
   static async getUserByID(
     id: string,
     includePreferences: boolean = false,
-    userColumns: (keyof IUser)[],
-    preferencesColumns: (keyof IPreferences)[]
-  ): Promise<IUser & { preferences?: IPreferences }> {
+    userColumns: (keyof UserBaseType)[],
+    preferencesColumns: (keyof PreferencesBaseType)[]
+  ): Promise<UserBaseType & { preferences?: PreferencesBaseType }> {
     if (!includePreferences) {
       const user = await userModel.findByID(id, userColumns);
       if (!user) throw new NotFoundError("User");
@@ -72,7 +72,7 @@ export class UserService {
     id: string,
     oldPassword: string,
     newPassword: string,
-  ): Promise<IUser> {
+  ): Promise<UserBaseType> {
     {
       const user = await userModel.findByID(id, ['password'])
       if (!user) throw new NotFoundError("User");
@@ -90,7 +90,7 @@ export class UserService {
   static async updateUserEmail(
     id: string,
     email: string
-  ): Promise<IUser> {
+  ): Promise<UserBaseType> {
     const user = await userModel.findByID(id);
     if (!user) throw new NotFoundError("User");
 
@@ -105,7 +105,7 @@ export class UserService {
   static async updateUserUsername(
     id: string,
     username: string
-  ): Promise<IUser> {
+  ): Promise<UserBaseType> {
     const user = await userModel.findByID(id);
     if (!user) throw new NotFoundError("User");
 

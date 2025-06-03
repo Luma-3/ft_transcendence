@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import server from './config/fastify.js'
+import server from './fastify.js'
 
 dotenv.config()
 
