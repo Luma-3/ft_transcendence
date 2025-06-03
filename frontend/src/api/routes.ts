@@ -5,6 +5,7 @@ const SERVICES = {
   SESSION: `${API_URL}/user/session`,
   CDN: `${API_URL}/uploads`,
   GAME: `${API_URL}/game`,
+  PEOPLE: `${API_URL}/people`,
 }
 
 export const API_USER = {
@@ -27,6 +28,13 @@ export const API_USER = {
     USERNAME: `${SERVICES.USER}/me/username`,
   }
 }
+
+export const API_PEOPLE = {
+  FRIENDS: `${SERVICES.PEOPLE}/friends`,
+  SEARCH: `${SERVICES.PEOPLE}/`,  // ?search=inputValue
+  ALL: `${SERVICES.PEOPLE}/all`,
+  SELF: `${SERVICES.PEOPLE}/all/self`
+};
 
 export const API_SESSION = {
 

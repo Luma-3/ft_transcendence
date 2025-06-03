@@ -1,5 +1,6 @@
 import { ConflictError, NotFoundError, UnauthorizedError } from "@transcenduck/error";
 import { v4 as uuidV4 } from "uuid";
+import { redisPub } from "../config/redis.js";
 
 export class UserService {
   constructor({ models, utils }) {
@@ -35,6 +36,15 @@ export class UserService {
       const [user] = await this.UserModel.create(trx, userID, user_obj);
 
       const [preferences] = await this.PreferencesModel.create(trx, userID, user_preferences);
+      redisPub.publish('api.people.in', JSON.stringify({
+        userId: userID,
+        action: 'create',
+        payload: {
+          username: username
+        }
+      })).catch(err => {
+        console.error(`Error creating user ${userID}:`, err);
+      });
       return {
         ...user,
         preferences: preferences
@@ -109,6 +119,15 @@ export class UserService {
       this.UserModel.update(id, { username: username }, schema.user),
       this.PreferencesModel.findByUserID(id, schema.preferences)
     ]);
+    redisPub.publish('api.people.in', JSON.stringify({
+        userId: id,
+        action: 'update',
+        payload: {
+          username: username
+        }
+    })).catch(err => {
+      console.error(`Error updating user ${id}:`, err);
+    });
     return {
       ...updatedUser,
       preferences: preferences
