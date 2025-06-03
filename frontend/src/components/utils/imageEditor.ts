@@ -79,10 +79,10 @@ export async function saveNewPicture() {
 		headers: {},
 		body: formData
 	});
-	if (response.status === "error") {
-		alertTemporary("error", "Error while saving new picture: " + response.message, 'dark');		
-	}
-	//window.location.reload(); // Reload the page to see the new picture
+	(response.status === "error") ? alertTemporary("error", "Error while saving new picture: " + response.message, 'dark') : alertTemporary("success", "New picture saved successfully!", 'dark');
+	setTimeout(() => {
+		window.location.reload();
+	}, 1000); 
 }
 
 /**
