@@ -3,7 +3,7 @@ const API_URL = "https://localhost:5173/api";
 const SERVICES = {
   USER: `${API_URL}/user/users`,
   SESSION: `${API_URL}/user/session`,
-  CDN: `${API_URL}/uploads`,
+  CDN: `/api/uploads`,
   GAME: `${API_URL}/game`,
   PEOPLE: `${API_URL}/people`,
 }
@@ -11,6 +11,7 @@ const SERVICES = {
 export const API_USER = {
 
   BASIC: {
+    BASIC: `${SERVICES.USER}`,
     REGISTER: `${SERVICES.USER}`,
     DELETE: `${SERVICES.USER}/me`,
     INFOS: `${SERVICES.USER}/me`,
@@ -30,7 +31,9 @@ export const API_USER = {
 }
 
 export const API_PEOPLE = {
+  BLOCKED: `${SERVICES.PEOPLE}/blocked`,
   FRIENDS: `${SERVICES.PEOPLE}/friends`,
+  PENDING: `${SERVICES.PEOPLE}/pending`,
   SEARCH: `${SERVICES.PEOPLE}/`,  // ?search=inputValue
   ALL: `${SERVICES.PEOPLE}/all`,
   SELF: `${SERVICES.PEOPLE}/all/self`

@@ -27,8 +27,9 @@ export class UserService {
 
     const user_preferences = {
       lang: lang,
-      avatar: `default.jpg`,
-      theme: 'dark'
+      theme: 'dark',
+      avatar: `default.png`,
+      banner: `default.png`
     }
 
     return await this.knex.transaction(async (trx) => {

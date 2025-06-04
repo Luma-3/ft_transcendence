@@ -173,6 +173,45 @@ export async function renderGame(roomData: RoomData) {
 		, 250);
 }
 
+import { renderOtherProfile } from '../pages/OtherProfile'
+
+export async function renderOtherProfilePage(target: HTMLElement) {
+
+	const main_container = document.querySelector<HTMLDivElement>('#app')!
+
+	const token = await fetchToken();
+	if (token.status === "error") {
+		return renderErrorPage('400', '401', 'Unauthorized');
+	}
+
+	const response = await getUserInfo();
+	if (response.status === "error" || !response.data) {
+		return renderErrorPage('400', '401', 'Unauthorized');
+	}
+
+	const lang = response.data.preferences.lang;
+	const theme = response.data.preferences.theme;
+
+	fadeOut(main_container);
+
+	setTimeout(async () => {
+
+		const newContainer = await renderOtherProfile(target);
+		if (!newContainer) {
+			return;
+		}
+
+		main_container.innerHTML = newContainer;
+		setupColorTheme(theme);
+
+		translatePage(lang);
+
+		removeLoadingScreen();
+
+		fadeIn(main_container);
+	}
+		, 250);
+}
 
 /**
  * Render des pages d'erreur
@@ -220,8 +259,8 @@ export async function renderErrorPage(codePage: string, code: string, message: s
  */
 export function renderBackPage() {
 	const page = window.history.state?.page || 'home';
-	if (page === 'dashboard') {
-		return;
-	}
-	renderPrivatePage('dashboard');
+	// if (page === 'dashboard') {
+	// 	return;
+	// }
+	renderPrivatePage(page, false);
 }

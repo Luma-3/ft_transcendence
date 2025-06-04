@@ -8,6 +8,8 @@ import { FriendsServices } from './services/friendsServices.js';
 import { friendRoute } from './routes/friends.js';
 import { PeopleServices } from './services/peopleServices.js';
 import { peopleRoute } from './routes/people.js';
+import { blockedRoute } from './routes/blocked.js';
+import { BlockedServices } from './services/blockedServices.js';
 
 dotenv.config()
 const fastify = Fastify(config_dev);
@@ -23,7 +25,9 @@ const peopleModel = new PeopleModel(fastify.knex);
 fastify.decorate("peopleModel",  peopleModel);
 fastify.decorate("friendsServices", new FriendsServices(peopleModel));
 fastify.decorate("peopleServices", new PeopleServices(peopleModel));
+fastify.decorate("blockedServices", new BlockedServices(fastify.knex, peopleModel));
 
+fastify.register(blockedRoute);
 fastify.register(friendRoute);
 fastify.register(peopleRoute);
 

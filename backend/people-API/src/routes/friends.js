@@ -29,4 +29,18 @@ export async function friendRoute(fastify) {
 	},
 	 FriendsController.removeFriend
 	);
+	fastify.delete("/pending/:friendId", 
+	{
+		schema: {
+			params: {
+				type: 'object',
+				properties: {
+					friendId: { type: 'string' }
+				},
+				required: ['friendId']
+			}
+		}
+	},
+	 FriendsController.refuseFriend
+	);
 }

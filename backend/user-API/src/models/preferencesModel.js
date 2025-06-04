@@ -1,4 +1,4 @@
-const Base_Schema = ['lang', 'avatar'];
+const Base_Schema = ['lang', 'avatar', 'banner'];
 
 export class PreferencesModel {
   constructor(knex) {
@@ -11,7 +11,8 @@ export class PreferencesModel {
         user_id: userID,
         theme: data.theme,
         lang: data.lang,
-        avatar: data.avatar
+        avatar: data.avatar,
+        banner: data.banner
       }, schema);
   }
 

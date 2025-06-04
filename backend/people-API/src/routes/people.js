@@ -1,7 +1,9 @@
 import * as PeopleController from '../controllers/peopleController.js'
 
 export async function peopleRoute(fastify) {
-	fastify.get("/all/self",  { }, () => {} );
+	fastify.get("/all/self",  { }, 
+	PeopleController.getSelf
+	 );
 	fastify.get("/all", 
 	{
 		schema: {

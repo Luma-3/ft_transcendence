@@ -25,4 +25,8 @@ export class FriendsServices {
   async removeFriend(userId, friendId) {
     return this.peopleModel.removeFriends(userId, friendId);
   }
+
+  async refuseFriend(userId, friendId) {
+    return await this.peopleModel.refuseFriend(userId, friendId);
+  }
 }

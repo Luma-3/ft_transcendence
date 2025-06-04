@@ -11,9 +11,17 @@ function onlineSettings(user: User) {
 	<div id="online-settings" class="flex hidden flex-col w-full h-full p-4 space-y-4 mb-10
 	bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
 
-	<label for="search-friend" class="text-2xl font-title text-zinc-600 mb-4" translate="search-friend">Search friend</label>
-	<input type="text" id="search-friend" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="enter-username" placeholder="enter-username"/>
-	${list_friends}
+	<label for="search-user" class="text-2xl font-title text-zinc-600 mb-4" translate="search-opponent">Search Opponent</label>
+	<input type="text" id="search-user" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="enter-username" placeholder="enter-username"/>
+	<div id="search-user-list" class="flex flex-col w-full h-full max-h-[300px] overflow-auto p-2 space-y-2
+	text-secondary dark:text-dsecondary bg-primary dark:bg-dprimary rounded-lg">
+	</div>
+	<div class="flex flex-col font-title justify-center items-center w-full">
+	<div class="flex flex-col w-full h-full p-2 space-y-2
+	text-secondary dark:text-dsecondary bg-zinc-200 rounded-lg">
+	Or click directly on play for a random opponent
+	</div> 
+	 </div>
 	</div>`
 }
 
@@ -135,7 +143,7 @@ async function renderDashboard(user:User) {
 					</div>
 
 					<div class="flex p-1 justify-center items-center mt-4 mb-4 mx-4 bg-primary dark:bg-dprimary rounded-lg">
-					${secondaryButton({id: 'showTruc', weight: "full", text: "Voir un truc", translate: "create-game", type: "button"})}
+					${secondaryButton({id: 'showTruc', weight: "full", text: "Show/Hide Chat", translate: "create-game", type: "button"})}
 					</div>
 			
 				</div>
