@@ -1,5 +1,5 @@
 import { gameFrontInfo } from "./gameCreation"
-import { socket } from "../events/Socket";
+import { socket } from "../controllers/Socket";
 
 let actionUserUp = false, actionUserDown = false, actionUser2Up = false, actionUser2Down = false;
 

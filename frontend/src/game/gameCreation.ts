@@ -2,13 +2,13 @@ import { alert } from "../components/ui/alert/alert";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
 
 import { fetchToken } from "../api/fetchToken";
-import { getUserInfo } from "../api/getter";
+import { getUserInfo } from "../api/getterUser(s)";
 import { fetchApi } from "../api/fetch";
 import { API_GAME } from "../api/routes";
 
-import { socket } from "../events/Socket";
+import { socket } from "../controllers/Socket";
 
-import { GameId, FrontGameInfo } from "../api/interfaces/GameData";
+import { GameId, FrontGameInfo } from "../interfaces/GameData";
 
 export let gameFrontInfo: FrontGameInfo;
 export let gameId: string;

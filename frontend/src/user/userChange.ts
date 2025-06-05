@@ -4,8 +4,8 @@
  * appelle lors du click sur le bouton "Change password" sur la page profil
  */
 
-import { API_USER } from "../../api/routes";
-import { alertChangePassword } from "../../components/ui/alert/alertChangePassword";
+import { API_USER } from "../api/routes";
+import { alertChangePassword } from "../components/ui/alert/alertChangePassword";
 
 export async function changeUserPassword() {
 
@@ -17,12 +17,12 @@ export async function changeUserPassword() {
  * Gestion du changement d'email et de nom d'utilisateur
  * avec un alert de confirmation ou d'erreur
  */
-import { renderPrivatePage } from "../../components/renderPage";
+import { renderPrivatePage } from "../controllers/renderPage";
 
-import { alertTemporary } from "../../components/ui/alert/alertTemporary"
-import { loadTranslation } from "../../i18n/Translate";
-import { getUserInfo } from "../../api/getter";
-import { patchUserInfo } from "../../api/updater";
+import { alertTemporary } from "../components/ui/alert/alertTemporary"
+import { loadTranslation } from "../i18n/Translate";
+import { getUserInfo } from "../api/getterUser(s)";
+import { patchUserInfo } from "../api/updater";
 
 export async function changeUserNameEmail() {
 	

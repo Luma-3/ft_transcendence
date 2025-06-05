@@ -1,4 +1,4 @@
-import { GameData } from "../api/interfaces/GameData";
+import { GameData } from "../interfaces/GameData";
 import { drawExplosion } from "./gameBallAnimation";
 
 const duckImage = new Image();

@@ -1,6 +1,6 @@
-import { renderGame } from "../components/renderPage";
+import { renderGame } from "./renderPage";
 import { drawGame } from "../game/gameDraw";
-import { player, RoomData, ServerGameData } from "../api/interfaces/GameData";
+import { RoomData } from "../interfaces/GameData";
 import { DisplayGameWinLose } from "../game/gameWin";
 import { showGame } from "../game/gameShow";
 
@@ -31,7 +31,6 @@ function launchGame(roomData: RoomData) {
 	}));
 }
 
-import { gameId } from "../game/gameCreation";
 export async function handleGameSocketMessage(data: any ) {
 	console.log("Received game data:", data);
 	switch (data.action) {

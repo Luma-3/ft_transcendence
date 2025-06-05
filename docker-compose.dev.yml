@@ -24,6 +24,8 @@ services:
       - redis
     ports:
       - "3000:3000"
+    expose:
+      - "3000"
     networks:
       - backend-net
       - redis-net
@@ -117,6 +119,8 @@ services:
       - ./frontend/public:/app/public:z
     ports:
       - "5173:5173"
+    expose: 
+      - "5173"
     depends_on:
       - gateway
     networks:

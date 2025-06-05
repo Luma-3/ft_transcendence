@@ -1,14 +1,14 @@
-import { renderPrivatePage, renderErrorPage } from '../../components/renderPage'
+import { renderPrivatePage, renderErrorPage } from '../controllers/renderPage'
 
-import { alertPublic } from '../../components/ui/alert/alertPublic';
-import { verifRegexPassword } from '../../components/utils/regex';
-import { loadTranslation } from '../../i18n/Translate';
+import { alertPublic } from '../components/ui/alert/alertPublic';
+import { verifRegexPassword } from '../components/utils/regex';
+import { loadTranslation } from '../i18n/Translate';
 
-import { API_USER, API_SESSION } from '../../api/routes';
-import { User } from '../../api/interfaces/User';
-import { fetchWithNoToken } from '../../api/fetch'
+import { API_USER, API_SESSION } from '../api/routes';
+import { User } from '../interfaces/User';
 
-import { socketConnection } from '../Socket';
+import { socketConnection } from '../controllers/Socket';
+import { fetchApi } from '../api/fetch';
 
 function error(message: string) {
 	alertPublic(message, "error");
@@ -73,10 +73,10 @@ export async function registerUser() {
 	/**
 	 * Creation de l'utilisateur
 	 */
-	const response = await fetchWithNoToken<User>(API_USER.BASIC.REGISTER, {
+	const response = await fetchApi<User>(API_USER.BASIC.REGISTER, {
 		method: 'POST',
 		body: JSON.stringify(userData)
-	});
+	}, false);
 	if (response.status !== "success") {
 		const errorMessage = trad[response.message] || response.message;
 		return error(errorMessage)
@@ -86,10 +86,10 @@ export async function registerUser() {
 	 * Creation de la session
 	 */
 	const sessionData = { username: userData.username, password:userData.password };
-	const responseSession = await fetchWithNoToken(API_SESSION.CREATE, {
+	const responseSession = await fetchApi(API_SESSION.CREATE, {
 		method: "POST",
 		body: JSON.stringify(sessionData)
-	});
+	}, false);
 	if (responseSession.status !== "success") {
 		const errorMessage = trad[responseSession.message] || responseSession.message;
 		return error(errorMessage)

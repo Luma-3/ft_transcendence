@@ -1,4 +1,4 @@
-import { User } from '../api/interfaces/User';
+import { User } from '../interfaces/User';
 
 export const myMessagesTemplate = `<div class="flex w-full rounded-lg justify-end items-center">
 	<div class="font-title dark:bg-dprimary bg-primary text-white p-2 rounded-lg">`;

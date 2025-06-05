@@ -1,5 +1,5 @@
 import { alertPublic } from "../components/ui/alert/alertPublic";
-import { handleGameSocketMessage } from "./DispatchMsg";
+import { handleGameSocketMessage } from "./DispatchMsgSocket";
 
 export let socket: WebSocket | null = null;
 

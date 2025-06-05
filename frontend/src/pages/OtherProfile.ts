@@ -8,8 +8,8 @@ import { primaryButton } from "../components/ui/buttons/primaryButton"
 import { secondaryButton } from "../components/ui/buttons/secondaryButton"
 import { backButton } from "../components/ui/buttons/backButton";
 
-import { User } from "../api/interfaces/User"
-import { getFriends, getOtherUserInfo, getUserInfo, getUsersList } from "../api/getter"
+import { User } from "../interfaces/User"
+import { getFriends, getOtherUserInfo, getUserInfo, getUsersList } from "../api/getterUser(s)"
 import { API_CDN } from "../api/routes";
 
 function avatarBanner(userPref: {avatar: string, banner: string}) {

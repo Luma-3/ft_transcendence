@@ -1,9 +1,8 @@
 import { navbar } from "../components/ui/navbar";
-import { User } from "../api/interfaces/User";
+import { User } from "../interfaces/User";
 import { renderChat } from "../chat/Chat";
 import { primaryButton } from "../components/ui/buttons/primaryButton";
 import { secondaryButton } from "../components/ui/buttons/secondaryButton";
-import { API_CDN } from "../api/routes";
 
 function onlineSettings(user: User) {
 	const list_friends = `<li class="text-zinc-600 font-title">You have no friends</li>`;

@@ -8,8 +8,8 @@ import { primaryButton } from "../components/ui/buttons/primaryButton"
 import { secondaryButton } from "../components/ui/buttons/secondaryButton"
 import { backButton } from "../components/ui/buttons/backButton";
 
-import { User } from "../api/interfaces/User"
-import { getAllUsers, getFriends, getUserInfo, getUsersList } from "../api/getter"
+import { User } from "../interfaces/User"
+import { getAllUsers, getFriends, getUserInfo, getUsersList } from "../api/getterUser(s)"
 import { API_CDN } from "../api/routes";
 
 function avatarBanner(userPref: {avatar: string, banner: string}) {
@@ -117,7 +117,10 @@ async function notifications() {
 	let content: string = "";
 	const pendingInvitations = users.data?.pending;
 	if (!pendingInvitations || pendingInvitations.length === 0) {
-		return `<span class="text-secondary dark:text-dtertiary" translate="no-notifications">No notifications</span>`;
+		return `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
+			<span traslate="notifications" >Notifications</span>
+		<span class="text-secondary dark:text-dtertiary" translate="no-notifications">No notifications</span>
+		</div>`;
 	}
 	for (const invitation of pendingInvitations) {
 		if (invitation && invitation.status === "receiver") {
@@ -150,9 +153,9 @@ async function notifications() {
 //TODO : Use lock open et lock close pour le block et le unblock
 async function friends(user:User) {
 	let container = `
-			<div class="flex flex-col w-full overflow-auto font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
+			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
 				<span traslate="friends" >Friends</span>
-			<div class="flex flex-col w-full max-h-[400px] overflow-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
+			<div class="flex flex-col w-full max-h-[400px] font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
 			`;
 	const friendsList = await getFriends();
 	if (friendsList.status === "error" || !friendsList.data?.friends) {
@@ -165,9 +168,9 @@ async function friends(user:User) {
 			<div name="otherProfile" data-id=${friend.user_id} class="flex font-title hover:underline hover:cursor-pointer">${friend.username}</div>
 			<div class="flex flex-row space-x-2">
 				<div id="block-user" data-username=${friend.username} data-id=${friend.user_id} class="group/item relative hover:cursor-pointer">
-					<span class="tooltip absolute left-1/2 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
+					<span class="tooltip absolute z-10 left-1/2 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
 				dark:text-dtertiary text-xs rounded py-1 px-2">
-					Block This MotherFUcker
+					Block This MotherDUcker
 					</span>
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none hover:cursor-pointer">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
@@ -198,9 +201,9 @@ async function friends(user:User) {
 
 async function allUsers(user:User) {
 	let container = `
-			<div class="flex flex-col w-full overflow-auto font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
+			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
 				<span traslate="friends" >All users</span>
-			<div class="flex flex-col w-full max-h-[400px] overflow-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
+			<div class="flex flex-col w-full max-h-[400px] font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
 			`;
 	const allUsers = await getAllUsers();
 	if (allUsers.status === "error" || !allUsers.data) {
@@ -213,7 +216,7 @@ async function allUsers(user:User) {
 			<div name="otherProfile" data-id=${user.user_id} class="flex font-title hover:underline hover:cursor-pointer">${user.username}</div>
 			<div class="flex flex-row space-x-2">
 				<div id="add-friend" data-username=${user.username} data-id=${user.user_id} class="group/item relative hover:cursor-pointer">
-					<span class="tooltip absolute left-1/2 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
+					<span class="tooltip absolute left-1/2 z-10 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
 				dark:text-dtertiary text-xs rounded py-1 px-2">
 					Add to friends
 					</span>

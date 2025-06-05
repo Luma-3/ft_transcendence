@@ -1,5 +1,5 @@
-import { renderPrivatePage, renderPublicPage } from './components/renderPage'
-import { addAllEventListenOnPage } from './events/Handler'
+import { renderDocPage, renderPrivatePage, renderPublicPage } from './controllers/renderPage'
+import { addAllEventListenOnPage } from './controllers/Handler'
 import { fetchToken } from './api/fetchToken'
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			return ;
 		}
 		return renderPrivatePage(page, false);
-	} 
+	}
 	return renderPublicPage(page);
 
 });

@@ -1,12 +1,12 @@
-import { registerUser } from './user/userRegister'
-import { loginUser } from './user/userLogin'
-import { logOutUser } from './user/userLogout'
-import { deleteUser } from '../events/user/userDelete'
+import { registerUser } from '../user/userRegister'
+import { loginUser } from '../user/userLogin'
+import { logOutUser } from '../user/userLogout'
+import { deleteUser } from '../user/userDelete'
 import { changeLanguage, changeLanguageSettings, saveDefaultLanguage } from '../i18n/Translate'
-import { handleSearchUserGame } from '../people/onlineUserSearch'
+import { handleSearchUserGame } from '../social/onlineUserSearch'
 
-import { renderPublicPage, renderPrivatePage } from '../components/renderPage'
-import { renderBackPage } from '../components/renderPage'
+import { renderPublicPage, renderPrivatePage, renderDocPages } from '../controllers/renderPage'
+import { renderBackPage } from '../controllers/renderPage'
 
 import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
@@ -15,16 +15,16 @@ import { toggleTruc } from '../components/utils/toggleTruc'
 import { toggleGameSettings } from '../components/utils/toggleGameSettings'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 
-import { changeUserNameEmail } from './user/userChange'
-import { changeUserPassword } from './user/userChange'
+import { changeUserNameEmail } from '../user/userChange'
+import { changeUserPassword } from '../user/userChange'
 import { showEditorPicture } from '../components/utils/imageEditor'
 import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 
 import { createGame } from '../game/gameCreation'
-import { blockUser, sendInvitationToUser, sendRefuseInvitation } from './user/userFriend'
+import { blockUser, sendInvitationToUser, sendRefuseInvitation } from '../social/userSocial'
 import { addNewMessage } from '../chat/newMessage'
-import { renderOtherProfilePage } from '../components/renderPage'
+import { renderOtherProfilePage } from '../controllers/renderPage'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: {[key: string]: (event: MouseEvent) => void } = {
@@ -70,6 +70,12 @@ const clickEvent: {[key: string]: (event: MouseEvent) => void } = {
 	'showGameStat': () => toggleGameStat(),
 	'showTruc': () => toggleTruc(),
 	'createGame': () => createGame(),
+
+	// * -------------- Documentation  -------------- */
+	'showUserDoc': () => renderDocPages('/api/user/doc/json'),
+	'showUploadDoc': () => renderDocPages('/api/upload/doc/json'),
+	'showGameDoc': () => renderDocPages('/api/game/doc/json'),
+	'showPeopleDoc': () => renderDocPages('/api/people/doc/json'),
 
 };
 
@@ -152,10 +158,8 @@ export function addAllEventListenOnPage(container : HTMLDivElement) {
 	container.addEventListener('click', (event) => {
 		const target = event.target as HTMLElement;
 		const name = target.getAttribute("name");
-		console.log("name", name);
 		if (!name) return;
 		if (name in clickSpecial){
-			console.log("clickSpecial", name);
 			if (target.dataset) {
 				clickSpecial[name](event);
 			}

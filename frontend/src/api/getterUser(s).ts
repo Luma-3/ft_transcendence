@@ -1,7 +1,7 @@
 import { fetchApi } from './fetch';
-import { User } from './interfaces/User';
-import { UserInPeople } from './interfaces/PeopleInterface';
-import { IApiResponse } from './interfaces/IApiResponse';
+import { User } from '../interfaces/User';
+import { UserInPeople } from '../interfaces/PeopleInterface';
+import { IApiResponse } from '../interfaces/IApiResponse';
 import { API_PEOPLE, API_USER } from './routes';
 
 
@@ -35,6 +35,5 @@ export async function getFriends() {
 		blocked: UserInPeople[];
 		pending: (UserInPeople&{status: string})[];
 	}>(API_PEOPLE.SELF);
-	console.log("getFriends response", response);
 	return response;
 }

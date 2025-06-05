@@ -2,7 +2,7 @@ import notfound from "./4xx";
 
 import { navbar } from "../components/ui/navbar";
 import { footer } from "../components/ui/footer";
-import { getUserInfo } from "../api/getter";
+import { getUserInfo } from "../api/getterUser(s)";
 
 import { animateButton } from "../components/ui/buttons/animateButton";
 import { primaryButton } from "../components/ui/buttons/primaryButton";

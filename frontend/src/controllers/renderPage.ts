@@ -8,6 +8,7 @@ import errorPage from '../pages/5xx'
 import notFoundPage from '../pages/4xx'
 import game from '../pages/Game'
 import welcomeYouPage, { reWelcomeYouPage } from '../pages/WelcomeYou';
+import documentation from '../pages/Documentation'
 
 import { addToHistory } from '../main'
 import { setupColorTheme } from '../components/utils/setColorTheme'
@@ -16,14 +17,14 @@ import { fadeIn, fadeOut } from '../components/utils/fade'
 import { removeLoadingScreen } from '../components/utils/removeLoadingScreen'
 import { handleWelcomeYouPage } from '../pages/WelcomeYou';
 
-import { User } from '../api/interfaces/User'
-import { getUserInfo } from '../api/getter'
+import { User } from '../interfaces/User'
+import { getUserInfo } from '../api/getterUser(s)'
 
-import { socket } from '../events/Socket'
+import { socket } from '../controllers/Socket'
 
 import { fetchToken } from '../api/fetchToken'
-import { socketConnection } from '../events/Socket'
-import { RoomData } from '../api/interfaces/GameData'
+import { socketConnection } from '../controllers/Socket'
+import { RoomData } from '../interfaces/GameData'
 
 /**
  * Associe les pages publics aux fonctions de rendu
@@ -76,6 +77,7 @@ const rendererPrivatePage: { [key: string]: (user: User) => string | Promise<str
 	'dashboard': dashboard,
 	'settings': settings,
 	'profile': profile,
+	'documentation': documentation,
 }
 
 /**
@@ -248,6 +250,16 @@ export async function renderErrorPage(codePage: string, code: string, message: s
 		fadeIn(main_container);
 	}
 		, 250);
+}
+
+declare const Redoc: any;
+
+export function renderDocPages(page: string) {
+	
+	const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
+	console.log(page)
+	redoc_container.innerHTML = '';
+	Redoc.init(`${page}`, {}, redoc_container);
 }
 
 /**

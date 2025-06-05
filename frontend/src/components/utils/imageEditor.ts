@@ -1,5 +1,5 @@
 import ImageEditor from 'tui-image-editor';
-import { getUserInfo } from '../../api/getter';
+import { getUserInfo } from '../../api/getterUser(s)';
 import { alertTemporary } from '../ui/alert/alertTemporary';
 import { loadTranslation } from '../../i18n/Translate';
 import { dataURLToBlob } from './convertImage';

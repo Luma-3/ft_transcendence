@@ -21,13 +21,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
         ws: true,
         secure: false,
-      },
-      '/doc': {
-        target: 'https://gateway:3000',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/doc/, '/doc'),
-        secure: false,
-      },
+      }
     }
 
   }
