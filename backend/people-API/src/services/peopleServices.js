@@ -19,7 +19,7 @@ export class PeopleServices {
     const Allperson = [];
     for(const person of AllpersonDB) {
       if (person.user_id != userID && friends[person.user_id] === undefined && pending[person.user_id] === undefined) {
-        person.blocked = blocked[person.user_id] == "";
+        person.blocked = blocked[person.user_id] !== undefined;
         Allperson.push(person);
       }
     }

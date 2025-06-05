@@ -9,6 +9,8 @@ export class BlockedServices {
   }
 
   async blockUser(userId, targetUserId) {
+    if(await this.peopleModel.isBlocked(userId, targetUserId))
+      return ;
     this.knex.transaction(async (trx) => {
       try {
         await this.peopleModel.removeFriend(trx, userId, targetUserId);
@@ -23,7 +25,7 @@ export class BlockedServices {
       await this.peopleModel.blockUser(userId, targetUserId);
 
       if(targetUserId != userId) {
-        await this.peopleModel.blockUser(targetUserId, userId);
+        await this.peopleModel.blockUser(targetUserId, userId, "receiver");
       }
     } catch (error) {
       console.error("Error blocking user:", error);

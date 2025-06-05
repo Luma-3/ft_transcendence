@@ -1,4 +1,4 @@
-import { UnauthorizedError } from "@transcenduck/error"
+import { UnauthorizedError, ForbiddenError } from "@transcenduck/error"
 
 export class FriendsServices {
   peopleModel;
@@ -8,9 +8,9 @@ export class FriendsServices {
   }
 
   async addFriend(userId, friendId) {
-    // if(await this.peopleModel.isFriend(userId, friendId)) {
-    //   throw new Error("Already friends"); // TODO: Create a specific error for this
-    // }
+    if(await this.peopleModel.isBlocked(userId, friendId)) {
+      throw new ForbiddenError("Cannt add friend a personne blocked");
+    }
     if(!await this.peopleModel.hasPending(userId, friendId)) {
       await this.peopleModel.sendPending(userId, friendId);
       return;

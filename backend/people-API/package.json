@@ -24,12 +24,14 @@
   },
   "dependencies": {
     "@fastify/swagger": "^9.4.2",
+    "@fastify/type-provider-typebox": "^5.1.0",
+    "@sinclair/typebox": "^0.34.33",
     "@transcenduck/error": "file:./dependencies/error",
     "@transcenduck/formatter": "file:./dependencies/formatter",
     "dotenv": "^16.5.0",
     "fastify": "^5.2.2",
-    "redis": "^5.1.0",
     "knex": "^3.1.0",
+    "redis": "^5.1.0",
     "sqlite3": "^5.1.7"
   },
   "imports": {
