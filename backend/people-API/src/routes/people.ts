@@ -1,6 +1,7 @@
-import * as PeopleController from '../controllers/peopleController.js'
+import { FastifyInstance } from 'fastify';
+import * as PeopleController from '../controllers/peopleController'
 
-export async function peopleRoute(fastify) {
+export async function peopleRoute(fastify: FastifyInstance) {
 	fastify.get("/all/self",  { }, 
 	PeopleController.getSelf
 	 );

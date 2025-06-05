@@ -144,7 +144,7 @@ export class PeopleModel {
     return Object.keys(JSON.parse(blocked));
   }
 
-  async blockUser( userID: string, blocked: string, action: "sender"|"target" = 'sender') {
+  async blockUser( userID: string, blocked: string, action: "sender"|"receiver" = 'sender') {
     return await knex('people')
       .where('user_id', userID).update({
         blocked: knex.jsonSet('blocked', "$." + blocked, action)
@@ -231,9 +231,9 @@ export class PeopleModel {
     return await knex('people')
       .select(PeopleSchemaDBPublic) as ResponsePublicType[];
   }
-  async findByUsername(username: string) {
+  async findByUsername(userId: string, username: string) {
     return await knex('people')
       .select(PeopleSchemaDBPublic)
-      .whereLike('username', `${username}%`) as ResponsePublicType[];
+      .whereLike('username', `${username}%`).andWhereJsonPath('blocked', "$." + userId, "!=", " sender").andWhereJsonPath('blocked', "$." + userId, "!=", "receiver") as ResponsePublicType[];
   }
 }

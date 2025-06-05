@@ -1,4 +1,6 @@
-export async function blockUser(req, res) {
+import { FastifyReply, FastifyRequest } from "fastify";
+
+export async function blockUser(req: FastifyRequest, res: FastifyReply) {
 	const userId = req.headers['x-user-id'];
 	const { blockedId } = req.params;
 	try {
@@ -10,7 +12,7 @@ export async function blockUser(req, res) {
 	}
 }
 
-export async function unBlockUser(req, res) {
+export async function unBlockUser(req: FastifyRequest, res: FastifyReply) {
 	const userId = req.headers['x-user-id'];
 	const { blockedId } = req.params;
 	try {

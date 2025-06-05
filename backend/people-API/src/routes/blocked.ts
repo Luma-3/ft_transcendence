@@ -1,6 +1,7 @@
-import * as BlockedServices from '../controllers/blockedController.js'
+import { FastifyInstance } from 'fastify';
+import * as BlockedServices from '../controllers/blockedController'
 
-export async function blockedRoute(fastify) {
+export async function blockedRoute(fastify: FastifyInstance) {
 	fastify.post("/blocked/:blockedId", 
 	{
 		schema: {

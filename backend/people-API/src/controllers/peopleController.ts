@@ -1,5 +1,6 @@
+import { FastifyReply, FastifyRequest } from "fastify";
 
-export async function getAll(req, res) {
+export async function getAll(req: FastifyRequest, res: FastifyReply) {
 	const userID = req.headers['x-user-id'];
 	if (!userID) {
 		return res.status(400).send({ status: "error", message: "User ID is required" });
@@ -7,7 +8,7 @@ export async function getAll(req, res) {
 	return res.status(200).send({ status: "success", data : await this.peopleServices.getAll(userID) });
 }
 
-export async function getSelf(req, res) {
+export async function getSelf(req: FastifyRequest, res: FastifyReply) {
 	const userID = req.headers['x-user-id'];
 	if (!userID) {
 		return res.status(400).send({ status: "error", message: "User ID is required" });
@@ -20,12 +21,15 @@ export async function getSelf(req, res) {
 	return res.status(200).send({ status: "success", data: person });
 }
 
-export async function search(req, res) {
-	console.log("Search query:", req.query);
+export async function search(req: FastifyRequest, res: FastifyReply) {
+	const userID = req.headers['x-user-id'];
+	if (!userID) {
+		return res.status(400).send({ status: "error", message: "User ID is required" });
+	}
 	const { search } = req.query;
 	if (!search) {
 		return res.status(400).send({ status: "error", message: "Search query is required" });
 	}
 	
-	return res.status(200).send({ status: "success", data: await this.peopleServices.search(search) });
+	return res.status(200).send({ status: "success", data: await this.peopleServices.search(userID, search) });
 }

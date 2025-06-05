@@ -1,15 +1,15 @@
 import Fastify from 'fastify'
 import dotenv from 'dotenv'
 
-import { config_dev, registerPlugin } from '#transcenduck/config/config.js'
-import { redisSub } from '#transcenduck/config/redis.js';
-import { PeopleModel } from './models/peopleModel.js';
-import { FriendsServices } from './services/friendsServices.js';
-import { friendRoute } from './routes/friends.js';
-import { PeopleServices } from './services/peopleServices.js';
-import { peopleRoute } from './routes/people.js';
-import { blockedRoute } from './routes/blocked.js';
-import { BlockedServices } from './services/blockedServices.js';
+import { config_dev, registerPlugin } from '#transcenduck/config/config'
+import { redisSub } from '#transcenduck/config/redis';
+import { PeopleModel } from './models/peopleModel';
+import { FriendsServices } from './services/friendsServices';
+import { friendRoute } from './routes/friends';
+import { PeopleServices } from './services/peopleServices';
+import { peopleRoute } from './routes/people';
+import { blockedRoute } from './routes/blocked';
+import { BlockedServices } from './services/blockedServices';
 
 dotenv.config()
 const fastify = Fastify(config_dev);

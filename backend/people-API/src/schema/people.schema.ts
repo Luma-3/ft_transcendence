@@ -33,7 +33,8 @@ export const PeoplesResponseSelfBase = Type.Object({
 
 export const PeoplesResponsePublic = Type.Object({
     user_id: Type.String({ format: 'uuid'}),
-    username: Type.String()
+    username: Type.String(),
+    blocked: Type.Optional(Type.Boolean())
 });
 
 

@@ -1,17 +1,16 @@
-import { PeopleModel } from "../models/peopleModel.js";
+import { PeopleModel } from "../models/peopleModel";
+import knex from "../utils/knex";
 
 export class BlockedServices {
-  peopleModel;
-  knex;
-  constructor(knex, peopleModel) {
+  peopleModel: PeopleModel;
+  constructor(peopleModel: PeopleModel) {
     this.peopleModel = peopleModel;
-    this.knex = knex;
   }
 
-  async blockUser(userId, targetUserId) {
+  async blockUser(userId: string, targetUserId: string) {
     if(await this.peopleModel.isBlocked(userId, targetUserId))
       return ;
-    this.knex.transaction(async (trx) => {
+    knex.transaction(async (trx) => {
       try {
         await this.peopleModel.removeFriend(trx, userId, targetUserId);
         if(targetUserId != userId) {
@@ -33,7 +32,7 @@ export class BlockedServices {
     }
   }
 
-  async unblockUser(userId, targetUserId) {
+  async unblockUser(userId: string, targetUserId: string) {
 	  return this.peopleModel.unBlockUser(userId, targetUserId);
   }
 }
