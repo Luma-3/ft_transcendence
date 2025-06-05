@@ -1,4 +1,5 @@
-import { User } from "../../api/interfaces/User";
+import { User } from "../../interfaces/User";
+import { API_CDN } from "../../api/routes";
 import { renderUserMenu } from "./userMenu";
 
 function navbarLogo() {
@@ -26,7 +27,7 @@ export function navbar(user: User) {
 				 text-tertiary dark:text-dtertiary">
 				${user.username}
 				</span>
-				<img class="w-12 h-12 rounded-full pointer-events-none" src="/images/pp.jpg" alt="User profile picture">
+				<img class="w-12 h-12 rounded-full pointer-events-none" src=${API_CDN.AVATAR}/${user.preferences.avatar} alt="User profile picture">
 			</div>
 	</nav>
 	${userMenu(user)}`;

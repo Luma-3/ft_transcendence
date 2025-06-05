@@ -14,7 +14,7 @@ export async function changeLightMode() {
 		document.documentElement.classList.toggle('dark');
 		const choice_theme = switchComponent.checked ? 'light' : 'dark';
 
-		const response = await fetchApi(API_USER.UPDATE.PREF, {
+		const response = await fetchApi(API_USER.UPDATE.PREF.ALL, {
 			method: 'PATCH',
 			body: JSON.stringify({
 				theme: choice_theme,

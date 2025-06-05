@@ -1,7 +1,10 @@
 import ImageEditor from 'tui-image-editor';
-import { getUserInfo } from '../../api/getter';
+import { getUserInfo } from '../../api/getterUser(s)';
 import { alertTemporary } from '../ui/alert/alertTemporary';
 import { loadTranslation } from '../../i18n/Translate';
+import { dataURLToBlob } from './convertImage';
+import { API_CDN, API_USER } from '../../api/routes';
+import { fetchApi } from '../../api/fetch';
 
 /**
  * Function que gere l'apparition et la disparition de l'editeur d'image
@@ -26,32 +29,36 @@ function hideEditor() {
 		
 		setTimeout(() => {
 			editor.classList.add('hidden');
+			for (const child of document.getElementsByClassName("editor-select") as HTMLCollectionOf<HTMLElement>) {
+				child.removeAttribute('hidden'); // Enable all editor-select inputs
+			}
 		}, 300);
 	}
 }
 
 export function cancelEditor() {
 	hideEditor();
-	const image_old = document.getElementById('img-div') as HTMLDivElement;
-	image_old.style.display = 'block'; // Show the old image
 }
-
+type TypeImageEditor = "AVATAR" | "BANNER";
 let main_editor: ImageEditor | null = null;
+let statusEditor: TypeImageEditor = "AVATAR"; // Default to avatar, can be changed to banner
 
 /**
  * Function appelle lors du clique sur l'image dans le profil
  */
-export async function showEditorPicture() {
-
-	const image_old = document.getElementById('img-div') as HTMLDivElement;
-	image_old.style.display = 'none'; // Hide the old image
+export async function showEditorPicture(type: TypeImageEditor = "AVATAR") {
+	statusEditor = type;
 	main_editor = await initImageEditor();
 	if (!main_editor) {
 		alertTemporary("error", "Error while initializing image editor", 'dark');
 		return;
 	}
+	for (const child of document.getElementsByClassName("editor-select") as HTMLCollectionOf<HTMLElement>) {
+		child.setAttribute('hidden', "true"); // Disable all editor-select inputs
+	}
 	translateImageEditorLabel();
 }
+
 
 /**
  * Fonction qui permet de recuperer l'image editee et de l'envoyer
@@ -61,10 +68,21 @@ export async function saveNewPicture() {
 	if (!main_editor) {
 		throw new Error('Image editor not initialized');
 	}
-	const new_image = main_editor.toDataURL();
-	const blob = await (await fetch(new_image)).blob();
-	// FileSaver.saveAs(blob, 'image.png');
-	// const file = new Blob([new_image], { type: 'image/png' });
+	const new_image = main_editor.toDataURL({
+		format: 'png'
+	});
+	const formData = new FormData();
+	formData.append('tmp', dataURLToBlob(new_image), 'tmp.png');
+	console.log("New image data URL:", formData);
+	const response = await fetchApi(API_USER.UPDATE.PREF[statusEditor], {
+		method: 'PATCH',
+		headers: {},
+		body: formData
+	});
+	(response.status === "error") ? alertTemporary("error", "Error while saving new picture: " + response.message, 'dark') : alertTemporary("success", "New picture saved successfully!", 'dark');
+	setTimeout(() => {
+		window.location.reload();
+	}, 1000); 
 }
 
 /**

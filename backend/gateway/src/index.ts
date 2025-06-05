@@ -12,7 +12,7 @@ const Services = [
     // preHandler: InternalRoute
   },
   {
-    name: 'Upload Services', prefix: '/upload',
+    name: 'Upload Services', prefix: '/uploads',
     upstream: 'http://' + process.env.UPLOAD_IP,
     url: '/api/upload/doc/json',
     // preHandler: InternalRoute
@@ -21,6 +21,12 @@ const Services = [
     name: 'Game Services', prefix: '/game',
     upstream: 'http://' + process.env.GAME_IP,
     url: '/api/game/doc/json',
+  },
+  {
+    name: 'People Services', prefix: '/people',
+    upstream: 'http://' + process.env.PEOPLE_IP,
+    url: '/people/doc/json',
+    // preHandler: InternalRoute
   }
 ]
 

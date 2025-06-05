@@ -1,7 +1,8 @@
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import { getCustomAlertTheme } from "./alertTheme";
+import { loadTranslation } from "../../../i18n/Translate";
 
-export async function alertTemporary(level: string, message: string, theme: string) {
+export async function alertTemporary(level: string, message: string, theme: string, trad = false) {
 	const customTheme = await getCustomAlertTheme(true, theme);
 	if (!customTheme) {
 		alertTemporary("error", "Error while getting user alert theme", 'dark');
@@ -11,6 +12,10 @@ export async function alertTemporary(level: string, message: string, theme: stri
 	if (!allowedIcons.includes(level)) {
 		console.error(`Invalid alert level: ${level}. Allowed levels are: ${allowedIcons.join(', ')}`);
 		return;
+	}
+	if (trad) {
+		const trad = await loadTranslation(customTheme.lang);
+		message = trad[message] || message;
 	}
 
 	return Swal.fire({

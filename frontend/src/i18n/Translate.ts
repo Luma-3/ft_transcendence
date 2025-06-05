@@ -1,7 +1,7 @@
 import { API_USER } from "../api/routes";
 import { fetchApi } from "../api/fetch";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
-import { getUserInfo } from "../api/getter";
+import { getUserInfo } from "../api/getterUser(s)";
 
 const autorizedLangs = ['en', 'fr', 'es']
 
@@ -84,7 +84,7 @@ export async function saveLanguage(lang_select: string) {
 		alertTemporary("error", 'Error while getting user info', 'dark');
 		return;
 	}
-	const response = await fetchApi(API_USER.UPDATE.PREF, {
+	const response = await fetchApi(API_USER.UPDATE.PREF.ALL, {
 		method: "PATCH",
 		body: JSON.stringify({
 			lang: lang_select,

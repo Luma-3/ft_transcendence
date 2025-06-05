@@ -11,7 +11,7 @@
 		<noscript><link rel="stylesheet" href="src/css/style.css"></noscript>
 		
 		<link rel="stylesheet" href="/node_modules/tui-image-editor/dist/tui-image-editor.css">
-		
+		<script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
 		<title>Transcenduck</title>
 	</head>
 	<body>
@@ -25,7 +25,7 @@
 		</div>
 
 		<!--- Main div-->
-		<div id="app" class="relative z-10 h-full opacity-0 scale-95 transition-all duration-200"></div>
+		<div id="app" class="flex-col z-10 h-full opacity-0 scale-95 transition-all duration-200 overflow-auto"></div>
 		<script type="module" src="src/main.ts" defer></script>
 	
 	</body>

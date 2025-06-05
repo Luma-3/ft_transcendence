@@ -1,6 +1,6 @@
 import { navbar } from "../components/ui/navbar";
-import { footer } from "../components/ui/footer";
-import { User } from "../api/interfaces/User";
+import { User } from "../interfaces/User";
+import { renderChat } from "../chat/Chat";
 import { primaryButton } from "../components/ui/buttons/primaryButton";
 import { secondaryButton } from "../components/ui/buttons/secondaryButton";
 
@@ -8,11 +8,19 @@ function onlineSettings(user: User) {
 	const list_friends = `<li class="text-zinc-600 font-title">You have no friends</li>`;
 	return `
 	<div id="online-settings" class="flex hidden flex-col w-full h-full p-4 space-y-4 mb-10
-	  bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
+	bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
 
-	  <label for="search-friend" class="text-2xl font-title text-zinc-600 mb-4" translate="search-friend">Search friend</label>
-	<input type="text" id="search-friend" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="enter-username" placeholder="enter-username"/>
-	${list_friends}
+	<label for="search-user" class="text-2xl font-title text-zinc-600 mb-4" translate="search-opponent">Search Opponent</label>
+	<input type="text" id="search-user" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="enter-username" placeholder="enter-username"/>
+	<div id="search-user-list" class="flex flex-col w-full h-full max-h-[300px] overflow-auto p-2 space-y-2
+	text-secondary dark:text-dsecondary bg-primary dark:bg-dprimary rounded-lg">
+	</div>
+	<div class="flex flex-col font-title justify-center items-center w-full">
+	<div class="flex flex-col w-full h-full p-2 space-y-2
+	text-secondary dark:text-dsecondary bg-zinc-200 rounded-lg">
+	Or click directly on play for a random opponent
+	</div> 
+	 </div>
 	</div>`
 }
 
@@ -29,11 +37,11 @@ function localPVPSettings(user: User) {
 function gameTypeButton() {
 	return `<div class="flex flex-row w-full h-full p-4 space-x-4 rounded-lg">
 				<div class="flex w-full h-full">
-					<input type="radio" id="local-pvp" name="game-type" data-gameType="local-PVP" class="hidden peer" />
-					<label for="local-pvp" class="flex w-full justify-center items-center p-2 text-sm font-title
+					<input type="radio" id="localpvp" name="game-type" data-gameType="localpvp" class="hidden peer" />
+					<label for="localpvp" class="flex w-full justify-center items-center p-2 text-sm font-title
 			 		text-zinc-600 bg-zinc-200 rounded-lg cursor-pointer
 					 peer-checked:bg-primary peer-checked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
-					  translate="local-pvp">
+					  translate="localpvp">
 
 					Local 2 Joueurs
 
@@ -41,11 +49,11 @@ function gameTypeButton() {
 				</div>
 
 				<div class="flex w-full h-full">
-					<input type="radio" id="local-pve" name="game-type" data-gameType="local-PVE" class="hidden peer" checked />
-					<label for="local-pve" class="flex w-full justify-center items-center p-2 text-sm font-title
+					<input type="radio" id="localpve" name="game-type" data-gameType="localpve" class="hidden peer" />
+					<label for="localpve" class="flex w-full justify-center items-center p-2 text-sm font-title
 			 		text-zinc-600 bg-zinc-200 rounded-lg cursor-pointer
 					 peer-checked:bg-primary peer-checked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
-					  translate="local-pve">
+					  translate="localpve">
 
 					Local 1 Joueur
 
@@ -109,10 +117,9 @@ async function renderDashboard(user:User) {
 
 	return `
 		${navbar(user)}
-		<div class="flex flex-col h-full w-full lg:flex-row space-y-4 justify-center items-center">
-
-		<div class="flex max-w-[1000px]">
-			<div class="relative flex flex-col min-w-[400px] md:min-h-[400px] md:min-w-[800px] mx-4 p-4 space-y-4
+		<div class="flex flex-col h-full w-full lg:flex-row space-y-4 justify-center items-center pt-10 ">
+		<div class="flex flex-col lg:flex-row max-w-[2000px]">
+			<div class="relative flex flex-col min-w-[350px] md:min-h-[350px] md:min-w-[700px] mx-4 p-4 space-y-4
 			bg-zinc-50 rounded-lg justify-center items-center">
 
 				<img src="/images/dashboard.png" alt="Bienvenue" class="w-40 mb-8 drop-shadow-lg" />
@@ -126,7 +133,7 @@ async function renderDashboard(user:User) {
 				${localPVPSettings(user)}
 
 				
-				${primaryButton({id: 'launchGame', weight: "1/2", text: "Play", translate: "play", type: "button"})}
+				${primaryButton({id: 'createGame', weight: "1/2", text: "Play", translate: "play", type: "button"})}
 			
 				<div class="flex flex-row justify-center items-center w-full h-full p-4 space-x-4 rounded-lg">
 			
@@ -135,15 +142,16 @@ async function renderDashboard(user:User) {
 					</div>
 
 					<div class="flex p-1 justify-center items-center mt-4 mb-4 mx-4 bg-primary dark:bg-dprimary rounded-lg">
-					${secondaryButton({id: 'showTruc', weight: "full", text: "Voir un truc", translate: "create-game", type: "button"})}
+					${secondaryButton({id: 'showTruc', weight: "full", text: "Show/Hide Chat", translate: "create-game", type: "button"})}
 					</div>
 			
 				</div>
 			</div>
-			<div id="truc" class="absolute left-0 mt-4 opacity-0 flex min-h-[400px] min-w-[400px] mx-4 p-4 space-y-4
-			bg-zinc-50 rounded-lg justify-center items-center transition-transform duration-500 ease-in-out -translate-x-full">
+			<div id="truc" class="flex left-0 mt-4 opacity-100 flex min-h-[400px] min-w-[400px] mx-4 space-y-4
+			border-4 border-secondary dark:border-dsecondary
+			bg-zinc-50 rounded-lg justify-center items-center transition-transform duration-500 ease-in-out">
 			
-				${gameUserStat(user)}
+				${renderChat(user)}
 			
 			</div>
 		</div>
@@ -164,8 +172,8 @@ async function renderDashboard(user:User) {
 		
 	</div>
 	</div>
-	${footer()}
 	`
+	// ${footer()}
 }
 
 export default async function dashboardPage(user: User) {

@@ -2,66 +2,75 @@ import notfound from "./4xx";
 
 import { navbar } from "../components/ui/navbar"
 import { footer } from "../components/ui/footer"
+import { form } from "../components/ui/form/form"
 
 import { primaryButton } from "../components/ui/buttons/primaryButton"
-import { form } from "../components/ui/form/form"
-import { headerPage } from "../components/ui/headerPage"
-
-import { User } from "../api/interfaces/User"
-
-function profileName(nameProfil: string) {
-return `<h1 class="relative w-full p-2 title-responsive-size justify-center font-title text-center italic
-		text-tertiary dark:text-dtertiary overflow truncate">
-			${nameProfil}
-		</h1>`;
-}
-
-function profilePicture(photoProfil: string) {
-	return `<div id="img-div" class="relative w-32 h-32 group text-primary dark:text-dprimary">
-		<img src="${photoProfil}" class="w-full h-full rounded-full border-2 opacity-100 group-hover:opacity-0 transition-opacity duration-300 ease-in-out"
-		 alt="Profile picture">
-		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-		 class="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out">
-		  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-		</svg>
-	</div>`;
-}
-
-function profilePhotoChanger(userPicture: string) {
-	return `
-	<div class="flex flex-col items-center space-y-2 ml-15 mr-15 pt-4 justify-center">
-		<label for="file-upload" class="flex">
-		<input id="file-upload" type="" accept="image/*" class="hidden"  />
-		${profilePicture(userPicture)}
-		</label>
-		</div>
-	`};
-
-
-
 import { secondaryButton } from "../components/ui/buttons/secondaryButton"
-import { getUserInfo } from "../api/getter"
+import { backButton } from "../components/ui/buttons/backButton";
 
+import { User } from "../interfaces/User"
+import { getAllUsers, getFriends, getUserInfo, getUsersList } from "../api/getterUser(s)"
+import { API_CDN } from "../api/routes";
 
-function profileInfos(user: User) {
+function avatarBanner(userPref: {avatar: string, banner: string}) {
 	return `
-	<div class="flex flex-col font-title w-full justify-left items-center text-tertiary dark:text-dtertiary space-y-2 pt-10">
-	 <div class="flex font-title title-responsive-size border-2 p-2 rounded-lg border-primary dark:border-dprimary" translate="your-informations"> 
-	 Your informations
-	 </div>
+	<div class="flex flex-col mb-20 items-center justify-center space-y-2 pt-4">
+	<div id="banner-div" class="relative w-[1000px] h-64 editor-select ">
+		
+		<!-- ! BANNER  -->
+		<div class="relative w-full h-full group" >
+			<label for="banner-upload">
+			<input id="banner-upload" type="" accept="image/*" class="hidden " data-type="banner" />  
+					<img src="${API_CDN.BANNER}/${userPref.banner ?? 'default.webp'}" alt="Banner" 
+					class="w-full h-full object-cover rounded-lg shadow-lg group-hover:blur-sm" />
+					
+					<div class="absolute inset-0 flex items-center justify-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+						stroke-width="1.5" stroke="currentColor"
+						class="w-1/2 h-1/2 opacity-0 group-hover:opacity-100 group-hover:cursor-pointer transition-opacity duration-500 ease-in-out">
+						<path stroke-linecap="round" stroke-linejoin="round" 
+						d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+						</svg>
+					</div>
+				</label>
+		</div>
 
-	 <div id="hidden-main-image-editor" class="w-full max-w-[1000px] hidden transition-all duration-500 transform translate-y-10 opacity-0 pointer-events-none
-	  mt-4 justify-center items-center space-x-2 ">
-	 	<div class="flex flex-col justify-center items-center w-full h-[648px] rounded-lg">
-			<div id="tui-image-editor-container" class="rounded-xl"></div>
-			</div>
-			<div class="flex flex-row justify-center items-center gap-2 mt-4 px-50">
-				${primaryButton({id: "save-image", text: "Save", translate: "save", weight: "1/2"})}
-				${secondaryButton({id: "cancel-image", text: "Cancel",  translate: "cancel", weight: "1/2"})}
+			
+			<!-- ! IMAGE  -->
+		<div class="flex justify-center items-center editor-select">
+			<div class="absolute left-0 flex-col items-center space-y-2 ml-15 mr-15 pt-4 justify-center">
+				<label for="file-upload" class="flex">
+				<input id="file-upload" type="" accept="image/*" class="hidden editor-select" data-type="avatar" />
+				 <div id="img-div" class="relative w-32 h-32 group text-primary dark:text-dprimary">
+					<img src=${API_CDN.AVATAR}/${userPref.avatar} class="w-full h-full rounded-full border-6 opacity-100 group-hover:opacity-0 transition-opacity duration-300 ease-in-out"
+					alt="Profile picture">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+					class="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+					</svg>
+				</div>
+				</label>
 			</div>
 		</div>
-	${profilePhotoChanger(user.preferences.avatar)}
+	</div>
+	</div>
+`};
 
+function imageEditorDiv() {
+	return `<div id="hidden-main-image-editor" class="w-full max-w-[1000px] hidden transition-all duration-500 transform translate-y-10 opacity-0 pointer-events-none
+	  mt-4 justify-center items-center space-x-2 space-y-4">
+	<div class="flex flex-row justify-center items-center gap-2 mt-4 px-50">
+		  ${primaryButton({id: "save-image", text: "Save", translate: "save", weight: "1/2"})}
+		  ${secondaryButton({id: "cancel-image", text: "Cancel",  translate: "cancel", weight: "1/2"})}
+	</div>
+	<div class="flex flex-col justify-center items-center w-full h-[648px] rounded-lg">
+		<div id="tui-image-editor-container" class="rounded-xl"></div>
+	</div>
+	</div>`
+}
+
+function userUpdateForm(user: User) {
+	return `
 		${form({
 		name : "saveChangeBasicUserInfo",
 		inputs: [
@@ -99,17 +108,39 @@ function profileInfos(user: User) {
 			translate: "change-password",
 		type: "button"
 		},
-	})}
-	</div>`
+	})}`
 }
 
-function notifications() {
-	//TODO: Implementer fetch user waiting
+async function notifications() {
+	const users = await getFriends();
+	
 	let content: string = "";
-	const userWaiting = 0;
-
-	if (userWaiting === 0) {
-		content = '<span class="text-secondary dark:text-dtertiary" translate="no-notifications">No notifications</span>';
+	const pendingInvitations = users.data?.pending;
+	if (!pendingInvitations || pendingInvitations.length === 0) {
+		return `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
+			<span traslate="notifications" >Notifications</span>
+		<span class="text-secondary dark:text-dtertiary" translate="no-notifications">No notifications</span>
+		</div>`;
+	}
+	for (const invitation of pendingInvitations) {
+		if (invitation && invitation.status === "receiver") {
+			content += `
+			<div class="flex flex-row justify-between w-full space-x-4 font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
+				<div class="flex font-title">${invitation.username} wants to be your friend</div>
+					<div id="add-friend" data-id="${invitation.user_id}" data-username="${invitation.username}" 
+					class="hover:cursor-pointer">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none">
+						<path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+						</svg>
+					</div>
+					<div id="refuse-invitation" data-id="${invitation.user_id}" data-username="${invitation.username}" class="hover:cursor-pointer">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+						</svg>
+					</div>
+			</div>
+		</div>`
+		}
 	}
 
 	return `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
@@ -119,6 +150,103 @@ function notifications() {
 			</div>
 			</div>`
 }
+//TODO : Use lock open et lock close pour le block et le unblock
+async function friends(user:User) {
+	let container = `
+			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
+				<span traslate="friends" >Friends</span>
+			<div class="flex flex-col w-full max-h-[400px] font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
+			`;
+	const friendsList = await getFriends();
+	if (friendsList.status === "error" || !friendsList.data?.friends) {
+		return `${container}<span class="text-secondary dark:text-dtertiary" translate="no-friends">No friends found</span></div></div>`;
+	}
+	for(const friend of friendsList.data.friends) {
+		console.log("Friend:", friend);
+		container += `
+		<div class="flex flex-row justify-between w-1/2 font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
+			<div name="otherProfile" data-id=${friend.user_id} class="flex font-title hover:underline hover:cursor-pointer">${friend.username}</div>
+			<div class="flex flex-row space-x-2">
+				<div id="block-user" data-username=${friend.username} data-id=${friend.user_id} class="group/item relative hover:cursor-pointer">
+					<span class="tooltip absolute z-10 left-1/2 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
+				dark:text-dtertiary text-xs rounded py-1 px-2">
+					Block This MotherDUcker
+					</span>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none hover:cursor-pointer">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
+					</svg>
+					</span>
+				</div>
+				
+				<div class="group/item relative">
+					<span class="tooltip absolute left-1/2 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
+				dark:text-dtertiary text-xs rounded py-1 px-2 z-10">
+					Chat with ${friend.username}
+					</span>
+					<span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hover:cursor-pointer">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+					</svg>
+					</span>
+				</div>
+			</div>
+		</div>
+		`;
+	}
+	container += `
+		</div>
+	</div>`;
+	console.log("Friends List:", friendsList.data);
+	return container;
+}
+
+async function allUsers(user:User) {
+	let container = `
+			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
+				<span traslate="friends" >All users</span>
+			<div class="flex flex-col w-full max-h-[400px] font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
+			`;
+	const allUsers = await getAllUsers();
+	if (allUsers.status === "error" || !allUsers.data) {
+		return `${container}<span class="text-secondary dark:text-dtertiary" translate="no-friends">No friends found</span></div></div>`;
+	}
+	for(const user of allUsers.data) {
+		console.log("Friend:", user);
+		container += `
+		<div class="flex flex-row justify-between w-1/2 font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
+			<div name="otherProfile" data-id=${user.user_id} class="flex font-title hover:underline hover:cursor-pointer">${user.username}</div>
+			<div class="flex flex-row space-x-2">
+				<div id="add-friend" data-username=${user.username} data-id=${user.user_id} class="group/item relative hover:cursor-pointer">
+					<span class="tooltip absolute left-1/2 z-10 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
+				dark:text-dtertiary text-xs rounded py-1 px-2">
+					Add to friends
+					</span>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none hover:cursor-pointer">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+					</svg>
+					</span>
+				</div>
+				<div class="group/item relative">
+					<span class="tooltip absolute left-1/2 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
+				dark:text-dtertiary text-xs rounded py-1 px-2 z-10">
+					Chat with ${user.username}
+					</span>
+					<span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hover:cursor-pointer">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+					</svg>
+					</span>
+				</div>
+			</div>
+		</div>
+		`;
+	}
+	container += `
+		</div>
+	</div>
+	`;
+	console.log("Friends List:", allUsers.data);
+	return container;
+}
+
 
 async function renderProfilePage() {
 
@@ -128,14 +256,23 @@ async function renderProfilePage() {
 
 		return `
 			${navbar(user)}
-			${headerPage("profile")}
-			${profileName(user.username)}
-			${profileInfos(user)}
-			${notifications()}
+			${backButton()}
+			<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
+			${avatarBanner(user.preferences)}
+			${imageEditorDiv()}
+			${userUpdateForm(user)}
+			</div>
+			${await notifications()}
+			<div class="flex justify-center items">
+				<div class="flex flex-row justify-between items-center w-full max-w-[1000px] space-x-4 space-y-4">
+				${await friends(user)}
+				${await allUsers(user)}
+				</div>
+			</div>
 			${footer()}`
+		}
+		return notfound();
 	}
-	return notfound();
-}
 
 export default function profilePage() {
 	const container = renderProfilePage();
@@ -145,53 +282,3 @@ export default function profilePage() {
 
 
 
-
-// function friendsList() {
-// 	return `<div class="flex flex-col items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
-// 		<div class="flex font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary"> 
-// 			 Your friends
-// 		 </div>
-		
-// 		<div class="items-center justify-center bg-primary dark:bg-dprimary w-1/2 h-1/2 rounded-lg shadow-lg">
-// 		<ul class="flex flex-row space-x-5 items-center p-5 text-secondary dark:text-dprimary">
-// 			<img src="/images/pp.jpg" alt="Profile picture"
-// 			class="w-10 h-10 rounded-full border-4  border-green-600 shadow-lg">
-// 			<li class="text-xl font-title  text-secondary dark:text-dtertiary" translate="friend1">Fred (Online)</li>
-// 		</ul>
-// 		<div class="flex justify-end m-2">
-// 		${primaryButton({id: "add-friend" , text: "Add friend", weight: ""})}
-// 		</div>
-// 		</div>
-// 		</div>`
-// }
-
-// function gameStatsResume() {
-// 	return `<div class="flex flex-col pt-10 items-center justify-center space-y-4 text-primary dark:text-dtertiary">
-// 			<div class="flex font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary"> 
-// 				 Your game results
-// 			</div>
-	
-// 	<span class="text-xl font-title border-2 border-primary dark:border-dprimary p-2 "> wins 3 / losses 9</span>
-// 	<div class="items-center justify-center bg-primary dark:bg-dprimary w-1/2 h-1/2 rounded-lg shadow-lg">
-// 	<div class="flex font-title justify-start m-2 text-secondary"> Last games</div>
-	
-// 	<ul class="flex flex-row space-x-5 justify-center items-center p-5 text-secondary dark:text-dtertiary">
-// 		<span class="flex justify-start text-xl font-title text-secondary dark:text-dtertiary"> 04/01/2925	</span>
-// 	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-// 		<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0" />
-// 		</svg>
-
-// 		<li class="text-sm lg:text-xl font-title text-secondary dark:text-dtertiary" translate="friend1">You vs Jean-Rochefort</li>
-
-// 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-// 		  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-// 			</svg>
-
-// 	</ul>
-
-// 	<div class="flex justify-end m-2">
-// 	${primaryButton({id: "add-friend" , text: "See all games", weight: ""})}
-// 	</div>
-// 	</div>
-// 	</div>`
-// }

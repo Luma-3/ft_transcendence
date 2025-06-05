@@ -1,5 +1,5 @@
-import { User } from '../api/interfaces/User';
-import { renderPrivatePage } from '../components/renderPage';
+import { User } from '../interfaces/User';
+import { renderPrivatePage } from '../controllers/renderPage';
 
 /**
  * * Page de bienvenue lorsque l'utilisateur se connecte pour la première fois (Welcome)
