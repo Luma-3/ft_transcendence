@@ -114,11 +114,11 @@ function userUpdateForm(user: User) {
 async function notifications() {
 	const users = await getFriends();
 	
-	let content: string = "";
+	let content: string = `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">`;
 	const pendingInvitations = users.data?.pending;
+	// <span traslate="notifications" >Notifications</span>`;
 	if (!pendingInvitations || pendingInvitations.length === 0) {
-		return `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
-			<span traslate="notifications" >Notifications</span>
+		return `${content}
 		<span class="text-secondary dark:text-dtertiary" translate="no-notifications">No notifications</span>
 		</div>`;
 	}
@@ -154,7 +154,10 @@ async function notifications() {
 async function friends(user:User) {
 	let container = `
 			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
-				<span traslate="friends" >Friends</span>
+			<div class="flex flex-row justify-between items-center space-x-4">
+			<img src="/images/duckSocial.png" alt="Duck Friends" class="w-20 h-20" />	
+			<span traslate="friends" >Friends</span>
+			</div>
 			<div class="flex flex-col w-full max-h-[400px] font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
 			`;
 	const friendsList = await getFriends();
@@ -262,14 +265,16 @@ async function renderProfilePage() {
 			${imageEditorDiv()}
 			${userUpdateForm(user)}
 			</div>
+			<div class="flex flex-col w-full max-w-[1000px] items-center justify-center pt-5">
+			<img src="/images/duckBell.png" alt="Duck Bell" class="w-20 h-20" />
 			${await notifications()}
+			</div>
 			<div class="flex justify-center items">
 				<div class="flex flex-row justify-between items-center w-full max-w-[1000px] space-x-4 space-y-4">
 				${await friends(user)}
 				${await allUsers(user)}
 				</div>
-			</div>
-			${footer()}`
+			</div>`
 		}
 		return notfound();
 	}

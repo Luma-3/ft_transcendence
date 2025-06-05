@@ -45,7 +45,7 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 
 	setupColorTheme('dark');
 
-	fadeOut(main_container);
+	fadeOut();
 	setTimeout(async () => {
 
 		const rendererFunction = rendererPublicPage[page];
@@ -63,7 +63,7 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 
 		removeLoadingScreen();
 
-		fadeIn(main_container);
+		fadeIn();
 	}
 		, 250);
 }
@@ -108,7 +108,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 	const lang = response.data.preferences.lang;
 	const theme = response.data.preferences.theme;
 
-	fadeOut(main_container);
+	fadeOut();
 
 	setTimeout(async () => {
 
@@ -128,7 +128,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		
 		removeLoadingScreen();
 
-		fadeIn(main_container);
+		fadeIn();
 
 		if (page === 'WelcomeYou' || page === 'reWelcomeYou') {
 			handleWelcomeYouPage();
@@ -154,7 +154,7 @@ export async function renderGame(roomData: RoomData) {
 	const lang = response.data.preferences.lang;
 	const theme = response.data.preferences.theme;
 
-	fadeOut(main_container);
+	fadeOut();
 
 	setTimeout(async () => {
 
@@ -170,12 +170,13 @@ export async function renderGame(roomData: RoomData) {
 
 		removeLoadingScreen();
 
-		fadeIn(main_container);
+		fadeIn();
 	}
 		, 250);
 }
 
 import { renderOtherProfile } from '../pages/OtherProfile'
+import { redocInit } from './redocInit'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 
@@ -194,7 +195,7 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 	const lang = response.data.preferences.lang;
 	const theme = response.data.preferences.theme;
 
-	fadeOut(main_container);
+	fadeOut();
 
 	setTimeout(async () => {
 
@@ -210,7 +211,7 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 
 		removeLoadingScreen();
 
-		fadeIn(main_container);
+		fadeIn();
 	}
 		, 250);
 }
@@ -234,7 +235,7 @@ export async function renderErrorPage(codePage: string, code: string, message: s
 	const theme = user.status === "error" ? 'dark' : user.data?.preferences.theme || 'dark';
 
 	setupColorTheme(theme);
-	fadeOut(main_container);
+	fadeOut();
 
 	setTimeout(async () => {
 		const rendererFunction = rendererErrorPage[codePage] || notFoundPage;
@@ -247,19 +248,33 @@ export async function renderErrorPage(codePage: string, code: string, message: s
 
 		removeLoadingScreen();
 
-		fadeIn(main_container);
+		fadeIn();
 	}
 		, 250);
 }
 
-declare const Redoc: any;
+const logoDoc: { [key: string]: string } = {'user': '/images/duckHandsUp.png',
+	 'upload': '/images/duckUpload.png',
+	 'people': '/images/duckSocial.png',
+	 'game': '/images/dashboard.png',
+};
 
-export function renderDocPages(page: string) {
+export async function renderDocPages(page: string, logo: string) {
 	
 	const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
 	console.log(page)
 	redoc_container.innerHTML = '';
-	Redoc.init(`${page}`, {}, redoc_container);
+	 fetch(`${page}`)
+    .then(res => res.json())
+    .then(spec => {
+      spec.info['x-logo'] = {
+        url: logoDoc[logo],
+        backgroundColor: '#FFFFFF',
+        altText: 'Logo de l\'API',
+        // href: 'https://example.com'
+      };
+	  redocInit(spec, redoc_container);
+	});
 }
 
 /**

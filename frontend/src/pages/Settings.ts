@@ -35,8 +35,7 @@ async function renderSettingsPage() {
 				<div class="flex flex-col items-center justify-center space-y-4 pt-20">
 				${animateButton("logout", "logout", "😥")}
 				</div>
-			</div>
-			${footer()}`
+			</div>`
 	}
 	return notfound()
 }

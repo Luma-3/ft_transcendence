@@ -9,7 +9,7 @@ let userNotification: boolean = false;
 function headerUserMenu(user: User) {
 	
 	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.preferences.banner}')">
-	<div class="relative w-12 h-12 flex-shrink-0">
+	<div class="relative w-14 h-14 flex-shrink-0">
 					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.preferences.avatar}" alt="User profile picture">
 				</div>
 				</div>`;

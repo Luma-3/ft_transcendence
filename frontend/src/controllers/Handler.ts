@@ -72,10 +72,10 @@ const clickEvent: {[key: string]: (event: MouseEvent) => void } = {
 	'createGame': () => createGame(),
 
 	// * -------------- Documentation  -------------- */
-	'showUserDoc': () => renderDocPages('/api/user/doc/json'),
-	'showUploadDoc': () => renderDocPages('/api/upload/doc/json'),
-	'showGameDoc': () => renderDocPages('/api/game/doc/json'),
-	'showPeopleDoc': () => renderDocPages('/api/people/doc/json'),
+	'showUserDoc': () => renderDocPages('/api/user/doc/json', 'user'),
+	'showUploadDoc': () => renderDocPages('/api/upload/doc/json', 'upload'),
+	'showGameDoc': () => renderDocPages('/api/game/doc/json', 'game'),
+	'showPeopleDoc': () => renderDocPages('/api/people/doc/json', 'people'),
 
 };
 

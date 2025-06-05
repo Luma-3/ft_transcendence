@@ -125,8 +125,7 @@ export async function renderOtherProfile(container: HTMLElement) {
 			<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
 			${avatarBanner(user.preferences)}
 			${userInfo(user)}
-			</div>
-			${footer()}`
+			</div>`
 		}
 		return notfound();
 	}
