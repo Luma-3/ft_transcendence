@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Pong } from '../game/Pong.js';
-
+import { Player } from '../interfaces/Player.js';
+ 
 // interface Player {
 // 	playerd: string; // Unique identifier for the player
 // 	clientId: string; // Client identifier
@@ -10,7 +11,18 @@ import { Pong } from '../game/Pong.js';
 // }
 
 export class Room {
-  constructor(typeGame) {
+	id: string;
+	name: string;
+	typeGame: string;
+	status: string;
+	players: Player[];
+	pong: Pong | null;
+	isFull: boolean;
+	createdAt: Date;
+	maxPlayers: number;
+	playerReady: number;
+	
+  constructor(typeGame: string) {
 	this.id = uuidv4();
 	this.name = ''; // Unique name for the room
 	this.typeGame = typeGame; // 'localpvp', 'localpve', 'online', 'tournament' 
@@ -23,7 +35,7 @@ export class Room {
 	this.playerReady = 0; // Counter for players ready to start the game
   }
 
-  addPlayer(player) {
+  addPlayer(player: Player) {
 	if (this.players.length >= this.maxPlayers) {
 	  return false; // Room is full
   	}
@@ -40,7 +52,7 @@ export class Room {
 	return true; // Player added successfully
   }
 
-	getPlayerById(playerId) {
+	getPlayerById(playerId: string) {
 		for (const player of this.players) {
 	  		if (player.playerId === playerId) {
 				return player; // Return the player if found
@@ -49,7 +61,7 @@ export class Room {
 		return null; // Player not found
 	}
 
-  getPlayerByClientId(clientId) {
+  getPlayerByClientId(clientId: string) {
 	for (const player of this.players) {
 	  if (player.clientId === clientId) {
 		return player; // Return the player if found
@@ -75,7 +87,7 @@ export class Room {
 	return this.pong; // Return the game instance
   }
 
-  removePlayer(playerId) {
+  removePlayer(playerId: string) {
 	//TODO: Implement player removal logic
 	if (this.typeGame === ("localpvp" || "localpve")) {
 	  this.stopGame(); // Stop the game if it's a local PvP or PvE game
@@ -100,13 +112,13 @@ export class Room {
 	}
   }
 
-  setStatus(newStatus) { this.status = newStatus; }
+  setStatus(newStatus: string) { this.status = newStatus; }
 
   isJoinable() { return (!this.isFull && this.status === 'waiting'); }
 
   isReadyToStart() { return (this.isFull || this.status === 'readyToStart'); }
 
-  userInfos(player) {
+  userInfos(player: Player) {
 	return {
 		playerId: player.playerId,
 		gameName: player.gameName,
@@ -114,7 +126,7 @@ export class Room {
 	};
   }
 
-  userOpponentInfos(player) {
+  userOpponentInfos(player: Player) {
 	return this.players.filter(p => p.playerId !== player.playerId).map(p => ({
 		playerId: p.playerId,
 		gameName: p.gameName,
