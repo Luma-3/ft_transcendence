@@ -4,8 +4,6 @@ import { fetchToken } from './api/fetchToken'
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 
-import { gameLoop } from './pages/Game'
-
 //* Ajout de la page dans l'historique de navigation et enregistrement de la page precedente pour le button back
 export function addToHistory(page: string, updateHistory: boolean = true) {
 	if (updateHistory && page !== history.state?.page) {
@@ -24,9 +22,6 @@ const publicPages = ['home', 'login', 'register']
 // * Sinon on affiche la page publique
 document.addEventListener('DOMContentLoaded', async () => {
 	
-	if (gameLoop) {
-		clearTimeout(gameLoop);
-	}
 	const page =  window.location.pathname.substring(1) || 'home'
 	
 	const user = await fetchToken();
@@ -36,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			return ;
 		}
 		return renderPrivatePage(page, false);
-	}
+	} 
 	return renderPublicPage(page);
 
 });

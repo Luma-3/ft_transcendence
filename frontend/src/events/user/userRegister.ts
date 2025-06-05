@@ -8,7 +8,7 @@ import { API_USER, API_SESSION } from '../../api/routes';
 import { User } from '../../api/interfaces/User';
 import { fetchWithNoToken } from '../../api/fetch'
 
-import { createSocketConnection } from '../../socket/createSocket';
+import { socketConnection } from '../Socket';
 
 function error(message: string) {
 	alertPublic(message, "error");
@@ -100,7 +100,7 @@ export async function registerUser() {
 	 * le chat et toutes communications bidirectionnelles
 	 * entre le client et le serveur qui ont besoin d'etre en temps reel
 	 */
-	createSocketConnection();
+	socketConnection();
 	
 	/**
 	 * Affichage de la page de welcome avant le dashboard(car nouvel utilisateur)

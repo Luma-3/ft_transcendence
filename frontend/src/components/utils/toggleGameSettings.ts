@@ -5,6 +5,7 @@
  */
 export function toggleGameSettings(inputValue: DOMStringMap) {
 	
+	console.log("toggleGameSettings", inputValue);
 	const type = inputValue.gametype;
 	if (!type) {
 		return;
@@ -15,7 +16,7 @@ export function toggleGameSettings(inputValue: DOMStringMap) {
 	
 	switch (type) {
 		
-		case 'local-PVP':
+		case 'localpvp':
 			hideContainer(onlineSettings as HTMLDivElement);
 			localPVPSettings?.classList.remove('hidden');
 			
@@ -26,7 +27,7 @@ export function toggleGameSettings(inputValue: DOMStringMap) {
 			}, 200);
 			break;
 
-		case 'local-PVE':
+		case 'localpve':
 			hideContainer(onlineSettings as HTMLDivElement);
 			hideContainer(localPVPSettings as HTMLDivElement);
 			break;

@@ -20,7 +20,7 @@ import { showEditorPicture } from '../components/utils/imageEditor'
 import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 
-import { initGameData } from '../game/gameInit'
+import { createGame } from '../game/gameCreation'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: {[key: string]: () => void } = {
@@ -33,7 +33,10 @@ const clickEvent: {[key: string]: () => void } = {
 	'google': () => {
 		window.location.href = 'http://localhost:3000/api/user/login/google'
 	},
-	
+
+	// * -------------- Private Page Load -------------- */
+	'loaddashboard': () => renderPrivatePage('dashboard'),
+
 	// * -------------- Profile Page  -------------- */
 	'loadprofile': () => renderPrivatePage('profile'),
 	'changeUserInfo': () => changeUserNameEmail(),
@@ -56,7 +59,7 @@ const clickEvent: {[key: string]: () => void } = {
 	'loadBackPage': () => renderBackPage(),
 	'showGameStat': () => toggleGameStat(),
 	'showTruc': () => toggleTruc(),
-	'launchGame': () => initGameData(),
+	'createGame': () => createGame(),
 
 };
 

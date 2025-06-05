@@ -34,9 +34,10 @@ export const API_SESSION = {
 }
 
 export const API_GAME = {
+  ROOM_INFO: `${SERVICES.GAME}/`,
   LOCAL_CREATE: `${SERVICES.GAME}/local/init`,
   LOCAL_SEND: `${SERVICES.GAME}/local/input`,
   LOCAL_GET_STATE: `${SERVICES.GAME}/local/state`,
-  CREATE: `${SERVICES.GAME}/games`,
+  CREATE: `${SERVICES.GAME}/join`,
 }
 

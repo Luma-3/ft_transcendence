@@ -59,9 +59,14 @@
 	"local": "Local",
 	"search-friend": "Rechercher un ami",
 	"enter-username": "Entrez le nom d'utilisateur",
-	"local-pvp": "Local 2 Joueurs",
-	"local-pve": "Local 1 Joueur",
+	"localpvp": "Local 2 Joueurs",
+	"localpve": "Local 1 Joueur",
 	"tournament": "Tournoi",
+	"enter-both-players-names": "Entrez les noms des deux joueurs",
+	"enter-name-player2": "Entrez le nom du joueur 2",
+	"game-created": "Jeu créé avec succès. En attente de la connexion des joueurs...",
+	"connecting-game": "Connexion au jeu...",
+	"please-wait-second": "Veuillez patienter <b></b> secondes...",
 
 	"profile": "Profil",
 	"your-informations": "Vos informations",
@@ -93,10 +98,8 @@
 	"forbidden": "Interdit",
 	"not-found": "Page ou ressource introuvable",
 	"go-back-to-safe-place": "Retourner en lieu sûr",
-
-
-
-
+	"game-created-successfully": "Jeu créé avec succès. En attente de la connexion des joueurs...",
+	"game-creation-failed": "Échec de la création du jeu",
 
 	"load": "Charger",
 	"custom ": "Personnalisé",
