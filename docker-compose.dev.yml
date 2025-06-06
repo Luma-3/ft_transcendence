@@ -1,4 +1,5 @@
 services:
+
   redis:
     build:
       context: ./redis/
@@ -8,13 +9,16 @@ services:
         - "6379"
     networks:
         - redis-net
-
-  Base:
+  
+  base:
     build:
       context: ./backend/packages/
       dockerfile: Dockerfile.base
     image: base
+    depends_on:
+      - redis 
     entrypoint: ["true"]
+
 
   gateway:
     build:
@@ -26,8 +30,7 @@ services:
     volumes:
       - ./backend/gateway/src:/app/src:z
     depends_on:
-      - Base
-      - redis
+      - base
     ports:
       - "3000:3000"
     networks:
@@ -46,8 +49,7 @@ services:
       - ./backend/user-API/data:/app/data:z
       - ./backend/user-API/src:/app/src:z
     depends_on:
-      - Base
-      - redis
+      - gateway
     expose:
       - "3001"
     networks:
@@ -66,49 +68,49 @@ services:
       - ./backend/people-API/src:/app/src:z
       - ./backend/dependencies/:/app/dependencies:z
     depends_on:
-      - redis
+      - gateway
     expose:
       - "3004"
     networks:
       - backend-net
       - redis-net
 
-  upload-api:
-    build:
-      context: ./backend/upload-API/
-      dockerfile: Dockerfile.dev
-    container_name: upload-API
-    env_file:
-        - ./.dev.env
-    volumes:
-      - ./backend/upload-API/uploads:/app/uploads:z
-      - ./backend/upload-API/src:/app/src:z
-    depends_on:
-      - Base
-      - redis
-    expose:
-      - "3002"
-    networks:
-      - backend-net
-      - redis-net
+  # upload-api:
+  #   build:
+  #     context: ./backend/upload-API/
+  #     dockerfile: Dockerfile.dev
+  #   container_name: upload-API
+  #   env_file:
+  #       - ./.dev.env
+  #   volumes:
+  #     - ./backend/upload-API/uploads:/app/uploads:z
+  #     - ./backend/upload-API/src:/app/src:z
+  #   depends_on:
+  #     - Base
+  #     - redis
+  #   expose:
+  #     - "3002"
+  #   networks:
+  #     - backend-net
+  #     - redis-net
 
-  game-api:
-    build:
-      context: ./backend/game-API/
-      dockerfile: Dockerfile.dev
-    container_name: game-API
-    env_file:
-        - ./.dev.env
-    volumes:
-      - ./backend/game-API/data:/app/data:z
-      - ./backend/game-API/src:/app/src:z
-    depends_on:
-      - redis
-    expose:
-      - "3003"
-    networks:
-      - backend-net
-      - redis-net
+  # game-api:
+  #   build:
+  #     context: ./backend/game-API/
+  #     dockerfile: Dockerfile.dev
+  #   container_name: game-API
+  #   env_file:
+  #       - ./.dev.env
+  #   volumes:
+  #     - ./backend/game-API/data:/app/data:z
+  #     - ./backend/game-API/src:/app/src:z
+  #   depends_on:
+  #     - redis
+  #   expose:
+  #     - "3003"
+  #   networks:
+  #     - backend-net
+  #     - redis-net
 
   frontend:
     build:
