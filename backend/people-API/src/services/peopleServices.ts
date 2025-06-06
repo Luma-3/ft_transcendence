@@ -1,23 +1,18 @@
 import { ForbiddenError, UnauthorizedError } from "@transcenduck/error"
-import { PeopleModel } from "../models/peopleModel";
+import { peopleModel } from "../models/peopleModel";
 import { ResponsePublicType } from "../schema/people.schema";
 
 export class PeopleServices {
-  peopleModel: PeopleModel;
-
-  constructor(peopleModel: PeopleModel) {
-    this.peopleModel = peopleModel;
-  }
 
   async getAll(userID: string) {
     if (!userID) {
       throw new UnauthorizedError('User ID is required');
     }
-    const AllpersonDB = await this.peopleModel.findAll();
+    const AllpersonDB = await peopleModel.findAll();
     if (!AllpersonDB) {
       throw new UnauthorizedError('Person not found');
     }
-    const result = await this.peopleModel.findByUserID(userID, true, ['friends', 'blocked', 'pending']);
+    const result = await peopleModel.findByUserID(userID, true, ['friends', 'blocked', 'pending']);
     if(!result)
       return [];
     const {friends = {}, blocked= {}, pending = {}} = result;
@@ -34,12 +29,12 @@ export class PeopleServices {
     return Allperson;
   }
 
-  async getSelf(userID) {
+  async getSelf(userID: string) {
     if (!userID) {
       throw new UnauthorizedError('User ID is required');
     }
 
-    const person = await this.peopleModel.findByUserID(userID);
+    const person = await peopleModel.findByUserID(userID);
     if (!person) {
       throw new ForbiddenError('Person not found');
     }
@@ -47,6 +42,6 @@ export class PeopleServices {
   }
 
   async search(userId: string , value: string) {
-    return this.peopleModel.findByUsername(value);
+    return peopleModel.findByUsername(userId, value);
   }
 }

@@ -1,4 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
+import { type SearchGetType } from "../schema/people.schema";
 
 export async function getAll(req: FastifyRequest, res: FastifyReply) {
 	const userID = req.headers['x-user-id'];
@@ -21,7 +22,7 @@ export async function getSelf(req: FastifyRequest, res: FastifyReply) {
 	return res.status(200).send({ status: "success", data: person });
 }
 
-export async function search(req: FastifyRequest, res: FastifyReply) {
+export async function search(req: FastifyRequest<{Querystring: SearchGetType}>, res: FastifyReply) {
 	const userID = req.headers['x-user-id'];
 	if (!userID) {
 		return res.status(400).send({ status: "error", message: "User ID is required" });

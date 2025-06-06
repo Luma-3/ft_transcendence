@@ -21,7 +21,7 @@ const PendingSelfReponse = Type.Object({
       user_id: Type.String(),
       username: Type.String(),
       status: Type.Boolean()
-    });
+});
 
 export const PeoplesResponseSelfBase = Type.Object({
     user_id: Type.String({ format: 'uuid'}),
@@ -49,7 +49,7 @@ export const PeoplesBase = Type.Object({
 
 export const PeoplesEventRedis = Type.Object(
   {
-    user_id: Type.String({format: "uuid"}),
+    userId: Type.String({format: "uuid"}),
     action: Type.Union([Type.Literal('create'), Type.Literal('update'), Type.Literal('delete')]),
     payload: Type.Optional(Type.Record(Type.String(), Type.Any()))
   },

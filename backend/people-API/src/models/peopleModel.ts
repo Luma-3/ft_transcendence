@@ -237,3 +237,5 @@ export class PeopleModel {
       .whereLike('username', `${username}%`).andWhereJsonPath('blocked', "$." + userId, "!=", " sender").andWhereJsonPath('blocked', "$." + userId, "!=", "receiver") as ResponsePublicType[];
   }
 }
+
+export const peopleModel = new PeopleModel();

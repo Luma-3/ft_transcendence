@@ -26,13 +26,16 @@
     "@fastify/swagger": "^9.4.2",
     "@fastify/type-provider-typebox": "^5.1.0",
     "@sinclair/typebox": "^0.34.33",
-    "@transcenduck/error": "file:./dependencies/error",
-    "@transcenduck/formatter": "file:./dependencies/formatter",
+    "@transcenduck/error": "file:./packages/error",
+    "@transcenduck/formatter": "file:./packages/formatter",
+    "@types/node": "^22.15.30",
     "dotenv": "^16.5.0",
     "fastify": "^5.2.2",
     "knex": "^3.1.0",
     "redis": "^5.1.0",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "imports": {
     "#transcenduck/plugins/*": "./src/plugins/*",

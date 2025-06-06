@@ -1,13 +1,9 @@
-FROM node:22
-
-RUN apt-get update
-
-WORKDIR /app
+FROM base
 
 COPY package*.json ./
-
-COPY knexfile.mjs ./
+COPY nodemon.json ./
+COPY tsconfig.json ./
+COPY knexfile.ts ./
 
 RUN npm install
-
 CMD ["npm", "run", "dev"]
