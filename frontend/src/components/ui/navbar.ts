@@ -22,13 +22,13 @@ export function navbar(user: User) {
 	return `
 	<nav class="flex flex-row navbar-responsive-size items-center w-full flex-wrap justify-between p-2">
 			${navbarLogo()}
-			<div id="user-menu-button" class="flex justify-end items-center cursor-pointer">
+			<button id="user-menu-button" class="flex justify-end items-center cursor-pointer">
 				<span class="font-title hidden sm:block pointer-events-none mr-2 items-center
 				 text-tertiary dark:text-dtertiary">
 				${user.username}
 				</span>
 				<img class="w-12 h-12 rounded-full pointer-events-none" src=${API_CDN.AVATAR}/${user.preferences.avatar} alt="User profile picture">
-			</div>
+			</button>
 	</nav>
 	${userMenu(user)}`;
 }

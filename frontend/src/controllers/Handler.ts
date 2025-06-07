@@ -22,7 +22,7 @@ import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 
 import { createGame } from '../game/gameCreation'
-import { blockUser, sendInvitationToUser, sendRefuseInvitation } from '../social/userSocial'
+import { blockUser, handleFriendRequest, sendRefuseInvitation } from '../social/userSocial'
 import { addNewMessage } from '../chat/newMessage'
 import { renderOtherProfilePage } from '../controllers/renderPage'
 
@@ -46,7 +46,8 @@ const clickEvent: {[key: string]: (event: MouseEvent) => void } = {
 	'loadprofile': () => renderPrivatePage('profile'),
 	'changeUserInfo': () => changeUserNameEmail(),
 	'change-password': () => changeUserPassword(),
-	'add-friend': () => sendInvitationToUser(event?.target as HTMLElement),
+	'add-friend': () => handleFriendRequest(event?.target as HTMLElement, "send"),
+	'accept-friend': () => handleFriendRequest(event?.target as HTMLElement, "accept"),
 	'block-user': () => blockUser(event?.target as HTMLElement),
 	'refuse-invitation': () => sendRefuseInvitation(event?.target as HTMLElement),
 	

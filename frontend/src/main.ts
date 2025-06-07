@@ -1,4 +1,4 @@
-import { renderDocPage, renderPrivatePage, renderPublicPage } from './controllers/renderPage'
+import { renderPrivatePage, renderPublicPage } from './controllers/renderPage'
 import { addAllEventListenOnPage } from './controllers/Handler'
 import { fetchToken } from './api/fetchToken'
 

@@ -82,7 +82,14 @@
 	"password-changed": "Mot de passe changé",
 	"user-infos-updated": "Informations mises à jour",
 	"user-infos-not-updated": "Informations non mises à jour",
-
+	"friend-invitation-sent": "Demande d'ami envoyée",
+	"issues-with-friend-invitation": "Problèmes avec l'invitation d'ami",
+	"friend-invitation-refused": "Invitation d'ami refusée",
+	"issues-with-invitation-refused": "Erreur avec le refus de l'invitation",
+	"issues-with-user-blocked": "Problèmes lors du blocage de l'utilisateur",
+	"user-blocked": "Utilisateur bloqué",
+	"friend-invitation-accepted": "Invitation d'ami acceptée",
+	"issues-with-invitation-accepted": "Problèmes avec l'acceptation de l'invitation",
 
 	"version": "Version",
 	"no-duck-hurt": "Aucun canard n'a été blessé",

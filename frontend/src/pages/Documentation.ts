@@ -2,7 +2,6 @@ import { primaryButton } from "../components/ui/buttons/primaryButton"
 import { navbar } from "../components/ui/navbar";
 import { User } from "../interfaces/User";
 import { backButton } from "../components/ui/buttons/backButton";
-import { footer } from "../components/ui/footer";
 
 export default function documentation(user: User) {
 

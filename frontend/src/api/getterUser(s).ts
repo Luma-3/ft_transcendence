@@ -14,7 +14,6 @@ export async function getUserInfo(): Promise<IApiResponse<User>> {
 
 export async function getOtherUserInfo(id: string): Promise<IApiResponse<User>> {
 	const response = await fetchApi<User>(API_USER.BASIC.BASIC + `/${id}`);
-	console.log("getOtherUserInfo response", response);
 	return response;
 }
 
@@ -24,7 +23,6 @@ export async function getAllUsers(): Promise<IApiResponse<UserInPeople[]>> {
 }
 
 export async function getUsersList(value: string) {
-
 	const response = await fetchApi<UserInPeople[]>(API_PEOPLE.SEARCH + "?search=" + value);
 	return response.data!;
 }

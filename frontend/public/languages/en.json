@@ -81,7 +81,14 @@
 	"password-changed": "Password changed",
 	"user-infos-updated": "Informations updated",
 	"user-infos-not-updated": "Informations not updated",
-
+	"friend-invitation-sent": "Friend invitation sent",
+	"issues-with-friend-invitation": "Issues with friend invitation",
+	"friend-invitation-refused": "Friend invitation refused",
+	"issues-with-invitation-refused": "Issues with invitation refused",
+	"issues-with-user-blocked": "Issues while blocking user",
+	"user-blocked": "User blocked",
+	"friend-invitation-accepted": "Friend invitation accepted",
+	"issues-with-invitation-accepted": "Issues with invitation acceptance",
 
 	"version": "Version",
 	"no-duck-hurt": "No duck was hurt",

@@ -6,7 +6,7 @@ let userNotification: boolean = false;
 /**
  * Partie du menu situe en haut avec le nom de l'utilisateur et la photo de profil
  */
-function headerUserMenu(user: User) {
+export function headerUserMenu(user: User) {
 	
 	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.preferences.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
