@@ -9,7 +9,7 @@ import { ConflictResponse , ForbiddenResponse, InvalidTypeResponse, NotFoundResp
  * - avatar
  * - banner
  */
-export default async function(fastify: FastifyInstance) {
+export default async function uploadRoute(fastify: FastifyInstance) {
   fastify.post('/:typePath', {
     schema: {
       consumes: ['multipart/form-data'],
