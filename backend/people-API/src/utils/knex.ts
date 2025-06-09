@@ -7,7 +7,7 @@ export const knexConfig = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/User.sqlite',
+      filename: './data/People.sqlite',
     },
     migrations: {
       directory: './migrations',

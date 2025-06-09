@@ -1,7 +1,7 @@
 import fastify from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 
-import swagger from "./plugins/swagger.js";
+import swagger from "./plugins/swagger";
 import formatter from "@transcenduck/formatter";
 import { destroyKnex } from "./utils/knex.js";
 
@@ -12,8 +12,9 @@ const server = fastify({
 await server.register(formatter);
 
 await server.register(swagger, {
-    title: 'User Service API',
-    description: 'Endpoints for user management',
+    title: 'Social Service API',
+    description: 'Endpoints for Social management',
+    version: '1.0.0',
     route: '/doc/json',
     servers: [
       { url: '/friends/', description: 'Friends Service' },

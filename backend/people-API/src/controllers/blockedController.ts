@@ -1,24 +1,23 @@
 import { FastifyReply, FastifyRequest } from "fastify";
+import { blockedServices } from "../services/blockedServices";
+import { BlockedParamType, GatewayHeaderType } from "../schema/people.schema";
 
-export async function blockUser(req: FastifyRequest, res: FastifyReply) {
+export async function blockUser(req: FastifyRequest<{ 
+	Params: BlockedParamType,
+	Headers: GatewayHeaderType
+}>, res: FastifyReply) {
 	const userId = req.headers['x-user-id'];
 	const { blockedId } = req.params;
-	try {
-		await this.blockedServices.blockUser(userId, blockedId);
-		res.status(200).send({ message: "User blocked successfully" });
-	} catch (error) {
-		console.error("Error blocking user:", error);
-		res.status(400).send({ error: error.message });
-	}
+	await blockedServices.blockUser(userId, blockedId);
+	res.status(200).send({ message: "User blocked successfully" });
 }
 
-export async function unBlockUser(req: FastifyRequest, res: FastifyReply) {
+export async function unBlockUser(req: FastifyRequest<{ 
+	Params: BlockedParamType,
+	Headers: GatewayHeaderType
+}>, res: FastifyReply) {
 	const userId = req.headers['x-user-id'];
 	const { blockedId } = req.params;
-	try {
-		await this.blockedServices.unBlockUser(userId, blockedId);
-		res.status(200).send({ message: "User unblocked successfully" });
-	} catch (error) {
-		res.status(400).send({ error: error.message });
-	}
+	await blockedServices.unblockUser(userId, blockedId);
+	res.status(200).send({ message: "User unblocked successfully" });
 }

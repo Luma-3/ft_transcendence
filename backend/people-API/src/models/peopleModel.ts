@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import { BlockedSelfReponseType, FriendsBaseType, FriendSelfReponseType, PendingSelfReponseType, PeoplesDBBaseType, ResponsePublicType, ResponseSelfType, type PeoplesSchemaType } from "../schema/people.schema";
+import { BlockedSelfReponseType, FriendSelfReponseType, PendingSelfReponseType, PeoplesDBBaseType, ResponsePublicType, ResponseSelfType, type PeoplesSchemaType } from "../schema/people.schema";
 import knex from "../utils/knex";
 
 export const PeopleSchemaDBPrivate: PeoplesSchemaType = ["user_id", "username", "friends", "blocked", "pending"];
@@ -68,7 +68,7 @@ export class PeopleModel {
         pending.push({
             user_id: pend,
             username: data?.username!,
-            status: peddingDB[pend]
+            status: (<{[key: string]: "sender" | "receiver"}>peddingDB)[pend]
         });
       }
       response.pending = pending;
@@ -120,7 +120,6 @@ export class PeopleModel {
   }
 
   async removeFriends(userID: string, friends: string) {
-    console.log("Removing friends:", userID, friends);
     return await knex.transaction(async (trx) => {
       await this.removeFriend(trx, userID, friends);
       await this.removeFriend(trx, friends, userID);
@@ -153,16 +152,17 @@ export class PeopleModel {
 
   async unBlockUser(userID: string, blocked: string) {
     const result = await knex('people')
-      .where('user_id', userID).whereJsonPath('blocked', "$." + blocked, '=',  'sender').update({
+      .where('user_id', userID).andWhereRaw("json_extract(blocked, '$." + blocked + "') = 'sender'").update({
         blocked: knex.jsonRemove('blocked', "$." + blocked)
       });
-      if(result) {
-        await knex('people')
-          .where('user_id', blocked).update({
-            blocked: knex.jsonRemove('blocked', "$." + userID)
-          });
-      }
-  }
+      if(!result)
+        return false;
+      await knex('people')
+        .where('user_id', blocked).update({
+          blocked: knex.jsonRemove('blocked', "$." + userID)
+        });
+      return true;
+    }
 
   async sendPending(userID: string, pending: string) {
     
@@ -234,7 +234,7 @@ export class PeopleModel {
   async findByUsername(userId: string, username: string) {
     return await knex('people')
       .select(PeopleSchemaDBPublic)
-      .whereLike('username', `${username}%`).andWhereJsonPath('blocked', "$." + userId, "!=", " sender").andWhereJsonPath('blocked', "$." + userId, "!=", "receiver") as ResponsePublicType[];
+      .whereLike('username', `${username}%`).andWhereRaw("IFNULL(json_extract(blocked, '$." + userId + "'), 1)") as ResponsePublicType[];
   }
 }
 

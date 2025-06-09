@@ -5,7 +5,7 @@ export class FriendsServices {
 
   async addFriend(userId: string, friendId: string) {
     if(await peopleModel.isBlocked(userId, friendId)) {
-      throw new ForbiddenError("Cannt add friend a personne blocked");
+      throw new ForbiddenError("you are blocked by the user");
     }
     if(!await peopleModel.hasPending(userId, friendId)) {
       await peopleModel.sendPending(userId, friendId);
@@ -26,3 +26,5 @@ export class FriendsServices {
     return await peopleModel.refuseFriend(userId, friendId);
   }
 }
+
+export const friendsServices = new FriendsServices();

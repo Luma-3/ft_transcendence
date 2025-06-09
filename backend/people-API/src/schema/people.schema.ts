@@ -20,7 +20,7 @@ const BlockedSelfReponse = FriendSelfReponse;
 const PendingSelfReponse = Type.Object({
       user_id: Type.String(),
       username: Type.String(),
-      status: Type.Boolean()
+      status: Type.Union([Type.Boolean(), Type.Union([Type.Literal('sender'), Type.Literal('receiver')])])
 });
 
 export const PeoplesResponseSelfBase = Type.Object({
@@ -59,11 +59,25 @@ export const PeoplesEventRedis = Type.Object(
   }
 );
 
-export const SearchGetType = Type.Object({
-  search: Type.String({ format: 'uuid' }),
+export const SearchGet = Type.Object({
+  search: Type.String(),
 });
 
-export type SearchGetType = Static<typeof SearchGetType>;
+export const FriendsParam = Type.Object({
+  friendId: Type.String({ format: 'uuid' }),
+});
+export const BlockedParam = Type.Object({
+  blockedId: Type.String({ format: 'uuid' }),
+});
+
+export const GatewayHeader = Type.Object({
+  'x-user-id': Type.String({ format: 'uuid' }),
+});
+
+export type SearchGetType = Static<typeof SearchGet>;
+export type GatewayHeaderType = Static<typeof GatewayHeader>;
+export type FriendsParamType = Static<typeof FriendsParam>;
+export type BlockedParamType = Static<typeof BlockedParam>;
 
 export type PeoplesBaseType = Static<typeof PeoplesBase>;
 export type PeoplesEventRedisType = Static<typeof PeoplesEventRedis>;

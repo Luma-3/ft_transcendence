@@ -26,7 +26,7 @@ const Services = [
   {
     name: 'People Services', prefix: '/people',
     upstream: 'http://' + process.env.PEOPLE_IP,
-    url: '/people/doc/json',
+    url: '/api/people/doc/json',
     //preHandler: InternalRoute
   }
 ]

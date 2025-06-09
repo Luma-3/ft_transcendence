@@ -1,28 +1,25 @@
-import { ForbiddenError, UnauthorizedError } from "@transcenduck/error"
+import { ForbiddenError, InternalServerError, UnauthorizedError } from "@transcenduck/error"
 import { peopleModel } from "../models/peopleModel";
 import { ResponsePublicType } from "../schema/people.schema";
 
 export class PeopleServices {
 
   async getAll(userID: string) {
-    if (!userID) {
-      throw new UnauthorizedError('User ID is required');
-    }
     const AllpersonDB = await peopleModel.findAll();
     if (!AllpersonDB) {
-      throw new UnauthorizedError('Person not found');
+      throw new InternalServerError("error acces database");
     }
     const result = await peopleModel.findByUserID(userID, true, ['friends', 'blocked', 'pending']);
     if(!result)
-      return [];
-    const {friends = {}, blocked= {}, pending = {}} = result;
+      throw new InternalServerError("user not existe on database");
+    const {friends, blocked= {}, pending = {}} = result;
     const Allperson: ResponsePublicType[] = [];
     for(const person of AllpersonDB) {
-      if (person.user_id != userID && friends[person.user_id] === undefined && pending[person.user_id] === undefined) {
+      if (person.user_id != userID && (<{[x: string]: string}>friends)[person.user_id] === undefined && (<{[x: string]: string}>pending)[person.user_id] === undefined) {
         Allperson.push({
           user_id: person.user_id,
           username: person.username,
-          blocked: blocked[person.user_id] !== undefined
+          blocked: (<{[x: string]: string}>blocked)[person.user_id] !== undefined
         });
       }
     }
@@ -30,14 +27,9 @@ export class PeopleServices {
   }
 
   async getSelf(userID: string) {
-    if (!userID) {
-      throw new UnauthorizedError('User ID is required');
-    }
-
     const person = await peopleModel.findByUserID(userID);
-    if (!person) {
-      throw new ForbiddenError('Person not found');
-    }
+    if (!person)
+      throw new InternalServerError("user not existe on database");
     return person;
   }
 
@@ -45,3 +37,5 @@ export class PeopleServices {
     return peopleModel.findByUsername(userId, value);
   }
 }
+
+export const peopleServices = new PeopleServices();

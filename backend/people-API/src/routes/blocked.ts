@@ -1,16 +1,16 @@
 import { FastifyInstance } from 'fastify';
 import * as BlockedServices from '../controllers/blockedController'
+import { InternalServerErrorResponse, UnauthorizedResponse } from '@transcenduck/error';
+import { ResponseSchema } from '../utils/schema';
+import { BlockedParam } from '../schema/people.schema';
 
 export async function blockedRoute(fastify: FastifyInstance) {
 	fastify.post("/blocked/:blockedId", 
 	{
 		schema: {
-			params: {
-				type: 'object',
-				properties: {
-					blockedId: { type: 'string' }
-				},
-				required: ['blockedId']
+			params: BlockedParam,
+			response: {
+				200: ResponseSchema(undefined, "User blocked successfully")
 			}
 		}
 	},
@@ -19,12 +19,10 @@ export async function blockedRoute(fastify: FastifyInstance) {
 	fastify.delete("/blocked/:blockedId", 
 	{
 		schema: {
-			params: {
-				type: 'object',
-				properties: {
-					blockedId: { type: 'string' }
-				},
-				required: ['blockedId']
+			params: BlockedParam,
+			response: {
+				401: ResponseSchema(UnauthorizedResponse, "user not is blocked or you are blocked by user", "error"),
+				500: ResponseSchema(InternalServerErrorResponse, undefined, "error")
 			}
 		}
 	},

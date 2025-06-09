@@ -1,17 +1,12 @@
 import { FastifyInstance } from 'fastify';
 import * as FriendsController from '../controllers/friendsController'
+import { FriendsParam } from '../schema/people.schema';
 
 export async function friendRoute(fastify: FastifyInstance) {
 	fastify.post("/friends/:friendId", 
 	{
 		schema: {
-			params: {
-				type: 'object',
-				properties: {
-					friendId: { type: 'string' }
-				},
-				required: ['friendId']
-			}
+			params: FriendsParam
 		}
 	},
 	 FriendsController.addFriend
@@ -19,13 +14,7 @@ export async function friendRoute(fastify: FastifyInstance) {
 	fastify.delete("/friends/:friendId", 
 	{
 		schema: {
-			params: {
-				type: 'object',
-				properties: {
-					friendId: { type: 'string' }
-				},
-				required: ['friendId']
-			}
+			params: FriendsParam
 		}
 	},
 	 FriendsController.removeFriend
@@ -33,13 +22,7 @@ export async function friendRoute(fastify: FastifyInstance) {
 	fastify.delete("/pending/:friendId", 
 	{
 		schema: {
-			params: {
-				type: 'object',
-				properties: {
-					friendId: { type: 'string' }
-				},
-				required: ['friendId']
-			}
+			params: FriendsParam
 		}
 	},
 	 FriendsController.refuseFriend

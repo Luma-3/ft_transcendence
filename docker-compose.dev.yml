@@ -66,9 +66,8 @@ services:
     volumes:
       - ./backend/people-API/data:/app/data:z
       - ./backend/people-API/src:/app/src:z
-      - ./backend/dependencies/:/app/dependencies:z
     depends_on:
-      - gateway
+      - base
     expose:
       - "3004"
     networks:

@@ -1,3 +1,4 @@
+import { UnauthorizedError } from "@transcenduck/error";
 import { peopleModel } from "../models/peopleModel";
 import knex from "../utils/knex";
 
@@ -5,7 +6,7 @@ export class BlockedServices {
 
   async blockUser(userId: string, targetUserId: string) {
     if(await peopleModel.isBlocked(userId, targetUserId))
-      return ;
+      throw new UnauthorizedError("the user is already blocked");
     knex.transaction(async (trx) => {
       try {
         await peopleModel.removeFriend(trx, userId, targetUserId);
@@ -13,23 +14,21 @@ export class BlockedServices {
             await peopleModel.removeFriend(trx, targetUserId, userId);
         }
       }catch (error) {
-        console.error("Error removing friend during block:", error);
       }
     });
-    try {
-      await peopleModel.blockUser(userId, targetUserId);
+    await peopleModel.blockUser(userId, targetUserId);
 
-      if(targetUserId != userId) {
-        await peopleModel.blockUser(targetUserId, userId, "receiver");
-      }
-    } catch (error) {
-      console.error("Error blocking user:", error);
-      throw new Error("Failed to block user");
+    if(targetUserId != userId) {
+      await peopleModel.blockUser(targetUserId, userId, "receiver");
     }
   }
 
   async unblockUser(userId: string, targetUserId: string) {
-	  return peopleModel.unBlockUser(userId, targetUserId);
+    if(!await peopleModel.unBlockUser(userId, targetUserId)){
+      throw new UnauthorizedError("the user is not blocked or you are blocked by the user");
+    }
   }
 
 }
+
+export const blockedServices = new BlockedServices();
