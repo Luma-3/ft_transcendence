@@ -74,24 +74,23 @@ services:
       - backend-net
       - redis-net
 
-  # upload-api:
-  #   build:
-  #     context: ./backend/upload-API/
-  #     dockerfile: Dockerfile.dev
-  #   container_name: upload-API
-  #   env_file:
-  #       - ./.dev.env
-  #   volumes:
-  #     - ./backend/upload-API/uploads:/app/uploads:z
-  #     - ./backend/upload-API/src:/app/src:z
-  #   depends_on:
-  #     - Base
-  #     - redis
-  #   expose:
-  #     - "3002"
-  #   networks:
-  #     - backend-net
-  #     - redis-net
+  upload-api:
+    build:
+      context: ./backend/upload-API/
+      dockerfile: Dockerfile.dev
+    container_name: upload-API
+    env_file:
+        - ./.dev.env
+    volumes:
+      - ./backend/upload-API/uploads:/app/uploads:z
+      - ./backend/upload-API/src:/app/src:z
+    depends_on:
+      - base
+    expose:
+      - "3002"
+    networks:
+      - backend-net
+      - redis-net
 
   # game-api:
   #   build:
