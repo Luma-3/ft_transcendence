@@ -3,10 +3,9 @@ import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
 import uplaodRoute from './routes/upload.js';
-import { EditorImageService } from './services/EditorImageService.js';
-import { UploadService } from './services/UploadService.js';
 import config from './config/fastify.config.js';
 import * as test from '@fastify/multipart';
+import { AddressInfo } from 'net';
 
 dotenv.config()
 
@@ -27,12 +26,10 @@ const fastify = Fastify({
 
 await config(fastify);
 fastify.register(uplaodRoute);
-fastify.decorate("EditorImageService", new EditorImageService());
-fastify.decorate('UploadService', new UploadService(fastify.EditorImageService, path.join(import.meta.dirname, "..")));
 const start = async () => {
   try {
     await fastify.listen({ port: 3002, host: '0.0.0.0' });
-    console.log(`Server listen on ${fastify.server.address().port}`);
+    console.log(`Server listen on ${(fastify.server.address() as AddressInfo).port}`);
   } catch (error) {
     console.error(error);
     process.exit(1);

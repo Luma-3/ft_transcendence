@@ -7,4 +7,5 @@ export * from './InternalServerError.js'
 export * from './InvalidTypeError.js'
 export * from './UnauthorizedError.js'
 export * from './ValidationError.js'
+export * from './PayloadTooLargeError.js'
 

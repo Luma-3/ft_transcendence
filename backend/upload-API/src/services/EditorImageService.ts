@@ -1,18 +1,25 @@
-import sharp from "sharp";
+import sharp, { Sharp } from "sharp";
+import { CdnQueryType } from "../schema/upload.schema";
 
 export class EditorImageService {
   constructor() {}
 
 
-  parseValueSpecial(value, n = null) {
-    if(value.includes("%")){
+  parseValueSpecial(value: string|number, n: number|null = null) {
+    if(typeof value == 'string' && value.includes("%")){
       return (parseInt(value.substring(0, value.indexOf("%")), 10) / 100) % 500;
     }
-    const transform = parseFloat(value) % (n ?? 5);
+    let transform;
+    if(typeof value == 'string')
+      transform = parseFloat(value) % (n ?? 5);
+    else
+      transform = value % (n ?? 5);
     return transform == 0 ? 1 : transform;
   }
 
-  async resizeImage(image, options) {
+  async resizeImage(image: {
+    ptr: Sharp
+  }, options: CdnQueryType) {
     // options: { size?: number, scale?: number, width?: number, height?: number, resizeMode?: string }
     const {
       size = null,
@@ -37,7 +44,11 @@ export class EditorImageService {
     }
 
     if (size) {
-      const data = parseFloat(size) % 4096;
+      let data;
+      if(typeof size == 'string')
+        data = parseFloat(size) % 4096;
+      else
+        data = size %4096;
       image.ptr = image.ptr.resize({
         width: data,
         height: data,
@@ -47,62 +58,60 @@ export class EditorImageService {
     }
 
     if (width || height) {
-
-      const targetWidth = width ? parseInt(width, 10) : imageWidth;
-      const targetHeight = height ? parseInt(height, 10) : imageHeight;
       image.ptr = image.ptr.resize({
-        width: targetWidth,
-        height: targetHeight,
+        width: (width ?? imageWidth),
+        height: (height ?? imageHeight),
         fit: resizeMode,
       });
       return;
     }
   }
 
-  async applyFilter(image, options) {
-      const { blur = null, grayscale = false, tint=null, greyscale=false} = options;
+  async applyFilter(image:  {
+    ptr: Sharp
+  }, options:  CdnQueryType) {
+      const { blur, grayscale, tint, greyscale} = options;
       // Appliquer blur si demandé
       if (blur) {
-        image.ptr = image.ptr.blur(parseFloat(blur));
+        image.ptr = image.ptr.blur(blur);
       }
 
       // Appliquer grayscale si demandé
-      if (grayscale === 'true') {
+      if (grayscale === true) {
         image.ptr = image.ptr.grayscale();
       }
       // Appliquer greyscale si demandé
-      if (greyscale === 'true') {
+      if (greyscale === true) {
         image.ptr = image.ptr.greyscale();
       }
       // Appliquer tint si demandé
       if(tint) {
-        let color;
-        const RGB = tint.split(",", 3);
-        if(RGB.size === 3){
-          for(const i = 0; i < 3; ++i)
-          {
-            RGB[i] = parseInt(GB[i]) % 256;
-          }
+        let color: sharp.Colour;
+        let RGB = tint.split(",", 4).map<number>((value) => parseInt(value) % 256);
+        if(RGB.length === 3){
           color = {
             r: RGB[0],
             g: RGB[1],
-            b: RGB[2]
+            b: RGB[2],
+            alpha: RGB[3]
           }
         }else {
-          color = RGB[0];
+          color = RGB[0].toString();
         }
         image.ptr = image.ptr.tint(color);
       }
   }
 
-  async rotateImage(image, rotate) {
+  async rotateImage(image: {
+    ptr: Sharp
+  }, rotate?: number) {
       if (rotate) {
-        image.ptr = image.ptr.rotate(parseInt(rotate));
+        image.ptr = image.ptr.rotate(rotate);
       }
   }
 
 
-  async edit(buffer, options) {
+  async edit(buffer: Buffer, options: CdnQueryType) {
     let image = {
       ptr: sharp(buffer)
     };
@@ -113,7 +122,7 @@ export class EditorImageService {
       await this.applyFilter(image, options);
     }catch(_) {}
     try{
-      await this.rotateImage(image, options.rotate ?? null);
+      await this.rotateImage(image, options.rotate);
     }catch(_) {}
     try{
       return await image.ptr.toBuffer();
@@ -123,5 +132,5 @@ export class EditorImageService {
   }
 }
 
-
+export const editorImageService = new EditorImageService();
 

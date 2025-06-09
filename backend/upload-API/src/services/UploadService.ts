@@ -4,31 +4,31 @@ import fs from "fs";
 import { randomUUID } from "crypto";
 import * as mine from "mime-types";
 import { pipeline } from "node:stream/promises";
+import { editorImageService } from "./EditorImageService";
+import { MultipartFile } from "@fastify/multipart";
+import { CdnQueryType } from "../schema/upload.schema";
+export enum TypeUpload {
+  avatar = 'avatar',
+  banner = 'banner'
+};
 
 export class UploadService {
-  _uploadPath;
-  _editorImageService;
+  _uploadPath: string;
   
-  /**
-   * Verification du type pour renvoyer sinon
-  */  
-  static _typeUpload = [
-    "avatar",
-    "banner"
-  ];
-
-  constructor(
-    editorImageService,
-    rootUpload
-  ) {
-    this._editorImageService = editorImageService;
+  
+  constructor(rootUpload: string) {
     this._uploadPath = path.resolve(rootUpload, "uploads");
-    UploadService._typeUpload.forEach(element => {
-      fs.mkdir(path.join(this._uploadPath, element), console.debug);
+    
+    Object.keys(TypeUpload).forEach(element => {
+      fs.mkdir(path.join(this._uploadPath, element), {recursive: true}, console.debug);
     });
   }
 
-  async uploadFile(typePath, data) {
+  async uploadFile(typePath: string, data?: MultipartFile) {
+    if (!data) {
+      throw new ForbiddenError("file not send");
+    }
+    console.log(data)
     if (data.file.truncated) {
       throw new PayloadTooLargeError();
     }
@@ -60,14 +60,15 @@ export class UploadService {
   /**
    * Verification de l'existence du fichier
    */
-  async checkFile(path) {
+  async checkFile(path: string) {
     try {
       const stats = fs.statSync(path);
       if (!stats.isFile()) {
         throw new NotFoundError();
       }
     } catch (err) {
-      throw new NotFoundError(err.message.replace(this._uploadPath, ""));
+      if(err instanceof Error)
+        throw new NotFoundError(err.message.replace(this._uploadPath, ""));
     }
   }
 
@@ -76,24 +77,23 @@ export class UploadService {
    * appelle l'editeur si besoin (si le type correspond a un fichier image)
    * et renvoie le fichier
    */
-  async getFile(typePath, realPath, options) {
+  async getFile(typePath: string, realPath: string, options: CdnQueryType) {
     const pathJoin = path.join(this._uploadPath, realPath);
-    console.log(path.join(this._uploadPath, typePath));
     if (!pathJoin.startsWith(path.join(this._uploadPath, typePath))) {
       throw new ForbiddenError();
     }
     await this.checkFile(pathJoin);
 
-    let buffer =  fs.readFileSync(pathJoin);
+    let bufferFile =  fs.readFileSync(pathJoin);
     const extenstion = path.extname(pathJoin);
 
     if(Object.keys(options).length && [".png", ".jpeg", ".jpg", ".webp"].includes(extenstion)){
-      buffer = this._editorImageService.edit(buffer, options);
+      return await editorImageService.edit(bufferFile, options);
     }
-    return buffer;
+    return bufferFile;
 }
 
-  async deleteFile(typePath, realPath) {
+  async deleteFile(typePath: string, realPath: string) {
     const pathJoin = path.join(this._uploadPath, realPath);
     if (!pathJoin.startsWith(path.join(this._uploadPath, typePath))) {
       throw new ForbiddenError();
@@ -101,7 +101,10 @@ export class UploadService {
     try {
       fs.unlinkSync(pathJoin);
     }catch(err) {
-      throw new NotFoundError(err.message.replace(this._uploadPath, ""));
+      if(err instanceof Error)
+        throw new NotFoundError(err.message.replace(this._uploadPath, ""));
     }
   }
 }
+
+export const uploadServices = new UploadService(path.join(import.meta.dirname, "../../"));
