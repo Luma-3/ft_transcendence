@@ -1,0 +1,145 @@
+// import { UAParser } from "ua-parser-js";
+import { UnauthorizedError } from '@transcenduck/error'
+import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+
+import { SessionPostBody, UserHeaderAuthentication, FamilyId } from "./session.schema.js";
+
+import { SessionService } from "./session.service.js";
+
+import { ResponseSchema } from "../utils/schema.js";
+
+
+
+const route: FastifyPluginAsyncTypebox = async (fastify) => {
+  // ! Public
+  fastify.post('/session', {
+    schema: {
+      summary: 'Create a new user session',
+      description: 'This endpoint allows users to create a new session by providing their credentials.',
+      tags: ['Sessions'],
+      body: SessionPostBody,
+      // headers: Type.Object({
+      //   "User-Agent:": Type.String()
+      // }),
+      response: {
+        201: ResponseSchema(undefined, 'Session created successfully')
+      }
+    }
+  }, async (req, rep) => {
+    const { username, password } = req.body;
+    // const userAgent = req.headers["User-Agent"];
+
+    // const parser = new UAParser(userAgent);
+
+    const { accessToken, refreshToken } = await SessionService.login(username, password, {
+      ip_address: req.ip,
+      // user_agent: parser.getBrowser().toString(),
+      // device_id: parser.getDevice().toString(),
+      user_agent: req.headers['user-agent'] || 'unknown',
+      device_id: 'unknown',
+    });
+
+    rep.code(201).send({
+      message: 'Session created successfully',
+    }).setCookie(
+      "accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
+      path: '/',
+    }).setCookie(
+      "refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
+    }
+    );
+  });
+
+  // // ! Private
+  // fastify.get('/session', {
+  //   schema: {
+  //     summary: 'Get current user session',
+  //     description: 'This endpoint retrieves the current user session information.',
+  //     tags: ['Sessions'],
+  //     headers: UserHeaderAuthentication,
+  //     response: {
+  //       200: ResponseSchema(Type.Array(FamiliesResponse), 'Ok')
+  //     }
+  //   }
+  // }, async (req, rep) => {
+  //   const userId = req.headers['x-user-id'];
+  //   const families = await SessionService.getFamilies(userId);
+  //   rep.code(200).send({ message: 'Ok', data: families })
+  // })
+
+
+  // ! Private
+  fastify.delete('/session/:familyId', {
+    schema: {
+      summary: 'Delete current user session',
+      description: 'This endpoint allows users to delete their current session.',
+      tags: ['Sessions'],
+      headers: UserHeaderAuthentication,
+      params: FamilyId,
+      response: {
+        200: ResponseSchema(undefined, 'Session deleted successfully')
+      }
+    }
+  }, async (req, rep) => {
+    const familyID = req.params.familyId;
+    await SessionService.deleteFamily(familyID);
+    rep.code(200).send({ message: 'Session deleted successfully' })
+  });
+
+  // ! Public ( TODO Move )
+  fastify.get('/session/accessToken', {
+    schema: {
+      summary: 'Verify Access token',
+      description: 'This endpoint retrieves the access token from the cookies.',
+      tags: ['Sessions'],
+      headers: UserHeaderAuthentication,
+      response: {
+        200: ResponseSchema(undefined, 'Still eating cookies')
+      }
+    }
+  }, async (_, rep) => {
+    rep.code(200).send({ message: 'Still eating cookies' });
+  });
+
+  // ! Public ( TODO Move )
+  // fastify.get('session/refreshToken', {
+  //   schema: {
+  //     summary: 'Verify Refresh token',
+  //     description: 'This endpoint retrieves the refresh token from the cookies.',
+  //     tags: ['Sessions'],
+  //     headers: UserHeaderAuthentication,
+  //     response: {
+  //       200: ResponseSchema(undefined, 'Still eating cookies')
+  //     }
+  //   }
+  // }, async (_, rep) => {
+  //   rep.code(200).send({message: 'Still eating cookies'});
+  // });
+
+  fastify.put('/session', {
+    schema: {
+      summary: 'Update current user session and Token',
+      description: 'This endpoint allows users to update their current session tokens.',
+      tags: ['Sessions'],
+      headers: UserHeaderAuthentication,
+      response: {
+        200: ResponseSchema(undefined, 'Session updated successfully')
+      }
+    },
+  }, async (req, rep) => {
+    const tokenId = req.cookies.refreshToken;
+    if (!tokenId) throw new UnauthorizedError();
+
+    await SessionService.refreshToken(tokenId);
+    rep.code(200).send({ message: 'Session updated successfully' });
+  })
+
+}
+
+export default route;

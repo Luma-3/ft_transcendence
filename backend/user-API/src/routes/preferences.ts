@@ -5,7 +5,7 @@ import { PREFERENCES_PRIVATE_COLUMNS, PREFERENCES_PUBLIC_COLUMNS } from '../mode
 
 import { PreferencesGetType, PreferencesPublicResponse } from '../schema/preferences.schema.js';
 
-import { ResponseSchema } from '../utils/schema';
+import { ResponseSchema } from '../utils/schema.js';
 import {
   NotFoundResponse,
   UnauthorizedResponse,

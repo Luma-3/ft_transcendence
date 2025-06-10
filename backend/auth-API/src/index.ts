@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import server from './fastify.js'
 
+import sessionRoute from './session/session.route.js'
 dotenv.config()
 
 // redisSub.subscribe('ws.test.in', (message, channel) => {
@@ -21,9 +22,10 @@ dotenv.config()
 //   }
 // });
 
+server.register(sessionRoute);
 
 const start = async () => {
-  server.listen({ port: 3001, host: '0.0.0.0' }, (err, address) => {
+  server.listen({ port: 3005, host: '0.0.0.0' }, (err, address) => {
     if (err) {
       server.log.error(err)
       process.exit(1)

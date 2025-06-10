@@ -1,6 +1,11 @@
 import { Type, Static } from '@sinclair/typebox';
 
-import { PreferencesBase, PreferencesPublicResponse, PreferencesPrivateResponse, PreferencesUpdateBody } from './preferences.schema';
+import {
+  PreferencesBase,
+  PreferencesPublicResponse,
+  PreferencesPrivateResponse,
+  PreferencesUpdateBody
+} from './preferences.schema.js';
 
 // Share Field Utilities
 // To avoid duplication, we define shared fields for user Utilities
@@ -94,9 +99,17 @@ export type UserQueryGetType = Static<typeof UserQueryGet>;
 
 export const UserHeaderAuthentication = Type.Object({
   'x-user-id': Type.String({ format: 'uuid' }),
-  'x-user-username': Type.String({ minLength: 2, maxLength: 32 })
 }, {
   additionalProperties: false
 });
 export type UserHeaderIdType = Static<typeof UserHeaderAuthentication>;
 
+// Internal User Schema
+
+export const VerifyCredentials = Type.Object({
+  username: Type.String({ minLength: 2, maxLength: 32 }),
+  password: Type.String()
+}, {
+  additionalProperties: false
+});
+export type VerifyCredentialsType = Static<typeof VerifyCredentials>;

@@ -23,7 +23,7 @@ await server.register(swagger, {
   route: '/doc/json',
   version: '1.0.0',
   servers: [
-    { url: '/user/', description: 'User Service' }
+    { url: '/api/user/', description: 'User Service' }
   ],
   tags: [
     { name: 'Users', description: 'Endpoints for managing user accounts and accessing personal or public user information.' },

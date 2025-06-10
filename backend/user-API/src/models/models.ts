@@ -1,9 +1,9 @@
-import knex from '../utils/knex';
-import { UserModel } from './userModel';
-import { PreferencesModel } from './preferencesModel';
+import { knexInstance } from '../utils/knex.js';
+import { UserModel } from './userModel.js';
+import { PreferencesModel } from './preferencesModel.js';
 
-export const userModel = new UserModel(knex);
-export const preferencesModel = new PreferencesModel(knex);
+export const userModel = new UserModel(knexInstance);
+export const preferencesModel = new PreferencesModel(knexInstance);
 
 
-export { knex };
+export { knexInstance };

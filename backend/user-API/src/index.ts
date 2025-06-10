@@ -1,5 +1,7 @@
 import dotenv from 'dotenv'
 import server from './fastify.js'
+import userRoutes from './routes/user.js'
+import preferencesRouts from './routes/preferences.js'
 
 dotenv.config()
 
@@ -20,6 +22,15 @@ dotenv.config()
 //     console.error('Error when handle outgoing message', err);
 //   }
 // });
+
+
+server.register(userRoutes);
+server.register(preferencesRouts);
+
+server.addHook('onRequest', async (req, _) => {
+  console.log(`Header: ${req.headers['x-user-id']}, Username: ${req.headers['x-user-username']}`);
+  return;
+});
 
 
 const start = async () => {

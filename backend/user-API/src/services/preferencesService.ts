@@ -1,7 +1,7 @@
 import { NotFoundError } from "@transcenduck/error";
 
-import { preferencesModel } from "../models/models"
-import { PreferencesBaseType } from "../schema/preferences.schema";
+import { preferencesModel } from "../models/models.js"
+import { PreferencesBaseType } from "../schema/preferences.schema.js";
 
 export class PreferencesService {
   static async getPreferences(

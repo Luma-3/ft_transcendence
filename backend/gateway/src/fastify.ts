@@ -2,10 +2,9 @@ import fastify from "fastify";
 import cors from "@fastify/cors";
 import socket from "@fastify/websocket";
 import cookie from "@fastify/cookie";
+import jwt from "./plugins/jwt.js"
 import dotenv from "dotenv";
 import fs from "fs";
-
-// import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 
 // import swagger from "./plugins/swagger.js";
 
@@ -35,6 +34,18 @@ server.register(socket, {
 
 server.register(cookie, {
   secret: process.env.COOKIE_SECRET
+});
+
+server.register(jwt, {
+  secret: process.env.JWT_SECRET!,
+  publicRoutes: [
+    { method: 'POST', url: '/user/users' }, // Create user
+    { method: 'POST', url: '/auth/session' }, // Create session
+    { method: 'POST', url: '/user/refresh' }, // Refresh token
+    { method: 'GET', url: '/doc' }, // Swagger doc
+    { method: 'GET', url: '/user/session/verify' },
+    { method: 'GET', url: /^\/[^\/]+\/doc\/json$/ }, // Swagger json
+  ]
 });
 
 // await server.register(swagger, {

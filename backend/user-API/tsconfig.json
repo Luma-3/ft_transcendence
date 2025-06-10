@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-    
+
     "declaration": true,
     /* Output & Source Structure */
     "outDir": "./dist",

@@ -1,11 +1,11 @@
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 
-import { UserService } from '../services/userService';
+import { UserService } from '../services/userService.js';
 
-import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS } from '../models/userModel';
-import { PREFERENCES_PRIVATE_COLUMNS, PREFERENCES_PUBLIC_COLUMNS } from '../models/preferencesModel';
+import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS } from '../models/userModel.js';
+import { PREFERENCES_PRIVATE_COLUMNS, PREFERENCES_PUBLIC_COLUMNS } from '../models/preferencesModel.js';
 
-import { ResponseSchema } from '../utils/schema';
+import { ResponseSchema } from '../utils/schema.js';
 import {
   ConflictResponse,
   NotFoundResponse,
@@ -22,7 +22,8 @@ import {
   UserPasswordUpdateBody,
   UserEmailUpdateBody,
   UserUsernameUpdateBody,
-} from '../schema/user.schema';
+  VerifyCredentials,
+} from '../schema/user.schema.js';
 
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
@@ -172,6 +173,24 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const user = await UserService.updateUserUsername(id, username);
 
     return rep.code(200).send({ message: 'Ok', data: user });
+  });
+
+  fastify.post('/users/internal/authentications', {
+    schema: {
+      summary: 'Verify user Credentials (Internal)',
+      description: 'Endpoint to verify user credentials for internal Service use only',
+      tags: ['Users'],
+      body: VerifyCredentials,
+      response: {
+        200: ResponseSchema(UserPublicResponse, 'Credentials verified successfully'),
+        401: UnauthorizedResponse,
+      } // No NotFoundResponse here for security reasons 
+    }
+  }, async (req, rep) => {
+    const { username, password } = req.body;
+    console.log('password', password, 'username', username);
+    const user = await UserService.verifyCredentials(username, password);
+    return rep.code(200).send({ message: 'Credentials verified successfully', data: user });
   });
 }
 

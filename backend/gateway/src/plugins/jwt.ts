@@ -10,7 +10,7 @@ export interface JWTOptions {
 }
 
 interface JWTPayload {
-  userID: string;
+  sub: string;
   username: string;
 }
 
@@ -19,7 +19,7 @@ const plugin: FastifyPluginCallback<JWTOptions> = (fastify, opts, done) => {
   fastify.register(jwt, opts);
 
   fastify.addHook('onRequest', async function(req, _) {
-    console.log(req.url);
+    console.log('JWT:' + req.url);
     const isPublic = opts.publicRoutes.some(route => {
       const nethodMatch = route.method.toUpperCase() === req.method.toUpperCase();
       const urlMatch = route.url instanceof RegExp
@@ -39,8 +39,9 @@ const plugin: FastifyPluginCallback<JWTOptions> = (fastify, opts, done) => {
 
     try {
       const user = fastify.jwt.verify<JWTPayload>(token);
-      req.headers['x-user-id'] = user.userID;
-      req.headers['x-user-username'] = user.username;
+
+      req.headers['x-user-id'] = user.sub;
+      // req.headers['x-user-username'] = user.username;
     }
     catch (error) {
       throw new UnauthorizedError('Invalid or expired token');

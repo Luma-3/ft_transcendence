@@ -30,9 +30,10 @@ import { RoomData } from '../interfaces/GameData'
  * Associe les pages publics aux fonctions de rendu
  */
 const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
-	'home': home,
-	'login': login,
-	'register': register,
+  'home': home,
+  'login': login,
+  'register': register,
+  'documentation': documentation,
 };
 
 /**
@@ -40,44 +41,43 @@ const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
  */
 export async function renderPublicPage(page: string, updateHistory: boolean = true) {
 
-	const main_container = document.querySelector<HTMLDivElement>('#app')!
-	const lang = sessionStorage.getItem('lang') || 'en';
+  const main_container = document.querySelector<HTMLDivElement>('#app')!
+  const lang = sessionStorage.getItem('lang') || 'en';
 
-	setupColorTheme('dark');
+  setupColorTheme('dark');
 
-	fadeOut(main_container);
-	setTimeout(async () => {
+  fadeOut(main_container);
+  setTimeout(async () => {
 
-		const rendererFunction = rendererPublicPage[page];
-		if (!rendererFunction) {
-			return renderErrorPage('404', '404', 'Page not found');
-		}
-		const page_content = await Promise.resolve(rendererFunction());
+    const rendererFunction = rendererPublicPage[page];
+    if (!rendererFunction) {
+      return renderErrorPage('404', '404', 'Page not found');
+    }
+    const page_content = await Promise.resolve(rendererFunction());
 
-		main_container.innerHTML = page_content;
+    main_container.innerHTML = page_content;
 
-		translatePage(lang);
-		if (updateHistory) {
-			addToHistory(page, updateHistory);
-		}
+    translatePage(lang);
+    if (updateHistory) {
+      addToHistory(page, updateHistory);
+    }
 
-		removeLoadingScreen();
+    removeLoadingScreen();
 
-		fadeIn(main_container);
-	}
-		, 250);
+    fadeIn(main_container);
+  }
+    , 250);
 }
 
 /**
  * Associe les pages privees aux fonctions de rendu
  */
 const rendererPrivatePage: { [key: string]: (user: User) => string | Promise<string> } = {
-	'WelcomeYou': welcomeYouPage,
-	'reWelcomeYou': reWelcomeYouPage,
-	'dashboard': dashboard,
-	'settings': settings,
-	'profile': profile,
-	'documentation': documentation,
+  'WelcomeYou': welcomeYouPage,
+  'reWelcomeYou': reWelcomeYouPage,
+  'dashboard': dashboard,
+  'settings': settings,
+  'profile': profile,
 }
 
 /**
@@ -86,180 +86,180 @@ const rendererPrivatePage: { [key: string]: (user: User) => string | Promise<str
  */
 export async function renderPrivatePage(page: string, updateHistory: boolean = true) {
 
-	if (!socket) {
-		console.log("No websocket found for this session, creating a new one");
-		socketConnection();
-	}
+  if (!socket) {
+    console.log("No websocket found for this session, creating a new one");
+    socketConnection();
+  }
 
-	const main_container = document.querySelector<HTMLDivElement>('#app')!
+  const main_container = document.querySelector<HTMLDivElement>('#app')!
 
 
 
-	const token = await fetchToken();
-	if (token.status === "error") {
-		return renderErrorPage('400', '401', 'Unauthorized');
-	}
+  const token = await fetchToken();
+  if (token.status === "error") {
+    return renderErrorPage('400', '401', 'Unauthorized');
+  }
 
-	const response = await getUserInfo();
-	if (response.status === "error" || !response.data) {
-		return renderErrorPage('400', '401', 'Unauthorized');
-	}
+  const response = await getUserInfo();
+  if (response.status === "error" || !response.data) {
+    return renderErrorPage('400', '401', 'Unauthorized');
+  }
 
-	const lang = response.data.preferences.lang;
-	const theme = response.data.preferences.theme;
+  const lang = response.data.preferences.lang;
+  const theme = response.data.preferences.theme;
 
-	fadeOut(main_container);
+  fadeOut(main_container);
 
-	setTimeout(async () => {
+  setTimeout(async () => {
 
-		const rendererFunction = rendererPrivatePage[page];
-		if (!rendererFunction) {
-			return renderErrorPage('404', '404', 'not-found');
-		}
-		const page_content = await Promise.resolve(rendererFunction(response.data as User));
+    const rendererFunction = rendererPrivatePage[page];
+    if (!rendererFunction) {
+      return renderErrorPage('404', '404', 'not-found');
+    }
+    const page_content = await Promise.resolve(rendererFunction(response.data as User));
 
-		main_container.innerHTML = page_content;
-		setupColorTheme(theme);
+    main_container.innerHTML = page_content;
+    setupColorTheme(theme);
 
-		translatePage(lang);
-		if (updateHistory) {
-			addToHistory(page, updateHistory);
-		}
-		
-		removeLoadingScreen();
+    translatePage(lang);
+    if (updateHistory) {
+      addToHistory(page, updateHistory);
+    }
 
-		fadeIn(main_container);
+    removeLoadingScreen();
 
-		if (page === 'WelcomeYou' || page === 'reWelcomeYou') {
-			handleWelcomeYouPage();
-		}
-	}
-		, 250);
+    fadeIn(main_container);
+
+    if (page === 'WelcomeYou' || page === 'reWelcomeYou') {
+      handleWelcomeYouPage();
+    }
+  }
+    , 250);
 }
 
 export async function renderGame(roomData: RoomData) {
-	
-	const main_container = document.querySelector<HTMLDivElement>('#app')!
 
-	const token = await fetchToken();
-	if (token.status === "error") {
-		return renderErrorPage('400', '401', 'Unauthorized');
-	}
+  const main_container = document.querySelector<HTMLDivElement>('#app')!
 
-	const response = await getUserInfo();
-	if (response.status === "error" || !response.data) {
-		return renderErrorPage('400', '401', 'Unauthorized');
-	}
+  const token = await fetchToken();
+  if (token.status === "error") {
+    return renderErrorPage('400', '401', 'Unauthorized');
+  }
 
-	const lang = response.data.preferences.lang;
-	const theme = response.data.preferences.theme;
+  const response = await getUserInfo();
+  if (response.status === "error" || !response.data) {
+    return renderErrorPage('400', '401', 'Unauthorized');
+  }
 
-	fadeOut(main_container);
+  const lang = response.data.preferences.lang;
+  const theme = response.data.preferences.theme;
 
-	setTimeout(async () => {
+  fadeOut(main_container);
 
-		const newContainer = await game(roomData, response.data!);
-		if (!newContainer) {
-			return;
-		}
+  setTimeout(async () => {
 
-		main_container.innerHTML = newContainer;
-		setupColorTheme(theme);
+    const newContainer = await game(roomData, response.data!);
+    if (!newContainer) {
+      return;
+    }
 
-		translatePage(lang);
+    main_container.innerHTML = newContainer;
+    setupColorTheme(theme);
 
-		removeLoadingScreen();
+    translatePage(lang);
 
-		fadeIn(main_container);
-	}
-		, 250);
+    removeLoadingScreen();
+
+    fadeIn(main_container);
+  }
+    , 250);
 }
 
 import { renderOtherProfile } from '../pages/OtherProfile'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 
-	const main_container = document.querySelector<HTMLDivElement>('#app')!
+  const main_container = document.querySelector<HTMLDivElement>('#app')!
 
-	const token = await fetchToken();
-	if (token.status === "error") {
-		return renderErrorPage('400', '401', 'Unauthorized');
-	}
+  const token = await fetchToken();
+  if (token.status === "error") {
+    return renderErrorPage('400', '401', 'Unauthorized');
+  }
 
-	const response = await getUserInfo();
-	if (response.status === "error" || !response.data) {
-		return renderErrorPage('400', '401', 'Unauthorized');
-	}
+  const response = await getUserInfo();
+  if (response.status === "error" || !response.data) {
+    return renderErrorPage('400', '401', 'Unauthorized');
+  }
 
-	const lang = response.data.preferences.lang;
-	const theme = response.data.preferences.theme;
+  const lang = response.data.preferences.lang;
+  const theme = response.data.preferences.theme;
 
-	fadeOut(main_container);
+  fadeOut(main_container);
 
-	setTimeout(async () => {
+  setTimeout(async () => {
 
-		const newContainer = await renderOtherProfile(target);
-		if (!newContainer) {
-			return;
-		}
+    const newContainer = await renderOtherProfile(target);
+    if (!newContainer) {
+      return;
+    }
 
-		main_container.innerHTML = newContainer;
-		setupColorTheme(theme);
+    main_container.innerHTML = newContainer;
+    setupColorTheme(theme);
 
-		translatePage(lang);
+    translatePage(lang);
 
-		removeLoadingScreen();
+    removeLoadingScreen();
 
-		fadeIn(main_container);
-	}
-		, 250);
+    fadeIn(main_container);
+  }
+    , 250);
 }
 
 /**
  * Render des pages d'erreur
  */
 const rendererErrorPage: { [key: string]: (code: string, message: string) => string } = {
-	'404': notFoundPage,
-	'400': errorPage,
-	'500': errorPage,
+  '404': notFoundPage,
+  '400': errorPage,
+  '500': errorPage,
 }
 
 export async function renderErrorPage(codePage: string, code: string, message: string) {
 
-	const main_container = document.querySelector<HTMLDivElement>('#app')!
+  const main_container = document.querySelector<HTMLDivElement>('#app')!
 
-	const user = await getUserInfo();
+  const user = await getUserInfo();
 
-	const lang = user.status === "error" ? 'en' : user.data?.preferences.lang || 'en';
-	const theme = user.status === "error" ? 'dark' : user.data?.preferences.theme || 'dark';
+  const lang = user.status === "error" ? 'en' : user.data?.preferences.lang || 'en';
+  const theme = user.status === "error" ? 'dark' : user.data?.preferences.theme || 'dark';
 
-	setupColorTheme(theme);
-	fadeOut(main_container);
+  setupColorTheme(theme);
+  fadeOut(main_container);
 
-	setTimeout(async () => {
-		const rendererFunction = rendererErrorPage[codePage] || notFoundPage;
-		const page_content = rendererFunction(code, message);
+  setTimeout(async () => {
+    const rendererFunction = rendererErrorPage[codePage] || notFoundPage;
+    const page_content = rendererFunction(code, message);
 
-		main_container.innerHTML = page_content;
-		translatePage(lang);
+    main_container.innerHTML = page_content;
+    translatePage(lang);
 
-		addToHistory(code, false);
+    addToHistory(code, false);
 
-		removeLoadingScreen();
+    removeLoadingScreen();
 
-		fadeIn(main_container);
-	}
-		, 250);
+    fadeIn(main_container);
+  }
+    , 250);
 }
 
 declare const Redoc: any;
 
 export function renderDocPages(page: string) {
-	
-	const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
-	console.log(page)
-	redoc_container.innerHTML = '';
-	Redoc.init(`${page}`, {}, redoc_container);
+
+  const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
+  console.log(page)
+  redoc_container.innerHTML = '';
+  Redoc.init(`${page}`, {}, redoc_container);
 }
 
 /**
@@ -270,9 +270,9 @@ export function renderDocPages(page: string) {
  * @returns Renders the previous page in the history stack
  */
 export function renderBackPage() {
-	const page = window.history.state?.page || 'home';
-	// if (page === 'dashboard') {
-	// 	return;
-	// }
-	renderPrivatePage(page, false);
+  const page = window.history.state?.page || 'home';
+  // if (page === 'dashboard') {
+  // 	return;
+  // }
+  renderPrivatePage(page, false);
 }
