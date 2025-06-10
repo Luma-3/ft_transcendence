@@ -10,7 +10,7 @@ await handlerEvent();
 const start = async () => {
   try {
     await server.listen({ port: 3003, host: '0.0.0.0' })
-    console.log(`Server listening on ${server.server.address().port}`)
+    console.log(`Server listening on ${server.server.address()!}`)
   } catch (err) {
     console.error(err)
     process.exit(1)

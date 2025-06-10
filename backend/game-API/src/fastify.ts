@@ -2,7 +2,7 @@ import Fastify from 'fastify'
 
 import websocketPlugin from '@fastify/websocket';
 
-import swagger from '../plugins/swagger.js'
+import swagger from './plugins/swagger.js'
 import formatter from '@transcenduck/formatter'
 
 import game from './routes/game.js';

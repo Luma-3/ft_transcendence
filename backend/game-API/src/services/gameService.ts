@@ -1,8 +1,9 @@
 import { redisPub } from '../utils/redis.js';
 
 import { Room } from './Room.js';
-import { Player } from '../interfaces/Player.js';
+import { PlayerType } from '../schemas/Player.js';
 import { InternalServerError } from '@transcenduck/error';
+import { GameType } from '../schemas/Room.js';
 
 class GameService {
   rooms: Map<string, Room>;
@@ -27,7 +28,7 @@ class GameService {
     }
   }
 
-  createRoom(typeGame: string) {
+  createRoom(typeGame: GameType) {
     const room = new Room(typeGame);
     this.rooms.set(room.id, room);
     return room;
@@ -45,7 +46,7 @@ class GameService {
     return room;
   }
 
-  addPlayerToRoom(roomId: string, player: Player) {
+  addPlayerToRoom(roomId: string, player: PlayerType) {
     const room = this.getRoom(roomId);
     if (!room) {
       return false; // Room not found
@@ -60,7 +61,7 @@ class GameService {
     return status;
   }
 
-  joinRoom(player: Player, typeGame: string) {
+  joinRoom(player: PlayerType, typeGame: GameType) {
     let roomId = this.findJoinableRoom(typeGame);
     let room = this.getRoom(roomId !== null ? roomId : "");
     if (!room) {
@@ -75,7 +76,7 @@ class GameService {
     return room.id; // Return the ID of the room joined
   }
 
-  findJoinableRoom(typeGame: string) {
+  findJoinableRoom(typeGame: GameType) {
     for (const room of this.rooms.values()) {
       if (room.typeGame === typeGame && room.isJoinable()) {
         return room.id; // Return the first joinable room found
@@ -181,7 +182,8 @@ class GameService {
           this.createGameInRoom(roomId);
           this.broadcast(roomId, 'readyToStart', room.roomData());
         }
-      
+        break;
+        
       case 'startGame':
         if (room.status === 'readyToStart')
           if (room.startGame() === false)
@@ -198,7 +200,7 @@ class GameService {
           console.error(`Pong game not found in room ${roomId}`);
           return ;
         }
-        room.pong.movePaddle(whois.uid, data.direction);
+        room.pong.movePaddle(whois.playerId, data.direction);
         
         if (room.typeGame === 'localpvp') {
           room.pong.movePaddle("", data.direction2);

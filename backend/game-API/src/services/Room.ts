@@ -1,32 +1,27 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Pong } from '../game/Pong.js';
-import { Player } from '../interfaces/Player.js';
- 
-// interface Player {
-// 	playerd: string; // Unique identifier for the player
-// 	clientId: string; // Client identifier
-// 	gameName: string; // Name of the game or player
-// 	// Additional player properties can be added here
-//  ready: boolean; // Indicates if the player is ready to start the game
-// }
+import { PlayerType } from '../schemas/Player.js';
+import { GameType } from '../schemas/Room.js';
 
 export class Room {
 	id: string;
 	name: string;
-	typeGame: string;
-	status: string;
-	players: Player[];
+	typeGame: GameType;
+	status: 'waiting' | 'roomReady' | 'readyToStart' | 'playing' | 'finished' = 'waiting';
+	players: PlayerType[];
 	pong: Pong | null;
 	isFull: boolean;
 	createdAt: Date;
 	maxPlayers: number;
 	playerReady: number;
 	
-  constructor(typeGame: string) {
+  constructor(typeGame: GameType) {
 	this.id = uuidv4();
-	this.name = ''; // Unique name for the room
-	this.typeGame = typeGame; // 'localpvp', 'localpve', 'online', 'tournament' 
-	this.status = typeGame === ('localpvp' || 'localpve') ? 'readyToStart' : 'waiting'; // 'waiting', 'roomReady', 'readyToStart', 'playing', 'finished'
+	this.name = '';
+	this.typeGame = typeGame;
+	if (typeGame === 'localpvp' || typeGame === 'localpve') {
+		this.status = 'readyToStart';
+	}
 	this.players = [];
 	this.pong = null; // Instance of Pong game
 	this.isFull = false;
@@ -35,7 +30,7 @@ export class Room {
 	this.playerReady = 0; // Counter for players ready to start the game
   }
 
-  addPlayer(player: Player) {
+  addPlayer(player: PlayerType) {
 	if (this.players.length >= this.maxPlayers) {
 	  return false; // Room is full
   	}
@@ -89,7 +84,7 @@ export class Room {
 
   removePlayer(playerId: string) {
 	//TODO: Implement player removal logic
-	if (this.typeGame === ("localpvp" || "localpve")) {
+	if (this.typeGame === 'localpvp' || this.typeGame === 'localpve') {
 	  this.stopGame(); // Stop the game if it's a local PvP or PvE game
 	}
   }
@@ -112,13 +107,15 @@ export class Room {
 	}
   }
 
-  setStatus(newStatus: string) { this.status = newStatus; }
+  setStatus(newStatus: 'waiting' | 'roomReady' | 'readyToStart' | 'playing' | 'finished') {
+	this.status = newStatus;
+  }
 
   isJoinable() { return (!this.isFull && this.status === 'waiting'); }
 
   isReadyToStart() { return (this.isFull || this.status === 'readyToStart'); }
 
-  userInfos(player: Player) {
+  userInfos(player: PlayerType) {
 	return {
 		playerId: player.playerId,
 		gameName: player.gameName,
@@ -126,7 +123,7 @@ export class Room {
 	};
   }
 
-  userOpponentInfos(player: Player) {
+  userOpponentInfos(player: PlayerType) {
 	return this.players.filter(p => p.playerId !== player.playerId).map(p => ({
 		playerId: p.playerId,
 		gameName: p.gameName,
