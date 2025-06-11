@@ -155,7 +155,7 @@ export async function renderGame(roomData: RoomData) {
 
   setTimeout(async () => {
     console.log("Rendering game for room:", roomData);
-    const newContainer = await game(roomData.data.roomId, response!);
+    const newContainer = await game(roomData.roomId, response!);
     if (!newContainer) {
       return;
     }

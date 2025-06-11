@@ -16,7 +16,7 @@ export class Pong {
   gameIsStart: boolean;
   WIN_SCORE: number;
   isAgainstBot: boolean;
-  interval: number;
+  interval: NodeJS.Timeout | undefined;
   centerX: number;
   centerY: number;
 
@@ -42,7 +42,7 @@ export class Pong {
 
     this.isAgainstBot = false; // This can be used to determine if the game is against a bot or not
 
-    this.interval = 0;
+    this.interval = undefined; // Initialize interval to undefined
   }
 
   start() {
@@ -55,7 +55,7 @@ export class Pong {
   stop() {
     this.gameIsStart = false;
     clearInterval(this.interval);
-    this.interval = 0;
+    this.interval = undefined;
   }
 
   check_win() {
@@ -94,10 +94,8 @@ export class Pong {
     }
   }
 
-  update(game: Pong) { 
+  update(game: Pong) {
     game.ball.move_ball(game.top, game.bottom, game.paddle1, game.paddle2, this.sizeX);
-
-    console.log('Is againts bot ? ', game.isAgainstBot);
     if (game.isAgainstBot) {
       game.paddle2.y = game.ball.y;
     }
@@ -122,15 +120,17 @@ export class Pong {
       })
     );
 
-    redisPub.publish('ws.game.out', JSON
-      .stringify({
-        clientId: game.paddle2.uid,
-        payload: {
-          action: 'update',
-          gameData: game.toJSON(),
-        }
-      })
-    );
+    if (game.paddle2.uid !== "0") { // If the second paddle is not a bot
+      redisPub.publish('ws.game.out', JSON
+        .stringify({
+          clientId: game.paddle2.uid,
+          payload: {
+            action: 'update',
+            gameData: game.toJSON(),
+          }
+        })
+      );
+    }
   }
 
   movePaddle(uid: string, direction: string) {

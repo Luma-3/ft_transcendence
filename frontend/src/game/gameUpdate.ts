@@ -1,4 +1,4 @@
-import { gameFrontInfo } from "./gameCreation"
+import { gameFrontInfo, gameId } from "./gameCreation"
 import { socket } from "../controllers/Socket";
 
 let actionUserUp = false, actionUserDown = false, actionUser2Up = false, actionUser2Down = false;
@@ -13,12 +13,14 @@ export async function getEventAndSendGameData() {
 	if (!socket) {
 		return console.error("Connection with the server lost.");
 	}
+	console.log("Game Front Info:", gameFrontInfo);
+	console.log("Sending game move data:", gameData);
 	socket.send(JSON.stringify({
 		type: "game",
 		payload: {
 			type: 'move',
 			data: {
-				roomId: gameFrontInfo.gameId,
+				roomId: gameId,
 				direction: gameData.playerAction,
 				direction2: gameFrontInfo.typeGame === "localpvp" ? gameData.player2Action : "",
 			}

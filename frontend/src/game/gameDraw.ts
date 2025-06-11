@@ -27,15 +27,14 @@ export function drawGame(gameData: GameData) {
 // 	return;
 // }
 
-	console.log('je dessine le jeu');
 
 	ctx.clearRect(0, 0, game.width, game.height);
 	ctx.save();
 	// ctx.translate(game.width / 4, game.height / 4);
 
 	ctx.beginPath();
-	ctx.drawImage(duckImage, 10, gameData.paddle1.y - 50, 10, 100);
-	// ctx.rect(10, gameData.paddle1.y - 50, 10, 100);
+	// ctx.drawImage(duckImage, 10, gameData.paddle1.y - 50, 10, 100);
+	ctx.rect(10, gameData.paddle1.y - 50, 10, 100);
 	ctx.fillStyle = "blue";
 	ctx.fill();
 

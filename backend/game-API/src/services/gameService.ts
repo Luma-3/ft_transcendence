@@ -130,7 +130,10 @@ class GameService {
       // throw new InternalServerError('Room not found for the given client ID');
     }
 
+    console.log(`Handling event for clientId: ${clientId}, roomId: ${roomId}, type: ${event.type}`);
+
     switch (event.type) {
+
       case 'init':
         const player = room.getPlayerById(data.playerId);
         if (!player) {
@@ -154,18 +157,6 @@ class GameService {
           }
         break;
 
-      // case 'playerJoin':
-      //   const playerJoin = room.getPlayerByClientId(clientId);
-      //   console.log('Joined: ', playerJoin);
-      //   if (!playerJoin) {
-      //     //throw new InternalServerError('Player not found in the room');
-      //     return;
-      //   }
-
-      //   playerJoin.joined = true;
-      //   this.broadcast(roomId, 'playerJoin', room.roomData());
-      //   break;
-
       case 'playerReady':
         const playerReady = room.getPlayerByClientId(clientId);
         console.log('is ready: ', playerReady);
@@ -178,7 +169,7 @@ class GameService {
         this.broadcast(roomId, 'playerReady', room.roomData());
 
         room.playerReady++;
-        if (room.isReadyToStart()) {
+        if (room.playerReady >= room.maxPlayers) {
           room.status = 'readyToStart';
           this.createGameInRoom(roomId);
           this.broadcast(roomId, 'readyToStart', room.roomData());
@@ -186,6 +177,7 @@ class GameService {
         break;
         
       case 'startGame':
+        console.log('Starting game in room:', roomId);
         if (room.status === 'readyToStart')
           if (room.startGame() === false)
             throw new InternalServerError('Game start failed');
@@ -193,15 +185,16 @@ class GameService {
 
       case 'move':
         let whois = room.getPlayerByClientId(clientId);
-        if (!whois) {
-          return ;
-        }
+        console.log(`Player ${whois ? whois.playerId : 'unknown'} is moving in room ${roomId} with direction: ${data.direction}`);
+        // if (!whois) {
+        //   return ;
+        // }
         
         if (!room.pong) {
           console.error(`Pong game not found in room ${roomId}`);
           return ;
         }
-        room.pong.movePaddle(whois.playerId, data.direction);
+        room.pong.movePaddle(whois!.playerId, data.direction);
         
         if (room.typeGame === 'localpvp') {
           room.pong.movePaddle("", data.direction2);

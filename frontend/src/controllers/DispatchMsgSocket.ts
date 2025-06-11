@@ -18,15 +18,15 @@ function changeStatusPlayer(roomData: RoomData) {
 	}
 }
 
-function launchGame(roomData: RoomData) {
-	
-	//TODO: Animate 3,4,...1....Go
+function launchGame(roomId: string) {
+	console.log("Launching game for room:", roomId);
+	//TODO: Animate 3,2,1....Go
 	socket?.send(JSON.stringify({
 		type: "game",
 		payload: {
 			type: 'startGame',
 			data: {
-				roomId: roomData.roomId,
+				roomId: roomId,
 			}
 		}
 	}));
@@ -40,21 +40,21 @@ export async function handleGameSocketMessage(data: any ) {
 				alertGameReady();}
 			, 500);
 			setTimeout(() => {
-				renderGame(data);
+				renderGame(data.data);
 			}
 			, 3500);
 			break;
 		
 		case 'playerReady':
-			changeStatusPlayer(data.gameData);
+			changeStatusPlayer(data.data);
 			break;
 
 		case 'readyToStart':
-			console.log("Game is ready to start");
+			console.log("Game is ready to start", data.data.gameData);
 			showGame();
-			drawGame(data.gameData);
+			drawGame(data.data.gameData);
 			setTimeout(() => {
-				launchGame(data.gameData);
+				launchGame(data.data.roomId);
 			}, 3000);
 			break;
 		
