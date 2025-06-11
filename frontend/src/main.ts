@@ -7,7 +7,7 @@ const main_container = document.querySelector<HTMLDivElement>('#app')!
 //* Ajout de la page dans l'historique de navigation et enregistrement de la page precedente pour le button back
 export function addToHistory(page: string, updateHistory: boolean = true) {
 	if (updateHistory && page !== history.state?.page) {
-		sessionStorage.setItem('backPage', history.state?.page)
+		// sessionStorage.setItem('backPage', history.state?.page)
 		history.pushState({ page }, '', `/${page}`)
 	}
 }

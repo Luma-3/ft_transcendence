@@ -168,13 +168,13 @@ async function friends(user:User) {
 	}
 	for(const friend of friendsList.data.friends) {
 		container += `
-		<div class="flex flex-col sm:flex-row justify-between w-1/2 font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
+		<div class="flex flex-col sm:flex-row justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
 			<div name="otherProfile" data-id=${friend.user_id} class="flex font-title hover:underline hover:cursor-pointer">${friend.username}</div>
 			<div class="flex flex-row space-x-2">
 				<div id="block-user" data-username=${friend.username} data-id=${friend.user_id} class="group/item relative hover:cursor-pointer">
 					<span class="tooltip absolute z-10 left-1/2  top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
 				dark:text-dtertiary text-xs rounded py-1 px-2">
-					Block This MotherDUcker
+					Block This MotherDucker
 					</span>
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
@@ -237,15 +237,18 @@ async function allUsers(user:User) {
 					<span translate="allUsers">All users</span>
 				</div>
 			<div class="relative h-[400px] w-full overflow-y-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
-				<div class="flex flex-col justify-center items-center gap-4 p-4">`;
+				<div class="flex flex-col w-full justify-center items-center gap-4 p-4">`;
+	
 	const allUsers = await getAllUsers();
+	
 	if (allUsers.status === "error" || !allUsers.data) {
 		return `${container}<span class="text-secondary dark:text-dtertiary" translate="no-friends">No friends found</span></div></div>`;
 	}
+	
 	for(const user of allUsers.data) {
 		const userData = await getOtherUserInfo(user.user_id);
 		container += `
-		<div class="flex flex-col justify-between w-1/2 font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
+		<div class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
 			${headerUserMenu(userData.data!)}
 			<div class="flex flex-row justify-between items-center space-x-4 mt-4">
 				<div name="otherProfile" data-id=${user.user_id} class="flex font-title truncate hover:underline hover:cursor-pointer">${user.username}
@@ -299,7 +302,7 @@ async function renderProfilePage() {
 			</div>
 			</div>
 			<div class="flex flex-col justify-center items-center">
-				<div class="flex flex-row justify-between items-center w-full max-w-[1000px] space-x-4 space-y-4">
+				<div class="flex flex-row justify-between items-center w-full max-w-[1500px] space-x-4 space-y-4">
 				${await friends(user)}
 				${await allUsers(user)}
 				</div>

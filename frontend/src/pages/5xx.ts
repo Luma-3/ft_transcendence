@@ -13,7 +13,8 @@ export default function errorPage(code?: string, message?: string) {
 			${error_code}
 		</div>
 		
-		<div translate="${message_error}" class="text-2xl font-bold animate-fade-in-down">TEXT</div>
+		<div translate="${message_error}" class="text-2xl font-bold animate-fade-in-down">
+		${message_error}</div>
 	
 		<button onClick="window.location.href='/'" class="flex flex-row rounded-full items-center justify-center mt-4 py-2 px-4
 	 	text-secondary dark:text-dtertiary bg-primary dark:bg-dprimary hover:bg-secondary dark:hover:bg-dtertiary hover:text-primary dark:hover:text-dprimary 

@@ -7,7 +7,7 @@ import profile from '../pages/Profile'
 import errorPage from '../pages/5xx'
 import notFoundPage from '../pages/4xx'
 import game from '../pages/Game'
-import welcomeYouPage, { reWelcomeYouPage } from '../pages/WelcomeYou';
+import welcomeYouPage from '../pages/WelcomeYou';
 import documentation from '../pages/Documentation'
 
 import { addToHistory } from '../main'
@@ -52,8 +52,8 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 		if (!rendererFunction) {
 			return renderErrorPage('404', '404', 'Page not found');
 		}
+		
 		const page_content = await Promise.resolve(rendererFunction());
-
 		main_container.innerHTML = page_content;
 
 		translatePage(lang);
@@ -73,7 +73,6 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
  */
 const rendererPrivatePage: { [key: string]: (user: User) => string | Promise<string> } = {
 	'WelcomeYou': welcomeYouPage,
-	'reWelcomeYou': reWelcomeYouPage,
 	'dashboard': dashboard,
 	'settings': settings,
 	'profile': profile,
@@ -92,8 +91,6 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 	}
 
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
-
-
 
 	const token = await fetchToken();
 	if (token.status === "error") {
@@ -286,8 +283,8 @@ export async function renderDocPages(page: string, logo: string) {
  */
 export function renderBackPage() {
 	const page = window.history.state?.page || 'home';
-	// if (page === 'dashboard') {
-	// 	return;
-	// }
+	if (page === 'dashboard') {
+		return;
+	}
 	renderPrivatePage(page, false);
 }
