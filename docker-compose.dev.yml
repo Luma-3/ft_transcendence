@@ -126,6 +126,7 @@ services:
       - ./backend/game-API/data:/app/data:z
       - ./backend/game-API/src:/app/src:z
     depends_on:
+      - Base
       - redis
     expose:
       - "3003"
