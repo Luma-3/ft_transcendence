@@ -1,4 +1,13 @@
+import { Paddle } from './Paddle';
+
 export class Ball {
+	x: number;
+	y: number;
+	vector_x: number;
+	vector_y: number;
+	size: number;
+	speed: number;
+
   constructor(x = 0, y = 0, vector_x = 0, vector_y = 0, size = 20) {
 	this.x = x;
 	this.y = y;
@@ -8,7 +17,7 @@ export class Ball {
 	this.speed = 4;
   }
 
-  check_collision_paddle(paddle, width) {
+  check_collision_paddle(paddle: Paddle, width: number) {
 	if (paddle.x < width / 2) {
 		return (
 			this.x <= paddle.x + paddle.width &&
@@ -26,7 +35,13 @@ export class Ball {
 	}
   }
 
-  move_ball(top, bottom, paddle1, paddle2, width = 0) {
+  move_ball(
+	top: number,
+	bottom: number,
+	paddle1: Paddle,
+	paddle2: Paddle,
+	width: number = 0
+  ) {
 	this.x += this.vector_x * this.speed;
 	this.y += this.vector_y * this.speed;
 
@@ -40,7 +55,7 @@ export class Ball {
 	}
   }
 
-  set_vectors_ball(rand) {
+  set_vectors_ball(rand: number) {
 	switch (rand) {
 	  case 1:
 		this.vector_y *= -1;
@@ -57,7 +72,7 @@ export class Ball {
 	}
   }
 
-  reset_ball(centerX = 400, centerY = 300) {
+  reset_ball(centerX: number = 400, centerY: number = 300) {
 	this.x = centerX;
 	this.y = centerY;
   }
