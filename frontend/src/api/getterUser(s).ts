@@ -30,7 +30,7 @@ export async function getUserInfo(): Promise<UserResponse> {
 	if (userData.status === 'error') {
 		return userData;
 	}
-
+	console.log("User data fetched:", userData.data);
 	const responsePref = await fetchApi<UserPreferences>(API_USER.BASIC.PREFERENCES, {
 		method: "GET",
 	});

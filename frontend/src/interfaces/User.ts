@@ -9,7 +9,7 @@ export interface UserInfo {
 	id: number;
 	username: string;
 	created_at: string;
-	email?: string;
+	email: string;
 }
 
 export interface User {
