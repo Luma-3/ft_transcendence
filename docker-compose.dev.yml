@@ -9,6 +9,12 @@ services:
     networks:
         - redis-net
 
+  Base:
+    build:
+      context: ./backend/packages/
+      dockerfile: Dockerfile.base
+    image: base
+    entrypoint: ["true"]
 
   gateway:
     build:
@@ -19,8 +25,8 @@ services:
         - ./.dev.env
     volumes:
       - ./backend/gateway/src:/app/src:z
-      - ./backend/dependencies/:/app/dependencies:z
     depends_on:
+      - Base
       - redis
     ports:
       - "3000:3000"
@@ -30,6 +36,27 @@ services:
       - backend-net
       - redis-net
       - frontend-net
+
+  auth-api:
+    build:
+      context: ./backend/auth-API/
+      dockerfile: Dockerfile.dev
+    container_name: auth-API
+    env_file:
+        - ./.dev.env
+    volumes:
+      - ./backend/auth-API/data:/app/data:z
+      - ./backend/auth-API/src:/app/src:z
+    depends_on:
+      - Base
+      - redis
+    ports:
+      - "3005:3005"
+    expose:
+      - "3005"
+    networks:
+      - backend-net
+      - redis-net
 
   user-api:
     build:
@@ -41,8 +68,8 @@ services:
     volumes:
       - ./backend/user-API/data:/app/data:z
       - ./backend/user-API/src:/app/src:z
-      - ./backend/dependencies/:/app/dependencies:z
     depends_on:
+      - Base
       - redis
     expose:
       - "3001"
@@ -79,8 +106,8 @@ services:
     volumes:
       - ./backend/upload-API/uploads:/app/uploads:z
       - ./backend/upload-API/src:/app/src:z
-      - ./backend/dependencies/:/app/dependencies:z
     depends_on:
+      - Base
       - redis
     expose:
       - "3002"
@@ -98,7 +125,6 @@ services:
     volumes:
       - ./backend/game-API/data:/app/data:z
       - ./backend/game-API/src:/app/src:z
-      - ./backend/dependencies/:/app/dependencies:z
     depends_on:
       - redis
     expose:

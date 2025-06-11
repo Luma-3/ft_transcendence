@@ -21,26 +21,29 @@ const publicPages = ['home', 'login', 'register']
 // * On affiche la page prive si l'utilisateur est connecté
 // * Sinon on affiche la page publique
 document.addEventListener('DOMContentLoaded', async () => {
-	
-	const page =  window.location.pathname.substring(1) || 'home'
-	
-	const user = await fetchToken();
-	if (user.status === "success") {
-		if (publicPages.includes(page)) {
-			renderPrivatePage('dashboard', true);
-			return ;
-		}
-		return renderPrivatePage(page, false);
-	}
-	return renderPublicPage(page);
+
+  const page = window.location.pathname.substring(1) || 'home'
+  if (page === 'documentation') {
+    renderPublicPage('documentation');
+  }
+
+  const user = await fetchToken();
+  if (user.status === "success") {
+    if (publicPages.includes(page)) {
+      renderPrivatePage('dashboard', true);
+      return;
+    }
+    return renderPrivatePage(page, false);
+  }
+  return renderPublicPage(page);
 
 });
 
 // * Au changement de page lors de l'utilisation du bouton back/forward
-window.addEventListener('popstate', (event) => { 
-	const page = event.state?.page || 'home'
-	if (publicPages.includes(page)) {
-		return renderPublicPage(page);
-	}
-	return renderPrivatePage(page);
+window.addEventListener('popstate', (event) => {
+  const page = event.state?.page || 'home'
+  if (publicPages.includes(page)) {
+    return renderPublicPage(page);
+  }
+  return renderPrivatePage(page);
 });
