@@ -13,7 +13,8 @@ export default function notFoundPage(code: string = "404", message: string = "no
 				${code}
 			</div>
 		
-			<div translate="${message}" class="text-2xl font-bold animate-fade-in-down">${message}</div>
+			<div translate="${message}" class="text-2xl font-bold animate-fade-in-down">
+			${message}</div>
 			
 			<button onClick="window.location.href='/'" class="flex flex-row rounded-full items-center justify-center mt-4 py-2 px-4
 			text-tertiary dark:text-dtertiary bg-secondary dark:bg-dsecondary hover:bg-primary dark:hover:bg-dtertiary hover:text-primary dark:hover:text-dprimary 

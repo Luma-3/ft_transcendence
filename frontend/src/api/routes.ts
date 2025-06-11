@@ -2,7 +2,7 @@ const API_URL = "https://localhost:5173/api";
 
 const SERVICES = {
   USER: `${API_URL}/user/users`,
-  SESSION: `${API_URL}/user/session`,
+  SESSION: `${API_URL}/auth/session`,
   CDN: `/api/uploads`,
   GAME: `${API_URL}/game`,
   PEOPLE: `${API_URL}/people`,
@@ -42,7 +42,7 @@ export const API_SESSION = {
 
   CREATE: `${SERVICES.SESSION}`,
   DELETE: `${SERVICES.SESSION}`,
-  VERIFY_ACCESS: `${SERVICES.SESSION}/verify/accessToken`,
+  VERIFY_ACCESS: `${SERVICES.SESSION}/accessToken`,
   VERIFY_REFRESH: `${SERVICES.SESSION}/verify/refreshToken`,
 
   REFRESH: `${SERVICES.SESSION}/refresh`,

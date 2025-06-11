@@ -154,17 +154,17 @@ class GameService {
           }
         break;
 
-      case 'playerJoin':
-        const playerJoin = room.getPlayerByClientId(clientId);
-        console.log('Joined: ', playerJoin);
-        if (!playerJoin) {
-          //throw new InternalServerError('Player not found in the room');
-          return;
-        }
+      // case 'playerJoin':
+      //   const playerJoin = room.getPlayerByClientId(clientId);
+      //   console.log('Joined: ', playerJoin);
+      //   if (!playerJoin) {
+      //     //throw new InternalServerError('Player not found in the room');
+      //     return;
+      //   }
 
-        playerJoin.joined = true;
-        this.broadcast(roomId, 'playerJoin', room.roomData());
-        break;
+      //   playerJoin.joined = true;
+      //   this.broadcast(roomId, 'playerJoin', room.roomData());
+      //   break;
 
       case 'playerReady':
         const playerReady = room.getPlayerByClientId(clientId);
@@ -173,8 +173,9 @@ class GameService {
           //throw new InternalServerError('Player not found in the room');
           return;
         }
-
+        console.log("SQUALALALAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         playerReady.ready = true;
+        this.broadcast(roomId, 'playerReady', room.roomData());
 
         room.playerReady++;
         if (room.isReadyToStart()) {

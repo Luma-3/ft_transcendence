@@ -1,7 +1,6 @@
 import notfound from "./4xx";
 
 import { navbar } from "../components/ui/navbar";
-import { footer } from "../components/ui/footer";
 import { getUserInfo } from "../api/getterUser(s)";
 
 import { animateButton } from "../components/ui/buttons/animateButton";
@@ -33,10 +32,9 @@ async function renderSettingsPage() {
 					${primaryButton({id: 'deleteAccount', weight: "1/3", text: 'Delete account', translate: 'delete-account', type: 'button'})}
 				</div>
 				<div class="flex flex-col items-center justify-center space-y-4 pt-20">
-				${animateButton("logout", "logout", "😥")}
+				${animateButton("logout", "logout", "`<img src='/images/duckSad.png' class='w-20 h-2- mr-2' alt='Duck sad icon'>`")}
 				</div>
-			</div>
-			${footer()}`
+			</div>`
 	}
 	return notfound()
 }

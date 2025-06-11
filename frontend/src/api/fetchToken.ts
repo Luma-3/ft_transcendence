@@ -10,16 +10,11 @@ export async function verifySession() {
 		return { status: 'success', data: null };
 	}
 
-	response = await fetchApiWithNoBody(API_SESSION.VERIFY_REFRESH, {
-		method: 'GET',
+	response = await fetchApiWithNoBody(API_SESSION.CREATE, {
+		method: 'PUT',
 	});
 	if (response.status ===  'success') {
-		response = await fetchApiWithNoBody(API_SESSION.REFRESH, {
-			method: 'POST',
-		})
-		if (response.status ===  'success') {
-			return { status: 'success', data: null };
-		}
+		return { status: 'success', data: null };
 	}
 	return { status: "error", data: null };
 }

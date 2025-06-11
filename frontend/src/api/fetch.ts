@@ -24,7 +24,10 @@ export async function fetchApi<T>(url:string, option?: RequestInit, verifToken: 
 			const errorData = await response.json();
 			return {status: "error", message: errorData.message, details: errorData.details};
 		}
-		return response.json() as Promise<IApiResponse<T>>;
+
+		const responseData = await response.json();
+		console.log("API response received:", responseData);
+		return responseData as Promise<IApiResponse<T>>;
 	} 
 	catch (error) {
 		renderPublicPage('500', false)

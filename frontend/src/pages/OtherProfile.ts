@@ -1,16 +1,12 @@
 import notfound from "./4xx";
 
-import { navbar } from "../components/ui/navbar"
-import { footer } from "../components/ui/footer"
-import { form } from "../components/ui/form/form"
+import { navbar } from "../components/ui/navbar";
 
-import { primaryButton } from "../components/ui/buttons/primaryButton"
-import { secondaryButton } from "../components/ui/buttons/secondaryButton"
 import { backButton } from "../components/ui/buttons/backButton";
 
-import { User } from "../interfaces/User"
-import { getFriends, getOtherUserInfo, getUserInfo, getUsersList } from "../api/getterUser(s)"
+import { getFriends, getOtherUserInfo } from "../api/getterUser(s)";
 import { API_CDN } from "../api/routes";
+import { User } from "../interfaces/User";
 
 function avatarBanner(userPref: {avatar: string, banner: string}) {
 	return `
@@ -33,37 +29,17 @@ function avatarBanner(userPref: {avatar: string, banner: string}) {
 			</div>
 		</div>
 	</div>
-	</div>
-`};
-
-
+	</div>`;
+}
 
 function userInfo(user: User) {
 	return `
 	<div class=flex flex-col justify-center w-full max-w-[800px] space-y-4">
 	<div class="flex">
 		<span class="font-title text-4xl"> ${user.username}</span>
-		<span class="font-title text-2xl text-secondary dark:text-dtertiary ml-4">${user.created_at}</span>
+		<span class="font-title text-2xl text-secondary dark:text-dtertiary ml-4">
+		${user.created_at}</span>
 	</div> `
-}
-
-function notifications() {
-	//TODO: Implementer fetch user waiting
-	let content: string = "";
-	const userWaiting = 0;
-
-	if (userWaiting === 0) {
-		content = '<span class="text-secondary dark:text-dtertiary" translate="no-notifications">No notifications</span>';
-	} else {
-		//TODO: Boucler sur les pendings 
-	}
-
-	return `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
-			<span traslate="notifications" >Notifications</span>
-			<div class="flex flex-row font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
-			${content}
-			</div>
-			</div>`
 }
 
 async function friends(user:User) {
@@ -125,17 +101,9 @@ export async function renderOtherProfile(container: HTMLElement) {
 			<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
 			${avatarBanner(user.preferences)}
 			${userInfo(user)}
-			</div>
-			${footer()}`
+			</div>`
 		}
 		return notfound();
-	}
-
-// export default function profilePage() {
-// 	const container = renderProfilePage();
-// 	return container;
-// }
-
-
+}
 
 

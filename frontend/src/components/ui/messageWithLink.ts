@@ -5,9 +5,10 @@ export function messageWithLink(message: string, linkMessage: string, idLink: st
 			${message}
 			Don't have an account?
 		</div>
-		<div id="${idLink}" class="font-title p-2 dark:text-dsecondary  text-primary cursor-pointer
+		<button type="button" id="${idLink}" class="font-title p-2 dark:text-dsecondary  text-primary cursor-pointer
 		 hover:text-tertiary hover:dark:text-dtertiary"
 		 translate="${linkMessage}">
-		</div>
+
+		</button>
 	</div>`;
 }

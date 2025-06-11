@@ -13,7 +13,7 @@ function divHomePage() {
 		<div class='flex flex-col items-center justify-center h-screen space-y-8'>
 			${logo()}
 			${languageSelectorHome()}
-			${animateButton("loadlogin", "welcome", "get-started")}
+			${animateButton("loadlogin", "get-started", `<img src='/images/duckHappy.png' class='w-20 h-20 mr-2 pointer-events-none' alt='Duck happy icon'>`)}
 		</div>`;
 }
 

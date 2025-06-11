@@ -33,6 +33,17 @@ export const UserBase = Type.Object({
 });
 export type UserBaseType = Static<typeof UserBase>;
 
+export const UserDBBase = Type.Object({
+  ...UserSharedFields,
+  email: Type.String({ format: 'email' }),
+  password: passwordField,
+  theme: Type.Union([Type.Literal('dark'), Type.Literal('light')]),
+  lang: Type.Union([Type.Literal('en'), Type.Literal('fr'), Type.Literal('es')]),
+  avatar: Type.String({ format: 'uri' }),
+  banner: Type.String({ format: 'uri' })
+});
+export type UserDBBaseType = Static<typeof UserDBBase>;
+
 // User Response Schema
 // This schema is used for responses, including public and private user data.
 

@@ -16,7 +16,7 @@ export function socketConnection() {
 		const data = JSON.parse(e.data).payload;
 		
 		const type = JSON.parse(e.data).type;
-		
+		console.log("Dataaaaaaaaaaaaaaaaaa", data);
 		switch (type) {
 			case 'game':
 				handleGameSocketMessage(data);

@@ -1,10 +1,14 @@
 import fastify from "fastify";
 import cors from "@fastify/cors";
-import socket from "@fastify/websocket";
+import socket from "./plugins/socket.js";
 import cookie from "@fastify/cookie";
 import jwt from "./plugins/jwt.js"
 import dotenv from "dotenv";
 import fs from "fs";
+import process from "node:process";
+
+
+// import swagger from "./plugins/swagger.js";
 
 dotenv.config();
 

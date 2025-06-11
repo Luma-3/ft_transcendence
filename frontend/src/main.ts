@@ -1,4 +1,4 @@
-import { renderDocPage, renderPrivatePage, renderPublicPage } from './controllers/renderPage'
+import { renderPrivatePage, renderPublicPage } from './controllers/renderPage'
 import { addAllEventListenOnPage } from './controllers/Handler'
 import { fetchToken } from './api/fetchToken'
 
@@ -6,10 +6,10 @@ const main_container = document.querySelector<HTMLDivElement>('#app')!
 
 //* Ajout de la page dans l'historique de navigation et enregistrement de la page precedente pour le button back
 export function addToHistory(page: string, updateHistory: boolean = true) {
-  if (updateHistory && page !== history.state?.page) {
-    sessionStorage.setItem('backPage', history.state?.page)
-    history.pushState({ page }, '', `/${page}`)
-  }
+	if (updateHistory && page !== history.state?.page) {
+		// sessionStorage.setItem('backPage', history.state?.page)
+		history.pushState({ page }, '', `/${page}`)
+	}
 }
 
 addAllEventListenOnPage(main_container);

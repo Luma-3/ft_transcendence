@@ -84,6 +84,15 @@
 	"password-changed": "Contraseña cambiada",
 	"user-infos-updated": "Información actualizada",
 	"user-infos-not-updated": "Información no actualizada",
+	"friend-invitation-sent": "Invitación de amigo enviada",
+	"issues-with-friend-invitation": "Problemas con la invitación de amigo",
+	"friend-invitation-refused": "Invitación de amigo rechazada",
+	"issues-with-invitation-refused": "Problemas con el rechazo de la invitación",
+	"issues-with-user-blocked": "Problemas al bloquear usuario",
+	"user-blocked": "Usuario bloqueado",
+	"friend-invitation-accepted": "Invitación de amigo aceptada",
+	"issues-with-invitation-accepted": "Problemas con la aceptación de la invitación",
+
 
 	"version": "Versión",
 	"no-duck-hurt": "No se hirió a ningún pato",

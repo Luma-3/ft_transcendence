@@ -7,7 +7,7 @@ import profile from '../pages/Profile'
 import errorPage from '../pages/5xx'
 import notFoundPage from '../pages/4xx'
 import game from '../pages/Game'
-import welcomeYouPage, { reWelcomeYouPage } from '../pages/WelcomeYou';
+import welcomeYouPage from '../pages/WelcomeYou';
 import documentation from '../pages/Documentation'
 
 import { addToHistory } from '../main'
@@ -17,7 +17,7 @@ import { fadeIn, fadeOut } from '../components/utils/fade'
 import { removeLoadingScreen } from '../components/utils/removeLoadingScreen'
 import { handleWelcomeYouPage } from '../pages/WelcomeYou';
 
-import { User } from '../interfaces/User'
+import { User, UserResponse } from '../interfaces/User'
 import { getUserInfo } from '../api/getterUser(s)'
 
 import { socket } from '../controllers/Socket'
@@ -46,16 +46,16 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 
   setupColorTheme('dark');
 
-  fadeOut(main_container);
-  setTimeout(async () => {
+	fadeOut();
+	setTimeout(async () => {
 
-    const rendererFunction = rendererPublicPage[page];
-    if (!rendererFunction) {
-      return renderErrorPage('404', '404', 'Page not found');
-    }
-    const page_content = await Promise.resolve(rendererFunction());
-
-    main_container.innerHTML = page_content;
+		const rendererFunction = rendererPublicPage[page];
+		if (!rendererFunction) {
+			return renderErrorPage('404', '404', 'Page not found');
+		}
+		
+		const page_content = await Promise.resolve(rendererFunction());
+		main_container.innerHTML = page_content;
 
     translatePage(lang);
     if (updateHistory) {
@@ -64,20 +64,20 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 
     removeLoadingScreen();
 
-    fadeIn(main_container);
-  }
-    , 250);
+		fadeIn();
+	}
+		, 250);
 }
 
 /**
  * Associe les pages privees aux fonctions de rendu
  */
 const rendererPrivatePage: { [key: string]: (user: User) => string | Promise<string> } = {
-  'WelcomeYou': welcomeYouPage,
-  'reWelcomeYou': reWelcomeYouPage,
-  'dashboard': dashboard,
-  'settings': settings,
-  'profile': profile,
+	'WelcomeYou': welcomeYouPage,
+	'dashboard': dashboard,
+	'settings': settings,
+	'profile': profile,
+	'documentation': documentation,
 }
 
 /**
@@ -91,10 +91,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     socketConnection();
   }
 
-  const main_container = document.querySelector<HTMLDivElement>('#app')!
-
-
-
+	const main_container = document.querySelector<HTMLDivElement>('#app')!
   const token = await fetchToken();
   if (token.status === "error") {
     return renderErrorPage('400', '401', 'Unauthorized');
@@ -105,10 +102,10 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     return renderErrorPage('400', '401', 'Unauthorized');
   }
 
-  const lang = response.data.preferences.lang;
-  const theme = response.data.preferences.theme;
+  const lang = response.preferences.lang || 'en';
+  const theme = response.preferences.theme || 'dark';
 
-  fadeOut(main_container);
+	fadeOut();
 
   setTimeout(async () => {
 
@@ -116,7 +113,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     if (!rendererFunction) {
       return renderErrorPage('404', '404', 'not-found');
     }
-    const page_content = await Promise.resolve(rendererFunction(response.data as User));
+    const page_content = await Promise.resolve(rendererFunction({ data: response.data, preferences: response.preferences }));
 
     main_container.innerHTML = page_content;
     setupColorTheme(theme);
@@ -128,7 +125,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 
     removeLoadingScreen();
 
-    fadeIn(main_container);
+		fadeIn();
 
     if (page === 'WelcomeYou' || page === 'reWelcomeYou') {
       handleWelcomeYouPage();
@@ -151,14 +148,14 @@ export async function renderGame(roomData: RoomData) {
     return renderErrorPage('400', '401', 'Unauthorized');
   }
 
-  const lang = response.data.preferences.lang;
-  const theme = response.data.preferences.theme;
+  const lang = response.preferences.lang;
+  const theme = response.preferences.theme;
 
-  fadeOut(main_container);
+	fadeOut();
 
   setTimeout(async () => {
-
-    const newContainer = await game(roomData, response.data!);
+    console.log("Rendering game for room:", roomData);
+    const newContainer = await game(roomData.data.roomId, response!);
     if (!newContainer) {
       return;
     }
@@ -170,12 +167,12 @@ export async function renderGame(roomData: RoomData) {
 
     removeLoadingScreen();
 
-    fadeIn(main_container);
-  }
-    , 250);
+		fadeIn();
+  }, 250);
 }
 
 import { renderOtherProfile } from '../pages/OtherProfile'
+import { redocInit } from './redocInit'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 
@@ -194,7 +191,7 @@ export async function renderOtherProfilePage(target: HTMLElement) {
   const lang = response.data.preferences.lang;
   const theme = response.data.preferences.theme;
 
-  fadeOut(main_container);
+	fadeOut();
 
   setTimeout(async () => {
 
@@ -210,9 +207,9 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 
     removeLoadingScreen();
 
-    fadeIn(main_container);
-  }
-    , 250);
+		fadeIn();
+	}
+		, 250);
 }
 
 /**
@@ -230,11 +227,11 @@ export async function renderErrorPage(codePage: string, code: string, message: s
 
   const user = await getUserInfo();
 
-  const lang = user.status === "error" ? 'en' : user.data?.preferences.lang || 'en';
-  const theme = user.status === "error" ? 'dark' : user.data?.preferences.theme || 'dark';
+  const lang = user.status === "error" ? 'en' : user.preferences.lang || 'en';
+  const theme = user.status === "error" ? 'dark' : user.preferences.theme || 'dark';
 
-  setupColorTheme(theme);
-  fadeOut(main_container);
+	setupColorTheme(theme);
+	fadeOut();
 
   setTimeout(async () => {
     const rendererFunction = rendererErrorPage[codePage] || notFoundPage;
@@ -247,19 +244,33 @@ export async function renderErrorPage(codePage: string, code: string, message: s
 
     removeLoadingScreen();
 
-    fadeIn(main_container);
-  }
-    , 250);
+		fadeIn();
+	}
+		, 250);
 }
 
-declare const Redoc: any;
+const logoDoc: { [key: string]: string } = {'user': '/images/duckHandsUp.png',
+	 'upload': '/images/duckUpload.png',
+	 'people': '/images/duckSocial.png',
+	 'game': '/images/dashboard.png',
+};
 
-export function renderDocPages(page: string) {
-
-  const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
-  console.log(page)
-  redoc_container.innerHTML = '';
-  Redoc.init(`${page}`, {}, redoc_container);
+export async function renderDocPages(page: string, logo: string) {
+	
+	const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
+	console.log(page)
+	redoc_container.innerHTML = '';
+	 fetch(`${page}`)
+    .then(res => res.json())
+    .then(spec => {
+      spec.info['x-logo'] = {
+        url: logoDoc[logo],
+        backgroundColor: '#FFFFFF',
+        altText: 'Logo de l\'API',
+        // href: 'https://example.com'
+      };
+	  redocInit(spec, redoc_container);
+	});
 }
 
 /**
@@ -270,9 +281,9 @@ export function renderDocPages(page: string) {
  * @returns Renders the previous page in the history stack
  */
 export function renderBackPage() {
-  const page = window.history.state?.page || 'home';
-  // if (page === 'dashboard') {
-  // 	return;
-  // }
-  renderPrivatePage(page, false);
+	const page = window.history.state?.page || 'home';
+	if (page === 'dashboard') {
+		return;
+	}
+	renderPrivatePage(page, false);
 }

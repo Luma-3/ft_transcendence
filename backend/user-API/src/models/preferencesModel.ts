@@ -3,7 +3,7 @@ import { Knex } from 'knex';
 import { PreferencesBaseType } from '../schema/preferences.schema.js';
 
 export const PREFERENCES_PUBLIC_COLUMNS: (keyof PreferencesBaseType)[] = ['user_id', 'theme', 'lang', 'avatar', 'banner'];
-export const PREFERENCES_PRIVATE_COLUMNS: (keyof PreferencesBaseType)[] = ['user_id', 'lang', 'avatar', 'banner'];
+export const PREFERENCES_PRIVATE_COLUMNS: (keyof PreferencesBaseType)[] = ['user_id', 'theme', 'lang', 'avatar', 'banner'];
 
 export class PreferencesModel {
   constructor(private knex: Knex) { }
@@ -18,7 +18,8 @@ export class PreferencesModel {
         user_id: userID,
         theme: data.theme,
         lang: data.lang,
-        avatar: data.avatar
+        avatar: data.avatar,
+        banner: data.banner
       }, columns);
   }
 

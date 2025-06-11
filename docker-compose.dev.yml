@@ -115,23 +115,24 @@ services:
       - backend-net
       - redis-net
 
-  # game-api:
-  #   build:
-  #     context: ./backend/game-API/
-  #     dockerfile: Dockerfile.dev
-  #   container_name: game-API
-  #   env_file:
-  #       - ./.dev.env
-  #   volumes:
-  #     - ./backend/game-API/data:/app/data:z
-  #     - ./backend/game-API/src:/app/src:z
-  #   depends_on:
-  #     - redis
-  #   expose:
-  #     - "3003"
-  #   networks:
-  #     - backend-net
-  #     - redis-net
+  game-api:
+    build:
+      context: ./backend/game-API/
+      dockerfile: Dockerfile.dev
+    container_name: game-API
+    env_file:
+        - ./.dev.env
+    volumes:
+      - ./backend/game-API/data:/app/data:z
+      - ./backend/game-API/src:/app/src:z
+    depends_on:
+      - base
+      - redis
+    expose:
+      - "3003"
+    networks:
+      - backend-net
+      - redis-net
 
   frontend:
     build:

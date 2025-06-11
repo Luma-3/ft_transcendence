@@ -3,15 +3,14 @@ import { getUserInfo } from "../api/getterUser(s)";
 import { API_PEOPLE } from "../api/routes";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
 
-export async function sendInvitationToUser(target: HTMLElement) {
+export async function handleFriendRequest(target: HTMLElement, action: "send" | "accept") {
+
 	const user = await getUserInfo();
 	if (!user || user.status === "error") {
-		window.location.href = "/login";
-		return;
+		return window.location.href = "/login";
 	}
-	const targetId = target.dataset.id;
-	const targetUsername = target.dataset.username;
 	
+	const targetId = target.dataset.id;
 	const response = await fetchApi(API_PEOPLE.FRIENDS + `/${targetId}`, {
 		method: "POST",
 		body: JSON.stringify({
@@ -19,11 +18,30 @@ export async function sendInvitationToUser(target: HTMLElement) {
 		})
 	});
 	if (response.status === "error") {
-		alertTemporary("error", `Error while sending invitation to ${targetUsername}: ${response.message}`,  user.data!.preferences.theme);
+
+		(action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.data!.preferences.theme, true) : alertTemporary("error", "issues-with-friend-acceptance", user.data!.preferences.theme, true);
+
 		return;
 	}
-	alertTemporary("success", `Invitation sent to ${targetUsername}`, user.data!.preferences.theme);
-	console.log("sendInvitationToUser response", response);
+	(action === "send") ? alertTemporary("success", "friend-invitation-sent", user.data!.preferences.theme, true) : alertTemporary("success", "friend-invitation-accepted", user.data!.preferences.theme, true);
+}
+
+export async function sendRefuseInvitation(target: HTMLElement) {
+	
+	const user = await getUserInfo();
+	if (!user || user.status === "error") {
+		return window.location.href = "/login";
+	}
+
+	const targetId = target.dataset.id;
+	const response = await fetchApi(API_PEOPLE.PENDING + `/${targetId}`, {
+		method: "DELETE",
+		body: JSON.stringify({})
+	});
+	if (response.status === "error") {
+		return alertTemporary("error", "issues-with-invitation-refused", user.data!.preferences.theme, true);
+	}
+	alertTemporary("success", "friend-invitation-refused", user.data!.preferences.theme, true);
 }
 
 export async function blockUser(target: HTMLElement) {
@@ -34,34 +52,14 @@ export async function blockUser(target: HTMLElement) {
 		return;
 	}
 	const blockId = target.dataset.id;
-	const targetUsername = target.dataset.username;
 
 	const response = await fetchApi(API_PEOPLE.BLOCKED + `/${blockId}`, {
 		method: "POST",
 		body: JSON.stringify({})
 	});
 	if (response.status === "error") {
-		alertTemporary("error", `Error while blocking ${targetUsername}: ${response.message}`, user.data!.preferences.theme);
+		alertTemporary("error", "issues-with-user-blocked", user.data!.preferences.theme, true);
 		return;
 	}
-	alertTemporary("success", `${targetUsername} has been blocked`, user.data!.preferences.theme);
-	console.log("blockUser response", response);
-}
-
-export async function sendRefuseInvitation(target: HTMLElement) {
-	const user = await getUserInfo();
-	if (!user || user.status === "error") {
-		return window.location.href = "/login";
-	}
-	const targetId = target.dataset.id;
-	const response = await fetchApi(API_PEOPLE.PENDING + `/${targetId}`, {
-		method: "DELETE",
-		body: JSON.stringify({})
-	});
-	if (response.status === "error") {
-		alertTemporary("error", `Error while refusing invitation: ${response.message}`, user.data!.preferences.theme);
-		return;
-	}
-	alertTemporary("success", `Invitation refused`, user.data!.preferences.theme);
-	console.log("sendRefuseInvitation response", response);
+	alertTemporary("success", "user-blocked", user.data!.preferences.theme, true);
 }

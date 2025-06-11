@@ -1,4 +1,4 @@
-import { User } from "../../interfaces/User";
+import { User, UserInfo, UserPreferences } from "../../interfaces/User";
 import { API_CDN } from "../../api/routes";
 import { renderUserMenu } from "./userMenu";
 
@@ -22,13 +22,13 @@ export function navbar(user: User) {
 	return `
 	<nav class="flex flex-row navbar-responsive-size items-center w-full flex-wrap justify-between p-2">
 			${navbarLogo()}
-			<div id="user-menu-button" class="flex justify-end items-center cursor-pointer">
-				<span class="font-title hidden sm:block pointer-events-none mr-2 items-center
+			<button id="user-menu-button" class="flex justify-end items-center cursor-pointer">
+				<span class="font-title hqidden sm:block pointer-events-none mr-2 items-center
 				 text-tertiary dark:text-dtertiary">
-				${user.username}
+				${user.data.username}
 				</span>
 				<img class="w-12 h-12 rounded-full pointer-events-none" src=${API_CDN.AVATAR}/${user.preferences.avatar} alt="User profile picture">
-			</div>
+			</button>
 	</nav>
 	${userMenu(user)}`;
 }

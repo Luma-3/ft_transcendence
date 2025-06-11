@@ -25,7 +25,7 @@
   "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
   "devDependencies": {
     "@fastify/cors": "^10.0.2",
-    "@types/node": "^22.15.23",
+    "@types/node": "^22.15.31",
     "nodemon": "^3.1.10",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"

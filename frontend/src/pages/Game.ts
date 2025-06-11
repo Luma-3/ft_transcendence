@@ -33,7 +33,7 @@ function showGameOpponent(opponents: player) { return; }
 
 
 
-export default async function Game(roomData: RoomData, user: User) {
+export default async function Game(roomId: string, user: User) {
 
   addEventListener('keypress', () => { })
 	/**
@@ -47,41 +47,32 @@ export default async function Game(roomData: RoomData, user: User) {
 	onKeyUp(event);
   }
 
+	/**
+	 * ! Evenement clavier lors de l'affichage du VS (Room page)
+	 */
   onkeydown = (event) => {
 
-	const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
-		/**
-		 * Pour le premier evenement clavier, je ping le serveur pour 
-		 * lui signifier que le joueur a bien rejoint la Room
-		*/
-		if (divGame.classList.contains("opacity-0")) {
-			socket!.send(JSON.stringify({
-				type: "game",
-				payload: {
-					type: 'playerJoin',
-					data: {
-						roomId: roomData.roomId,
+		const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
+			/**
+			 * Pour le premier evenement clavier, je ping le serveur pour 
+			 * lui signifier que le joueur a bien rejoint la Room
+			*/
+			if (divGame.classList.contains("opacity-0")) {
+				console.log("Player is ready to play");
+				console.log("Room ID:", roomId);
+				socket?.send(JSON.stringify({
+					type: "game",
+					payload: {
+						type: 'playerReady',
+						data: {
+							roomId: roomId,
+						}
 					}
-				}
-			}))
-			return;
-		/**
-		 * pour le deuxieme evenement clavier, on valide le joueur pour lancer le jeu
-		 */
-		} else if (event.key === "Space") {
-			socket?.send(JSON.stringify({
-			type: "game",
-			payload: {
-				type: 'playerReady',
-				data: {
-					roomId: roomData.roomId,
-				}
-			},
-			}));
-			return;
-		}
+				}));
+				return;
+			}
 
-		onKeyDown(event);
+			onKeyDown(event);
 	}
 	
 	
@@ -89,7 +80,7 @@ export default async function Game(roomData: RoomData, user: User) {
 	 * Recuperation des tous les joueurs present dans le Room pour afficher
 	 * tout les adversaires du joueur (tournois)
 	 */
-	const opponentOfMyself = roomData.players.find((opponent) => opponent.playerId !== gameFrontInfo.playerId);
+	// const opponentOfMyself = roomData.players.find((opponent) => opponent.playerId !== gameFrontInfo.playerId);
 	
 	/**
 	 * Contenu HTML de la page
@@ -102,7 +93,7 @@ export default async function Game(roomData: RoomData, user: User) {
 			animate-transition opacity-100 duration-500 ease-in-out">
 				<div class="flex flex-row h-full w-full title-responsive-size justify-center items-center
 				space-x-4 pt-40">
-					<div id=${gameFrontInfo.gameName} class="flex flex-col w-1/2 h-1/2 p-4 justify-center items-center">
+					<div id="userGameProfile" class="flex flex-col w-1/2 h-1/2 p-4 justify-center items-center">
 						<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2
 						mb-4 transition-transform duration-800 ease-in-out
 						border-primary dark:border-dprimary" />
@@ -115,7 +106,7 @@ export default async function Game(roomData: RoomData, user: User) {
 					</div>
 					<div id="opponentGameProfile" class="flex flex-col w-1/2 h-1/2 p-4 justify-center items-center 
 					transition-transform duration-800 ease-in-out">
-					${showGameOpponent(opponentOfMyself!)}
+					Jean-Michel
 					</div>
 				</div>
 
@@ -124,9 +115,6 @@ export default async function Game(roomData: RoomData, user: User) {
 				</div>
 			</div>
 
-			/**
-			 * ! Div principale du jeu !
-			 */
 			<div id="hiddenGame" class="flex flex-col justify-center items-center
 			animate-transition opacity-0 duration-500 ease-out">
 				<canvas id="gamePong" width="800" height="600" class="flex w-[800px] h-[600px] border-4 border-primary bg-transparent rounded-lg"></canvas>
@@ -146,3 +134,5 @@ export default async function Game(roomData: RoomData, user: User) {
 			<div id="gameWin"></div>
 		</div>`
 }
+					// <!--${showGameOpponent(opponentOfMyself!)} -->
+// 

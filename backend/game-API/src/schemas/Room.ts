@@ -4,7 +4,7 @@ export const RoomParametersSchema = Type.Object({
 	roomId: Type.String({
 		format: "uuid",
 		description: "Unique identifier for the room, formatted as a UUID",
-		example: "123e4567-e89b-12d3-a456-426614174000"
+		examples: ["123e4567-e89b-12d3-a456-426614174000"]
 	}),
 })
 
@@ -14,7 +14,7 @@ export const RoomInfoSchema = Type.Object({
 	roomId: Type.String({
 		format: "uuid",
 		description: "Unique identifier for the room, formatted as a UUID",
-		example: "123e4567-e89b-12d3-a456-426614174000"
+		examples: ["123e4567-e89b-12d3-a456-426614174000"]
 	}),
 	typeGame: Type.Union([
 		Type.Literal("localpvp"),
@@ -23,21 +23,21 @@ export const RoomInfoSchema = Type.Object({
 		Type.Literal("tournament")
 	], {
 		description: "Type of game being played in the room",
-		example: "localpvp"
+		examples: ["localpvp"]
 	}),
 	players: Type.Array(Type.Object({
 		playerId: Type.String({
 			format: "uuid",
 			description: "Unique identifier for the player, formatted as a UUID",
-			example: "123e4567-e89b-12d3-a456-426614174001"
+			examples: ["123e4567-e89b-12d3-a456-426614174001"]
 		}),
 		gameName: Type.String({
 			description: "Name of the player in the game",
-			example: "Player1"
+			examples: ["Player1"]
 		}),
 		ready: Type.Boolean({
 			description: "Indicates if the player is ready to start the game",
-			example: true
+			examples: [true]
 		})
 	}))
 })
@@ -48,11 +48,11 @@ export const RoomInfoAllSchema = Type.Object({
 	roomId: Type.String({
 		format: "uuid",
 		description: "Unique identifier for the room, formatted as a UUID",
-		example: "123e4567-e89b-12d3-a456-426614174000"
+		examples: ["123e4567-e89b-12d3-a456-426614174000"]
 	}),
 	name: Type.String({
 		description: "Name of the room",
-		example: "Room-1"
+		examples: ["Room-1"]
 	}),
 	typeGame: Type.Union([
 		Type.Literal("localpvp"),
@@ -61,7 +61,7 @@ export const RoomInfoAllSchema = Type.Object({
 		Type.Literal("tournament")
 	], {
 		description: "Type of game being played in the room",
-		example: "localpvp"
+		examples: ["localpvp"]
 	}),
 	status: Type.Union([
 		Type.Literal("waiting"),
@@ -71,31 +71,31 @@ export const RoomInfoAllSchema = Type.Object({
 		Type.Literal("finished")
 	], {
 		description: "Current status of the room",
-		example: "waiting"
+		examples: ["waiting"]
 	}),
 	players: Type.Array(Type.Object({
 		playerId: Type.String({
 			format: "uuid",
 			description: "Unique identifier for the player, formatted as a UUID",
-			example: "123e4567-e89b-12d3-a456-426614174001"
+			examples: ["123e4567-e89b-12d3-a456-426614174001"]
 		}),
 		gameName: Type.String({
 			description: "Name of the player in the game",
-			example: "Player1"
+			examples: ["Player1"]
 		}),
 		ready: Type.Boolean({
 			description: "Indicates if the player is ready to start the game",
-			example: true
+			examples: [true]
 		})
 	})),
 	isFull: Type.Boolean({
 		description: "Indicates if the room is full",
-		example: false
+		examples: [false]
 	}),
 	createdAt: Type.String({
 		format: "date-time",
 		description: "Timestamp when the room was created",
-		example: "2023-10-01T12:00:00Z"
+		examples: ["2023-10-01T12:00:00Z"]
 	}),
 	maxPlayers: Type.Union([
 		Type.Literal(1),
@@ -103,7 +103,7 @@ export const RoomInfoAllSchema = Type.Object({
 		Type.Literal(8)
 	] ,{
 		description: "Maximum number of players allowed in the room",
-		example: 2
+		examples: [2]
 	})
 })
 

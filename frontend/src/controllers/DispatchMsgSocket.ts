@@ -11,6 +11,7 @@ function changeStatusPlayer(roomData: RoomData) {
 	for (const player of roomData.players) {
 		const ready = player.ready ? "ready" : "not-ready";
 		if (ready === "ready") {
+			console.log("Player is ready:", player.gameName);
 			const playerElement = document.getElementById(player.gameName);
 			playerElement?.classList.add("animate-bounce");
 		}
@@ -39,25 +40,26 @@ export async function handleGameSocketMessage(data: any ) {
 				alertGameReady();}
 			, 500);
 			setTimeout(() => {
-				renderGame(data.data);
+				renderGame(data);
 			}
 			, 3500);
 			break;
 		
-		case 'playerJoin':
-			changeStatusPlayer(data.data);
+		case 'playerReady':
+			changeStatusPlayer(data.gameData);
 			break;
 
 		case 'readyToStart':
+			console.log("Game is ready to start");
 			showGame();
-			drawGame(data.data.gameData!);
+			drawGame(data.gameData);
 			setTimeout(() => {
-				launchGame(data.data);
+				launchGame(data.gameData);
 			}, 3000);
 			break;
 		
 		case 'update':
-			drawGame(data.data.gameData!);
+			drawGame(data.gameData);
 			break;
 		case 'win':
 			DisplayGameWinLose(true);
