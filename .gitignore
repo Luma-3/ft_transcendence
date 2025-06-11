@@ -1,3 +1,4 @@
 *.pid
  backend/upload-API/uploads/
 node_modules/
+.vscode
