@@ -1,25 +1,41 @@
-import { redisPub } from '../config/redis.js';
+import { redisPub } from '../utils/redis.js';
 
 import { Ball } from './Ball.js'
 import { Paddle } from './Paddle.js'
 
 export class Pong {
-  constructor({ player1_uid, player2_uid, sizeX = 800, sizeY = 600 } = {}) {
+  sizeX: number;
+  sizeY: number;
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+  paddle1: Paddle;
+  paddle2: Paddle;
+  ball: Ball;
+  gameIsStart: boolean;
+  WIN_SCORE: number;
+  isAgainstBot: boolean;
+  interval: number;
+  centerX: number;
+  centerY: number;
+
+  constructor(player1_uid: string, player2_uid: string, sizeX: number = 800, sizeY: number = 600) {
     this.sizeX = sizeX;
     this.sizeY = sizeY;
 
-    const centerX = sizeX / 2;
-    const centerY = sizeY / 2;
+    this.centerX = sizeX / 2;
+    this.centerY = sizeY / 2;
 
     this.top    = 0;
     this.bottom = this.sizeY;
     this.left   = 0;
     this.right  = this.sizeX;
 
-    this.paddle1 = new Paddle({ uid: player1_uid, x: this.left + 10, y: centerY });
-    this.paddle2 = new Paddle({ uid: player2_uid, x: this.right - 10, y: centerY });
+    this.paddle1 = new Paddle({ uid: player1_uid, x: this.left + 10, y: this.centerY });
+    this.paddle2 = new Paddle({ uid: player2_uid, x: this.right - 10, y: this.centerY });
 
-    this.ball = new Ball(centerX, centerY, 1, 1);
+    this.ball = new Ball(this.centerX, this.centerY, 1, 1);
 
     this.gameIsStart = false;
     this.WIN_SCORE = 11;
@@ -53,7 +69,7 @@ export class Pong {
           ? this.paddle1.uid
           : this.paddle2.uid;
         
-      winner !== 0 ? console.log(`${winner} wins the game!`) : console.log(`bot wins the game!`);
+      winner !== "0" ? console.log(`${winner} wins the game!`) : console.log(`bot wins the game!`);
       console.log(`${loser} loses the game!`);
 
       redisPub.publish('ws.game.out', JSON
@@ -78,7 +94,7 @@ export class Pong {
     }
   }
 
-  update(game) { 
+  update(game: Pong) { 
     game.ball.move_ball(game.top, game.bottom, game.paddle1, game.paddle2, this.sizeX);
 
     console.log('Is againts bot ? ', game.isAgainstBot);
@@ -117,13 +133,17 @@ export class Pong {
     );
   }
 
-  movePaddle(uid, direction) {
+  movePaddle(uid: string, direction: string) {
     let paddle;
     
     if ( uid !== "" && uid === this.paddle1.uid ) {
       paddle = this.paddle1;
     } else if ( !this.isAgainstBot ) {
       paddle = this.paddle2;
+    }
+    if (!paddle) {
+      console.error('Paddle not found for uid:', uid);
+      return;
     }
 
     switch (direction) {

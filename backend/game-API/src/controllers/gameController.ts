@@ -1,8 +1,11 @@
-import { redisSub } from '../config/redis.js';
+import { FastifyReply, FastifyRequest } from 'fastify';
+import { redisSub } from '../utils/redis.js';
 import { gameService } from '../services/gameService.js';
+import { RoomParametersType } from '../schemas/Room.js';
+import { PlayerInitialType } from '../schemas/Player.js';
 
 // req: { playerId, gameName, typeGame }
-export async function postPlayer(req, rep) {
+export async function postPlayer(req: FastifyRequest<{Body: PlayerInitialType}>, rep: FastifyReply) {
   const data = req.body;
 
   const player = { playerId: data.playerId, gameName: data.gameName, ready: false };
@@ -14,7 +17,7 @@ export async function postPlayer(req, rep) {
   rep.code(201).send({ message: 'Player added to room', data: { id: roomId } });
 }
 
-export async function getRoomInfo(req, rep) {
+export async function getRoomInfo(req: FastifyRequest<{Params: RoomParametersType}>, rep: FastifyReply) {
   const roomId = req.params.roomId;
   const room = gameService.getRoom(roomId);
 
@@ -35,12 +38,12 @@ export async function getRoomInfo(req, rep) {
 
 // payload: { type: 'init', data: { uid, roomId } }
 export async function handlerEvent() {
-  redisSub.subscribe('ws.game.in', (raw) => {
+  redisSub.subscribe('ws.game.in', (raw: string) => {
     const message = JSON.parse(raw);
     gameService.handleEvent(message.clientId, message.payload);
   })
 
-  redisSub.subscribe('ws.broadcast.disconnect', (raw) => {
+  redisSub.subscribe('ws.broadcast.disconnect', (raw: string) => {
     const message = JSON.parse(raw);
     // gameService.deleteRoom(gameService.getRoom(message.clientId));
   })
