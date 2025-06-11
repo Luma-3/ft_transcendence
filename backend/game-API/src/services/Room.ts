@@ -70,10 +70,10 @@ export class Room {
 	//   return null; // Cannot create game if not ready
 	// }
 
-	this.pong = new Pong({
-	  player1_uid: this.players[0].playerId,
-	  player2_uid: this.players[1]?.playerId
-	}); // Optional player2_uid for single-player games
+	this.pong = new Pong(
+	  this.players[0].playerId,
+	  this.players[1]?.playerId
+	); // Optional player2_uid for single-player games
 
 	if (!this.pong) {
 	  return null; // Game creation failed
