@@ -16,17 +16,15 @@ await server.register(cookie);
 await server.register(formatter);
 
 await server.register(swagger, {
-  title: 'User Service API',
-  description: 'Endpoints for user management',
+  title: 'Authentication Service API',
+  description: 'Endpoints for managing Sessions, 2FA and OAuth2.0.',
   route: '/doc/json',
   version: '1.0.0',
   servers: [
-    { url: '/user/', description: 'User Service' }
+    { url: '/auth/', description: 'Auth Service Server' }
   ],
   tags: [
-    { name: 'Users', description: 'Endpoints for managing user accounts and accessing personal or public user information.' },
-    { name: 'Sessions', description: 'Endpoints related to user session creation and termination.' },
-    { name: 'Preferences', description: 'Endpoints related to user preferences.' }
+    { name: 'Sessions', description: 'Endpoints for managing user sessions.' },
   ],
   components: {
     securitySchemes: {

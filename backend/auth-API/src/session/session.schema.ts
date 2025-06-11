@@ -23,16 +23,14 @@ export const RefreshTokenBase = Type.Object({
   ip_address: Type.String(),
   device_id: Type.String(),
   user_agent: Type.String(),
-  created_at: Type.Optional(Type.Date()),
-  expired_at: Type.Optional(Type.Date()),
-  last_used: Type.Optional(Type.Date() || Type.Null()),
+  created_at: Type.Optional(Type.String({ format: 'timestamp' })),
+  expired_at: Type.Optional(Type.String({ format: 'timestamp' })),
+  last_used: Type.Optional(Type.String({ format: 'timestamp' }) || Type.Null()),
   is_active: Type.Optional(Type.Boolean())
 });
 export type RefreshTokenBaseType = Static<typeof RefreshTokenBase>
 
-export const FamiliesResponse = Type.Object(
-  Type.Array(RefreshTokenBase)
-);
+export const FamiliesResponse = Type.Array(RefreshTokenBase)
 export type FamiliesResponseType = Static<typeof FamiliesResponse>
 
 export const UserHeaderAuthentication = Type.Object({

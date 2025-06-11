@@ -5,6 +5,7 @@ import { generateToken } from "../utils/jwt.js";
 import { refreshTokenModelInstance } from "./token.model.js";
 
 import { FamiliesResponseType } from './session.schema.js';
+import { timeStamp } from 'console';
 
 interface refreshTokenInfo {
   user_id: string;
@@ -91,6 +92,12 @@ export class SessionService {
     const token = await refreshTokenModelInstance.getTokenById(tokenId);
     if (!token) throw new UnauthorizedError();
 
+    if (!token.is_active) throw new UnauthorizedError('Token is not active');
+    if (token.expired_at! < Date.now().toString()) throw new UnauthorizedError('Token has expired');
+
+    // Update last used time
+    await refreshTokenModelInstance.updateToken(tokenId, { last_used: Date.now().toString(), is_active: false });
+
     const accessToken = await createAccessToken(token.user_id, token.family_id);
 
     const refreshToken = await createRefreshToken({ // TODO : gerer les device_id, ip_adress, et user_agent
@@ -108,8 +115,12 @@ export class SessionService {
     return await refreshTokenModelInstance.deleteAllTokensByFamilyId(familyId);
   }
 
-  static async getFamilies(userId: string): Promise<FamiliesResponseType[]> {
+  static async getFamilies(userId: string): Promise<FamiliesResponseType> {
     return await refreshTokenModelInstance.getAllFamiliesByUserId(userId);
+  }
+
+  static async getFamilyById(familyId: string): Promise<FamiliesResponseType> {
+    return await refreshTokenModelInstance.getAllTokensByFamilyId(familyId);
   }
 }
 

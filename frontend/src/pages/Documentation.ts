@@ -14,6 +14,7 @@ export default function documentation() {
 		${primaryButton({ id: 'showUploadDoc', text: 'upload api doc' })}
 		${primaryButton({ id: 'showGameDoc', text: 'game api doc' })}
 		${primaryButton({ id: 'showPeopleDoc', text: 'people api doc' })}
+    ${primaryButton({ id: 'showAuthDoc', text: 'auth api doc' })}
 	</div>
 	<div class="flex flex-col lg:flex-row justify-center items-center h-full">
 		<div class="flex p-4 items-center text-tertiary dark:text-dtertiary justify-center max-h-[1000px]">

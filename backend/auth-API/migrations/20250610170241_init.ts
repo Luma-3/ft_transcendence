@@ -10,7 +10,7 @@ export async function up(knex: Knex): Promise<void> {
     t.string('ip_address');
     t.text('user_agent');
     t.timestamp('created_at');
-    t.timestamp('expires_at');
+    t.timestamp('expired_at');
     t.timestamp('last_used');
     t.boolean('is_active');
   })

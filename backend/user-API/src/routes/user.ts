@@ -15,6 +15,7 @@ import {
 
 import {
   UserPublicResponse,
+  UserPrivateResponse,
   UserCreateBody,
   UserQueryGet,
   UserHeaderAuthentication,
@@ -92,7 +93,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       headers: UserHeaderAuthentication,
       querystring: UserQueryGet,
       response: {
-        200: ResponseSchema(UserPublicResponse, 'Ok'),
+        200: ResponseSchema(UserPrivateResponse, 'Ok'),
         404: NotFoundResponse,
         401: UnauthorizedResponse,
       }

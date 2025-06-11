@@ -2,7 +2,7 @@ import app from './fastify.js'
 import http_proxy from '@fastify/http-proxy';
 import dotenv from 'dotenv';
 
-// import { internalRoutes } from './plugins/internalRoute.js';
+import { internalRoutes } from './plugins/internalRoute.js';
 
 dotenv.config()
 
@@ -11,31 +11,31 @@ const Services = [
     name: 'Users Service', prefix: '/user',
     upstream: 'http://' + process.env.USER_IP,
     url: '/api/user/doc/json',
-    // preHandler: internalRoutes
+    preHandler: internalRoutes
   },
   {
     name: 'Upload Service', prefix: '/uploads',
     upstream: 'http://' + process.env.UPLOAD_IP,
     url: '/api/upload/doc/json',
-    // preHandler: internalRoutes
+    preHandler: internalRoutes
   },
   {
     name: 'Game Service', prefix: '/game',
     upstream: 'http://' + process.env.GAME_IP,
     url: '/api/game/doc/json',
-    // preHandler: internalRoutes
+    preHandler: internalRoutes
   },
   {
     name: 'People Service', prefix: '/people',
     upstream: 'http://' + process.env.PEOPLE_IP,
     url: '/people/doc/json',
-    // preHandler: internalRoutes
+    preHandler: internalRoutes
   },
   {
     name: 'Auth Service', prefix: '/auth',
     upstream: 'http://' + process.env.AUTH_IP,
     url: '/api/auth/doc/json',
-    // preHandler: internalRoutes
+    preHandler: internalRoutes
   }
 ]
 
@@ -44,14 +44,6 @@ Services.forEach((value) => {
   console.log(value);
   app.register(http_proxy, value);
 })
-
-// app.addHook('onRequest', (req, _) => {
-//   console.log(`Moi: [${req.method}] ${req.url}`);
-// });
-//
-// app.addHook('onError', (req, _, error) => {
-//   console.error(`Error: [${req.method}] ${req.url} - ${error.message}`);
-// });
 
 const start = async () => {
   app.listen({ port: 3000, host: '0.0.0.0' }, (err, address) => {
