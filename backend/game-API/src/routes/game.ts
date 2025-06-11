@@ -17,8 +17,7 @@ export default async function(fastify: FastifyInstance) {
         201: ResponseSchema(Type.Object({
           id: Type.String({
             format: 'uuid',
-            description: 'Unique identifier for the room, formatted as a UUID',
-            example: '123e4567-e89b-12d3-a456-426614174000'
+            description: 'Unique identifier for the room, formatted as a UUID'
           })
         }), 'Player added to room'),
         500: ResponseSchema(undefined, 'Failed to join room', 'error')

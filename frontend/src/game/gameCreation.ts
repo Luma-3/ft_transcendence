@@ -58,13 +58,14 @@ async function sendDataToServer(userTheme: string) {
  */
 export async function createGame() {
 
+	console.log("Creating game...");
 	/**
 	 * Verification de la connexion WebSocket
 	 */
-	if (socket?.readyState !== WebSocket.OPEN) {
-		alert("Connection to the server lost. Automatically reconnecting...", "error");
-		return window.location.reload();
-	}
+	// if (socket?.readyState !== WebSocket.OPEN) {
+	// 	alert("Connection to the server lost. Automatically reconnecting...", "error");
+	// 	return window.location.reload();
+	// }
 
 
 	/**
@@ -127,6 +128,6 @@ export async function createGame() {
 		gameNameOpponent: (player2) ? player2 : "",
 	}
 
-	await sendDataToServer(user.data.preferences.theme);
+	await sendDataToServer(user.preferences.theme);
 	initGame();
 }

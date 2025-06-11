@@ -86,10 +86,10 @@ const rendererPrivatePage: { [key: string]: (user: User) => string | Promise<str
  */
 export async function renderPrivatePage(page: string, updateHistory: boolean = true) {
 
-  // if (!socket) {
-  //   console.log("No websocket found for this session, creating a new one");
-  //   socketConnection();
-  // }
+  if (!socket) {
+    console.log("No websocket found for this session, creating a new one");
+    socketConnection();
+  }
 
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
   const token = await fetchToken();
@@ -148,14 +148,14 @@ export async function renderGame(roomData: RoomData) {
     return renderErrorPage('400', '401', 'Unauthorized');
   }
 
-  const lang = response.data.preferences.lang;
-  const theme = response.data.preferences.theme;
+  const lang = response.preferences.lang;
+  const theme = response.preferences.theme;
 
 	fadeOut();
 
   setTimeout(async () => {
-
-    const newContainer = await game(roomData, response.data!);
+    console.log("Rendering game for room:", roomData);
+    const newContainer = await game(roomData.data.roomId, response!);
     if (!newContainer) {
       return;
     }
@@ -168,8 +168,7 @@ export async function renderGame(roomData: RoomData) {
     removeLoadingScreen();
 
 		fadeIn();
-	}
-		, 250);
+  }, 250);
 }
 
 import { renderOtherProfile } from '../pages/OtherProfile'
@@ -228,8 +227,8 @@ export async function renderErrorPage(codePage: string, code: string, message: s
 
   const user = await getUserInfo();
 
-  const lang = user.status === "error" ? 'en' : user.data?.preferences.lang || 'en';
-  const theme = user.status === "error" ? 'dark' : user.data?.preferences.theme || 'dark';
+  const lang = user.status === "error" ? 'en' : user.preferences.lang || 'en';
+  const theme = user.status === "error" ? 'dark' : user.preferences.theme || 'dark';
 
 	setupColorTheme(theme);
 	fadeOut();

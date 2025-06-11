@@ -22,11 +22,11 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
   fastify.register(async (fastify) => {
     fastify.get('/ws', { websocket: true }, async (socket, req) => {
 
-      const clientId = req.headers['x-user-id'];
+      const clientId = req.headers['x-user-id'] as string;
       fastify.ws_clients.set(clientId, socket);
       console.log(`[WS] client ${clientId} connected`);
 
-      socket.on('message', (raw) => {
+      socket.on('message', (raw: string) => {
         try {
           const { type, payload } = JSON.parse(raw);
 

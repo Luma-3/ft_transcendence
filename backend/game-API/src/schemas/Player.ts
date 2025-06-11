@@ -19,11 +19,11 @@ export const PlayerInitialSchema = Type.Object({
 	playerId: Type.String({
 		format: "uuid",
 		description: "Unique identifier for the player, formatted as a UUID",
-		example: "123e4567-e89b-12d3-a456-426614174001"
+		examples: ["123e4567-e89b-12d3-a456-426614174001"]
 	}),
 	gameName: Type.String({
 		description: "Name of the player in the game",
-		example: "Player1"
+		examples: ["Player1"]
 	}),
 	typeGame: Type.Union([
 		Type.Literal("localpvp"),
@@ -32,7 +32,7 @@ export const PlayerInitialSchema = Type.Object({
 		Type.Literal("tournament")
 	], {
 		description: "Type of game wanted by the player",
-		example: "localpvp"
+		examples: ["localpvp"]
 	})
 });
 export type PlayerInitialType = Static<typeof PlayerInitialSchema>;

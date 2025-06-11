@@ -2,13 +2,21 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { redisSub } from '../utils/redis.js';
 import { gameService } from '../services/gameService.js';
 import { RoomParametersType } from '../schemas/Room.js';
-import { PlayerInitialType } from '../schemas/Player.js';
+import { PlayerInitialType, PlayerType } from '../schemas/Player.js';
 
 // req: { playerId, gameName, typeGame }
 export async function postPlayer(req: FastifyRequest<{Body: PlayerInitialType}>, rep: FastifyReply) {
   const data = req.body;
 
-  const player = { playerId: data.playerId, gameName: data.gameName, ready: false };
+  const player : PlayerType = {
+    playerId: data.playerId,
+    gameName: data.gameName,
+    clientId: '0',
+    joined: false,
+    ready: false,
+    score: 0
+  };
+
   const roomId = gameService.joinRoom(player, data.typeGame);
 
   if (!roomId) {
