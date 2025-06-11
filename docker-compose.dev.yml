@@ -33,10 +33,33 @@ services:
       - base
     ports:
       - "3000:3000"
+    expose:
+      - "3000"
     networks:
       - backend-net
       - redis-net
       - frontend-net
+
+  auth-api:
+    build:
+      context: ./backend/auth-API/
+      dockerfile: Dockerfile.dev
+    container_name: auth-API
+    env_file:
+        - ./.dev.env
+    volumes:
+      - ./backend/auth-API/data:/app/data:z
+      - ./backend/auth-API/src:/app/src:z
+    depends_on:
+      - base
+      - redis
+    ports:
+      - "3005:3005"
+    expose:
+      - "3005"
+    networks:
+      - backend-net
+      - redis-net
 
   user-api:
     build:
@@ -122,6 +145,8 @@ services:
       - ./frontend/public:/app/public:z
     ports:
       - "5173:5173"
+    expose: 
+      - "5173"
     depends_on:
       - gateway
     networks:

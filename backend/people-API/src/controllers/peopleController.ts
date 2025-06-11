@@ -1,7 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { GatewayHeaderType, type SearchGetType } from "../schema/people.schema";
-import { peopleServices } from "../services/peopleServices";
-import { UnauthorizedError } from "@transcenduck/error";
+import { GatewayHeaderType, type SearchGetType } from "../schema/people.schema.js";
+import { peopleServices } from "../services/peopleServices.js";
 
 export async function getAll(req: FastifyRequest<{
 	Headers: GatewayHeaderType

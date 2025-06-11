@@ -1,33 +1,42 @@
 import app from './fastify.js'
 import http_proxy from '@fastify/http-proxy';
-import dotenv from 'dotenv'
-import process from "node:process";
+import dotenv from 'dotenv';
+import process from 'node:process';
+
+import { internalRoutes } from './plugins/internalRoute.js';
 
 dotenv.config()
 
 const Services = [
   {
-    name: 'Users Services', prefix: '/user',
+    name: 'Users Service', prefix: '/user',
     upstream: 'http://' + process.env.USER_IP,
     url: '/api/user/doc/json',
-    // preHandler: InternalRoute
+    preHandler: internalRoutes
   },
   {
-    name: 'Upload Services', prefix: '/uploads',
+    name: 'Upload Service', prefix: '/uploads',
     upstream: 'http://' + process.env.UPLOAD_IP,
     url: '/api/upload/doc/json',
-    // preHandler: InternalRoute
+    preHandler: internalRoutes
   },
   {
-    name: 'Game Services', prefix: '/game',
+    name: 'Game Service', prefix: '/game',
     upstream: 'http://' + process.env.GAME_IP,
     url: '/api/game/doc/json',
+    preHandler: internalRoutes
   },
   {
-    name: 'People Services', prefix: '/people',
+    name: 'People Service', prefix: '/people',
     upstream: 'http://' + process.env.PEOPLE_IP,
-    url: '/api/people/doc/json',
-    //preHandler: InternalRoute
+    url: '/people/doc/json',
+    preHandler: internalRoutes
+  },
+  {
+    name: 'Auth Service', prefix: '/auth',
+    upstream: 'http://' + process.env.AUTH_IP,
+    url: '/api/auth/doc/json',
+    preHandler: internalRoutes
   }
 ]
 

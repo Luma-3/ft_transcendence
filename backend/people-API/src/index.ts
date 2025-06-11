@@ -1,13 +1,13 @@
-import { redisSub } from "./utils/redis"
-import { peopleModel } from './models/peopleModel';
-import { FriendsServices } from './services/friendsServices';
-import { friendRoute } from './routes/friends';
-import { PeopleServices } from './services/peopleServices';
-import { peopleRoute } from './routes/people';
-import { blockedRoute } from './routes/blocked';
-import { BlockedServices } from './services/blockedServices';
-import server from './fastify';
-import { type PeoplesEventRedisType } from './schema/people.schema';
+import { redisSub } from "./utils/redis.js"
+import { peopleModel } from './models/peopleModel.js';
+import { FriendsServices } from './services/friendsServices.js';
+import { friendRoute } from './routes/friends.js';
+import { PeopleServices } from './services/peopleServices.js';
+import { peopleRoute } from './routes/people.js';
+import { blockedRoute } from './routes/blocked.js';
+import { BlockedServices } from './services/blockedServices.js';
+import server from './fastify.js';
+import { type PeoplesEventRedisType } from './schema/people.schema.js';
 import process from 'node:process'
 import { AddressInfo } from 'node:net';
 

@@ -1,4 +1,4 @@
-import { User } from '../../api/interfaces/User';
+import { User } from '../../interfaces/User';
 import { API_CDN } from '../../api/routes';
 
 let userNotification: boolean = false;

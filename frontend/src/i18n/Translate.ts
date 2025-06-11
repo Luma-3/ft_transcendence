@@ -1,7 +1,7 @@
 import { API_USER } from "../api/routes";
 import { fetchApi } from "../api/fetch";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
-import { getUserInfo } from "../api/getter";
+import { getUserInfo } from "../api/getterUser(s)";
 
 const autorizedLangs = ['en', 'fr', 'es']
 

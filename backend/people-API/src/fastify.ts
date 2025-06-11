@@ -1,7 +1,7 @@
 import fastify from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 
-import swagger from "./plugins/swagger";
+import swagger from "./plugins/swagger.js";
 import formatter from "@transcenduck/formatter";
 import { destroyKnex } from "./utils/knex.js";
 

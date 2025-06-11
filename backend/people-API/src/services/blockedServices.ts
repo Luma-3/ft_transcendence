@@ -1,6 +1,6 @@
 import { UnauthorizedError } from "@transcenduck/error";
-import { peopleModel } from "../models/peopleModel";
-import knex from "../utils/knex";
+import { peopleModel } from "../models/peopleModel.js";
+import knex from "../utils/knex.js";
 
 export class BlockedServices {
 

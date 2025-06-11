@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
-import * as FriendsController from '../controllers/friendsController'
-import { FriendsParam } from '../schema/people.schema';
+import * as FriendsController from '../controllers/friendsController.js'
+import { FriendsParam } from '../schema/people.schema.js';
 
 export async function friendRoute(fastify: FastifyInstance) {
 	fastify.post("/friends/:friendId", 

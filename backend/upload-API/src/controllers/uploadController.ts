@@ -1,8 +1,8 @@
 import path from 'path';
 import * as mine from 'mime-types';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { TypeUpload, uploadServices } from '../services/UploadService';
-import { CdnQueryType, UploadFileParamsType } from '../schema/upload.schema';
+import { TypeUpload, uploadServices } from '../services/UploadService.js';
+import { CdnQueryType, UploadFileParamsType } from '../schema/upload.schema.js';
 
 
 

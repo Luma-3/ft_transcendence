@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
-import * as PeopleController from '../controllers/peopleController'
-import {  GatewayHeader, PeoplesResponsePublic, SearchGet } from '../schema/people.schema';
-import { ResponseSchema } from '../utils/schema';
+import * as PeopleController from '../controllers/peopleController.js'
+import {  GatewayHeader, PeoplesResponsePublic, SearchGet } from '../schema/people.schema.js';
+import { ResponseSchema } from '../utils/schema.js';
 import { Type } from '@sinclair/typebox';
 
 export async function peopleRoute(fastify: FastifyInstance) {

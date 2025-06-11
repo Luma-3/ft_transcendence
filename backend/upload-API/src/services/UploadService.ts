@@ -4,9 +4,9 @@ import fs from "fs";
 import { randomUUID } from "crypto";
 import * as mine from "mime-types";
 import { pipeline } from "node:stream/promises";
-import { editorImageService } from "./EditorImageService";
+import { editorImageService } from "./EditorImageService.js";
 import { MultipartFile } from "@fastify/multipart";
-import { CdnQueryType } from "../schema/upload.schema";
+import { CdnQueryType } from "../schema/upload.schema.js";
 export enum TypeUpload {
   avatar = 'avatar',
   banner = 'banner'

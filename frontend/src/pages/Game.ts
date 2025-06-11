@@ -3,11 +3,11 @@ import { navbar } from "../components/ui/navbar";
 import { onKeyDown, onKeyUp } from "../game/gameUpdate";
 import { resizeCanvas } from "../game/resizeCanvas";
 
-import { RoomData } from "../api/interfaces/GameData";
-import { User } from "../api/interfaces/User";
+import { RoomData } from "../interfaces/GameData";
+import { User } from "../interfaces/User";
 
-import { socket } from "../events/Socket";
-import { player } from "../api/interfaces/GameData";
+import { socket } from "../controllers/Socket";
+import { player } from "../interfaces/GameData";
 import { gameFrontInfo } from "../game/gameCreation";
 
 function showGameOpponent(opponents: player) { return; }

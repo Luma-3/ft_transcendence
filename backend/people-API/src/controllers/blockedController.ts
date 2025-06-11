@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { blockedServices } from "../services/blockedServices";
-import { BlockedParamType, GatewayHeaderType } from "../schema/people.schema";
+import { blockedServices } from "../services/blockedServices.js";
+import { BlockedParamType, GatewayHeaderType } from "../schema/people.schema.js";
 
 export async function blockUser(req: FastifyRequest<{ 
 	Params: BlockedParamType,

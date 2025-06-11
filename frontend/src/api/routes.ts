@@ -21,9 +21,8 @@ export const API_USER = {
     PREF: {
       AVATAR: `${SERVICES.USER}/me/preferences/avatar`,
       BANNER: `${SERVICES.USER}/me/preferences/banner`,
-      ALL : `${SERVICES.USER}/me/preferences`,  //Toutes les preferences
-      // THEME_LANG: `${SERVICES.USER}/me/preferences/theme-lang`,  //Theme et les langues:
-    },  //Theme et les langues
+      ALL : `${SERVICES.USER}/me/preferences`,  //Toutes les preferences (theme, langues, avatar, banner)
+    },
     PASSWORD: `${SERVICES.USER}/me/password`,
     EMAIL: `${SERVICES.USER}/me/email`,
     USERNAME: `${SERVICES.USER}/me/username`,

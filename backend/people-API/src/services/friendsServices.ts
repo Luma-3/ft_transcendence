@@ -1,5 +1,5 @@
 import { UnauthorizedError, ForbiddenError } from "@transcenduck/error"
-import { peopleModel } from "../models/peopleModel";
+import { peopleModel } from "../models/peopleModel.js";
 
 export class FriendsServices {
 

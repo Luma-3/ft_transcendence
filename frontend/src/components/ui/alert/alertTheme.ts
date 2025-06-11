@@ -1,4 +1,4 @@
-import { getUserInfo } from "../../../api/getter";
+import { getUserInfo } from "../../../api/getterUser(s)";
 import { alertTemporary } from "./alertTemporary";
 
 export async function getCustomAlertTheme(needUser: boolean = true, theme: string = "dark") {

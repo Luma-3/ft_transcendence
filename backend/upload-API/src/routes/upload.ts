@@ -10,7 +10,7 @@ import { ConflictResponse , ForbiddenResponse, InvalidTypeResponse, NotFoundResp
  * - banner
  */
 export default async function uploadRoute(fastify: FastifyInstance) {
-  fastify.post('/:typePath', {
+  fastify.post('/internal/:typePath', {
     schema: {
       consumes: ['multipart/form-data'],
       summary: 'Upload file',
@@ -42,7 +42,7 @@ export default async function uploadRoute(fastify: FastifyInstance) {
     }
   }, Controller.getFile);
 
-  fastify.delete("/:typePath/*", {
+  fastify.delete("/internal/:typePath/*", {
     schema: {
       summary: 'Upload file',
       description: 'Endpoint to upload file',

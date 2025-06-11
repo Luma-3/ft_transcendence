@@ -31,6 +31,7 @@ export function footer() {
 				<a class="hover:underline" translate="rgpd"> RGPD</a> <br>
 				<a class="hover:underline" translate="terms-of-service">Terms of service</a> <br>
 				<a class="hover:underline" translate="cookies-policy">Cookies policy</a> <br>
+				<a href="https://localhost:5173/documentation" class="hover:underline" translate="api-doc">Api Doc</a> <br>
 				<a class="hover:underline" translate="contact">Contact</a> <br>
 			</div>
 		</div>

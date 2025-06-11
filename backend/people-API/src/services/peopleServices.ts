@@ -1,6 +1,6 @@
 import { ForbiddenError, InternalServerError, UnauthorizedError } from "@transcenduck/error"
-import { peopleModel } from "../models/peopleModel";
-import { ResponsePublicType } from "../schema/people.schema";
+import { peopleModel } from "../models/peopleModel.js";
+import { ResponsePublicType } from "../schema/people.schema.js";
 
 export class PeopleServices {
 

@@ -27,7 +27,10 @@ export function registerPlugin(fastify, servers) {
   fastify.register(cookie);
 
   fastify.register(cors, {
-    origin: `https://${process.env.AUTHORIZED_IP}`,
+    origin: [
+      `https://${process.env.AUTHORIZED_IP}`,
+      'https://redoc:7777'
+    ],
     credentials: true
   });
 

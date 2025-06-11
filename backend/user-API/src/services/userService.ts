@@ -1,12 +1,12 @@
 import { ConflictError, NotFoundError, UnauthorizedError } from "@transcenduck/error";
 import { v4 as uuidV4 } from "uuid";
-import { hashPassword, comparePassword } from "../utils/bcrypt";
+import { hashPassword, comparePassword } from "../utils/bcrypt.js";
 
-import { knex, userModel, preferencesModel } from "../models/models";
-import { UserCreateBodyType, UserBaseType } from "../schema/user.schema";
-import { PreferencesBaseType } from "../schema/preferences.schema";
+import { knexInstance, userModel, preferencesModel } from "../models/models.js";
+import { UserCreateBodyType, UserBaseType } from "../schema/user.schema.js";
+import { PreferencesBaseType } from "../schema/preferences.schema.js";
 import { Knex } from "knex";
-import { USER_PRIVATE_COLUMNS } from "../models/userModel"
+import { USER_PRIVATE_COLUMNS } from "../models/userModel.js"
 
 
 export class UserService {
@@ -31,7 +31,7 @@ export class UserService {
       theme: data.preferences?.theme || 'dark',
     }
 
-    return await knex.transaction(async (trx: Knex.Transaction) => {
+    return await knexInstance.transaction(async (trx: Knex.Transaction) => {
       const userID = uuidV4();
       const [user] = await userModel.create(trx, userID, user_obj);
 
@@ -114,6 +114,16 @@ export class UserService {
 
     const [updatedUser] = await userModel.update(id, { username: username }, USER_PRIVATE_COLUMNS);
     return updatedUser;
+  }
+
+  static async verifyCredentials(username: string, password: string): Promise<UserBaseType> {
+    const user = await userModel.findByUsername(username, ['password', ...USER_PRIVATE_COLUMNS]);
+    if (!user) throw new UnauthorizedError("Invalid credentials");
+
+    const isValid = await comparePassword(password, user.password!);
+    if (!isValid) throw new UnauthorizedError("Invalid credentials");
+
+    return user;
   }
 }
 

@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { friendsServices } from "../services/friendsServices";
-import { FriendsParamType, GatewayHeaderType } from "../schema/people.schema";
+import { friendsServices } from "../services/friendsServices.js";
+import { FriendsParamType, GatewayHeaderType } from "../schema/people.schema.js";
 
 export async function addFriend(req: FastifyRequest<{
 	Params: FriendsParamType,

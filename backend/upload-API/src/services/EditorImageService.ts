@@ -1,5 +1,5 @@
 import sharp, { Sharp } from "sharp";
-import { CdnQueryType } from "../schema/upload.schema";
+import { CdnQueryType } from "../schema/upload.schema.js";
 
 export class EditorImageService {
   constructor() {}

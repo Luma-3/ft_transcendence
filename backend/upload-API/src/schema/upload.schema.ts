@@ -6,16 +6,22 @@ export const uploadFilePublic = Type.Object({
 })
 
 export const UploadFileParams = Type.Object({
-  typePath: Type.Enum(TypeUpload)
+  typePath: Type.Enum(TypeUpload, {
+    "description": "Type of upload file",
+    "default": TypeUpload.avatar
+  })
 })
 
 export const UploadFileValidation = Type.Object({
-  Url: Type.String({format: "uri"})
+  Url: Type.String({format: "uri", description: "The URL of the uploaded file"})
 })
 
 
 export const CdnQuery = Type.Object({
-  size: Type.Optional(Type.Number()),
+  size: Type.Optional(Type.Number({
+    description: "The size of the image to be returned. If not specified, the original size will be used.",
+    default: 0
+  })),
   scale: Type.Optional(Type.Union([Type.String(), Type.Number()])),
   width: Type.Optional(Type.Number()),
   height: Type.Optional(Type.Number()),

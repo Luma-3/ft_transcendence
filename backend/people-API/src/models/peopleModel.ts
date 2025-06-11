@@ -1,6 +1,6 @@
 import { Knex } from "knex";
-import { BlockedSelfReponseType, FriendSelfReponseType, PendingSelfReponseType, PeoplesDBBaseType, ResponsePublicType, ResponseSelfType, type PeoplesSchemaType } from "../schema/people.schema";
-import knex from "../utils/knex";
+import { BlockedSelfReponseType, FriendSelfReponseType, PendingSelfReponseType, PeoplesDBBaseType, ResponsePublicType, ResponseSelfType, type PeoplesSchemaType } from "../schema/people.schema.js";
+import knex from "../utils/knex.js";
 
 export const PeopleSchemaDBPrivate: PeoplesSchemaType = ["user_id", "username", "friends", "blocked", "pending"];
 export const PeopleSchemaSelfDBPublic: PeoplesSchemaType = ["user_id", "username", "friends", "blocked", "pending"];

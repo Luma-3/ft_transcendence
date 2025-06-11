@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';;
 import { AddressInfo } from 'net';
-import server from './fastify';
+import server from './fastify.js';
 
 dotenv.config()
 
