@@ -8,7 +8,7 @@ import { primaryButton } from "../components/ui/buttons/primaryButton"
 import { secondaryButton } from "../components/ui/buttons/secondaryButton"
 import { backButton } from "../components/ui/buttons/backButton";
 
-import { User } from "../interfaces/User"
+import { User, UserInfo } from "../interfaces/User"
 import { getAllUsers, getFriends, getOtherUserInfo, getUserInfo } from "../api/getterUser(s)"
 import { API_CDN } from "../api/routes";
 
@@ -69,7 +69,7 @@ function imageEditorDiv() {
 	</div>`
 }
 
-function userUpdateForm(user: User) {
+function userUpdateForm(user: UserInfo) {
 	return `
 		${form({
 		name : "saveChangeBasicUserInfo",
@@ -153,7 +153,7 @@ async function notifications() {
 
 
 
-async function friends(user:User) {
+async function friends(user: UserInfo) {
 	let container = `
 			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
 			<div class="flex flex-row justify-between items-center space-x-4">
@@ -229,7 +229,7 @@ function lockOrUnlockButton(user: UserInPeople) {
 
 import { headerUserMenu } from "../components/ui/userMenu";
 
-async function allUsers(user:User) {
+async function allUsers(user: UserInfo) {
 	let container = `
 			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
 				<div class="flex flex-row justify-between items-center space-x-4">
@@ -285,15 +285,14 @@ async function renderProfilePage() {
 
 	const response = await getUserInfo();
 	if (response.status === "success" && response.data) {
-		const user = response.data;
 
 		return `
-			${navbar(user)}
+			${navbar({data: response.data, preferences: response.preferences})}
 			${backButton()}
 			<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
-			${avatarBanner(user.preferences)}
+			${avatarBanner({ avatar: response.preferences.avatar, banner: response.preferences.banner || 'default.webp' })}
 			${imageEditorDiv()}
-			${userUpdateForm(user)}
+			${userUpdateForm(response.data)}
 			</div>
 			<div class="flex flex-col w-full justify-center items-center space-y-4 text-primary dark:text-dtertiary">
 			<div class="flex flex-col w-full max-w-[1000px] items-center justify-center pt-5">
@@ -303,8 +302,8 @@ async function renderProfilePage() {
 			</div>
 			<div class="flex flex-col justify-center items-center">
 				<div class="flex flex-row justify-between items-center w-full max-w-[1500px] space-x-4 space-y-4">
-				${await friends(user)}
-				${await allUsers(user)}
+				${await friends(response.data)}
+				${await allUsers(response.data)}
 				</div>
 		<div class="flex h-[100px]"></div>
 

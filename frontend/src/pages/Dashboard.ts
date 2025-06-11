@@ -125,7 +125,7 @@ async function renderDashboard(user:User) {
 				<img src="/images/dashboard.png" alt="Bienvenue" class="w-40 mb-8 drop-shadow-lg" />
 
 				<label for="player1-name" class="text-2xl font-title text-zinc-600 mb-4" translate="player1">Player 1</label>
-				<input type="text" id="player1-name" class="w-1/2 p-2 font-title border-2 border-zinc-300 rounded-lg" translate="username" placeholder="username" value=${user.username} />
+				<input type="text" id="player1-name" class="w-1/2 p-2 font-title border-2 border-zinc-300 rounded-lg" translate="username" placeholder="username" value=${user.data.username} />
 
 				${gameTypeButton()}
 

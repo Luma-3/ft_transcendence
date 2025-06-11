@@ -17,7 +17,7 @@ import { fadeIn, fadeOut } from '../components/utils/fade'
 import { removeLoadingScreen } from '../components/utils/removeLoadingScreen'
 import { handleWelcomeYouPage } from '../pages/WelcomeYou';
 
-import { User } from '../interfaces/User'
+import { User, UserResponse } from '../interfaces/User'
 import { getUserInfo } from '../api/getterUser(s)'
 
 import { socket } from '../controllers/Socket'
@@ -86,13 +86,12 @@ const rendererPrivatePage: { [key: string]: (user: User) => string | Promise<str
  */
 export async function renderPrivatePage(page: string, updateHistory: boolean = true) {
 
-  if (!socket) {
-    console.log("No websocket found for this session, creating a new one");
-    socketConnection();
-  }
+  // if (!socket) {
+  //   console.log("No websocket found for this session, creating a new one");
+  //   socketConnection();
+  // }
 
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
-
   const token = await fetchToken();
   if (token.status === "error") {
     return renderErrorPage('400', '401', 'Unauthorized');
@@ -103,8 +102,8 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     return renderErrorPage('400', '401', 'Unauthorized');
   }
 
-  const lang = response.data.preferences.lang;
-  const theme = response.data.preferences.theme;
+  const lang = response.preferences.lang || 'en';
+  const theme = response.preferences.theme || 'dark';
 
 	fadeOut();
 
@@ -114,7 +113,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     if (!rendererFunction) {
       return renderErrorPage('404', '404', 'not-found');
     }
-    const page_content = await Promise.resolve(rendererFunction(response.data as User));
+    const page_content = await Promise.resolve(rendererFunction({ data: response.data, preferences: response.preferences }));
 
     main_container.innerHTML = page_content;
     setupColorTheme(theme);
