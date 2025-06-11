@@ -1,15 +1,19 @@
 export class Paddle {
-	uid: string;
+	uid: string | undefined;
 	score: number;
 	width: number;
 	height: number;
-	x: number;
-	y: number;
+	x: number = 0;
+	y: number = 0;
 	speed: number;
 	halfHeight: number;
 
-  constructor({ uid = "0", x = 0, y = 0 } = {}) {
-	this.uid = uid;
+  constructor(uid: string | undefined , x: number, y: number) {
+	if (uid === undefined) {
+		this.uid = '0';
+	} else {
+		this.uid = uid;
+	}
 
 	this.score = 0;
 	this.width = 10;

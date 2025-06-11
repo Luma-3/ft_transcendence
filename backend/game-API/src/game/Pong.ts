@@ -20,7 +20,7 @@ export class Pong {
   centerX: number;
   centerY: number;
 
-  constructor(player1_uid: string, player2_uid: string, sizeX: number = 800, sizeY: number = 600) {
+  constructor(player1_uid: string, player2_uid?: string, sizeX: number = 800, sizeY: number = 600) {
     this.sizeX = sizeX;
     this.sizeY = sizeY;
 
@@ -32,8 +32,8 @@ export class Pong {
     this.left   = 0;
     this.right  = this.sizeX;
 
-    this.paddle1 = new Paddle({ uid: player1_uid, x: this.left + 10, y: this.centerY });
-    this.paddle2 = new Paddle({ uid: player2_uid, x: this.right - 10, y: this.centerY });
+    this.paddle1 = new Paddle(player1_uid, this.left + 10, this.centerY);
+    this.paddle2 = new Paddle(player2_uid, this.right - 10, this.centerY);
 
     this.ball = new Ball(this.centerX, this.centerY, 1, 1);
 
