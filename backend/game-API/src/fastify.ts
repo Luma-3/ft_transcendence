@@ -21,6 +21,7 @@ await server.register(websocketPlugin);
 await server.register(swagger, {
   title: 'Game Service API',
   description: 'Endpoints for game management',
+  version: '1.0.0',
   route: '/doc/json',
   servers: [
       { url: '/game/', description: 'Game Service' }

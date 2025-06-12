@@ -79,6 +79,7 @@ export class UploadService {
    */
   async getFile(typePath: string, realPath: string, options: CdnQueryType) {
     const pathJoin = path.join(this._uploadPath, realPath);
+		console.log(pathJoin, path.join(this._uploadPath, typePath));
     if (!pathJoin.startsWith(path.join(this._uploadPath, typePath))) {
       throw new ForbiddenError();
     }

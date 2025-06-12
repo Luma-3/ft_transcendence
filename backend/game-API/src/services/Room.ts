@@ -83,6 +83,7 @@ export class Room {
   }
 
   removePlayer(playerId: string) {
+	playerId;
 	//TODO: Implement player removal logic
 	if (this.typeGame === 'localpvp' || this.typeGame === 'localpve') {
 	  this.stopGame(); // Stop the game if it's a local PvP or PvE game

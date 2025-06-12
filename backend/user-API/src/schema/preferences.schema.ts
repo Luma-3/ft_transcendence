@@ -38,5 +38,6 @@ export const PreferencesPrivateResponse = Type.Object({
   theme: Type.Union([Type.Literal('dark'), Type.Literal('light')]),
   lang: Type.Union([Type.Literal('en'), Type.Literal('fr'), Type.Literal('es')]),
   avatar: Type.String({ format: 'uri' }),
+	banner: Type.String({ format: 'uri' })
 });
 export type PreferencesPrivateResponseType = Static<typeof PreferencesPrivateResponse>;

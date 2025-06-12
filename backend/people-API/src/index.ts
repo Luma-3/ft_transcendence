@@ -20,7 +20,7 @@ server.register(friendRoute);
 server.register(peopleRoute);
 
 
-redisSub.subscribe('api.people.in', (message, channel) => {
+redisSub.subscribe('api.social.in', (message, channel) => {
   try {
 	const { userId, action, payload = {} } = JSON.parse(message) as PeoplesEventRedisType;
 	console.log(`[WS][Redis] <- ${channel} -> client ${userId}`);

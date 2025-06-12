@@ -20,7 +20,6 @@ export const UploadFileValidation = Type.Object({
 export const CdnQuery = Type.Object({
   size: Type.Optional(Type.Number({
     description: "The size of the image to be returned. If not specified, the original size will be used.",
-    default: 0
   })),
   scale: Type.Optional(Type.Union([Type.String(), Type.Number()])),
   width: Type.Optional(Type.Number()),

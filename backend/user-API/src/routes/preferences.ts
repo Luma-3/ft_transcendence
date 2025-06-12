@@ -12,7 +12,6 @@ import {
 } from '@transcenduck/error';
 
 import { UserHeaderAuthentication } from '../schema/user.schema.js';
-import { PreferencesUpdateBody } from '../schema/preferences.schema.js';
 import { updateAvatarPreferences, updateBannerPreferences } from '../controllers/preferencesController.js';
 
 
@@ -48,7 +47,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async (req, rep) => {
     const user_id = req.headers['x-user-id'];
-    const preferences = await PreferencesService.updatePreferences(user_id, req.body, PREFERENCES_PRIVATE_COLUMNS);
+    const preferences = await PreferencesService.updatePreferences(user_id, req.body as any, PREFERENCES_PRIVATE_COLUMNS);
     return rep.code(200).send({ message: 'Preferences updated successfully', data: preferences });
   });
 
