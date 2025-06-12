@@ -10,6 +10,7 @@ export async function updateAvatarPreferences(req: FastifyRequest<{
 	const userID = req.headers['x-user-id'];
 
 	const oldPreferences = await PreferencesService.getPreferences(userID, ["avatar"]);
+	console.log(oldPreferences)
 	const file = await req.file({
 		limits: {
 			fileSize: 1024 * 1024 * 4, // 5MB

@@ -1,3 +1,4 @@
+import { clearInterval, setInterval } from 'node:timers';
 import { redisPub } from '../utils/redis.js';
 
 import { Ball } from './Ball.js'
