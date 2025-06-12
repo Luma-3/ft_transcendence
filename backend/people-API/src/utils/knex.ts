@@ -1,30 +1,33 @@
-import Knex from 'knex';
+import knex from 'knex';
+import type { Knex } from 'knex';
 import dotenv from 'dotenv';
-
+import path from 'path';
 dotenv.config();
+const __dirname = import.meta.dirname;
 
-export const knexConfig = {
+console.log('Current directory:', __dirname);
+const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/People.sqlite',
+      filename: './data/Social.sqlite',
     },
     migrations: {
-      directory: './migrations',
-      tableName: 'knex_schema_history'
+      directory: path.resolve(__dirname, '../../migrations'),
+      tableName: 'knex_schema_history',
     },
     useNullAsDefault: true
   },
 };
 
-const environment = (process.env.NODE_ENV || 'development') as keyof typeof knexConfig;
-const knex = Knex(knexConfig[environment]);
 
-export default knex;
+const env = process.env.NODE_ENV || 'development';
+export const knexInstance: Knex = knex(config[env]);
 
-export const destroyKnex = async () => {
-  if (knex) {
-    await knex.destroy();
+const destroyKnex = async () => {
+  if (knexInstance) {
+    await knexInstance.destroy();
   }
 }
 
+export { Knex, destroyKnex, config };

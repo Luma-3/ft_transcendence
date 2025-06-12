@@ -1,9 +1,10 @@
+import { Knex } from "knex";
 
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export const up = async (knex) => {
+export const up = async (knex: Knex) => {
   await knex.schema.createTable('people', (t) => {
     t.uuid('user_id').primary();
     t.string('username', 32).notNullable().unique();
