@@ -27,7 +27,8 @@ export class UserService {
 
     const user_preferences = {
       lang: data.preferences?.lang || 'en',
-      avatar: `https://${process.env.GATEWAY_IP}/uploads/profil_pic/default_pp.webp`,
+      avatar: `default.png`,
+      banner: `default.png`,
       theme: data.preferences?.theme || 'dark',
     }
 

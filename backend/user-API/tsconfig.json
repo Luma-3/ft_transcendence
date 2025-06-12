@@ -8,7 +8,7 @@
     "moduleResolution": "node", // Use Node.js module resolution strategy
 
     /* Language & Modules Target */
-	  "target": "ES2020", // Use "ES2020" for modern JavaScript features
+	  "target": "ESNext", // Use "ES2020" for modern JavaScript features
     "module": "ESNext", // Use "ESNext" for modern module syntax
 
     /* Interoperability & Compatibility */
@@ -23,6 +23,11 @@
 	  "noUnusedParameters": true,
 	  "noFallthroughCasesInSwitch": true,
 	  "noUncheckedSideEffectImports": true,
+    "paths": {
+      "@transcenduck/error": ["./packages/error"],
+      "@transcenduck/formatter": ["./packages/formatter"]
+    },  
 	},
-	"include": ["./src/"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

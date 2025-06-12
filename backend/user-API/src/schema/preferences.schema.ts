@@ -5,6 +5,7 @@ export const PreferencesBase = Type.Object({
   theme: Type.Union([Type.Literal('dark'), Type.Literal('light')]),
   lang: Type.Union([Type.Literal('en'), Type.Literal('fr'), Type.Literal('es')]),
   avatar: Type.String({ format: 'uri' }),
+  banner: Type.String({ format: 'uri' })
 });
 export type PreferencesBaseType = Static<typeof PreferencesBase>;
 
@@ -29,6 +30,7 @@ export type PreferencesGetType = Static<typeof PreferencesGetType>;
 export const PreferencesPublicResponse = Type.Object({
   lang: Type.Union([Type.Literal('en'), Type.Literal('fr'), Type.Literal('es')]),
   avatar: Type.String({ format: 'uri' }),
+  banner: Type.String({ format: 'uri' })
 });
 export type PreferencesPublicResponseType = Static<typeof PreferencesPublicResponse>;
 

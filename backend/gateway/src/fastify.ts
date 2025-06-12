@@ -5,6 +5,7 @@ import cookie from "@fastify/cookie";
 import jwt from "./plugins/jwt.js"
 import dotenv from "dotenv";
 import fs from "fs";
+import process from "node:process";
 
 dotenv.config();
 

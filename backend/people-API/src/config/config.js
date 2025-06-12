@@ -1,7 +1,7 @@
 import formatter from '@transcenduck/formatter'
-import knex from '#transcenduck/plugins/knex.js'
-import swagger from '#transcenduck/plugins/swagger.js'
-import knex_config from './knex.config.js'
+import knex from '#transcenduck/plugins/knex'
+import swagger from '#transcenduck/plugins/swagger'
+import knex_config from './knex.config'
 
 export const config_dev = {
   logger: true,

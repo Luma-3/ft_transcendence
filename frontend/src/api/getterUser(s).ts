@@ -21,7 +21,7 @@ export async function getUserInfo(): Promise<UserResponse> {
 		}
 	};
 
-	const response = await fetchApi<UserInfo>(API_USER.BASIC.INFOS, {
+	const response = await fetchApi<UserInfo>(API_USER.BASIC.INFOS + "?includePreferences=true", {
 		method: "GET",
 	});
 	userData.status = response.status;
@@ -30,11 +30,6 @@ export async function getUserInfo(): Promise<UserResponse> {
 	if (userData.status === 'error') {
 		return userData;
 	}
-	console.log("User data fetched:", userData.data);
-	const responsePref = await fetchApi<UserPreferences>(API_USER.BASIC.PREFERENCES, {
-		method: "GET",
-	});
-	userData.preferences = responsePref.data!;
 	return userData;
 }
 
