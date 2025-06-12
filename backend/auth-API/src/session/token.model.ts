@@ -16,7 +16,7 @@ class RefreshTokenModel {
       ip_address: ip_address,
       user_agent: user_agent,
       created_at: new Date(),
-      expires_at: new Date(process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
+      expired_at: new Date(process.env.JWT_REFRESH_TOKEN_EXPIRES_IN
         ? Date.now() + parseInt(process.env.JWT_REFRESH_TOKEN_EXPIRES_IN) * 1000
         : Date.now() + 7 * 24 * 60 * 60 * 1000), // Default to 7 days
       last_used: null,
@@ -28,11 +28,11 @@ class RefreshTokenModel {
     return this.knex('token').where({ id: sessionId }).select('*').first();
   }
 
-  async getAllTokensByFamilyId(family_id: string): Promise<FamiliesResponseType[]> {
+  async getAllTokensByFamilyId(family_id: string): Promise<FamiliesResponseType> {
     return this.knex('token').where({ family_id: family_id }).select('*');
   }
 
-  async getAllFamiliesByUserId(userId: string): Promise<FamiliesResponseType[]> {
+  async getAllFamiliesByUserId(userId: string): Promise<FamiliesResponseType> {
     return this.knex('token').where({ user_id: userId }).select('*');
   }
 

@@ -4,24 +4,6 @@ import server from './fastify.js'
 import sessionRoute from './session/session.route.js'
 dotenv.config()
 
-// redisSub.subscribe('ws.test.in', (message, channel) => {
-//   try {
-//     const { clientId, payload } = JSON.parse(message);
-//     console.log(`[WS][Redis] <- ${channel} -> client ${clientId}`);
-//     console.log(`[WS][Redis] Payload: ${JSON.stringify(payload)}`);
-//
-//     // echo the message back to the client
-//
-//     redisPub.publish(`ws.${channel}.out`, JSON.stringify({
-//       clientId: clientId,
-//       payload: payload
-//     }));
-//   }
-//   catch (err) {
-//     console.error('Error when handle outgoing message', err);
-//   }
-// });
-
 server.register(sessionRoute);
 
 const start = async () => {

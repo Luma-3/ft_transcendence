@@ -27,153 +27,155 @@ import { addNewMessage } from '../chat/newMessage'
 import { renderOtherProfilePage } from '../controllers/renderPage'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
-const clickEvent: {[key: string]: (event: MouseEvent) => void } = {
+const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 
-	// * -------------- Public Page Load -------------- */
-	'loadhome': () => renderPublicPage('home'),
-	'loadlogin': () => renderPublicPage('login'),
-	'loadregister': () => renderPublicPage('register'),
-	'loginForm': () => loginUser(),
-	'google': () => {
-		window.location.href = 'http://localhost:3000/api/user/login/google'
-	},
+  // * -------------- Public Page Load -------------- */
+  'loadhome': () => renderPublicPage('home'),
+  'loadlogin': () => renderPublicPage('login'),
+  'loadregister': () => renderPublicPage('register'),
+  'loginForm': () => loginUser(),
+  'google': () => {
+    window.location.href = 'http://localhost:3000/api/user/login/google'
+  },
 
-	// * -------------- Private Page Load -------------- */
-	'loaddashboard': () => renderPrivatePage('dashboard'),
-	'user-menu-button': () => toggleUserMenu(),
+  // * -------------- Private Page Load -------------- */
+  'loaddashboard': () => renderPrivatePage('dashboard'),
+  'user-menu-button': () => toggleUserMenu(),
 
-	// * -------------- Profile Page  -------------- */
-	'loadprofile': () => renderPrivatePage('profile'),
-	'changeUserInfo': () => changeUserNameEmail(),
-	'change-password': () => changeUserPassword(),
-	'add-friend': () => handleFriendRequest(event?.target as HTMLElement, "send"),
-	'accept-friend': () => handleFriendRequest(event?.target as HTMLElement, "accept"),
-	'block-user': () => blockUser(event?.target as HTMLElement),
-	'refuse-invitation': () => sendRefuseInvitation(event?.target as HTMLElement),
-	
-		// * ---- Image Editor  ---- */
-		'cancel-image': () => cancelEditor(),
-		'save-image': () => saveNewPicture(),
-		'file-upload': () => showEditorPicture(),
-		'banner-upload': () => showEditorPicture("BANNER"),
-	// * -------------- Settings Page  -------------- */
-	'loadsettings': () => renderPrivatePage('settings'),
-	'saveLang': () => saveDefaultLanguage(),
-	'deleteAccount': () => deleteUser(),
-	'logout': () =>  logOutUser(),
+  // * -------------- Profile Page  -------------- */
+  'loadprofile': () => renderPrivatePage('profile'),
+  'changeUserInfo': () => changeUserNameEmail(),
+  'change-password': () => changeUserPassword(),
+  'add-friend': () => handleFriendRequest(event?.target as HTMLElement, "send"),
+  'accept-friend': () => handleFriendRequest(event?.target as HTMLElement, "accept"),
+  'block-user': () => blockUser(event?.target as HTMLElement),
+  'refuse-invitation': () => sendRefuseInvitation(event?.target as HTMLElement),
 
-	// * -------------- Chat  -------------- */
-	'send-chat': () => addNewMessage(),
+  // * ---- Image Editor  ---- */
+  'cancel-image': () => cancelEditor(),
+  'save-image': () => saveNewPicture(),
+  'file-upload': () => showEditorPicture(),
+  'banner-upload': () => showEditorPicture("BANNER"),
+  // * -------------- Settings Page  -------------- */
+  'loadsettings': () => renderPrivatePage('settings'),
+  'saveLang': () => saveDefaultLanguage(),
+  'deleteAccount': () => deleteUser(),
+  'logout': () => logOutUser(),
 
-	// * -------------- Common Components  -------------- */
 
-	'loadBackPage': () => renderBackPage(),
-	'showGameStat': () => toggleGameStat(),
-	'showTruc': () => toggleTruc(),
-	'createGame': () => createGame(),
+  // * -------------- Chat  -------------- */
+  'send-chat': () => addNewMessage(),
 
-	// * -------------- Documentation  -------------- */
-	'showUserDoc': () => renderDocPages('/api/user/doc/json', 'user'),
-	'showUploadDoc': () => renderDocPages('/api/upload/doc/json', 'upload'),
-	'showGameDoc': () => renderDocPages('/api/game/doc/json', 'game'),
-	'showPeopleDoc': () => renderDocPages('/api/people/doc/json', 'people'),
+  // * -------------- Common Components  -------------- */
+
+  'loadBackPage': () => renderBackPage(),
+  'showGameStat': () => toggleGameStat(),
+  'showTruc': () => toggleTruc(),
+  'createGame': () => createGame(),
+
+  // * -------------- Documentation  -------------- */
+  'showUserDoc': () => renderDocPages('/api/user/doc/json', '/images/duckHappy.png'),
+  'showUploadDoc': () => renderDocPages('/api/upload/doc/json', '/images/duckUpload.png'),
+  'showGameDoc': () => renderDocPages('/api/game/doc/json', '/images/dashboard.png'),
+  'showPeopleDoc': () => renderDocPages('/api/people/doc/json', '/images/duckSocial.png'),
+  'showAuthDoc': () => renderDocPages('/api/auth/doc/json', '/images/duckAPI.png'),
 
 };
 
 /** Si l'utilisateur change la valeur de l'element id = key on appelle la fonction associée */
-const changeEvent: {[key: string]: () => void } = {
-	'language': () => changeLanguage(""),
-	'switch-component': changeLightMode,
+const changeEvent: { [key: string]: () => void } = {
+  'language': () => changeLanguage(""),
+  'switch-component': changeLightMode,
 
 };
 
 /** Si l'utilisateur soumet le formulaire id = key on appelle la fonction associée */
-const submitEvent: {[key: string]: () => void } = {
-	'loginForm': loginUser,
-	'registerForm': registerUser,
+const submitEvent: { [key: string]: () => void } = {
+  'loginForm': loginUser,
+  'registerForm': registerUser,
 };
 
 /**
  * Gestion des appels lors de gestion dynamique de fonction avec des listes
  * ou plusieurs elements dynamiques
  */
-const inputChangetEvent: {[key: string]: (inputValue: DOMStringMap) => void } = {
-	'lang-selector': (inputValue) => changeLanguageSettings(inputValue),
-	'game-type': (inputValue) => toggleGameSettings(inputValue),
-	'local': (inputValue) => toggleGameSettings(inputValue),
+const inputChangetEvent: { [key: string]: (inputValue: DOMStringMap) => void } = {
+  'lang-selector': (inputValue) => changeLanguageSettings(inputValue),
+  'game-type': (inputValue) => toggleGameSettings(inputValue),
+  'local': (inputValue) => toggleGameSettings(inputValue),
 }
 
-const inputEvent: {[key: string]: (value: string) => void } = {
-	'search-user': (value) => handleSearchUserGame(value),
+const inputEvent: { [key: string]: (value: string) => void } = {
+  'search-user': (value) => handleSearchUserGame(value),
 }
 
-const clickSpecial: {[key: string]: (event: MouseEvent) => void } = {
-	'otherProfile': (event) => renderOtherProfilePage(event.target as HTMLElement),
+const clickSpecial: { [key: string]: (event: MouseEvent) => void } = {
+  'otherProfile': (event) => renderOtherProfilePage(event.target as HTMLElement),
 };
 
 /**
  * Gestionnaire principale des evenements de la page
  */
-export function addAllEventListenOnPage(container : HTMLDivElement) {
+export function addAllEventListenOnPage(container: HTMLDivElement) {
 
-	container.addEventListener('click', (event) => {
-		const target = event.target as HTMLElement;
-		
-		hideToggleElements(target);
-		console.log("target", target.id);
-		if (target.id in clickEvent) {
-			clickEvent[target.id](event);
-		}
-		
-	});
-	
-	container.addEventListener('change', (event) => {
-		const target = event.target as HTMLElement;
-		
-		if (target.id in changeEvent) {
-			changeEvent[target.id]();
-		}
-	});
+  container.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
 
-	container.addEventListener('submit', (event) => {
-		event.preventDefault();
-		const target = event.target as HTMLElement;
+    hideToggleElements(target);
+    console.log("target", target.id);
+    if (target.id in clickEvent) {
+      clickEvent[target.id](event);
+    }
 
-		if (target.id in submitEvent) {
-			submitEvent[target.id]();
-		}
-	});
-	/** 
-	 * ! Gestion des input pour les elements qui ont un id variable (list, checkbox ...etc)
-	 * 
-	 */
-	container.addEventListener('change', (event) => {
-		const target = event.target as HTMLInputElement;
-		if (target.name in inputChangetEvent){
-			if (target.dataset) {
-				inputChangetEvent[target.name](target.dataset);
-			}
-		}
-	});
+  });
 
-	container.addEventListener('click', (event) => {
-		const target = event.target as HTMLElement;
-		const name = target.getAttribute("name");
-		if (!name) return;
-		if (name in clickSpecial){
-			if (target.dataset) {
-				clickSpecial[name](event);
-			}
-		}
-	});
+  container.addEventListener('change', (event) => {
+    const target = event.target as HTMLElement;
 
-	container.addEventListener('input', (event) => {
-		const target = event.target as HTMLInputElement;
-		if (target.id in inputEvent) {
-			if (target.dataset) {
-				inputEvent[target.id](target.value);
-			}
-		}
-	});
+    if (target.id in changeEvent) {
+      changeEvent[target.id]();
+    }
+  });
+
+  container.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const target = event.target as HTMLElement;
+
+    if (target.id in submitEvent) {
+      submitEvent[target.id]();
+    }
+  });
+  /** 
+   * ! Gestion des input pour les elements qui ont un id variable (list, checkbox ...etc)
+   * 
+   */
+  container.addEventListener('change', (event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.name in inputChangetEvent) {
+      if (target.dataset) {
+        inputChangetEvent[target.name](target.dataset);
+      }
+    }
+  });
+
+  container.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    const name = target.getAttribute("name");
+    if (!name) return;
+    if (name in clickSpecial) {
+      if (target.dataset) {
+        clickSpecial[name](event);
+      }
+    }
+  });
+
+  container.addEventListener('input', (event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.id in inputEvent) {
+      if (target.dataset) {
+        inputEvent[target.id](target.value);
+      }
+    }
+  });
 
 }

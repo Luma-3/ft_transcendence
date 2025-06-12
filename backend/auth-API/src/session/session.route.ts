@@ -2,7 +2,7 @@
 import { UnauthorizedError } from '@transcenduck/error'
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 
-import { SessionPostBody, UserHeaderAuthentication, FamilyId } from "./session.schema.js";
+import { SessionPostBody, UserHeaderAuthentication, FamilyId, FamiliesResponse } from "./session.schema.js";
 
 import { SessionService } from "./session.service.js";
 
@@ -56,22 +56,39 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     );
   });
 
-  // // ! Private
-  // fastify.get('/session', {
-  //   schema: {
-  //     summary: 'Get current user session',
-  //     description: 'This endpoint retrieves the current user session information.',
-  //     tags: ['Sessions'],
-  //     headers: UserHeaderAuthentication,
-  //     response: {
-  //       200: ResponseSchema(Type.Array(FamiliesResponse), 'Ok')
-  //     }
-  //   }
-  // }, async (req, rep) => {
-  //   const userId = req.headers['x-user-id'];
-  //   const families = await SessionService.getFamilies(userId);
-  //   rep.code(200).send({ message: 'Ok', data: families })
-  // })
+  // ! Private
+  fastify.get('/session', {
+    schema: {
+      summary: 'Get current user session',
+      description: 'This endpoint retrieves the current user session information.',
+      tags: ['Sessions'],
+      headers: UserHeaderAuthentication,
+      response: {
+        200: ResponseSchema(FamiliesResponse, 'Ok')
+      }
+    }
+  }, async (req, rep) => {
+    const userId = req.headers['x-user-id'];
+    const families = await SessionService.getFamilies(userId);
+    return rep.code(200).send({ message: 'Ok', data: families })
+  });
+
+  fastify.get('/session/:familyId', {
+    schema: {
+      summary: 'Get session by family ID',
+      description: 'This endpoint retrieves the session information for a specific family ID.',
+      tags: ['Sessions'],
+      headers: UserHeaderAuthentication,
+      params: FamilyId,
+      response: {
+        200: ResponseSchema(FamiliesResponse, 'Ok')
+      }
+    }
+  }, async (req, rep) => {
+    const familyID = req.params.familyId;
+    const families = await SessionService.getFamilyById(familyID);
+    return rep.code(200).send({ message: 'Ok', data: families })
+  });
 
 
   // ! Private
@@ -127,7 +144,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       summary: 'Update current user session and Token',
       description: 'This endpoint allows users to update their current session tokens.',
       tags: ['Sessions'],
-      headers: UserHeaderAuthentication,
       response: {
         200: ResponseSchema(undefined, 'Session updated successfully')
       }
@@ -136,8 +152,24 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const tokenId = req.cookies.refreshToken;
     if (!tokenId) throw new UnauthorizedError();
 
-    await SessionService.refreshToken(tokenId);
-    rep.code(200).send({ message: 'Session updated successfully' });
+    const { accessToken, refreshToken } = await SessionService.refreshToken(tokenId);
+
+
+    rep.code(200)
+      .send({ message: 'Session updated successfully' })
+      .setCookie(
+        "accessToken", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
+        path: '/',
+      }).setCookie(
+        "refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
+      }
+      );
   })
 
 }
