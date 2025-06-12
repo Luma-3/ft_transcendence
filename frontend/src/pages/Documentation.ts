@@ -1,12 +1,9 @@
 import { primaryButton } from "../components/ui/buttons/primaryButton"
-import { navbar } from "../components/ui/navbar";
-import { User } from "../interfaces/User";
 import { backButton } from "../components/ui/buttons/backButton";
 
-export default function documentation(user: User) {
+export default function documentation() {
 
   return `
-	${navbar(user)}
 	${backButton()}
 	<div class="flex flex-col items-center justify-center">
 	<img src="/images/duckAPI.png" alt="Duck API" class="w-70 mt-10 mb-4 drop-shadow-lg" />

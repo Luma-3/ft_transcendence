@@ -17,7 +17,7 @@ import { fadeIn, fadeOut } from '../components/utils/fade'
 import { removeLoadingScreen } from '../components/utils/removeLoadingScreen'
 import { handleWelcomeYouPage } from '../pages/WelcomeYou';
 
-import { User, UserResponse } from '../interfaces/User'
+import { UserInfo } from '../interfaces/User'
 import { getUserInfo } from '../api/getterUser(s)'
 
 import { socket } from '../controllers/Socket'
@@ -72,7 +72,7 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 /**
  * Associe les pages privees aux fonctions de rendu
  */
-const rendererPrivatePage: { [key: string]: (user: User) => string | Promise<string> } = {
+const rendererPrivatePage: { [key: string]: (user: UserInfo) => string | Promise<string> } = {
 	'WelcomeYou': welcomeYouPage,
 	'dashboard': dashboard,
 	'settings': settings,
@@ -102,8 +102,8 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     return renderErrorPage('400', '401', 'Unauthorized');
   }
 
-  const lang = response.preferences.lang || 'en';
-  const theme = response.preferences.theme || 'dark';
+  const lang = response.data.preferences.lang || 'en';
+  const theme = response.data.preferences.theme || 'dark';
 
 	fadeOut();
 
@@ -113,7 +113,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     if (!rendererFunction) {
       return renderErrorPage('404', '404', 'not-found');
     }
-    const page_content = await Promise.resolve(rendererFunction({ data: response.data, preferences: response.preferences }));
+    const page_content = await Promise.resolve(rendererFunction(response.data!));
 
     main_container.innerHTML = page_content;
     setupColorTheme(theme);
@@ -127,11 +127,10 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 
 		fadeIn();
 
-    if (page === 'WelcomeYou' || page === 'reWelcomeYou') {
+    if (page === 'WelcomeYou') {
       handleWelcomeYouPage();
     }
-  }
-    , 250);
+  }, 250);
 }
 
 export async function renderGame(roomData: RoomData) {

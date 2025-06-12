@@ -13,10 +13,6 @@ export interface GameData {
   }
 }
 
-export interface GameId {
-  id: string;
-}
-
 export interface FrontGameInfo {
   playerId: string;
   gameName: string;

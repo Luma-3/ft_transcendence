@@ -8,7 +8,7 @@ import { primaryButton } from "../components/ui/buttons/primaryButton"
 import { secondaryButton } from "../components/ui/buttons/secondaryButton"
 import { backButton } from "../components/ui/buttons/backButton";
 
-import { User, UserInfo } from "../interfaces/User"
+import { UserInfo } from "../interfaces/User"
 import { getAllUsers, getFriends, getOtherUserInfo, getUserInfo } from "../api/getterUser(s)"
 import { API_CDN } from "../api/routes";
 
@@ -281,40 +281,32 @@ async function allUsers(user: UserInfo) {
 }
 
 
-async function renderProfilePage() {
-
-	const response = await getUserInfo();
-	if (response.status === "success" && response.data) {
-
-		return `
-			${navbar({data: response.data, preferences: response.preferences})}
-			${backButton()}
-			<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
-			${avatarBanner({ avatar: response.preferences.avatar, banner: response.preferences.banner || 'default.webp' })}
+async function renderProfilePage(user: UserInfo) {
+	return `
+		${navbar(user)}
+		${backButton()}
+		<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
+			${avatarBanner({ avatar: user.preferences.avatar, banner: user.preferences.banner || 'default.webp' })}
 			${imageEditorDiv()}
-			${userUpdateForm(response.data)}
-			</div>
-			<div class="flex flex-col w-full justify-center items-center space-y-4 text-primary dark:text-dtertiary">
+			${userUpdateForm(user)}
+		</div>
+		<div class="flex flex-col w-full justify-center items-center space-y-4 text-primary dark:text-dtertiary">
 			<div class="flex flex-col w-full max-w-[1000px] items-center justify-center pt-5">
-			<img src="/images/duckBell.png" alt="Duck Bell" class="w-20 h-20" />
-			${await notifications()}
+				<img src="/images/duckBell.png" alt="Duck Bell" class="w-20 h-20" />
+				${await notifications()}
 			</div>
+		</div>
+		<div class="flex flex-col justify-center items-center">
+			<div class="flex flex-row justify-between items-center w-full max-w-[1500px] space-x-4 space-y-4">
+			${await friends(user)}
+			${await allUsers(user)}
 			</div>
-			<div class="flex flex-col justify-center items-center">
-				<div class="flex flex-row justify-between items-center w-full max-w-[1500px] space-x-4 space-y-4">
-				${await friends(response.data)}
-				${await allUsers(response.data)}
-				</div>
 		<div class="flex h-[100px]"></div>
-
-			</div>
-			</div>`
-		}
-		return notfound();
+		</div>`
 	}
 
-export default function profilePage() {
-	const container = renderProfilePage();
+export default function profilePage(user: UserInfo) {
+	const container = renderProfilePage(user);
 	return container;
 }
 
