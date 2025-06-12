@@ -73,4 +73,3 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
 }
 
 export default fp(plugin, { name: 'socket' });
-

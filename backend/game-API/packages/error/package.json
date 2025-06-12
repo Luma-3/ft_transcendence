@@ -1,9 +1,9 @@
 {
-  "name": "@transcenduck/formatter",
+  "name": "@transcenduck/error",
   "version": "0.1.0",
   "types": "dist/index.d.ts",
-  "main": "dist/index.js",
   "type": "module",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "dev": "nodemon"
@@ -14,8 +14,6 @@
   },
   "dependencies": {
     "@sinclair/typebox": "^0.34.33",
-    "@transcenduck/error": "file:../error",
-    "fastify": "^5.2.2",
-    "fastify-plugin": "^5.0.1"
+    "ajv": "^8.17.1"
   }
 }

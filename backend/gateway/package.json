@@ -36,6 +36,7 @@
     "@transcenduck/formatter": "file:./packages/formatter",
     "dotenv": "^16.4.7",
     "fastify": "^5.2.2",
+    "fastify-plugin": "^5.0.1",
     "fs": "^0.0.1-security",
     "redis": "^5.1.0"
   },

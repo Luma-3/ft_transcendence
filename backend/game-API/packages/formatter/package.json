@@ -15,7 +15,7 @@
   "dependencies": {
     "@sinclair/typebox": "^0.34.33",
     "@transcenduck/error": "file:../error",
-    "fastify": "^5.2.2",
+    "fastify": "^5.3.3",
     "fastify-plugin": "^5.0.1"
   }
 }
