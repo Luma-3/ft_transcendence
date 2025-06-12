@@ -1,15 +1,19 @@
-import { renderPublicPage } from "../controllers/renderPage";
+import { alertPublic } from "../components/ui/alert/alertPublic";
+import { renderErrorPage, renderPublicPage } from "../controllers/renderPage";
 import { IApiResponse } from "../interfaces/IApiResponse";
 import { fetchToken } from "./fetchToken";
 
 export async function fetchApi<T>(url:string, option?: RequestInit, verifToken: boolean = true): Promise<IApiResponse<T>> {
 	
 	if (verifToken) {
-		
 		const token = await fetchToken();
 		if (token.status === "error") {
-			renderPublicPage('login', false);
-			return {status: "error", message: "Session expired" };
+
+			alertPublic("Session expired, please log in again.", "error");
+
+			setTimeout(() => {
+				renderPublicPage('login', false);
+			}, 1000);
 		}
 	}
 
@@ -26,12 +30,12 @@ export async function fetchApi<T>(url:string, option?: RequestInit, verifToken: 
 		}
 
 		const responseData = await response.json();
-		console.log("API response received:", responseData);
 		return responseData as Promise<IApiResponse<T>>;
 	} 
 	catch (error) {
-		renderPublicPage('500', false)
-		return {status: "500", message: "Internal Server Error"}};
+		renderErrorPage('500', '500', 'Internal Server Error');
+		return {status: "500", message: "Internal Server Error"};
+	}
 }
 
 export async function fetchApiWithNoBody(url:string, option?: RequestInit) {

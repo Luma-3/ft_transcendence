@@ -40,7 +40,7 @@ const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
  * Render des pages public (user non connecte ou pas encore de compte)
  */
 export async function renderPublicPage(page: string, updateHistory: boolean = true) {
-
+console.log("renderPublicPage", page);
   const main_container = document.querySelector<HTMLDivElement>('#app')!
   const lang = sessionStorage.getItem('lang') || 'en';
 
@@ -147,14 +147,12 @@ export async function renderGame(roomData: RoomData) {
     return renderErrorPage('400', '401', 'Unauthorized');
   }
 
-  const lang = response.preferences.lang;
-  const theme = response.preferences.theme;
-
+  const lang = response.data.preferences.lang;
+  const theme = response.data.preferences.theme;
 	fadeOut();
 
   setTimeout(async () => {
-    console.log("Rendering game for room:", roomData);
-    const newContainer = await game(roomData.roomId, response!);
+    const newContainer = await game(roomData.roomId, response.data!);
     if (!newContainer) {
       return;
     }
@@ -226,8 +224,8 @@ export async function renderErrorPage(codePage: string, code: string, message: s
 
   const user = await getUserInfo();
 
-  const lang = user.status === "error" ? 'en' : user.preferences.lang || 'en';
-  const theme = user.status === "error" ? 'dark' : user.preferences.theme || 'dark';
+  const lang = user.data === undefined ? 'en' : user.data.preferences.lang;
+  const theme = user.data === undefined ? 'dark' : user.data.preferences.theme;
 
 	setupColorTheme(theme);
 	fadeOut();
@@ -252,9 +250,10 @@ const logoDoc: { [key: string]: string } = {'user': '/images/duckHandsUp.png',
 	 'upload': '/images/duckUpload.png',
 	 'people': '/images/duckSocial.png',
 	 'game': '/images/dashboard.png',
+   'auth': '/images/duckAPI.png',
 };
 
-export async function renderDocPages(page: string, logo: string) {
+export async function renderDocPages(page: string, index_logo: string) {
 	
 	const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
 	console.log(page)
@@ -263,7 +262,7 @@ export async function renderDocPages(page: string, logo: string) {
     .then(res => res.json())
     .then(spec => {
       spec.info['x-logo'] = {
-        url: logoDoc[logo],
+        url: logoDoc[index_logo],
         backgroundColor: '#FFFFFF',
         altText: 'Logo de l\'API',
         // href: 'https://example.com'
@@ -281,6 +280,7 @@ export async function renderDocPages(page: string, logo: string) {
  */
 export function renderBackPage() {
 	const page = window.history.state?.page || 'home';
+  console.log("renderBackPage", page);
 	if (page === 'dashboard') {
 		return;
 	}

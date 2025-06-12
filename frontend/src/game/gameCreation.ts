@@ -5,12 +5,10 @@ import { fetchToken } from "../api/fetchToken";
 import { getUserInfo } from "../api/getterUser(s)";
 import { fetchApi } from "../api/fetch";
 import { API_GAME } from "../api/routes";
-
 import { socket } from "../controllers/Socket";
 
 
-// export let gameFrontInfo: FrontGameInfo;
-export let gameId: string;
+export let gameFrontInfo: { gameId: string, typeGame: string };
 
 function initGame(gameFormInfo: any) {
 	socket!.send(JSON.stringify({
@@ -19,7 +17,7 @@ function initGame(gameFormInfo: any) {
 			type: 'init',
 			data: {
 				playerId: gameFormInfo.playerId,
-				roomId: gameId,
+				roomId: gameFormInfo.gameId,
 			}
 		}
 	}))
@@ -41,10 +39,16 @@ async function sendDataToServer(gameFormInfo: any, userTheme: string) {
 			typeGame: gameFormInfo.typeGame,
 		}),
 	});
+	// player2: gameFormInfo.gameNameOpponent,
 	if (!response || response.status === "error" || !response.data) {
 		return alertTemporary("error", "game-creation-failed", userTheme, true);
 	}
-	gameId = response.data.id;
+
+	gameFormInfo = { gameId: response.data.id, typeGame: gameFormInfo.typeGame };
+
+	/**
+	 * Petit alert de success qui s'affiche a gauche sur l'ecran
+	 */
 	alertTemporary("success", "game-created-successfully", userTheme, true);
 }
 

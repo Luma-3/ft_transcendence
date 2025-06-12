@@ -14,11 +14,8 @@ export interface GameData {
 }
 
 export interface FrontGameInfo {
-  playerId: string;
-  gameName: string;
   typeGame: string;
-  gameId?: string;
-  gameNameOpponent?: string;
+  gameId: string;
 }
 
 export interface initInfo {

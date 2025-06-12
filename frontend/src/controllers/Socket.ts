@@ -14,7 +14,6 @@ export function socketConnection() {
 	});
 	
 	socket.addEventListener("message", (e) => {
-		
 		const data = JSON.parse(e.data).payload;
 		
 		const type = JSON.parse(e.data).type;
@@ -39,7 +38,7 @@ export function socketConnection() {
 			reconnectTentative = 0;
 			socket = null;
 			renderPublicPage("home");
-			//TODO: Delete les cookies 
+			//TODO: Delete les cookies
 		}
 	});
 
@@ -47,7 +46,7 @@ export function socketConnection() {
 		if (event.wasClean) {
 			console.log(`WebSocket closed cleanly, code=${event.code}, reason=${event.reason}`);
 		} else {
-			alertPublic("WebSocket connection closed unexpectedly. You will be redirected to the home page.", "error");
+			alertPublic(`WebSocket connection closed unexpectedly with code ${event.code}. Message: ${event.reason}. You will be redirected to the main page.`, "error");
 			setTimeout(() => { renderPublicPage("home") }, 2000);
 		}
 	});

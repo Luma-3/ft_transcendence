@@ -40,6 +40,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 
   // * -------------- Private Page Load -------------- */
   'loaddashboard': () => renderPrivatePage('dashboard'),
+  'loaddocumentation': () => renderPublicPage('documentation'),
   'user-menu-button': () => toggleUserMenu(),
 
   // * -------------- Profile Page  -------------- */
@@ -74,11 +75,11 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
   'createGame': () => createGame(),
 
   // * -------------- Documentation  -------------- */
-  'showUserDoc': () => renderDocPages('/api/user/doc/json', '/images/duckHappy.png'),
-  'showUploadDoc': () => renderDocPages('/api/upload/doc/json', '/images/duckUpload.png'),
-  'showGameDoc': () => renderDocPages('/api/game/doc/json', '/images/dashboard.png'),
-  'showPeopleDoc': () => renderDocPages('/api/people/doc/json', '/images/duckSocial.png'),
-  'showAuthDoc': () => renderDocPages('/api/auth/doc/json', '/images/duckAPI.png'),
+  'showUserDoc': () => renderDocPages('/api/user/doc/json', "user"),
+  'showUploadDoc': () => renderDocPages('/api/upload/doc/json', "upload"),
+  'showGameDoc': () => renderDocPages('/api/game/doc/json', "game"),
+  'showPeopleDoc': () => renderDocPages('/api/people/doc/json', "people"),
+  'showAuthDoc': () => renderDocPages('/api/auth/doc/json', "auth"),
 
 };
 

@@ -7,14 +7,13 @@ const main_container = document.querySelector<HTMLDivElement>('#app')!
 //* Ajout de la page dans l'historique de navigation et enregistrement de la page precedente pour le button back
 export function addToHistory(page: string, updateHistory: boolean = true) {
 	if (updateHistory && page !== history.state?.page) {
-		// sessionStorage.setItem('backPage', history.state?.page)
 		history.pushState({ page }, '', `/${page}`)
 	}
 }
 
 addAllEventListenOnPage(main_container);
 
-const publicPages = ['home', 'login', 'register']
+const publicPages = ['home', 'login', 'register', 'documentation'];
 
 // * Au chargement initial ou refresh de la page
 // * On verfie si l'utilisateur a une session active
@@ -23,9 +22,6 @@ const publicPages = ['home', 'login', 'register']
 document.addEventListener('DOMContentLoaded', async () => {
 
   const page = window.location.pathname.substring(1) || 'home'
-  if (page === 'documentation') {
-    renderPublicPage('documentation');
-  }
 
   const user = await fetchToken();
   if (user.status === "success") {
@@ -33,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       renderPrivatePage('dashboard', true);
       return;
     }
-    return renderPrivatePage(page, false);
+    return renderPrivatePage(page);
   }
   return renderPublicPage(page);
 
