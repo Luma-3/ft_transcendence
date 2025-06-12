@@ -11,8 +11,7 @@ export const knexConfig = {
     },
     migrations: {
       directory: './migrations',
-      tableName: 'knex_schema_history',
-      loadExtensions: ['.ts']
+      tableName: 'knex_schema_history'
     },
     useNullAsDefault: true
   },
