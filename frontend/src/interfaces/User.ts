@@ -12,3 +12,10 @@ export interface UserPreferences {
 	avatar: string;
 	banner?: string;
 }
+
+export interface OtherUser {
+	username: string;
+	user_id: string;
+	blocked: boolean;
+
+}

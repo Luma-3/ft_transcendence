@@ -1,4 +1,4 @@
-import { User } from '../../interfaces/User';
+import { UserInfo } from '../../interfaces/User';
 import { API_CDN } from '../../api/routes';
 
 let userNotification: boolean = false;
@@ -6,8 +6,8 @@ let userNotification: boolean = false;
 /**
  * Partie du menu situe en haut avec le nom de l'utilisateur et la photo de profil
  */
-export function headerUserMenu(user: User) {
-	
+export function headerUserMenu(user: UserInfo) {
+
 	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.preferences.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
 					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.preferences.avatar}" alt="User profile picture">
@@ -77,7 +77,7 @@ function logout() {
 }
 
 
-export function renderUserMenu(user: User) {
+export function renderUserMenu(user: UserInfo) {
 	//TODO: Verifier si l'utilisateur a des notifications pour les afficher
 	return `
 			${headerUserMenu(user)}

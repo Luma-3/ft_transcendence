@@ -8,8 +8,8 @@ import { primaryButton } from "../components/ui/buttons/primaryButton"
 import { secondaryButton } from "../components/ui/buttons/secondaryButton"
 import { backButton } from "../components/ui/buttons/backButton";
 
-import { UserInfo } from "../interfaces/User"
-import { getAllUsers, getFriends, getOtherUserInfo, getUserInfo } from "../api/getterUser(s)"
+import { OtherUser, UserInfo } from "../interfaces/User"
+import { getAllUsers, getFriends, getOtherUserInfo } from "../api/getterUser(s)"
 import { API_CDN } from "../api/routes";
 
 function avatarBanner(userPref: {avatar: string, banner: string}) {
@@ -151,8 +151,6 @@ async function notifications() {
 			</div>`
 }
 
-
-
 async function friends(user: UserInfo) {
 	let container = `
 			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
@@ -201,7 +199,9 @@ async function friends(user: UserInfo) {
 	</div>`;
 	return container;
 }
+
 import { UserInPeople } from "../interfaces/PeopleInterface";
+
 function lockOrUnlockButton(user: UserInPeople) {
 	if (user.bloked) {
 		return `<div id="unlock-user" data-username=${user.username} data-id=${user.user_id} class="group/item relative hover:cursor-pointer">
@@ -230,6 +230,7 @@ function lockOrUnlockButton(user: UserInPeople) {
 import { headerUserMenu } from "../components/ui/userMenu";
 
 async function allUsers(user: UserInfo) {
+
 	let container = `
 			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
 				<div class="flex flex-row justify-between items-center space-x-4">
@@ -238,15 +239,18 @@ async function allUsers(user: UserInfo) {
 				</div>
 			<div class="relative h-[400px] w-full overflow-y-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
 				<div class="flex flex-col w-full justify-center items-center gap-4 p-4">`;
-	
+
 	const allUsers = await getAllUsers();
-	
 	if (allUsers.status === "error" || !allUsers.data) {
 		return `${container}<span class="text-secondary dark:text-dtertiary" translate="no-friends">No friends found</span></div></div>`;
 	}
 	
 	for(const user of allUsers.data) {
+
 		const userData = await getOtherUserInfo(user.user_id);
+		console.log("User:", user);
+		console.log("User Data:", userData);
+		
 		container += `
 		<div class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
 			${headerUserMenu(userData.data!)}

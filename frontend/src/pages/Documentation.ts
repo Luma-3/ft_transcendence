@@ -2,7 +2,6 @@ import { primaryButton } from "../components/ui/buttons/primaryButton"
 import { backButton } from "../components/ui/buttons/backButton";
 
 export default function documentation() {
-
   return `
 	${backButton()}
 	<div class="flex flex-col items-center justify-center">

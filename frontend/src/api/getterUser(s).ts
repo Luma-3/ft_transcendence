@@ -1,5 +1,5 @@
 import { fetchApi } from './fetch';
-import { UserInfo } from '../interfaces/User';
+import { OtherUser, UserInfo } from '../interfaces/User';
 import { UserInPeople } from '../interfaces/PeopleInterface';
 import { IApiResponse } from '../interfaces/IApiResponse';
 import { API_PEOPLE, API_USER } from './routes';
@@ -16,17 +16,19 @@ export async function getUserInfo(): Promise<IApiResponse<UserInfo>> {
 }
 
 export async function getOtherUserInfo(id: string): Promise<IApiResponse<UserInfo>> {
-	const response = await fetchApi<UserInfo>(API_USER.BASIC.BASIC + `/${id}`);
+	console.log("getOtherUserInfo called with id:", id);
+	const response = await fetchApi<UserInfo>(API_USER.BASIC.BASIC + `/${id}?includePreferences=true`);
+	console.log("Response from getOtherUserInfo:", response);
 	return response;
 }
 
-export async function getAllUsers(): Promise<IApiResponse<UserInPeople[]>> {
-	const response = await fetchApi<UserInPeople[]>(API_PEOPLE.ALL);
+export async function getAllUsers(): Promise<IApiResponse<OtherUser[]>> {
+	const response = await fetchApi<OtherUser[]>(API_PEOPLE.ALL);
 	return response;
 }
 
 export async function getUsersList(value: string) {
-	const response = await fetchApi<UserInPeople[]>(API_PEOPLE.SEARCH + "?search=" + value);
+	const response = await fetchApi<OtherUser[]>(API_PEOPLE.SEARCH + "?search=" + value);
 	return response.data!;
 }
 
