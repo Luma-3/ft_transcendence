@@ -34,10 +34,6 @@ export const RoomInfoSchema = Type.Object({
 		gameName: Type.String({
 			description: "Name of the player in the game",
 			examples: ["Player1"]
-		}),
-		ready: Type.Boolean({
-			description: "Indicates if the player is ready to start the game",
-			examples: [true]
 		})
 	}))
 })

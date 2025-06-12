@@ -4,7 +4,6 @@ import { gameService } from '../services/gameService.js';
 import { RoomParametersType } from '../schemas/Room.js';
 import { PlayerInitialType, PlayerType } from '../schemas/Player.js';
 
-// req: { playerId, gameName, typeGame }
 export async function postPlayer(req: FastifyRequest<{Body: PlayerInitialType}>, rep: FastifyReply) {
   const data = req.body;
 
@@ -36,15 +35,6 @@ export async function getRoomInfo(req: FastifyRequest<{Params: RoomParametersTyp
   return rep.code(200).send({ message: 'Room info retrieved', data: room.roomInfos() });
 }
 
-// export async function postGame(req, rep) {
-//   const { player1_uid, player2_uid } = req.body;
-
-//   const gameId = await gameService.createGame(player1_uid, player2_uid);
-//   console.log("Game created with ID:", gameId);
-//   return rep.code(201).send({ message: 'Game created', data: { id: gameId } });
-// }
-
-// payload: { type: 'init', data: { uid, roomId } }
 export async function handlerEvent() {
   redisSub.subscribe('ws.game.in', (raw: string) => {
     const message = JSON.parse(raw);

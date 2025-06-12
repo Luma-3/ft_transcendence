@@ -8,8 +8,6 @@ import { Type } from '@sinclair/typebox';
 
 
 export default async function(fastify: FastifyInstance) {
-  // fastify.post('/games', Controller.postGame);
-
   fastify.post('/join', {
     schema : {
       body: PlayerInitialSchema,
@@ -19,8 +17,7 @@ export default async function(fastify: FastifyInstance) {
             format: 'uuid',
             description: 'Unique identifier for the room, formatted as a UUID'
           })
-        }), 'Player added to room'),
-        500: ResponseSchema(undefined, 'Failed to join room', 'error')
+        }), 'Player added to room')
       }
     }
   }, Controller.postPlayer);
@@ -29,9 +26,8 @@ export default async function(fastify: FastifyInstance) {
     schema: {
       params: RoomParametersSchema,
       response: {
-        200: ResponseSchema(RoomInfoSchema, 'Room info retrieved'),
-        404: ResponseSchema(undefined, 'Room not found', 'error')
+        200: ResponseSchema(RoomInfoSchema, 'Room info retrieved')
       }
     }
-  }, Controller.getRoomInfo); 
+  }, Controller.getRoomInfo);
 }

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Pong } from '../game/Pong.js';
 import { PlayerType } from '../schemas/Player.js';
-import { GameType } from '../schemas/Room.js';
+import { GameType, RoomInfoType } from '../schemas/Room.js';
 
 export class Room {
 	id: string;
@@ -16,35 +16,35 @@ export class Room {
 	playerReady: number;
 	
   constructor(typeGame: GameType) {
-	this.id = uuidv4();
-	this.name = '';
-	this.typeGame = typeGame;
-	if (typeGame === 'localpvp' || typeGame === 'localpve') {
-		this.status = 'readyToStart';
-	}
-	this.players = [];
-	this.pong = null; // Instance of Pong game
-	this.isFull = false;
-	this.createdAt = new Date();
-	this.maxPlayers = typeGame === 'tournament' ? 8 : typeGame === 'online' ? 2 : 1; // Maximum number of players in the room
-	this.playerReady = 0; // Counter for players ready to start the game
+		this.id = uuidv4();
+		this.name = '';
+		this.typeGame = typeGame;
+		if (typeGame === 'localpvp' || typeGame === 'localpve') {
+			this.status = 'readyToStart';
+		}
+		this.players = [];
+		this.pong = null; // Instance of Pong game
+		this.isFull = false;
+		this.createdAt = new Date();
+		this.maxPlayers = typeGame === 'tournament' ? 8 : typeGame === 'online' ? 2 : 1; // Maximum number of players in the room
+		this.playerReady = 0; // Counter for players ready to start the game
   }
 
   addPlayer(player: PlayerType) {
-	if (this.players.length >= this.maxPlayers) {
-	  return false; // Room is full
-  	}
+		if (this.players.length >= this.maxPlayers) {
+			return false;
+		}
 
-	this.players.push(player);
-	if (this.players.length === this.maxPlayers) {
-		this.isFull = true; // Room is now full
-		this.status = 'roomReady'; // Change status to ready to start
-	}
+		this.players.push(player);
+		if (this.players.length === this.maxPlayers) {
+			this.isFull = true; // Room is now full
+			this.status = 'roomReady'; // Change status to ready to start
+		}
 
-	if (this.name === '') {
-	  this.name = `Room-${player.gameName}`; // Assign a unique name if not set
-	}
-	return true; // Player added successfully
+		if (this.name === '') {
+			this.name = `Room-${player.gameName}`; // Assign a unique name if not set
+		}
+		return true; // Player added successfully
   }
 
 	getPlayerById(playerId: string) {
@@ -83,10 +83,10 @@ export class Room {
   }
 
   removePlayer(playerId: string) {
-	//TODO: Implement player removal logic
-	if (this.typeGame === 'localpvp' || this.typeGame === 'localpve') {
-	  this.stopGame(); // Stop the game if it's a local PvP or PvE game
-	}
+		//TODO: Implement player removal logic
+		if (this.typeGame === 'localpvp' || this.typeGame === 'localpve') {
+			this.stopGame(); // Stop the game if it's a local PvP or PvE game
+		}
   }
 
   startGame() {
@@ -124,116 +124,48 @@ export class Room {
   }
 
   userOpponentInfos(player: PlayerType) {
-	return this.players.filter(p => p.playerId !== player.playerId).map(p => ({
-		playerId: p.playerId,
-		gameName: p.gameName,
-		joined: p.joined
-	}));
+		return this.players.filter(p => p.playerId !== player.playerId).map(p => ({
+			playerId: p.playerId,
+			gameName: p.gameName,
+			joined: p.joined
+		}));
   }
 
   roomData() {
-	return {
-		roomId: this.id,
-		gameData: this.pong ? this.pong.toJSON() : null,
-		typeGame: this.typeGame,
-		players: this.players,
-		//opponents: this.userOpponentInfos(player)
-	};
+		return {
+			roomId: this.id,
+			gameData: this.pong ? this.pong.toJSON() : null,
+			typeGame: this.typeGame,
+			players: this.players,
+			//opponents: this.userOpponentInfos(player)
+		};
   }
 
-  roomInfos() {
-	return {
-	  roomId: this.id,
-	  typeGame: this.typeGame,
-	  players: this.players.map(player => ({
-		playerId: player.playerId,
-		gameName: player.gameName,
-		ready: player.ready
-	  })),
-    };
+  roomInfos() : RoomInfoType {
+		return {
+			roomId: this.id,
+			typeGame: this.typeGame,
+			players: this.players.map(player => ({
+				playerId: player.playerId,
+				gameName: player.gameName,
+			})),
+		};
   }
 
   toJSON() {
     return {
-	  roomId: this.id,
-	  name: this.name,
-	  typeGame: this.typeGame,
-	  status: this.status,
-	  players: this.players.map(player => ({
-		playerId: player.playerId,
-		gameName: player.gameName,
-		ready: player.ready,
-	  })),
-	  isFull: this.isFull,
-	  createdAt: this.createdAt.toISOString(),
-	  maxPlayers: this.maxPlayers,
-	};
+			roomId: this.id,
+			name: this.name,
+			typeGame: this.typeGame,
+			status: this.status,
+			players: this.players.map(player => ({
+			playerId: player.playerId,
+			gameName: player.gameName,
+			ready: player.ready,
+			})),
+			isFull: this.isFull,
+			createdAt: this.createdAt.toISOString(),
+			maxPlayers: this.maxPlayers,
+		};
   }
 }
-
-//   createGame(player1_uid, player2_uid) {
-// 	const game = new Pong({ player1_uid, player2_uid });
-// 	this.games.set(game.id, game);
-	  
-// 	// Start the game immediately after creation
-// 	// this.startGame(game.id);
-
-// 	return game.id;
-//   }
-
-//   startGame(gameId) {
-// 	const game = this.games.get(gameId);
-
-// 	if (!game) {
-// 	  throw new InternalServerError('Game not found');
-// 	}
-
-// 	// Start the game only if it is not already started
-// 	if (!game.gameIsStart) {
-// 	  game.start();
-// 	} else {
-// 	  throw new InternalServerError('Game is already started');
-// 	}
-//   }
-
-//   stopGame(gameId) {
-// 	const game = this.games.get(gameId);
-// 	if (!game) {
-// 	  throw new InternalServerError('Game not found');
-// 	}
-
-// 	// Stop the game only if it is currently started
-// 	if (game.gameIsStart) {
-// 	  game.stop();
-// 	} else {
-// 	  throw new InternalServerError('Game is not started');
-// 	}
-//   }
-
-//   async handleEvent(clientId, event) {
-// 	const gameId = event.gameId;
-// 	const game = this.games.get(gameId);
-// 	if (!game) {
-// 	  throw new InternalServerError('Game not found for the given client ID');
-// 	}
-
-// 	switch (event.type) {
-// 	  case 'move':
-// 		game.movePlayer(clientId, event.direction);
-// 		break;
-// 	  default:
-// 		throw new InternalServerError('Unknown event type');
-// 	}
-//   }
-
-//   getGameId(clientId) {
-// 	return this.games.get(clientId).id;
-//   }
-
-//   deleteGame(gameId) {
-// 	if (this.games.has(gameId)) {
-// 	  this.stopGame(gameId);
-// 	  this.games.delete(gameId);
-// 	  console.log(`Game ${gameId} deleted`);
-// 	}
-//   }
