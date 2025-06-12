@@ -2,9 +2,9 @@
   "name": "transcenduck_upload-services",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "nodemon",
     "knex": "tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts",
     "migrate": "npm run knex migrate:latest",
     "migrate:rollback": "npm run knex migrate:rollback",

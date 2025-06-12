@@ -21,6 +21,7 @@ WORKDIR /app
 COPY package*.json ./
 COPY tsconfig.json ./
 COPY knexfile.ts ./
+COPY nodemon.json ./
 
 RUN npm install --build-from-source --sqlite=/usr/local
 

@@ -5,7 +5,6 @@ import { generateToken } from "../utils/jwt.js";
 import { refreshTokenModelInstance } from "./token.model.js";
 
 import { FamiliesResponseType } from './session.schema.js';
-import { timeStamp } from 'console';
 
 interface refreshTokenInfo {
   user_id: string;
