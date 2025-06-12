@@ -20,8 +20,7 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY tsconfig.json ./
-COPY knexfile.mjs ./
-COPY nodemon.json ./
+COPY knexfile.ts ./
 
 RUN npm install --build-from-source --sqlite=/usr/local
 

@@ -58,10 +58,8 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       description: 'Endpoint to update current user avatar preferences',
       tags: ['Preferences'],
       headers: UserHeaderAuthentication,
-      body: PreferencesUpdateBody,
       response: {
         200: ResponseSchema(PreferencesPublicResponse, 'Ok'),
-        401: UnauthorizedResponse,
       }
     }
   }, updateAvatarPreferences);
@@ -74,7 +72,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       headers: UserHeaderAuthentication,
       response: {
         200: ResponseSchema(PreferencesPublicResponse, 'Ok'),
-        401: UnauthorizedResponse,
       }
     }
   }, updateBannerPreferences );  

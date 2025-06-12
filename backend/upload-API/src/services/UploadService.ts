@@ -25,10 +25,10 @@ export class UploadService {
   }
 
   async uploadFile(typePath: string, data?: MultipartFile) {
+    console.log(data)
     if (!data) {
       throw new ForbiddenError("file not send");
     }
-    console.log(data)
     if (data.file.truncated) {
       throw new PayloadTooLargeError();
     }

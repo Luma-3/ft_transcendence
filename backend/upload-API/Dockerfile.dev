@@ -1,15 +1,10 @@
 FROM base
 
-RUN apt-get update && apt-get install -y \
-    wget \
-    build-essential
-
 WORKDIR /app
 
 COPY package*.json ./
 COPY tsconfig.json ./
-COPY nodemon.json ./
 
-RUN npm install --build-from-source
+RUN npm install
 
 CMD ["npm", "run", "dev"]

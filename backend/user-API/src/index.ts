@@ -28,7 +28,7 @@ server.register(userRoutes);
 server.register(preferencesRouts);
 
 server.addHook('onRequest', async (req, _) => {
-  console.log(`Header: ${req.headers['x-user-id']}, Username: ${req.headers['x-user-username']}`);
+  console.log(`Header:${JSON.stringify(req.headers, undefined, 2)}`);
   return;
 });
 

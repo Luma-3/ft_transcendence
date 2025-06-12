@@ -50,17 +50,6 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'accept-friend': () => handleFriendRequest(event?.target as HTMLElement, "accept"),
 	'block-user': () => blockUser(event?.target as HTMLElement),
 	'refuse-invitation': () => sendRefuseInvitation(event?.target as HTMLElement),
-	
-		// * ---- Image Editor  ---- */
-		'cancel-image': () => cancelEditor(),
-		'save-image': () => saveNewPicture(),
-		'file-upload': () => showEditorPicture(),
-		'banner-upload': () => showEditorPicture("BANNER"),
-	// * -------------- Settings Page  -------------- */
-	'loadsettings': () => renderPrivatePage('settings'),
-	'saveLang': () => saveDefaultLanguage(),
-	'deleteAccount': () => deleteUser(),
-	'logout': () =>  logOutUser(),
 
   // * ---- Image Editor  ---- */
   'cancel-image': () => cancelEditor(),
