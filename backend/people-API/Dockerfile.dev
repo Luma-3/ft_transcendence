@@ -1,11 +1,27 @@
-FROM node:22-alpine
+FROM base
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    build-essential
+
+# Download SQLite source code
+RUN wget https://www.sqlite.org/2024/sqlite-autoconf-3460100.tar.gz && \
+    tar -xvf sqlite-autoconf-3460100.tar.gz && \
+    rm sqlite-autoconf-3460100.tar.gz
+
+# Compile and install SQLite
+WORKDIR sqlite-autoconf-3460100
+RUN ./configure && make -j 4 && make install
+
+# Clean up the build files to reduce the image size
+RUN rm -rf /sqlite-autoconf-3460100
 
 WORKDIR /app
 
 COPY package*.json ./
+COPY tsconfig.json ./
+COPY knexfile.ts ./
 
-COPY knexfile.mjs ./
-
-RUN npm install
+RUN npm install --build-from-source --sqlite=/usr/local
 
 CMD ["npm", "run", "dev"]

@@ -13,6 +13,7 @@ import {
 
 import { UserHeaderAuthentication } from '../schema/user.schema.js';
 import { PreferencesUpdateBody } from '../schema/preferences.schema.js';
+import { updateAvatarPreferences, updateBannerPreferences } from '../controllers/preferencesController.js';
 
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
@@ -40,7 +41,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       description: 'Endpoint to update current user preferences',
       tags: ['Preferences'],
       headers: UserHeaderAuthentication,
-      body: PreferencesUpdateBody,
       response: {
         200: ResponseSchema(PreferencesPublicResponse, 'Preferences updated successfully'),
         401: UnauthorizedResponse,
@@ -51,6 +51,31 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const preferences = await PreferencesService.updatePreferences(user_id, req.body, PREFERENCES_PRIVATE_COLUMNS);
     return rep.code(200).send({ message: 'Preferences updated successfully', data: preferences });
   });
+
+  fastify.patch('/users/me/preferences/avatar', {
+    schema: {
+      summary: 'Update current user avatar preferences',
+      description: 'Endpoint to update current user avatar preferences',
+      tags: ['Preferences'],
+      headers: UserHeaderAuthentication,
+      response: {
+        200: ResponseSchema(PreferencesPublicResponse, 'Ok'),
+      }
+    }
+  }, updateAvatarPreferences);
+
+  fastify.patch('/users/me/preferences/banner', {
+    schema: {
+      summary: 'Update current user banner preferences',
+      description: 'Endpoint to update current user banner preferences',
+      tags: ['Preferences'],
+      headers: UserHeaderAuthentication,
+      response: {
+        200: ResponseSchema(PreferencesPublicResponse, 'Ok'),
+      }
+    }
+  }, updateBannerPreferences );  
+
 
   fastify.get('/users/:userID/preferences', {
     schema: {

@@ -1,6 +1,7 @@
 import app from './fastify.js'
 import http_proxy from '@fastify/http-proxy';
 import dotenv from 'dotenv';
+import process from 'node:process';
 
 import { internalRoutes } from './plugins/internalRoute.js';
 

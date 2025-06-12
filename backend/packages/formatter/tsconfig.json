@@ -2,8 +2,6 @@
 	"compilerOptions": {
     /* Basic Options */
     "declaration": true,
-    "emitDeclarationOnly": false,
-    "declarationMap": false, 
 
     /* Output & Source Structure */
     "outDir": "./dist",
