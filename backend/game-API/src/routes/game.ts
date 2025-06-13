@@ -4,11 +4,10 @@ import { RoomInfoSchema, RoomParametersSchema } from '../schemas/Room.js';
 import { ResponseSchema } from '../utils/schema.js';
 import { PlayerInitialSchema } from '../schemas/Player.js';
 import { Type } from '@sinclair/typebox';
-
-
+import { InternalServerErrorResponse } from '@transcenduck/error';
 
 export default async function(fastify: FastifyInstance) {
-  fastify.post('/join', {
+  fastify.post('/rooms/join', {
     schema : {
       body: PlayerInitialSchema,
       response: {
@@ -17,12 +16,13 @@ export default async function(fastify: FastifyInstance) {
             format: 'uuid',
             description: 'Unique identifier for the room, formatted as a UUID'
           })
-        }), 'Player added to room')
+        }), 'Player added to room'),
+        500: InternalServerErrorResponse
       }
     }
   }, Controller.postPlayer);
 
-  fastify.get('/:roomId', {
+  fastify.get('/rooms/:roomId', {
     schema: {
       params: RoomParametersSchema,
       response: {

@@ -6,23 +6,29 @@ import { InternalServerError, NotFoundError } from '@transcenduck/error';
 import { GameType } from '../schemas/Room.js';
 
 /**
- * Service de gestion des salles de jeu, des joueurs et des événements de jeu.
+ * GameService : Service central de gestion des salles de jeu multijoueur.
  * 
- * La classe `GameService` fournit des méthodes pour créer, rejoindre et supprimer des salles de jeu,
- * gérer les joueurs dans ces salles, diffuser des événements aux joueurs et traiter les actions liées au jeu.
- * Elle maintient une map en mémoire des salles actives et coordonne le déroulement du jeu,
- * y compris le démarrage, la gestion de la préparation des joueurs et le traitement des actions en jeu.
+ * La classe `GameService` orchestre la création, la gestion et la suppression des salles de jeu,
+ * l'ajout et le retrait des joueurs, la diffusion des événements de jeu (via Redis) et le cycle de vie des parties.
  * 
- * @remarks
- * - Dépend des classes/types externes : `Room`, `PlayerType`, `GameType`, et `InternalServerError`.
- * - Utilise un publisher Redis (`redisPub`) pour diffuser les messages aux clients.
+ * Fonctionnalités principales :
+ * - Création et recherche de salles selon le type de jeu demandé.
+ * - Ajout automatique d'un joueur à une salle disponible ou création d'une nouvelle salle si besoin.
+ * - Gestion de l'état des salles (attente, prêtes, en cours, terminées).
+ * - Diffusion d'événements et d'actions à tous les joueurs d'une salle via Redis.
+ * - Traitement des événements reçus des clients (connexion, préparation, mouvements, etc).
+ * - Démarrage, arrêt et suppression des parties et salles.
  * 
- * @example
+ * Dépendances :
+ * - Utilise la classe `Room` pour représenter une salle et gérer les joueurs/parties.
+ * - Utilise les types `PlayerType` et `GameType` pour typer les joueurs et les jeux.
+ * - Utilise `redisPub` pour publier les messages aux clients via WebSocket.
+ * - Gère les erreurs via `InternalServerError` et `NotFoundError`.
+ * 
+ * Exemple d'utilisation :
  * ```typescript
- * const gameService = new GameService();
- * const player: PlayerType = { ... };
  * const roomId = gameService.joinRoom(player, 'localpvp');
- * gameService.handleEvent(clientId, { type: 'move', data: { roomId, direction: 'up' } });
+ * await gameService.handleEvent(clientId, { type: 'move', data: { roomId, direction: 'up' } });
  * ```
  */
 class GameService {
@@ -76,18 +82,29 @@ class GameService {
   getRoom(roomId: string) { return this.rooms.get(roomId); }
 
   /**
-   * Ajoute un joueur à une salle donnée.
+   * Ajoute un joueur à une salle donnée. Si la salle est pleine, crée une nouvelle salle du même type et y ajoute le joueur.
+   * Diffuse l'état de la salle après l'ajout du joueur.
    * 
    * @param room - La salle cible.
    * @param player - Le joueur à ajouter.
    * @throws {NotFoundError} Si la salle n'existe pas.
+   * @throws {InternalServerError} Si la création d'une nouvelle salle échoue.
    */
   addPlayerToRoom(room: Room, player: PlayerType) {
     if (!room) {
       throw new NotFoundError('Room');
     }
 
-    room.addPlayer(player);
+    if (room.addPlayer(player) == false) {
+      const newRoom = this.createRoom(room.typeGame);
+      if (!newRoom) {
+        throw new InternalServerError('Failed to create a new room');
+      }
+      newRoom.addPlayer(player);
+      this.broadcast(newRoom, 'roomCreated', newRoom.roomData());
+      return;
+    }
+
     if (room.status === 'roomReady') {
       this.broadcast(room, 'roomReady', room.roomData());
     }
@@ -204,7 +221,7 @@ class GameService {
         this.broadcast(room, 'playerReady', room.roomData());
 
         room.playerReady++;
-        if (room.playerReady >= room.maxPlayers) {
+        if (room.playerReady == room.maxPlayers) {
           room.status = 'readyToStart';
           this.createGameInRoom(room);
           this.broadcast(room, 'readyToStart', room.roomData());
@@ -213,7 +230,7 @@ class GameService {
         
       case 'startGame':
         if (room.status === 'readyToStart')
-          if (room.startGame() === false) throw new InternalServerError('Game start failed');
+          room.startGame();
         break;
 
       case 'move':
