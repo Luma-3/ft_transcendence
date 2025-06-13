@@ -111,7 +111,7 @@ export type UserQueryGetType = Static<typeof UserQueryGet>;
 export const UserHeaderAuthentication = Type.Object({
   'x-user-id': Type.String({ format: 'uuid' }),
 }, {
-  additionalProperties: false
+  additionalProperties: true
 });
 export type UserHeaderIdType = Static<typeof UserHeaderAuthentication>;
 

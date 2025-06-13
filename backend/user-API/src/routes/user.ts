@@ -64,7 +64,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     return rep.code(200).send({ message: `user ${delId} has been deleted` });
   });
 
-  fastify.get('/users/:userID', {
+  fastify.get('/users/:id', {
     schema: {
       summary: 'Public information of user',
       description: 'Endpoint to retrieve public informations of a user',

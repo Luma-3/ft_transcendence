@@ -1,10 +1,10 @@
 import { navbar } from "../components/ui/navbar";
-import { User } from "../interfaces/User";
+import { UserInfo } from "../interfaces/User";
 import { renderChat } from "../chat/Chat";
 import { primaryButton } from "../components/ui/buttons/primaryButton";
 import { secondaryButton } from "../components/ui/buttons/secondaryButton";
 
-function onlineSettings(user: User) {
+function onlineSettings(user: UserInfo) {
 	const list_friends = `<li class="text-zinc-600 font-title">You have no friends</li>`;
 	return `
 	<div id="online-settings" class="flex hidden flex-col w-full h-full p-4 space-y-4 mb-10
@@ -24,7 +24,7 @@ function onlineSettings(user: User) {
 	</div>`
 }
 
-function localPVPSettings(user: User) { 
+function localPVPSettings(user: UserInfo) { 
 	return `
 	<div id="local-PVP-settings" class="flex hidden flex-col w-full h-full p-4 space-y-4 mb-10
 	 bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
@@ -87,7 +87,7 @@ function gameTypeButton() {
 
 }
 
-function gameUserStat(user: User) {
+function gameUserStat(user: UserInfo) {
 	return `<div class="flex flex-col w-full h-full max-h-[600px] max-w-[400px] mx-4 overflow-auto
 		p-4 space-y-4 rounded-lg
 		transition-transform duration-300 ease-in-out">
@@ -113,7 +113,7 @@ function gameUserStat(user: User) {
 	`;
 }
 
-async function renderDashboard(user:User) {
+async function renderDashboard(user: UserInfo) {
 
 	return `
 		${navbar(user)}
@@ -125,7 +125,7 @@ async function renderDashboard(user:User) {
 				<img src="/images/dashboard.png" alt="Bienvenue" class="w-40 mb-8 drop-shadow-lg" />
 
 				<label for="player1-name" class="text-2xl font-title text-zinc-600 mb-4" translate="player1">Player 1</label>
-				<input type="text" id="player1-name" class="w-1/2 p-2 font-title border-2 border-zinc-300 rounded-lg" translate="username" placeholder="username" value=${user.data.username} />
+				<input type="text" id="player1-name" class="w-1/2 p-2 font-title border-2 border-zinc-300 rounded-lg" translate="username" placeholder="username" value=${user.username} />
 
 				${gameTypeButton()}
 
@@ -175,7 +175,7 @@ async function renderDashboard(user:User) {
 	`
 }
 
-export default async function dashboardPage(user: User) {
+export default async function dashboardPage(user: UserInfo) {
 
 	const container = renderDashboard(user);
 	return container as Promise<string>;

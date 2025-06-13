@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "nodemon",
     "knex": "tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts",
     "migrate": "npm run knex migrate:latest",
     "migrate:rollback": "npm run knex migrate:rollback",
@@ -25,6 +25,7 @@
   "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
   "devDependencies": {
     "@fastify/cors": "^10.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.31",
     "tsx": "^4.19.4"
   },

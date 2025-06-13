@@ -15,7 +15,7 @@ export const API_USER = {
     REGISTER: `${SERVICES.USER}`,
     DELETE: `${SERVICES.USER}/me`,
     INFOS: `${SERVICES.USER}/me`,
-    PREFERENCES: `${SERVICES.USER}/me/preferences`,
+    PREFERENCES: `${SERVICES.USER}/me?includePreferences=true`,
   },
   UPDATE: {
     PREF: {

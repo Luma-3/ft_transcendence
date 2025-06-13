@@ -7,6 +7,7 @@ import { UserCreateBodyType, UserBaseType } from "../schema/user.schema.js";
 import { PreferencesBaseType } from "../schema/preferences.schema.js";
 import { Knex } from "knex";
 import { USER_PRIVATE_COLUMNS } from "../models/userModel.js"
+import { redisPub } from "../utils/redis.js";
 
 
 export class UserService {
@@ -31,13 +32,18 @@ export class UserService {
       banner: `default.png`,
       theme: data.preferences?.theme || 'dark',
     }
-
     return await knexInstance.transaction(async (trx: Knex.Transaction) => {
       const userID = uuidV4();
       const [user] = await userModel.create(trx, userID, user_obj);
 
       const [preferences] = await preferencesModel.create(trx, userID, user_preferences);
-      return { ...user, preferences }
+      
+			redisPub.publish("api.social.in", JSON.stringify({userId: user.id, 
+				action: "create",
+				payload: {
+				username: user.username
+			}})).catch(console.error);
+			return { ...user, preferences }
     });
   }
 
@@ -114,6 +120,11 @@ export class UserService {
     if (existingUsername) throw new ConflictError("Username already in use");
 
     const [updatedUser] = await userModel.update(id, { username: username }, USER_PRIVATE_COLUMNS);
+		redisPub.publish("api.social.in", JSON.stringify({userId: user.id, 
+			action: "update",
+			payload: {
+			username: updatedUser.username
+		}})).catch(console.error);
     return updatedUser;
   }
 

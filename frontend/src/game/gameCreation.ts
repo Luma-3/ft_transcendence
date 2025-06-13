@@ -5,24 +5,19 @@ import { fetchToken } from "../api/fetchToken";
 import { getUserInfo } from "../api/getterUser(s)";
 import { fetchApi } from "../api/fetch";
 import { API_GAME } from "../api/routes";
-
 import { socket } from "../controllers/Socket";
 
-import { GameId, FrontGameInfo } from "../interfaces/GameData";
 
-export let gameFrontInfo: FrontGameInfo;
-export let gameId: string;
+export let gameFrontInfo: { gameId: string, typeGame: string };
 
-function initGame() {
-	console.log("Game initialized with ID:", gameId);
-	console.log("Game Front Info:", gameFrontInfo);
+function initGame(gameFormInfo: any) {
 	socket!.send(JSON.stringify({
 		type: "game",
 		payload: {
 			type: 'init',
 			data: {
-				playerId: gameFrontInfo.playerId,
-				roomId: gameId,
+				playerId: gameFormInfo.playerId,
+				roomId: gameFormInfo.gameId,
 			}
 		}
 	}))
@@ -34,20 +29,26 @@ function initGame() {
  * @param gameInfo - Donnees de la partie a envoyer
  * @param user - Les donnees de l'utilisateur present sur le client
  */
-async function sendDataToServer(userTheme: string) {
+async function sendDataToServer(gameFormInfo: any, userTheme: string) {
 
-	const response = await fetchApi<GameId>(API_GAME.CREATE, {
+	const response = await fetchApi<{ id: string }>(API_GAME.CREATE, {
 		method: 'POST',
 		body: JSON.stringify({
-			playerId: gameFrontInfo.playerId,
-			gameName: gameFrontInfo.gameName,
-			typeGame: gameFrontInfo.typeGame,
+			playerId: gameFormInfo.playerId,
+			gameName: gameFormInfo.gameName,
+			typeGame: gameFormInfo.typeGame,
 		}),
 	});
+	// player2: gameFormInfo.gameNameOpponent,
 	if (!response || response.status === "error" || !response.data) {
 		return alertTemporary("error", "game-creation-failed", userTheme, true);
 	}
-	gameId = response.data.id;
+
+	gameFormInfo = { gameId: response.data.id, typeGame: gameFormInfo.typeGame };
+
+	/**
+	 * Petit alert de success qui s'affiche a gauche sur l'ecran
+	 */
 	alertTemporary("success", "game-created-successfully", userTheme, true);
 }
 
@@ -58,15 +59,13 @@ async function sendDataToServer(userTheme: string) {
  */
 export async function createGame() {
 
-	console.log("Creating game...");
 	/**
 	 * Verification de la connexion WebSocket
 	 */
-	// if (socket?.readyState !== WebSocket.OPEN) {
-	// 	alert("Connection to the server lost. Automatically reconnecting...", "error");
-	// 	return window.location.reload();
-	// }
-
+	if (socket?.readyState !== WebSocket.OPEN) {
+		alert("Connection to the server lost. Automatically reconnecting...", "error");
+		return window.location.reload();
+	}
 
 	/**
 	 * Verification de la session utilisateur
@@ -111,8 +110,8 @@ export async function createGame() {
 	/**
 	 * Creation de l'instance de jeu
 	 */
-	const user = await getUserInfo();
-	if (user.status === "error" || !user.data) {
+	const response = await getUserInfo();
+	if (response.status === "error" || !response.data) {
 		return alert("Error while fetching user data. Please try again later.", "error");
 	}
 
@@ -121,13 +120,13 @@ export async function createGame() {
 	 * pour pouvoir stocker facilement toutes les donnees utiles au front
 	 * et l'envoi de la requete pour creer la partie
 	 */
-	gameFrontInfo = {
-		playerId: user.data.id!.toString(),
+	const gameFormInfo = {
+		playerId: response.data.id!.toString(),
 		gameName: player1,
 		typeGame : gameType.id,
 		gameNameOpponent: (player2) ? player2 : "",
 	}
 
-	await sendDataToServer(user.preferences.theme);
-	initGame();
+	await sendDataToServer(gameFormInfo, response.data.preferences.theme);
+	initGame(gameFormInfo);
 }

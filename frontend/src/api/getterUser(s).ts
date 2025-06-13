@@ -1,50 +1,34 @@
 import { fetchApi } from './fetch';
-import { User, UserData, UserInfo, UserPreferences, UserResponse } from '../interfaces/User';
+import { OtherUser, UserInfo } from '../interfaces/User';
 import { UserInPeople } from '../interfaces/PeopleInterface';
 import { IApiResponse } from '../interfaces/IApiResponse';
 import { API_PEOPLE, API_USER } from './routes';
 
+/**
+ * Getter for the current user's information.
+ * @returns {Promise<IApiResponse<UserInfo>>} A promise that resolves to the user's information.
+ */
+export async function getUserInfo(): Promise<IApiResponse<UserInfo>> {
 
-export async function getUserInfo(): Promise<UserResponse> {
-	let userData: UserResponse = {
-		status: '',
-		message: '',
-		data: {
-			id: 0,
-			username: '',
-			created_at: ''
-		},
-		preferences: {
-			theme: 'dark',
-			lang: 'en',
-			avatar: 'default.jpg'
-		}
-	};
-
-	const response = await fetchApi<UserInfo>(API_USER.BASIC.INFOS + "?includePreferences=true", {
+	return await fetchApi<UserInfo>(API_USER.BASIC.INFOS + "?includePreferences=true", {
 		method: "GET",
 	});
-	userData.status = response.status;
-	userData.message = response.message;
-	userData.data = response.data!;
-	if (userData.status === 'error') {
-		return userData;
-	}
-	return userData;
 }
 
-export async function getOtherUserInfo(id: string): Promise<IApiResponse<User>> {
-	const response = await fetchApi<User>(API_USER.BASIC.BASIC + `/${id}`);
+export async function getOtherUserInfo(id: string): Promise<IApiResponse<UserInfo>> {
+	console.log("getOtherUserInfo called with id:", id);
+	const response = await fetchApi<UserInfo>(API_USER.BASIC.BASIC + `/${id}?includePreferences=true`);
+	console.log("Response from getOtherUserInfo:", response);
 	return response;
 }
 
-export async function getAllUsers(): Promise<IApiResponse<UserInPeople[]>> {
-	const response = await fetchApi<UserInPeople[]>(API_PEOPLE.ALL);
+export async function getAllUsers(): Promise<IApiResponse<OtherUser[]>> {
+	const response = await fetchApi<OtherUser[]>(API_PEOPLE.ALL);
 	return response;
 }
 
 export async function getUsersList(value: string) {
-	const response = await fetchApi<UserInPeople[]>(API_PEOPLE.SEARCH + "?search=" + value);
+	const response = await fetchApi<OtherUser[]>(API_PEOPLE.SEARCH + "?search=" + value);
 	return response.data!;
 }
 

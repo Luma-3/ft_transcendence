@@ -10,8 +10,9 @@
   },
   "devDependencies": {
     "@types/node": "^22.15.24",
+    "nodemon": "^3.1.10",
     "typescript": "^5.8.3"
-  },
+  }, 
   "dependencies": {
     "@sinclair/typebox": "^0.34.33",
     "@transcenduck/error": "file:../error",

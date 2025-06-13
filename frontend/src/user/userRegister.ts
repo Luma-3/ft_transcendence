@@ -5,7 +5,6 @@ import { verifRegexPassword } from '../components/utils/regex';
 import { loadTranslation } from '../i18n/Translate';
 
 import { API_USER, API_SESSION } from '../api/routes';
-import { User } from '../interfaces/User';
 
 import { socketConnection } from '../controllers/Socket';
 import { fetchApi } from '../api/fetch';
@@ -60,6 +59,12 @@ export async function registerUser() {
 	 * Chargement des donnees utilisateur pour les fetchs
 	 */
 	const trad = await loadTranslation(lang);
+
+	/**
+	 * Creation de l'objet userData qui sera envoye au serveur
+	 * avec les donnees du formulaire et la langue
+	 * et les preferences par defaut
+	 */
 	const userData = {
 		username: formEntry.username,
 		password: formEntry.password,
@@ -73,7 +78,7 @@ export async function registerUser() {
 	/**
 	 * Creation de l'utilisateur
 	 */
-	const response = await fetchApi<User>(API_USER.BASIC.REGISTER, {
+	const response = await fetchApi(API_USER.BASIC.REGISTER, {
 		method: 'POST',
 		body: JSON.stringify(userData)
 	}, false);

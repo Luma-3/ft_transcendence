@@ -1,7 +1,5 @@
-import notfound from "./4xx";
 
 import { navbar } from "../components/ui/navbar";
-import { getUserInfo } from "../api/getterUser(s)";
 
 import { animateButton } from "../components/ui/buttons/animateButton";
 import { primaryButton } from "../components/ui/buttons/primaryButton";
@@ -9,16 +7,11 @@ import { primaryButton } from "../components/ui/buttons/primaryButton";
 import { languageSelectorSettings } from "../components/ui/languageSelector";
 import { change2FA } from "../components/ui/buttons/change2FAButton";
 import { headerPage } from "../components/ui/headerPage";
+import { UserInfo } from "../interfaces/User";
 
 
 
-async function renderSettingsPage() {
-
-	const response = await getUserInfo();
-	if (response.status === "success" && response.data) {
-		
-		const user = response.data;
-		
+async function renderSettingsPage(user: UserInfo) {
 		return `
 			${navbar(user)}
 			${headerPage("settings")}
@@ -35,10 +28,8 @@ async function renderSettingsPage() {
 				${animateButton("logout", "logout", "`<img src='/images/duckSad.png' class='w-20 h-2- mr-2' alt='Duck sad icon'>`")}
 				</div>
 			</div>`
-	}
-	return notfound()
 }
 
-export default function settingsPage() {
-	return renderSettingsPage();
+export default function settingsPage(user: UserInfo) {
+	return renderSettingsPage(user);
 }

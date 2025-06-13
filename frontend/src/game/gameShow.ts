@@ -8,19 +8,22 @@ export function showGame() {
 
 	document.getElementById("vsdiv")!.classList.add("opacity-0");
 	document.getElementById("goToActionGame")!.classList.add("opacity-0");
+	
 	setTimeout(() => {
 	userGameProfile.classList.add("-translate-x-full");
 	opponentGameProfile.classList.add("translate-x-full");
 	}, 200);
+	
 	setTimeout(() => {
 		userGameProfile.classList.add("opacity-0");
 		opponentGameProfile.classList.add("opacity-0");
 		startInfos.classList.add("hidden");
 		gameContainer.classList.remove("opacity-0");
 		gameContainer.classList.add("opacity-100");
-		drawGame({paddle1: { y: 0, score: 0 },
-				paddle2: { y: 0, score: 0 },
-				ball: { x: 0, y: 0 }});
+		
+		drawGame({paddle1: { y: 300, score: 0 },
+				paddle2: { y: 300, score: 0 },
+			ball: { x: 400, y: 300 }});
 			}, 1500);
 	
 	setTimeout(() => {

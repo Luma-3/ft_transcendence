@@ -2,9 +2,9 @@
   "name": "transcenduck_game-services",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "nodemon",
     "knex": "tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts",
     "migrate": "npm run knex migrate:latest",
     "migrate:rollback": "npm run knex migrate:rollback",
@@ -25,7 +25,8 @@
   "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
   "devDependencies": {
     "@fastify/cors": "^10.0.2",
-    "@types/node": "^24.0.0",
+    "@types/node": "^24.0.1",
+    "nodemon": "^3.1.10",
     "tsx": "^4.20.1",
     "typescript": "^5.8.3"
   },

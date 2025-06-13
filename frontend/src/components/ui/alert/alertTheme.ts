@@ -5,13 +5,13 @@ export async function getCustomAlertTheme(needUser: boolean = true, theme: strin
 	let lang = sessionStorage.getItem('lang') || 'en';
 	
 	if (needUser) {
-		const userInfo = await getUserInfo();
-		if (userInfo.status === "error" || !userInfo.data) {
+		const response = await getUserInfo();
+		if (response.status === "error" || !response.data) {
 			alertTemporary("error", "Error while fetching user info", 'dark');
 			return;
 		}
-		lang = userInfo.preferences.lang || 'en';
-		theme = userInfo.preferences.theme;
+		lang = response.data.preferences.lang || 'en';
+		theme = response.data.preferences.theme;
 	}
 	const bg = theme === 'dark' ? '#000000' : '#FFFFFF';
 	const text = theme === 'dark' ? '#F8E9E9' : '#000000';
