@@ -21,8 +21,8 @@ export async function blockedRoute(fastify: FastifyInstance) {
 		schema: {
 			params: BlockedParam,
 			response: {
-				401: ResponseSchema(UnauthorizedResponse, "user not is blocked or you are blocked by user", "error"),
-				500: ResponseSchema(InternalServerErrorResponse, undefined, "error")
+				401: UnauthorizedResponse,
+				500: InternalServerErrorResponse
 			}
 		}
 	},

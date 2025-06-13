@@ -5,6 +5,7 @@ import { ResponseSchema } from '../utils/schema.js';
 import { Type } from '@sinclair/typebox';
 
 export async function peopleRoute(fastify: FastifyInstance) {
+
 	fastify.get("/all/self",  
 		{
 			schema: {
@@ -12,15 +13,16 @@ export async function peopleRoute(fastify: FastifyInstance) {
 			}
 		 }, 
 	PeopleController.getSelf);
+
 	fastify.get("/all", 
 	{
-		
 			schema: {
 				headers: GatewayHeader
 			}
 	},
 	 PeopleController.getAll
 	);
+
 	fastify.get("/", 
 	{
 		schema: {

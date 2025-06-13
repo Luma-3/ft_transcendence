@@ -1,10 +1,7 @@
-import { Knex } from "knex";
+import type { Knex } from "knex";
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-export const up = async (knex: Knex) => {
+
+export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('people', (t) => {
     t.uuid('user_id').primary();
     t.string('username', 32).notNullable().unique();
@@ -12,12 +9,10 @@ export const up = async (knex: Knex) => {
     t.json("blocked").defaultTo('{}');
     t.json("pending").defaultTo('{}');
   });
-};
+}
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-export const down = async (knex) => {
+
+export async function down(knex: Knex): Promise<void> {
   await knex.schema.dropTableIfExists('people');
-};
+}
+

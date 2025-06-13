@@ -20,10 +20,10 @@ export default async function uploadRoute(fastify: FastifyInstance) {
       params: UploadFileParams,
       response: {
         201: ResponseSchema(UploadFileValidation),
-        409: ResponseSchema(ConflictResponse, undefined, "error"),
-        413: ResponseSchema(PayloadTooLargeResponse, undefined, "error"),
-        403: ResponseSchema(ForbiddenResponse, undefined, "error"),
-        415: ResponseSchema(InvalidTypeResponse, undefined, "error")
+        409: ConflictResponse,
+        413: PayloadTooLargeResponse,
+        403: ForbiddenResponse,
+        415: InvalidTypeResponse
       }
     }
   }, Controller.uploadFile);
@@ -37,7 +37,7 @@ export default async function uploadRoute(fastify: FastifyInstance) {
       querystring: CdnQuery,
       response: {
         200: {},
-        404: ResponseSchema(NotFoundResponse, undefined, "error")
+        404: NotFoundResponse,
       }
     }
   }, Controller.getFile);
@@ -50,8 +50,8 @@ export default async function uploadRoute(fastify: FastifyInstance) {
       params: UploadFileParams,
       response: {
         200: ResponseSchema(),
-        404: ResponseSchema(NotFoundResponse, undefined, "error"),
-        403: ResponseSchema(ForbiddenResponse, undefined, "error")
+        404: NotFoundResponse,
+        403: ForbiddenResponse,
       }
     }
   }, Controller.deleteFile);
