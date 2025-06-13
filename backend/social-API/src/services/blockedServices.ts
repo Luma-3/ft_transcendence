@@ -1,13 +1,13 @@
 import { UnauthorizedError } from "@transcenduck/error";
 import { peopleModel } from "../models/peopleModel.js";
-import knex from "../utils/knex.js";
+import { knexInstance } from "../utils/knex.js";
 
 export class BlockedServices {
 
   async blockUser(userId: string, targetUserId: string) {
     if(await peopleModel.isBlocked(userId, targetUserId))
       throw new UnauthorizedError("the user is already blocked");
-    knex.transaction(async (trx) => {
+    knexInstance.transaction(async (trx) => {
       try {
         await peopleModel.removeFriend(trx, userId, targetUserId);
         if(targetUserId != userId) {

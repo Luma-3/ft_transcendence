@@ -5,7 +5,6 @@ import path from 'path';
 dotenv.config();
 const __dirname = import.meta.dirname;
 
-console.log('Current directory:', __dirname);
 const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'sqlite3',
@@ -22,7 +21,7 @@ const config: { [key: string]: Knex.Config } = {
 
 
 const env = process.env.NODE_ENV || 'development';
-export const knexInstance: Knex = knex(config[env]);
+const knexInstance: Knex = knex(config[env]);
 
 const destroyKnex = async () => {
   if (knexInstance) {
@@ -30,4 +29,5 @@ const destroyKnex = async () => {
   }
 }
 
-export { Knex, destroyKnex, config };
+
+export { Knex, destroyKnex, config, knexInstance };

@@ -1,4 +1,4 @@
-import { ForbiddenError, InternalServerError, UnauthorizedError } from "@transcenduck/error"
+import { InternalServerError } from "@transcenduck/error"
 import { peopleModel } from "../models/peopleModel.js";
 import { ResponsePublicType } from "../schema/people.schema.js";
 
@@ -15,7 +15,9 @@ export class PeopleServices {
     const {friends, blocked= {}, pending = {}} = result;
     const Allperson: ResponsePublicType[] = [];
     for(const person of AllpersonDB) {
-      if (person.user_id != userID && (<{[x: string]: string}>friends)[person.user_id] === undefined && (<{[x: string]: string}>pending)[person.user_id] === undefined) {
+      if (person.user_id != userID 
+				&& (<{[x: string]: string}>friends)[person.user_id] === undefined 
+				&& (<{[x: string]: string}>pending)[person.user_id] === undefined) {
         Allperson.push({
           user_id: person.user_id,
           username: person.username,
