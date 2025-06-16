@@ -4,6 +4,17 @@ import { redisPub } from '../utils/redis.js';
 import { Ball } from './Ball.js'
 import { Paddle } from './Paddle.js'
 
+/**
+ * Pong : Représente une partie de Pong entre deux joueurs.
+ * 
+ * Gère les paddles, la balle, le score, et les interactions du jeu.
+ * Permet de démarrer, arrêter et mettre à jour le jeu en cours.
+ * 
+ * @remarks
+ * - Supporte les parties contre un bot.
+ * - Gère les mouvements des paddles et la logique de collision avec la balle.
+ * - Publie les mises à jour du jeu via Redis pour les clients connectés.
+ */
 export class Pong {
   sizeX: number;
   sizeY: number;
@@ -41,11 +52,15 @@ export class Pong {
     this.gameIsStart = false;
     this.WIN_SCORE = 11;
 
-    this.isAgainstBot = false; // This can be used to determine if the game is against a bot or not
+    this.isAgainstBot = false; 
 
-    this.interval = undefined; // Initialize interval to undefined
+    this.interval = undefined;
   }
 
+  /**
+   * Démarre la partie Pong en initialisant la balle et en lançant l'intervalle de mise à jour.
+   * La balle est positionnée avec des vecteurs aléatoires pour commencer le jeu.
+   */
   start() {
     const rand = Math.floor(Math.random() * 4) + 1;
     this.ball.set_vectors_ball(rand);
@@ -53,12 +68,20 @@ export class Pong {
     this.interval = setInterval(this.update, 1000 / 30, this);
   }
 
+  /**
+   * Arrête la partie Pong en mettant à jour l'état du jeu et en nettoyant l'intervalle.
+   * Publie les résultats de la partie si un joueur a gagné.
+   */
   stop() {
     this.gameIsStart = false;
     clearInterval(this.interval);
     this.interval = undefined;
   }
 
+  /**
+   * Vérifie si un joueur a atteint le score de victoire.
+   * Si oui, publie les résultats du jeu et arrête la partie.
+   */
   check_win() {
     if (this.paddle1.score >= this.WIN_SCORE || this.paddle2.score >= this.WIN_SCORE) {
       const winner =
@@ -95,6 +118,12 @@ export class Pong {
     }
   }
 
+  /**
+   * Met à jour l'état du jeu en déplaçant la balle et les paddles.
+   * Gère les collisions, les scores et publie les mises à jour via Redis.
+   * 
+   * @param game - Instance de la partie Pong en cours.
+   */
   update(game: Pong) {
     game.ball.move_ball(game.top, game.bottom, game.paddle1, game.paddle2, this.sizeX);
     if (game.isAgainstBot) {
@@ -121,7 +150,7 @@ export class Pong {
       })
     );
 
-    if (game.paddle2.uid !== "0") { // If the second paddle is not a bot
+    if (game.paddle2.uid !== "0") {
       redisPub.publish('ws.game.out', JSON
         .stringify({
           clientId: game.paddle2.uid,
@@ -134,6 +163,12 @@ export class Pong {
     }
   }
 
+  /**
+   * Déplace le paddle du joueur en fonction de la direction spécifiée.
+   * 
+   * @param uid - Identifiant unique du joueur.
+   * @param direction - Direction du mouvement ('up', 'down' ou 'stop' pour arrêter).
+   */
   movePaddle(uid: string, direction: string) {
     let paddle;
     
