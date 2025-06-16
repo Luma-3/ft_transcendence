@@ -219,7 +219,7 @@ export class Room {
 		return this.players.filter(p => p.playerId !== player.playerId).map(p => ({
 			playerId: p.playerId,
 			gameName: p.gameName,
-			joined: p.joined
+			ready: p.ready
 		}));
   }
 
@@ -251,9 +251,9 @@ export class Room {
 			typeGame: this.typeGame,
 			status: this.status,
 			players: this.players.map(player => ({
-			playerId: player.playerId,
-			gameName: player.gameName,
-			ready: player.ready,
+				playerId: player.playerId,
+				gameName: player.gameName,
+				ready: player.ready
 			})),
 			isFull: this.isFull,
 			createdAt: this.createdAt.toISOString(),

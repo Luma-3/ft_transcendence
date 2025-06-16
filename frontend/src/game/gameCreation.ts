@@ -7,17 +7,25 @@ import { fetchApi } from "../api/fetch";
 import { API_GAME } from "../api/routes";
 import { socket } from "../controllers/Socket";
 
-
 export let gameFrontInfo: { gameId: string, typeGame: string };
 
-function initGame(gameFormInfo: any) {
+type GameFormInfo = {
+	playerId: string;
+	gameId: string;
+	gameName: string;
+	typeGame: string;
+	gameNameOpponent?: string;
+}
+
+function initGame(gameFormInfo: GameFormInfo) {
+	console.log("Game creation info:", gameFormInfo);
 	socket!.send(JSON.stringify({
 		type: "game",
 		payload: {
 			type: 'init',
 			data: {
 				playerId: gameFormInfo.playerId,
-				roomId: gameFormInfo.gameId,
+				roomId: gameFormInfo.gameId
 			}
 		}
 	}))
@@ -29,7 +37,7 @@ function initGame(gameFormInfo: any) {
  * @param gameInfo - Donnees de la partie a envoyer
  * @param user - Les donnees de l'utilisateur present sur le client
  */
-async function sendDataToServer(gameFormInfo: any, userTheme: string) {
+async function sendDataToServer(gameFormInfo: GameFormInfo, userTheme: string) {
 
 	const response = await fetchApi<{ id: string }>(API_GAME.CREATE, {
 		method: 'POST',
@@ -44,7 +52,8 @@ async function sendDataToServer(gameFormInfo: any, userTheme: string) {
 		return alertTemporary("error", "game-creation-failed", userTheme, true);
 	}
 
-	gameFormInfo = { gameId: response.data.id, typeGame: gameFormInfo.typeGame };
+	gameFormInfo.gameId = response.data.id;
+	gameFormInfo.typeGame = gameFormInfo.typeGame;
 
 	/**
 	 * Petit alert de success qui s'affiche a gauche sur l'ecran
@@ -122,6 +131,7 @@ export async function createGame() {
 	 */
 	const gameFormInfo = {
 		playerId: response.data.id!.toString(),
+		gameId: "",
 		gameName: player1,
 		typeGame : gameType.id,
 		gameNameOpponent: (player2) ? player2 : "",
@@ -129,4 +139,8 @@ export async function createGame() {
 
 	await sendDataToServer(gameFormInfo, response.data.preferences.theme);
 	initGame(gameFormInfo);
+	gameFrontInfo = {
+		gameId: gameFormInfo.gameId,
+		typeGame: gameFormInfo.typeGame
+	}
 }

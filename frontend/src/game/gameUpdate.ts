@@ -40,6 +40,9 @@ export function onKeyDown(event: KeyboardEvent) {
 }
 
 export function onKeyUp(event: KeyboardEvent) {
+
+	console.log(gameFrontInfo);
+
 	if (event.key === "w") actionUserUp = false;
 
 	if (event.key === "s") actionUserDown = false;

@@ -10,6 +10,21 @@ export const RoomParametersSchema = Type.Object({
 
 export type RoomParametersType = Static<typeof RoomParametersSchema>;
 
+export const RoomPlayerParametersSchema = Type.Object({
+	roomId: Type.String({
+		format: "uuid",
+		description: "Unique identifier for the room, formatted as a UUID",
+		examples: ["123e4567-e89b-12d3-a456-426614174000"]
+	}),
+	playerId: Type.String({
+		format: "uuid",
+		description: "Unique identifier for the player, formatted as a UUID",
+		examples: ["123e4567-e89b-12d3-a456-426614174000"]
+	}),
+})
+
+export type RoomPlayerParametersType = Static<typeof RoomPlayerParametersSchema>;
+
 export const RoomInfoSchema = Type.Object({
 	roomId: Type.String({
 		format: "uuid",

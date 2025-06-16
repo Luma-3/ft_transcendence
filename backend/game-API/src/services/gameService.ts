@@ -32,9 +32,11 @@ import { GameType } from '../schemas/Room.js';
  * ```
  */
 class GameService {
+  players: Map<string, Room>
   rooms: Map<string, Room>;
 
   constructor() {
+    this.players = new Map();
     this.rooms = new Map();
   }
 
@@ -118,11 +120,13 @@ class GameService {
    * @returns L'identifiant de la salle rejointe.
    */
   joinRoom(player: PlayerType, typeGame: GameType) {
-    let roomId = this.findJoinableRoom(typeGame);
     let room: Room | undefined;
-    if (roomId) {
-      room = this.getRoom(roomId);
+    if (this.players.has(player.clientId)) {
+      room = this.players.get(player.playerId);
+    } else {
+      room = this.findJoinableRoom(typeGame)
     }
+
     if (!room) {
       room = this.createRoom(typeGame);
     }
@@ -140,7 +144,7 @@ class GameService {
   findJoinableRoom(typeGame: GameType) {
     for (const room of this.rooms.values()) {
       if (room.typeGame === typeGame && room.isJoinable()) {
-        return room.id;
+        return room;
       }
     }
     return undefined;
@@ -183,6 +187,8 @@ class GameService {
    * @throws {InternalServerError} Pour les types d'événements inconnus ou opérations invalides.
    */
   async handleEvent(clientId: string, event: { type: string, data: any }) {
+    console.log(`Handling event: ${event.type} for client: ${clientId}`);
+    console.log(`Event data: ${JSON.stringify(event.data)}`);
     const data = event.data;
     const roomId = data.roomId;
     const room = this.getRoom(roomId);
@@ -209,6 +215,8 @@ class GameService {
           }));
 
           if (room.status === 'roomReady') this.broadcast(room, 'roomReady', room.roomData());
+
+          this.players.set(clientId, room);
 
         break;
 
@@ -261,33 +269,36 @@ class GameService {
     }
   }
 
-  // /**
-  //  * Permet à un joueur de quitter une salle.
-  //  * 
-  //  * @param roomId - L'identifiant de la salle.
-  //  * @param playerId - L'identifiant du joueur.
-  //  * @returns L'identifiant de la salle quittée.
-  //  * @throws {InternalServerError} Si la salle ou le joueur n'existe pas.
-  //  */
-  // leaveRoom(roomId, playerId) {
-  //   const room = this.getRoom(roomId);
-  //   if (!room) {
-  //     throw new InternalServerError('Room not found');
-  //   }
-  //   const playerIndex = room.players.findIndex(p => p.uid === playerId);
-  //   if (playerIndex === -1) {
-  //     throw new InternalServerError('Player not found in the room');
-  //   }
-  //   room.players.splice(playerIndex, 1);
-  //   if (room.players.length === 0) {
-  //     this.deleteRoom(roomId); // Supprime la salle si plus de joueurs
-  //   } else if (room.players.length < room.maxPlayers) {
-  //     room.isFull = false; // La salle n'est plus pleine
-  //     room.status = 'waiting'; // Change le statut à waiting
-  //   }
-  //   console.log(`Player ${playerId} left room ${roomId}`);
-  //   return roomId;
-  // }
+  /**
+   * Permet à un joueur de quitter une salle.
+   * 
+   * @param roomId - L'identifiant de la salle.
+   * @param playerId - L'identifiant du joueur.
+   * @returns L'identifiant de la salle quittée.
+   * @throws {InternalServerError} Si la salle ou le joueur n'existe pas.
+   */
+  leave_room(ClientId: string) {
+
+    const room = this.players.get(ClientId);
+    if (!room) {
+      throw new NotFoundError('Room');
+    }
+
+    if (room.typeGame === "localpvp" || room.typeGame === "localpve") {
+      this.deleteRoom(room);
+      return undefined;
+    }
+
+    const player = room.getPlayerByClientId(ClientId);
+    if (!player) {
+      throw new NotFoundError('Player');
+    }
+
+    console.log(`Player ${player.playerId} left room ${room.id}`);
+
+    room.removePlayer(player.playerId);
+    this.broadcast(room, "leave", player);
+  }
 }
 
 /**

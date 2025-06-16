@@ -15,17 +15,17 @@ export function drawGame(gameData: GameData) {
 	if (!ctx) { return; }
 
 
- if (gameData.ball.x <= -game.width / 2 || gameData.ball.x >= game.width / 2) {
-		ctx.clearRect(0, 0, game.width, game.height);
-		drawExplosion(ctx!, gameData.ball.x, gameData.ball.y, {
-		count: 40,
-		colors: ['#00ffcc', '#33ccff', '#ffffff'],
-		maxSpeed: 5,
-		maxRadius: 4,
-		duration: 800,
-	});
-	return;
-}
+//  if (gameData.ball.x <= -game.width / 2 || gameData.ball.x >= game.width / 2) {
+// 		ctx.clearRect(0, 0, game.width, game.height);
+// 		drawExplosion(ctx!, gameData.ball.x, gameData.ball.y, {
+// 			count: 40,
+// 			colors: ['#00ffcc', '#33ccff', '#ffffff'],
+// 			maxSpeed: 5,
+// 			maxRadius: 4,
+// 			duration: 800,
+// 		});
+// 		return;
+// 	}
 
 
 	ctx.clearRect(0, 0, game.width, game.height);
