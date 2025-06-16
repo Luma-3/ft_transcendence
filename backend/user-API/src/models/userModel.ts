@@ -21,6 +21,7 @@ export class UserModel {
     return await this.knex<UserBaseType>('users')
       .select(columns)
       .where('id', id)
+      .join('preferences', 'users.id', 'preferences.user_id')
       .first();
   }
 

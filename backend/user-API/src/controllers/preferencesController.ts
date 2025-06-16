@@ -23,7 +23,6 @@ export async function updateAvatarPreferences(req: FastifyRequest<{
 	let info;
 	const formData = new FormData();
 	formData.append('avatar', new Blob([await file.toBuffer() as any], {type: file.mimetype}), file.filename);
-	console.log(formData)
 	const fetchUrl = await fetch('http://' + process.env.UPLOAD_IP + '/internal/avatar', {
 			method: 'POST',
 			headers: {},

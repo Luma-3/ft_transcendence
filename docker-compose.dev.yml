@@ -79,16 +79,16 @@ services:
       - backend-net
       - redis-net
 
-  people-api:
+  social-api:
     build:
-      context: ./backend/people-API/
+      context: ./backend/social-API/
       dockerfile: Dockerfile.dev
-    container_name: people-API
+    container_name: social-API
     env_file:
         - ./.dev.env
     volumes:
-      - ./backend/people-API/data:/app/data:z
-      - ./backend/people-API/src:/app/src:z
+      - ./backend/social-API/data:/app/data:z
+      - ./backend/social-API/src:/app/src:z
     depends_on:
       - base
     expose:

@@ -1,4 +1,4 @@
-import { Type, Static, TString } from '@sinclair/typebox'
+import { Type, Static } from '@sinclair/typebox'
 
 const FriendsBase = Type.Record(Type.String(), Type.String());
 const BlockedBase = Type.Record(Type.String(),  Type.Union([Type.Literal('sender'), Type.Literal('receiver')]));
