@@ -33,6 +33,13 @@ export const UserBase = Type.Object({
 });
 export type UserBaseType = Static<typeof UserBase>;
 
+export const UserDBHydrateType = Type.Object({
+  ...UserSharedFields,
+  avatar: Type.Optional(Type.String({ format: 'uri' })),
+  banner: Type.Optional(Type.String({ format: 'uri' })),
+});
+export type UserDBHydrateType = Static<typeof UserDBHydrateType>; 
+
 export const UserDBBase = Type.Object({
   ...UserSharedFields,
   email: Type.String({ format: 'email' }),
@@ -127,6 +134,10 @@ export const UsersQueryGetAll = Type.Object({
   friends: Type.Optional(Type.Boolean({
     default: false,
     description: 'Include friends in the response. If true, only friends will be returned.'
+  })),
+  hydrate: Type.Optional(Type.Boolean({
+    default: false,
+    description: 'If true, includes additional user data such as avatar and banner.'
   }))
 }, {
   additionalProperties: false

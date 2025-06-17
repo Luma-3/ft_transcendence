@@ -9,7 +9,7 @@ import { secondaryButton } from "../components/ui/buttons/secondaryButton"
 import { backButton } from "../components/ui/buttons/backButton";
 
 import { OtherUser, UserInfo } from "../interfaces/User"
-import { getAllUsers, getFriends, getOtherUserInfo } from "../api/getterUser(s)"
+import { getAllUsers, getFriends, getOtherUserInfo, getPending } from "../api/getterUser(s)"
 import { API_CDN } from "../api/routes";
 
 function avatarBanner(userPref: {avatar: string, banner: string}) {
@@ -112,28 +112,32 @@ function userUpdateForm(user: UserInfo) {
 }
 
 async function notifications() {
-	const users = await getFriends();
-	
+	const results = await Promise.all([
+		getPending(),
+		getPending("receiver")
+	]);
+	console.log("NOTIFICATION ALL RESULTS:", results);
 	let content: string = `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">`;
-	const pendingInvitations = users.data?.pending;
-	if (!pendingInvitations || pendingInvitations.length === 0) {
+	const invitationSend = results[0].data!;
+	const invitationReceive = results[1].data!;
+	if (invitationSend.length === 0 && invitationReceive.length === 0) {
 		return `${content}
 		<span class="text-secondary dark:text-dtertiary" translate="no-notifications">No notifications</span>
 		</div>`;
 	}
 	
-	for (const invitation of pendingInvitations) {
-		if (invitation && invitation.status === "receiver") {
+	for (const invitation of invitationReceive) {
+		if (invitation) {
 			content += `
 			<div class="flex flex-row justify-between w-full space-x-4 font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
 				<div class="flex font-title">${invitation.username} wants to be your friend</div>
-					<div id="accept-friend" data-id="${invitation.user_id}" data-username="${invitation.username}" 
+					<div id="accept-friend" data-id="${invitation.id}" data-username="${invitation.username}" 
 					class="hover:cursor-pointer">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none">
 						<path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
 						</svg>
 					</div>
-					<div id="refuse-invitation" data-id="${invitation.user_id}" data-username="${invitation.username}" class="hover:cursor-pointer">
+					<div id="refuse-invitation" data-id="${invitation.id}" data-username="${invitation.username}" class="hover:cursor-pointer">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
 						</svg>
@@ -142,6 +146,20 @@ async function notifications() {
 		</div>`
 		}
 	}
+	for (const invitation of invitationSend) {
+	if (invitation) {
+		content += `
+		<div class="flex flex-row justify-between w-full space-x-4 font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
+			<div class="flex font-title">You sent a friend request to ${invitation.username}</div>
+				<div id="cancel-invitation" data-id="${invitation.id}" data-username="${invitation.username}" class="hover:cursor-pointer">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+					</svg>
+				</div>
+		</div>
+	</div>`
+	}
+}
 
 	return `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4  text-primary dark:text-dtertiary">
 			<span traslate="notifications" >Notifications</span>
@@ -161,34 +179,33 @@ async function friends(user: UserInfo) {
 			<div class="flex flex-col w-full h-[400px] font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
 			`;
 	const friendsList = await getFriends();
-	if (friendsList.status === "error" || !friendsList.data?.friends) {
+	console.log("your friend:", friendsList);
+	if (friendsList.status === "error" || friendsList.data?.length == 0) {
 		return `${container}<span class="text-secondary dark:text-dtertiary" translate="no-friends">No friends found</span></div></div>`;
 	}
-	for(const friend of friendsList.data.friends) {
+	for(const friend of friendsList.data!) {
 		container += `
 		<div class="flex flex-col sm:flex-row justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
-			<div name="otherProfile" data-id=${friend.user_id} class="flex font-title hover:underline hover:cursor-pointer">${friend.username}</div>
+			<div name="otherProfile" data-id=${friend.id} class="flex font-title hover:underline hover:cursor-pointer">${friend.username}</div>
 			<div class="flex flex-row space-x-2">
-				<div id="block-user" data-username=${friend.username} data-id=${friend.user_id} class="group/item relative hover:cursor-pointer">
+				<div id="block-user" data-username=${friend.username} data-id=${friend.id} class="group/item relative hover:cursor-pointer">
 					<span class="tooltip absolute z-10 left-1/2  top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
 				dark:text-dtertiary text-xs rounded py-1 px-2">
 					Block This MotherDucker
 					</span>
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
 					</svg>
-					</span>
 				</div>
 				
-				<div class="group/item relative">
+					<div id="unfriend-user" data-username=${friend.username} data-id=${friend.id} class="group/item relative hover:cursor-pointer">
 					<span class="tooltip absolute left-1/2 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
 				dark:text-dtertiary text-xs rounded py-1 px-2 z-10">
-					Chat with ${friend.username}
+						Unfriend ${friend.username}
 					</span>
-					<span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hover:cursor-pointer">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
-					</svg>
-					</span>
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM4 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 10.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+						</svg>
 				</div>
 			</div>
 		</div>
@@ -200,22 +217,22 @@ async function friends(user: UserInfo) {
 	return container;
 }
 
-import { UserInPeople } from "../interfaces/PeopleInterface";
+//import { UserInPeople } from "../interfaces/PeopleInterface";
 
-function lockOrUnlockButton(user: UserInPeople) {
-	if (user.bloked) {
-		return `<div id="unlock-user" data-username=${user.username} data-id=${user.user_id} class="group/item relative hover:cursor-pointer">
-					<span class="tooltip absolute left-1/2 z-10 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
-				dark:text-dtertiary text-xs rounded py-1 px-2">
-					Unlock this MotherDUcker
-					</span>
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-					</svg>
-					</span>
-				</div>`;
-	}
-	return `<div id="add-friend" data-username=${user.username} data-id=${user.user_id} class="group/item relative hover:cursor-pointer">
+function addFriendButton(user: UserInPeople) {
+	// if (user.bloked) {
+	// 	return `<div id="unlock-user" data-username=${user.username} data-id=${user.id} class="group/item relative hover:cursor-pointer">
+	// 				<span class="tooltip absolute left-1/2 z-10 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
+	// 			dark:text-dtertiary text-xs rounded py-1 px-2">
+	// 				Unlock this MotherDUcker
+	// 				</span>
+	// 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+	// 				<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+	// 				</svg>
+	// 				</span>
+	// 			</div>`;
+	// }
+	return `<div id="add-friend" data-username=${user.username} data-id=${user.id} class="group/item relative hover:cursor-pointer">
 					<span class="tooltip absolute left-1/2 z-10 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
 				dark:text-dtertiary text-xs rounded py-1 px-2">
 					Add to friends
@@ -227,7 +244,8 @@ function lockOrUnlockButton(user: UserInPeople) {
 				</div>`
 }
 
-import { headerUserMenu } from "../components/ui/userMenu";
+import { headerOtherUserMenu, headerUserMenu } from "../components/ui/userMenu";
+import { UserInPeople } from "../interfaces/PeopleInterface";
 
 async function allUsers(user: UserInfo) {
 
@@ -240,30 +258,26 @@ async function allUsers(user: UserInfo) {
 			<div class="relative h-[400px] w-full overflow-y-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
 				<div class="flex flex-col w-full justify-center items-center gap-4 p-4">`;
 
-	const allUsers = await getAllUsers();
+	const allUsers = await getAllUsers('you', true);
 	if (allUsers.status === "error" || !allUsers.data) {
 		return `${container}<span class="text-secondary dark:text-dtertiary" translate="no-friends">No friends found</span></div></div>`;
 	}
 	
-	for(const user of allUsers.data) {
-
-		const userData = await getOtherUserInfo(user.user_id);
-		console.log("User:", user);
-		console.log("User Data:", userData);
+	for(const otherUser of allUsers.data) {
 		
 		container += `
 		<div class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
-			${headerUserMenu(userData.data!)}
+			${headerOtherUserMenu(otherUser)}
 			<div class="flex flex-row justify-between items-center space-x-4 mt-4">
-				<div name="otherProfile" data-id=${user.user_id} class="flex font-title truncate hover:underline hover:cursor-pointer">${user.username}
+				<div name="otherProfile" data-id=${otherUser.id} class="flex font-title truncate hover:underline hover:cursor-pointer">${otherUser.username}
 				</div>
 				
 				<div class="flex flex-row space-x-2">
-					${lockOrUnlockButton(user)}
+					${addFriendButton(otherUser)}
 					<div class="group/item relative">
 							<span class="tooltip z-15 absolute left-1/2 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
 						dark:text-dtertiary text-xs rounded py-1 px-2">
-							Chat with ${user.username}
+							Chat with ${otherUser.username}
 							</span>
 							<span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hover:cursor-pointer">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />

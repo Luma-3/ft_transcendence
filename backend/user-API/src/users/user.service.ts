@@ -6,7 +6,7 @@ import { knexInstance, userModel, preferencesModel } from "../models/models.js";
 import { UserCreateBodyType, UserBaseType } from "./user.schema.js";
 import { PreferencesBaseType } from "../preferences/preferences.schema.js";
 import { Knex } from "knex";
-import { USER_PRIVATE_COLUMNS } from "./user.model.js"
+import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS } from "./user.model.js"
 import { redisPub } from "../utils/redis.js";
 
 
@@ -47,8 +47,8 @@ export class UserService {
     });
   }
 
-  static async getAllUsers(userId: string, blocked: ("you" | "another"| "all" | "none") = "all", friends: boolean = false,) {
-      return await userModel.findAll(userId, blocked, friends, USER_PRIVATE_COLUMNS);
+  static async getAllUsers(userId: string, blocked: ("you" | "another"| "all" | "none") = "all", friends: boolean = false, hydrate: boolean = true) {
+      return await userModel.findAll(userId, blocked, friends, hydrate, USER_PUBLIC_COLUMNS);
   }
 
   static async deleteUser(id: string) {

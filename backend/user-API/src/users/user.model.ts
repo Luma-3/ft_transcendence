@@ -1,18 +1,18 @@
 import type { Knex } from 'knex';
 import { knexInstance } from '../utils/knex.js';
 
-import { UserBaseType } from './user.schema.js'
+import { UserBaseType, UserDBHydrateType } from './user.schema.js'
 
 export const USER_PUBLIC_COLUMNS: string[] = ['users.id', 'username', 'created_at'];
 export const USER_PRIVATE_COLUMNS: string[] = ['users.id', 'username', 'email', 'created_at'];
 
 export class UserModel {
 
-  async findAll(userId: string, blocked: ("you" | "another"| "all" | "none") = "none", friends: boolean = false, columns = USER_PUBLIC_COLUMNS) {
-    const query =  knexInstance<UserBaseType>('users')
-      .select(columns)
+  async findAll(userId: string, blocked: ("you" | "another"| "all" | "none") = "none", friends: boolean = false, hydrate: boolean = true, columns = USER_PUBLIC_COLUMNS) {
+    const query =  knexInstance<UserDBHydrateType>('users')
+      .select(hydrate ? [...columns, 'preferences.avatar', 'preferences.banner'] : columns)
       .join('preferences', 'users.id', 'preferences.user_id')
-      .whereNot('users.id', userId);
+      .where('users.id', "!=", userId);
     if(blocked === "another" || blocked === "all") {
       query.leftJoin('blocked as blocked_by', function () {
         this.on('users.id', '=', 'blocked_by.user_id').andOn('blocked_by.blocked_id', '=', knexInstance.raw('?', [userId]));
@@ -31,7 +31,8 @@ export class UserModel {
       query.whereNull('friends.id');
     }
       
-    return await query;
+    console.log(query.toQuery())
+    return (await query) as UserDBHydrateType[];
   }
 
 

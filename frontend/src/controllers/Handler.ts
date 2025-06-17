@@ -22,7 +22,7 @@ import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 
 import { createGame } from '../game/gameCreation'
-import { blockUser, handleFriendRequest, sendRefuseInvitation } from '../social/userSocial'
+import { blockUser, cancelFriendInvitation, handleFriendRequest, handleUnfriend, sendRefuseInvitation } from '../social/userSocial'
 import { addNewMessage } from '../chat/newMessage'
 import { renderOtherProfilePage } from '../controllers/renderPage'
 
@@ -49,7 +49,9 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
   'change-password': () => changeUserPassword(),
   'add-friend': () => handleFriendRequest(event?.target as HTMLElement, "send"),
   'accept-friend': () => handleFriendRequest(event?.target as HTMLElement, "accept"),
+  'unfriend-user': () => handleUnfriend(event?.target as HTMLElement),
   'block-user': () => blockUser(event?.target as HTMLElement),
+  'cancel-invitation': () => cancelFriendInvitation(event?.target as HTMLElement),
   'refuse-invitation': () => sendRefuseInvitation(event?.target as HTMLElement),
 
   // * ---- Image Editor  ---- */

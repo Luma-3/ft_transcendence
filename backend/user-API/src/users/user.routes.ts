@@ -62,8 +62,9 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async (req, rep) => {
     const userId = req.headers['x-user-id'];
-    const {blocked, friends} = req.query;
-    const users = await UserService.getAllUsers(userId, blocked, friends);
+    const {blocked, friends, hydrate} = req.query;
+    console.log("Aaaaaaaaaaaaaaaaaaa")
+    const users = await UserService.getAllUsers(userId, blocked, friends, hydrate);
     return rep.code(200).send({ message: 'User Created', data: users });
   });
 

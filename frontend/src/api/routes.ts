@@ -2,6 +2,7 @@ const API_URL = "https://localhost:5173/api";
 
 const SERVICES = {
   USER: `${API_URL}/user/users`,
+  FRIEND: `${API_URL}/user`,
   SESSION: `${API_URL}/auth/session`,
   CDN: `/api/uploads`,
   GAME: `${API_URL}/game`,
@@ -26,17 +27,22 @@ export const API_USER = {
     PASSWORD: `${SERVICES.USER}/me/password`,
     EMAIL: `${SERVICES.USER}/me/email`,
     USERNAME: `${SERVICES.USER}/me/username`,
+  },
+  SOCIAL: {
+    FRIENDS: `${SERVICES.FRIEND}/friends`,
+    BLOCKED: `${SERVICES.FRIEND}/blocked`,
+    PENDING: `${SERVICES.FRIEND}/pending`,
   }
 }
 
-export const API_PEOPLE = {
-  BLOCKED: `${SERVICES.PEOPLE}/blocked`,
-  FRIENDS: `${SERVICES.PEOPLE}/friends`,
-  PENDING: `${SERVICES.PEOPLE}/pending`,
-  SEARCH: `${SERVICES.PEOPLE}/`,  // ?search=inputValue
-  ALL: `${SERVICES.PEOPLE}/all`,
-  SELF: `${SERVICES.PEOPLE}/all/self`
-};
+// export const API_PEOPLE = {
+//   BLOCKED: `${SERVICES.PEOPLE}/blocked`,
+//   FRIENDS: `${SERVICES.PEOPLE}/friends`,
+//   PENDING: `${SERVICES.PEOPLE}/pending`,
+//   SEARCH: `${SERVICES.PEOPLE}/`,  // ?search=inputValue
+//   ALL: `${SERVICES.PEOPLE}/all`,
+//   SELF: `${SERVICES.PEOPLE}/all/self`
+// };
 
 export const API_SESSION = {
 

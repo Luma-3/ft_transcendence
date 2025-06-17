@@ -1,6 +1,7 @@
 
 export interface UserInPeople { 
-	bloked: boolean;
-	user_id: string;
-	username: string;
+	id: string;
+	username?: string;
+	avatar?: string;
+	banner?: string;
 }
