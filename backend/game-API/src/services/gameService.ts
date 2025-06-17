@@ -187,8 +187,6 @@ class GameService {
    * @throws {InternalServerError} Pour les types d'événements inconnus ou opérations invalides.
    */
   async handleEvent(clientId: string, event: { type: string, data: any }) {
-    console.log(`Handling event: ${event.type} for client: ${clientId}`);
-    console.log(`Event data: ${JSON.stringify(event.data)}`);
     const data = event.data;
     const roomId = data.roomId;
     const room = this.getRoom(roomId);

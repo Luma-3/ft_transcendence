@@ -40,6 +40,9 @@ function launchGame(roomId: string) {
 	animate();
 }
 
+let tps = 0;
+let time = performance.now();
+
 export async function handleGameSocketMessage(data: any ) {
 	switch (data.action) {
 		case 'pong':
@@ -81,8 +84,15 @@ export async function handleGameSocketMessage(data: any ) {
 				serverTime: data.serverTime,
 				GameData: data.gameData
 			});
-			if (gameSnapshots.length > 10) {
+			if (gameSnapshots.length > 30) {
 				gameSnapshots.shift();
+			}
+			if (performance.now() - time < 1000) {
+				tps++;
+			} else {
+				console.log("TPS:", tps);
+				tps = 0;
+				time = performance.now();
 			}
 			break;
 		case 'win':

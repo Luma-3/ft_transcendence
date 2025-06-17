@@ -1,4 +1,6 @@
-import { Paddle } from './Paddle';
+import { Paddle } from './Paddle.js';
+
+import { FRAMERATE } from './Pong.js';
 
 /**
  * Classe représentant une balle dans le jeu Pong.
@@ -18,7 +20,7 @@ export class Ball {
 	this.vector_x = vector_x;
 	this.vector_y = vector_y;
 	this.size = size;
-	this.speed = 4;
+	this.speed = 142;
   }
 
 	/**
@@ -61,8 +63,8 @@ export class Ball {
 		paddle2: Paddle,
 		width: number = 0
   ) {
-		this.x += this.vector_x * this.speed;
-		this.y += this.vector_y * this.speed;
+		this.x += (this.vector_x * this.speed) / FRAMERATE;
+		this.y += (this.vector_y * this.speed) / FRAMERATE;
 
 		if (this.y + this.size / 2 <= top || this.y - this.size / 2 >= bottom) {
 			this.vector_y *= -1;

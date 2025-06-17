@@ -10,16 +10,15 @@ duckImage.src = "/images/pp.jpg";
 let lastBall = { x: 0, y: 0 };
 let currentBall = { x: 0, y: 0 };
 let lastUpdateTime = 0;
-let interpolateDelay = 1000 / 60;
+let interpolateDelay = 1000 / 30;
+
 
 function findSnapshots(targetTime: number): [GameSnapshot, GameSnapshot] | null {
 	for (let i = gameSnapshots.length - 2; i >= 0; i--) {
-
 		if (gameSnapshots[i].serverTime <= targetTime && gameSnapshots[i + 1].serverTime >= targetTime) {
 			return [gameSnapshots[i], gameSnapshots[i + 1]];
 		}
 	}
-
 	return null;
 }
 
@@ -36,7 +35,6 @@ export function animate() {
 		const [prev, next] = pair;
 		const range = next.serverTime - prev.serverTime;
 		const t = range > 0 ? (syncTime - prev.serverTime) / range : 0;
-
 		const interpolateGameData: GameData = {
 			ball: {
 				x: interpolate(prev.GameData.ball.x, next.GameData.ball.x, t),
@@ -58,6 +56,7 @@ export function animate() {
 };
 
 export function drawGame(gameData: GameData, action: string = '') {
+	
 	const game = document.getElementById("gamePong") as HTMLCanvasElement;
 	if (!game) {
 		return;
@@ -83,13 +82,13 @@ export function drawGame(gameData: GameData, action: string = '') {
 					}
 				}
 			}));
-		ctx.clearRect(0, 0, game.width, game.height);
-		ctx.save();
-		const player1Score = document.getElementById("user1Score");
-		player1Score!.innerHTML = gameData.paddle1.score.toString();
+			ctx.clearRect(0, 0, game.width, game.height);
+			ctx.save();
+			const player1Score = document.getElementById("user1Score");
+			player1Score!.innerHTML = gameData.paddle1.score.toString();
 
-		const player2Score = document.getElementById("user2Score");
-		player2Score!.innerHTML = gameData.paddle2.score.toString();
+			const player2Score = document.getElementById("user2Score");
+			player2Score!.innerHTML = gameData.paddle2.score.toString();
 		}, 800);
 		return;
 	}
