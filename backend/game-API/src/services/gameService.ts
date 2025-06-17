@@ -5,6 +5,10 @@ import { PlayerType } from '../schemas/Player.js';
 import { InternalServerError, NotFoundError } from '@transcenduck/error';
 import { GameType } from '../schemas/Room.js';
 
+import { init_game, move_players, playerReady } from './handleWSEvent.js';
+
+export type GameServiceType = GameService;
+
 /**
  * GameService : Service central de gestion des salles de jeu multijoueur.
  * 
@@ -53,10 +57,10 @@ class GameService {
       throw new NotFoundError('Room');
     }
 
-    for (const player of room.players) {
-      if (player.clientId) {
+    for (const user of room.users) {
+      if (user && user.clientId) {
         redisPub.publish('ws.game.out', JSON.stringify({
-          clientId: player.clientId,
+          clientId: user.clientId,
           payload: { action: action, data: data }
         }));
       }
@@ -120,6 +124,7 @@ class GameService {
    * @returns L'identifiant de la salle rejointe.
    */
   joinRoom(player: PlayerType, typeGame: GameType) {
+    if (!player) return ;
     let room: Room | undefined;
     if (this.players.has(player.clientId)) {
       room = this.players.get(player.playerId);
@@ -179,6 +184,8 @@ class GameService {
     this.rooms.delete(room.id);
   }
 
+
+
   /**
    * Gère un événement reçu d'un client (action joueur, changement d'état, etc).
    * 
@@ -195,68 +202,16 @@ class GameService {
     switch (event.type) {
 
       case 'init':
-        redisPub.publish('ws.game.out', JSON
-          .stringify({
-            clientId: clientId,
-            payload: {
-              action: 'pong',
-              data: {
-                clientTime: data.clientTime,
-                serverTime: Date.now()
-              },
-            }
-          })
-        );
-        const player = room.getPlayerById(data.playerId);
-
-        if (!player) throw new NotFoundError('Player');
-        
-        player.clientId = clientId;
-        redisPub.publish('ws.game.out', JSON
-          .stringify({
-            clientId: player.clientId,
-            payload: {
-              action: 'init',
-              data: {
-                roomId: room.id,
-                playerId: player.playerId,
-              },
-            }
-          }));
-
-          if (room.status === 'roomReady') this.broadcast(room, 'roomReady', room.roomData());
-
-          this.players.set(clientId, room);
-
+        init_game(this, room, clientId, data);
         break;
 
       case 'playerReady':
-        const playerReady = room.getPlayerByClientId(clientId);
-
-        if (!playerReady) throw new NotFoundError('Player');
-
-        playerReady.ready = true;
-        this.broadcast(room, 'playerReady', room.roomData());
-
-        room.playerReady++;
-        if (room.playerReady == room.maxPlayers) {
-          room.status = 'readyToStart';
-          this.createGameInRoom(room);
-          this.broadcast(room, 'readyToStart', room.roomData());
-        }
+        playerReady(this, room, clientId);
         break;
         
       case 'startGame':
         if (room.status === 'readyToStart')
           room.startGame();
-        break;
-
-      case 'resume' :
-        if (room.pong) {
-          room.pong.resume();
-        } else {
-          throw new NotFoundError('Game');
-        }
         break;
 
       case 'pause':
@@ -267,27 +222,16 @@ class GameService {
         }
         break;
 
+      case 'resume' :
+        if (room.pong) {
+          room.pong.resume();
+        } else {
+          throw new NotFoundError('Game');
+        }
+        break;
+
       case 'move':
-        let whois = room.getPlayerByClientId(clientId);
-        if (!whois) throw new NotFoundError('Player');      
-        
-        if (!room.pong) throw new NotFoundError('Game');
-
-        const validDirections = ['up', 'down', 'stop'];
-        if (!validDirections.includes(data.direction)) {
-          return;
-        }
-
-        room.pong.movePaddle(whois!.playerId, data.direction);
-        
-        if (room.typeGame === 'localpvp') {
-          if (!validDirections.includes(data.direction2)) {
-            console.error(`Invalid direction2: ${data.direction2}`);
-            return;
-          }
-          
-          room.pong.movePaddle("", data.direction2);
-        }
+        move_players(room, clientId, data);
         break;
 
       default:
