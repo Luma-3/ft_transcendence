@@ -1,9 +1,9 @@
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 
-import { PreferencesService } from '../services/preferencesService.js';
-import { PREFERENCES_PRIVATE_COLUMNS, PREFERENCES_PUBLIC_COLUMNS } from '../models/preferencesModel.js';
+import { PreferencesService } from './preferences.service.js';
+import { PREFERENCES_PRIVATE_COLUMNS, PREFERENCES_PUBLIC_COLUMNS } from './preferences.model.js';
 
-import { PreferencesGetType, PreferencesPublicResponse } from '../schema/preferences.schema.js';
+import { PreferencesGetType, PreferencesPublicResponse } from './preferences.schema.js';
 
 import { ResponseSchema } from '../utils/schema.js';
 import {
@@ -11,8 +11,8 @@ import {
   UnauthorizedResponse,
 } from '@transcenduck/error';
 
-import { UserHeaderAuthentication } from '../schema/user.schema.js';
-import { updateAvatarPreferences, updateBannerPreferences } from '../controllers/preferencesController.js';
+import { UserHeaderAuthentication } from '../users/user.schema.js';
+import { updateAvatarPreferences, updateBannerPreferences } from './preferences.controller.js';
 
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {

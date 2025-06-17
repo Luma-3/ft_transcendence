@@ -2,6 +2,10 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { GatewayHeaderType, type SearchGetType } from "../schema/people.schema.js";
 import { peopleServices } from "../services/peopleServices.js";
 import { BadRequestError, NotFoundError } from "@transcenduck/error";
+<<<<<<< HEAD
+=======
+import { Not } from "@sinclair/typebox";
+>>>>>>> back/social/rework
 
 export async function getAll(req: FastifyRequest<{
 	Headers: GatewayHeaderType

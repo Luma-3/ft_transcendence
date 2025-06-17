@@ -9,7 +9,7 @@ const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/Social.sqlite',
+      filename: './data/Social.db',
     },
     migrations: {
       directory: path.resolve(__dirname, '../../migrations'),

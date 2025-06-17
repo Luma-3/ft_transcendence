@@ -1,8 +1,7 @@
-import { InternalServerError } from '@transcenduck/error';
-import { PreferencesService } from '../services/preferencesService.js';
+import { PreferencesService } from './preferences.service.js';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { UserHeaderIdType } from '../schema/user.schema.js';
-import { PREFERENCES_PRIVATE_COLUMNS } from '../models/preferencesModel.js';
+import { UserHeaderIdType } from '../users/user.schema.js';
+import { PREFERENCES_PRIVATE_COLUMNS } from './preferences.model.js';
 
 export async function updateAvatarPreferences(req: FastifyRequest<{
 	Headers: UserHeaderIdType;
@@ -23,27 +22,20 @@ export async function updateAvatarPreferences(req: FastifyRequest<{
 	let info;
 	const formData = new FormData();
 	formData.append('avatar', new Blob([await file.toBuffer() as any], {type: file.mimetype}), file.filename);
-	console.log(formData)
 	const fetchUrl = await fetch('http://' + process.env.UPLOAD_IP + '/internal/avatar', {
 			method: 'POST',
 			headers: {},
 			body: formData
 		});
-	try {
-		info = await fetchUrl.json();
-	}
-	catch (err) {
-		if (err instanceof Error) {
-			throw new InternalServerError(err.message, 'Error while uploading avatar');
-		}
-	}
+	info = await fetchUrl.json();
 	if (!fetchUrl.ok) {
 		return rep.code(fetchUrl.status).send(info);
 	}
 	if (oldPreferences.avatar && oldPreferences.avatar !== 'default.png') {
-		await fetch('http://' + process.env.UPLOAD_IP + '/internal/avatar/' + oldPreferences.avatar, {
+		const data = await fetch('http://' + process.env.UPLOAD_IP + '/internal/avatar/' + oldPreferences.avatar, {
 			method: 'DELETE'
 		});
+		console.log(await data.json());
 	}
 	const preferences = await PreferencesService.updatePreferences(userID, { avatar: info.data.Url }, PREFERENCES_PRIVATE_COLUMNS);
 	return rep.code(200).send({ message: 'Ok', data: preferences });
@@ -72,14 +64,7 @@ export async function updateBannerPreferences(req: FastifyRequest<{
 			headers: {},
 			body: formData
 		});
-	try {
-		info = await fetchUrl.json();
-	}
-	catch (err) {
-		if (err instanceof Error) {
-			throw new InternalServerError(err.message, 'Error while uploading banner');
-		}
-	}
+	info = await fetchUrl.json();
 	if (!fetchUrl.ok) {
 		return rep.code(fetchUrl.status).send(info);
 	}
