@@ -47,6 +47,10 @@ export class UserService {
     });
   }
 
+  static async getAllUsers(userId: string, blocked: ("you" | "another"| "all" | "none") = "all", friends: boolean = false,) {
+      return await userModel.findAll(userId, blocked, friends, USER_PRIVATE_COLUMNS);
+  }
+
   static async deleteUser(id: string) {
     await userModel.delete(id);
     return id;
@@ -55,8 +59,8 @@ export class UserService {
   static async getUserByID(
     id: string,
     includePreferences: boolean = false,
-    userColumns: (keyof UserBaseType)[],
-    preferencesColumns: (keyof PreferencesBaseType)[]
+    userColumns: string[],
+    preferencesColumns: string[]
   ): Promise<UserBaseType & { preferences?: PreferencesBaseType }> {
     if (!includePreferences) {
       const user = await userModel.findByID(id, userColumns);

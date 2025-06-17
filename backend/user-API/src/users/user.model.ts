@@ -1,24 +1,42 @@
 import type { Knex } from 'knex';
+import { knexInstance } from '../utils/knex.js';
 
 import { UserBaseType } from './user.schema.js'
 
-export const USER_PUBLIC_COLUMNS: (keyof UserBaseType)[] = ['id', 'username', 'created_at'];
-export const USER_PRIVATE_COLUMNS: (keyof UserBaseType)[] = ['id', 'username', 'email', 'created_at'];
+export const USER_PUBLIC_COLUMNS: string[] = ['users.id', 'username', 'created_at'];
+export const USER_PRIVATE_COLUMNS: string[] = ['users.id', 'username', 'email', 'created_at'];
 
 export class UserModel {
-  private knex: Knex;
 
-  constructor(knex: Knex) {
-    this.knex = knex
+  async findAll(userId: string, blocked: ("you" | "another"| "all" | "none") = "none", friends: boolean = false, columns = USER_PUBLIC_COLUMNS) {
+    const query =  knexInstance<UserBaseType>('users')
+      .select(columns)
+      .join('preferences', 'users.id', 'preferences.user_id')
+      .whereNot('users.id', userId);
+    if(blocked === "another" || blocked === "all") {
+      query.leftJoin('blocked as blocked_by', function () {
+        this.on('users.id', '=', 'blocked_by.user_id').andOn('blocked_by.blocked_id', '=', knexInstance.raw('?', [userId]));
+      }).whereNull('blocked_by.id');
+    }
+    if(blocked === "you" || blocked === "all") {
+      query.leftJoin('blocked as blocked_to', function () {
+        this.on('users.id', '=', 'blocked_to.blocked_id').andOn('blocked_to.user_id', '=', knexInstance.raw('?', [userId]));
+      }).whereNull('blocked_to.id');
+    }
+    if(friends) {
+      // Amis
+      query.leftJoin('friends', function () {
+        this.on('users.id', '=', 'friends.friend_id').andOn('friends.user_id', '=', knexInstance.raw('?', [userId]));
+      });
+      query.whereNull('friends.id');
+    }
+      
+    return await query;
   }
 
-  async findAll(columns = USER_PUBLIC_COLUMNS) {
-    return await this.knex<UserBaseType>('users')
-      .select(columns);
-  }
 
   async findByID(id: string, columns = USER_PUBLIC_COLUMNS): Promise<UserBaseType | undefined> {
-    return await this.knex<UserBaseType>('users')
+    return await knexInstance<UserBaseType>('users')
       .select(columns)
       .where('id', id)
       .join('preferences', 'users.id', 'preferences.user_id')
@@ -26,14 +44,14 @@ export class UserModel {
   }
 
   async findByUsername(username: string, columns = USER_PUBLIC_COLUMNS) {
-    return await this.knex<UserBaseType>('users')
+    return (await knexInstance<UserBaseType, UserBaseType>('users')
       .select(columns)
       .where('username', username)
-      .first();
+      .first()) as UserBaseType | undefined;
   }
 
   async findByEmail(email: string, columns = USER_PRIVATE_COLUMNS) {
-    return await this.knex<UserBaseType>('users')
+    return await knexInstance<UserBaseType>('users')
       .select(columns)
       .where('email', email)
       .first();
@@ -50,12 +68,12 @@ export class UserModel {
       username: data.username,
       email: data.email,
       password: data.password,
-      created_at: this.knex.fn.now()
+      created_at: knexInstance.fn.now()
     }, columns);
   }
 
   async delete(id: string) {
-    return await this.knex<UserBaseType>('users')
+    return await knexInstance<UserBaseType>('users')
       .where('id', id)
       .del();
   }
@@ -65,7 +83,7 @@ export class UserModel {
     data: Partial<Omit<UserBaseType, 'id' | 'created_at'>>,
     columns = USER_PRIVATE_COLUMNS
   ) {
-    return await this.knex<UserBaseType>('users')
+    return await knexInstance<UserBaseType>('users')
       .where('id', id)
       .update(data, columns);
   }

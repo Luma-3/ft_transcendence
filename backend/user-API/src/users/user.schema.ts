@@ -113,6 +113,25 @@ export const UserHeaderAuthentication = Type.Object({
 }, {
   additionalProperties: true
 });
+
+export const UsersQueryGetAll = Type.Object({
+  blocked: Type.Optional(Type.Union([
+    Type.Literal('you'),
+    Type.Literal('another'),
+    Type.Literal('all'),
+    Type.Literal('none')
+  ], {
+    default: 'none',
+    description: 'Filter users based on blocking status. "you" for users who blocked you, "another" for users you blocked, "all" for both, and "none" for no filtering.'
+  })),
+  friends: Type.Optional(Type.Boolean({
+    default: false,
+    description: 'Include friends in the response. If true, only friends will be returned.'
+  }))
+}, {
+  additionalProperties: false
+});
+
 export type UserHeaderIdType = Static<typeof UserHeaderAuthentication>;
 
 // Internal User Schema

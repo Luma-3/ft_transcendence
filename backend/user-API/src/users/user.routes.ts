@@ -1,4 +1,4 @@
-import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
+import { FastifyPluginAsyncTypebox, Type } from '@fastify/type-provider-typebox';
 
 import { UserService } from './user.service.js';
 
@@ -24,6 +24,7 @@ import {
   UserEmailUpdateBody,
   UserUsernameUpdateBody,
   VerifyCredentials,
+  UsersQueryGetAll,
 } from './user.schema.js';
 
 
@@ -44,6 +45,26 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
   }, async (req, rep) => {
     const user = await UserService.createUser(req.body);
     return rep.code(201).send({ message: 'User Created', data: user });
+  });
+
+  
+  fastify.get('/users', {
+    schema: {
+      summary: 'Create a user',
+      description: 'Endpoint to create a user ressources and retrieve public informations',
+      tags: ['Users'],
+      headers: UserHeaderAuthentication,
+      querystring: UsersQueryGetAll,
+      response: {
+        201: ResponseSchema(Type.Array(UserPublicResponse), 'User created successfully'),
+        409: ConflictResponse,
+      }
+    }
+  }, async (req, rep) => {
+    const userId = req.headers['x-user-id'];
+    const {blocked, friends} = req.query;
+    const users = await UserService.getAllUsers(userId, blocked, friends);
+    return rep.code(200).send({ message: 'User Created', data: users });
   });
 
   fastify.delete('/users/me', {
