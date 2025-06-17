@@ -29,9 +29,6 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
       socket.on('message', (raw: string) => {
         try {
           const { type, payload } = JSON.parse(raw);
-
-          console.log(`[WS] client ${clientId} -> ${type} -> Redis`);
-          console.log("payload : ", payload);
           redisPub.publish(`ws.${type}.in`, JSON.stringify({
             clientId: clientId,
             payload: payload
@@ -56,7 +53,7 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
   redisSub.pSubscribe('ws.*.out', (message, channel) => {
     try {
       const { clientId, payload } = JSON.parse(message);
-      console.log(`[WS][Redis] <- ${channel} -> client ${clientId}`);
+      // console.log(`[WS][Redis] <- ${channel} -> client ${clientId}`);
       const socket = fastify.ws_clients.get(clientId);
       if (socket) {
         socket.send(JSON.stringify({

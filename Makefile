@@ -33,15 +33,15 @@ init-dev:
 	@echo "Init in Gateway...${RESET}"
 	@cd backend/gateway && npm i
 	@echo "${GREEN}Gateway initialisation completed\n${YELLOW}Init in auth-API...${RESET}"
-	@cd backend/auth-API && npm i
+	@cd backend/auth-API && mkdir -p data && npm i
 	@echo "${GREEN}auth-API initialisation completed\n${YELLOW}Init in game-API..${RESET}."
-	@cd backend/game-API && npm i
+	@cd backend/game-API && mkdir -p data && npm i
 	@echo "${GREEN}game-API initialisation completed\n${YELLOW}Init in social-API...${RESET}"
-	@cd backend/social-API && npm i
+	@cd backend/social-API && mkdir -p data && npm i
 	@echo "${GREEN}poeple-API initialisation completed\n${YELLOW}Init in upload-API...${RESET}"
 	@cd backend/upload-API && npm i
 	@echo "${GREEN}upload-API initialisation completed\n${YELLOW}Init in user-API...${RESET}"
-	@cd backend/user-API && npm i
+	@cd backend/user-API && mkdir -p data && npm i
 	@echo "${GREEN}user-API initialisation completed"
 	@echo "Everything initialised${RESET}"
 

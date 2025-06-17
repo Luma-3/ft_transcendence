@@ -24,12 +24,15 @@ export function drawExplosion(
   options: ExplosionOptions = {}
 ): void {
   const particles: Particle[] = [];
-  const particleCount = options.count ?? 50;
+  const particleCount = options.count ?? 500;
   const colors = options.colors ?? ['#ff0000', '#ff9900', '#ffff00', '#ffffff'];
   const maxSpeed = options.maxSpeed ?? 6;
   const maxRadius = options.maxRadius ?? 5;
   const duration = options.duration ?? 1000; // en millisecondes
-
+  ctx.save();
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  x += 10;
+  y += 10;
   for (let i = 0; i < particleCount; i++) {
     const angle = Math.random() * 2 * Math.PI;
     const speed = Math.random() * maxSpeed;
@@ -52,13 +55,13 @@ export function drawExplosion(
     const progress = elapsed / duration;
 
     // Nettoyer uniquement la zone autour de l'explosion
-    const clearRadius = maxSpeed * duration / 1000 + maxRadius;
-    ctx.clearRect(x - clearRadius, y - clearRadius, clearRadius * 2, clearRadius * 2);
+    // const clearRadius = maxSpeed * duration / 1000 + maxRadius;
+    // ctx.clearRect(x - clearRadius, y - clearRadius, clearRadius * 2, clearRadius * 2);
 
     particles.forEach((p) => {
-      p.x += p.dx;
+      p.x  += p.dx;
       p.y += p.dy;
-      p.life += 16; // Approximation pour 60fps
+      p.life += 16; // Approximation pour 60fps 
       p.alpha = 1 - p.life / duration;
 
       if (p.alpha > 0) {
@@ -68,6 +71,7 @@ export function drawExplosion(
           .toString(16)
           .padStart(2, '0')}`;
         ctx.fill();
+        ctx.restore();
       }
     });
 
@@ -77,4 +81,5 @@ export function drawExplosion(
   }
 
   requestAnimationFrame(animateExplosion);
+  ctx.restore();
 }

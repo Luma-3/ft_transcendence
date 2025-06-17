@@ -18,14 +18,15 @@ type GameFormInfo = {
 }
 
 function initGame(gameFormInfo: GameFormInfo) {
-	console.log("Game creation info:", gameFormInfo);
+	const t0 = performance.now();
 	socket!.send(JSON.stringify({
 		type: "game",
 		payload: {
 			type: 'init',
 			data: {
 				playerId: gameFormInfo.playerId,
-				roomId: gameFormInfo.gameId
+				roomId: gameFormInfo.gameId,
+				clientTime: t0
 			}
 		}
 	}))

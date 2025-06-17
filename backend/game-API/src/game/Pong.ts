@@ -4,6 +4,8 @@ import { redisPub } from '../utils/redis.js';
 import { Ball } from './Ball.js'
 import { Paddle } from './Paddle.js'
 
+const FRAMERATE: number = 1000 / 30;
+
 /**
  * Pong : Représente une partie de Pong entre deux joueurs.
  * 
@@ -31,6 +33,7 @@ export class Pong {
   interval: NodeJS.Timeout | undefined;
   centerX: number;
   centerY: number;
+  status: "stop" | "playing" | "pause" | "goal" = "stop";
 
   constructor(player1_uid: string, player2_uid?: string, sizeX: number = 800, sizeY: number = 600) {
     this.sizeX = sizeX;
@@ -65,7 +68,7 @@ export class Pong {
     const rand = Math.floor(Math.random() * 4) + 1;
     this.ball.set_vectors_ball(rand);
     this.gameIsStart = true;
-    this.interval = setInterval(this.update, 1000 / 30, this);
+    this.interval = setInterval(this.update, FRAMERATE, this);
   }
 
   /**
@@ -76,6 +79,46 @@ export class Pong {
     this.gameIsStart = false;
     clearInterval(this.interval);
     this.interval = undefined;
+  }
+
+  pause() {
+    this.status = "pause";
+    clearInterval(this.interval);
+    this.interval = undefined;
+  }
+
+  resume() {
+    if (!this.interval) {
+      this.status = "playing";
+      this.interval = setInterval(this.update, FRAMERATE, this);
+    }
+  }
+
+  broadcast(action: string, payload: any) {
+    const now = Date.now();
+    redisPub.publish('ws.game.out', JSON
+      .stringify({
+        clientId: this.paddle1.uid,
+        payload: {
+          action: action,
+          gameData: payload,
+          serverTime: now
+        }
+      })
+    );
+
+    if (this.paddle2.uid !== "0") {
+      redisPub.publish('ws.game.out', JSON
+        .stringify({
+          clientId: this.paddle2.uid,
+          payload: {
+            action: action,
+            gameData: payload,
+            serverTime: now
+          }
+        })
+      );
+    }
   }
 
   /**
@@ -125,6 +168,7 @@ export class Pong {
    * @param game - Instance de la partie Pong en cours.
    */
   update(game: Pong) {
+
     game.ball.move_ball(game.top, game.bottom, game.paddle1, game.paddle2, this.sizeX);
     if (game.isAgainstBot) {
       game.paddle2.y = game.ball.y;
@@ -132,35 +176,22 @@ export class Pong {
 
     if (game.ball.x <= game.left) {
       game.paddle2.add_score();
-      game.check_win();
-      game.ball.reset_ball(this.centerX, this.centerY);
+      game.pause();
+      game.status = "goal";
     } else if (game.ball.x >= game.right) {
       game.paddle1.add_score();
+      game.pause();
+      game.status = "goal";
+    }
+
+    if (game.status === "goal") {
       game.check_win();
+      game.broadcast('goal', game.toJSON());
       game.ball.reset_ball(this.centerX, this.centerY);
+      return;
     }
 
-    redisPub.publish('ws.game.out', JSON
-      .stringify({
-        clientId: game.paddle1.uid,
-        payload: {
-          action: 'update',
-          gameData: game.toJSON(),
-        }
-      })
-    );
-
-    if (game.paddle2.uid !== "0") {
-      redisPub.publish('ws.game.out', JSON
-        .stringify({
-          clientId: game.paddle2.uid,
-          payload: {
-            action: 'update',
-            gameData: game.toJSON(),
-          }
-        })
-      );
-    }
+    game.broadcast('update', game.toJSON());
   }
 
   /**

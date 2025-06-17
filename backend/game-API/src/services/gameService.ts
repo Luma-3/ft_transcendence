@@ -197,6 +197,18 @@ class GameService {
     switch (event.type) {
 
       case 'init':
+        redisPub.publish('ws.game.out', JSON
+          .stringify({
+            clientId: clientId,
+            payload: {
+              action: 'pong',
+              data: {
+                clientTime: data.clientTime,
+                serverTime: Date.now()
+              },
+            }
+          })
+        );
         const player = room.getPlayerById(data.playerId);
 
         if (!player) throw new NotFoundError('Player');
@@ -239,6 +251,22 @@ class GameService {
       case 'startGame':
         if (room.status === 'readyToStart')
           room.startGame();
+        break;
+
+      case 'resume' :
+        if (room.pong) {
+          room.pong.resume();
+        } else {
+          throw new NotFoundError('Game');
+        }
+        break;
+
+      case 'pause':
+        if (room.pong) {
+          room.pong.pause();
+        } else {
+          throw new NotFoundError('Game');
+        }
         break;
 
       case 'move':

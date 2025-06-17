@@ -136,8 +136,9 @@ export async function handlerEvent() {
     gameService.handleEvent(message.clientId, message.payload);
   })
 
-  redisSub.subscribe('ws.broadcast.disconnect', (raw: string) => {
-    const message = JSON.parse(raw);
-    gameService.leave_room());
-  })
+  // redisSub.subscribe('ws.broadcast.disconnect', (raw: string) => {
+  //   const message = JSON.parse(raw);
+  //   gameService.leave_room());
+  // })
 }
+  
