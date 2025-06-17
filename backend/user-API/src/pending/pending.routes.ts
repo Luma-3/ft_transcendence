@@ -2,8 +2,9 @@ import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { PendingsController } from './pending.controller.js';
 import { PendingParamSchema, PendingResponseSchema, UserHeaderAuthentication, TypePendingQuerySchema, AcceptParamSchema } from './pending.schema.js';
 import { ResponseSchema } from '../utils/schema.js';
-import { InternalServerErrorResponse, NotFoundResponse } from '@transcenduck/error';
+import { ConflictResponse, InternalServerErrorResponse, NotFoundResponse } from '@transcenduck/error';
 import { FastifyInstance } from 'fastify';
+
 const route: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance) => {
     fastify.get('/pending', {
         schema: {
@@ -28,11 +29,25 @@ const route: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance) => {
             params: PendingParamSchema,
             response: {
                 200: ResponseSchema(undefined, 'Pending request accepted successfully'),
-                404: NotFoundResponse,
+                409: ConflictResponse,
                 500: InternalServerErrorResponse
             },
         },
     }, PendingsController.addPending);
+    fastify.delete('/pending/:pendingId', {
+        schema: {
+            summary: 'Accept a pending request',
+            description: 'Endpoint to accept a pending request from another user',
+            tags: ['Friends'],
+            headers: UserHeaderAuthentication,
+            params: PendingParamSchema,
+            response: {
+                200: ResponseSchema(undefined, 'Pending request accepted successfully'),
+                404: NotFoundResponse,
+                500: InternalServerErrorResponse
+            },
+        },
+    }, PendingsController.removePending);
     fastify.post('/pending/accept/:senderId', {
         schema: {
             summary: 'Add a pending request',

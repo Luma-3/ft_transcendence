@@ -120,11 +120,6 @@ export class UserService {
     if (existingUsername) throw new ConflictError("Username already in use");
 
     const [updatedUser] = await userModel.update(id, { username: username }, USER_PRIVATE_COLUMNS);
-		redisPub.publish("api.social.in", JSON.stringify({userId: user.id, 
-			action: "update",
-			payload: {
-			username: updatedUser.username
-		}})).catch(console.error);
     return updatedUser;
   }
 

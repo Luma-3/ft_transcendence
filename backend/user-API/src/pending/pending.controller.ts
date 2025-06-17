@@ -1,9 +1,6 @@
 import { PendingService } from "./pending.services.js";
-import { InternalServerError } from "@transcenduck/error";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AcceptParamType, PendingParamType, TypePendingQueryType, UserHeaderIdType } from "./pending.schema.js";
-import { FriendsService } from "../friends/friends.services.js";
-import { knexInstance } from "../utils/knex.js";
 
 
 
@@ -27,18 +24,19 @@ export class PendingsController {
     }>, rep: FastifyReply) => {
         const userId = req.headers['x-user-id'];
         const { pendingId } = req.params;
-
-        try {
-            await knexInstance.transaction(async (trx) => {
-                if(await FriendsService.checkFriendshipExists(trx, userId, pendingId))
-                    throw new InternalServerError(`You are already friends with user ${pendingId}`);
-                await PendingService.addPending(trx, userId, pendingId);
-            } );
-        } catch (error) {
-            if (error instanceof Error)
-                throw new InternalServerError(`Failed to add pending request: ${error.message}`);
-        }
+        await PendingService.addPending(userId, pendingId);
         return rep.status(201).send({ message: 'Pending request added successfully' });
+    }
+
+
+    static removePending = async (req: FastifyRequest<{
+        Headers: UserHeaderIdType,
+        Params: PendingParamType
+    }>, rep: FastifyReply) => {
+        const userId = req.headers['x-user-id'];
+        const { pendingId } = req.params;
+        await PendingService.removePending(userId, pendingId);
+        return rep.status(201).send({ message: 'Pending request removed successfully' });
     }
 
     static acceptPending = async (req: FastifyRequest<{
@@ -47,13 +45,8 @@ export class PendingsController {
     }>, rep: FastifyReply) => {
         const userId = req.headers['x-user-id'];
         const { senderId } = req.params;
-        
-        try {
-            await PendingService.acceptPending(senderId, userId);
-        } catch (error) {
-            if (error instanceof Error)
-                throw new InternalServerError(`Failed to accept pending request: ${error.message}`);
-        }
+
+        await PendingService.acceptPending(senderId, userId);
         return rep.status(200).send({ message: 'Pending request accepted successfully' });
     }
 
@@ -64,7 +57,9 @@ export class PendingsController {
         const userId = req.headers['x-user-id'];
         const { senderId } = req.params;
 
-        await PendingService.refusePending(senderId, userId);
+        await PendingService.removePending(senderId, userId);
         return rep.status(200).send({ message: 'Pending request refused successfully' });
     }
+
+    
 }

@@ -4,6 +4,7 @@ import userRoutes from './routes/user.js'
 import preferencesRouts from './routes/preferences.js'
 import friendRoutes from './friends/friends.routes.js'
 import pendingRoutes from './pending/pending.routes.js'
+import blockedRoutes from './blocked/blocked.routes.js'
 
 dotenv.config()
 
@@ -30,6 +31,7 @@ server.register(userRoutes);
 server.register(preferencesRouts);
 server.register(friendRoutes);
 server.register(pendingRoutes);
+server.register(blockedRoutes);
 
 server.addHook('onRequest', async (req, _) => {
   console.log(`Header:${JSON.stringify(req.headers, undefined, 2)}`);
