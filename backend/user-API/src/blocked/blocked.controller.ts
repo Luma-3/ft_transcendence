@@ -13,9 +13,7 @@ export class BlockedController {
         const userId = req.headers['x-user-id'];
         const blocked = await BlockedService.findByID(userId, req.query.hydrate);
 
-        return rep.status(200).send({
-            message: 'Blocked users retrieved successfully',
-            data: blocked});
+        return rep.status(200).send({ message: 'Blocked users retrieved successfully', data: blocked});
     };
 
     static block = async (req: FastifyRequest<{

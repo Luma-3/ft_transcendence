@@ -1,7 +1,7 @@
 import { Type, Static } from '@sinclair/typebox';
 
-export * from '../schema/preferences.schema.js';
-export * from '../schema/user.schema.js';
+export * from '../preferences/preferences.schema.js';
+export * from '../users/user.schema.js';
 
 
 export const PendingDBSchema = Type.Object({

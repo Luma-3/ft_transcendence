@@ -1,6 +1,6 @@
 import type { Knex } from 'knex';
 
-import { UserBaseType } from '../schema/user.schema.js'
+import { UserBaseType } from './user.schema.js'
 
 export const USER_PUBLIC_COLUMNS: (keyof UserBaseType)[] = ['id', 'username', 'created_at'];
 export const USER_PRIVATE_COLUMNS: (keyof UserBaseType)[] = ['id', 'username', 'email', 'created_at'];

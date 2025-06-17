@@ -33,11 +33,11 @@ export class BlockedService {
             } else if(id === blockedId) {
                 throw new ConflictError(`You cannot block yourself`);
             }
-            await blockedModel.create(trx, id, blockedId);
             if(await FriendsService.checkFriendshipExists(trx, id, blockedId)){
                 await FriendsService.removeFriend(trx, id, blockedId);
                 await FriendsService.removeFriend(trx, blockedId, id);
             }
+            await blockedModel.create(trx, id, blockedId);
         } );
     }
 

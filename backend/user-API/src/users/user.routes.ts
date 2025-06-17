@@ -1,9 +1,9 @@
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 
-import { UserService } from '../services/userService.js';
+import { UserService } from './user.service.js';
 
-import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS } from '../models/userModel.js';
-import { PREFERENCES_PRIVATE_COLUMNS, PREFERENCES_PUBLIC_COLUMNS } from '../models/preferencesModel.js';
+import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS } from './user.model.js';
+import { PREFERENCES_PRIVATE_COLUMNS, PREFERENCES_PUBLIC_COLUMNS } from '../preferences/preferences.model.js';
 
 import { ResponseSchema } from '../utils/schema.js';
 import {
@@ -24,7 +24,7 @@ import {
   UserEmailUpdateBody,
   UserUsernameUpdateBody,
   VerifyCredentials,
-} from '../schema/user.schema.js';
+} from './user.schema.js';
 
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {

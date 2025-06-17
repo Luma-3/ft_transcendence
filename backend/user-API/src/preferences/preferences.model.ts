@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 
-import { PreferencesBaseType } from '../schema/preferences.schema.js';
+import { PreferencesBaseType } from './preferences.schema.js';
 
 export const PREFERENCES_PUBLIC_COLUMNS: (keyof PreferencesBaseType)[] = ['user_id', 'theme', 'lang', 'avatar', 'banner'];
 export const PREFERENCES_PRIVATE_COLUMNS: (keyof PreferencesBaseType)[] = ['user_id', 'theme', 'lang', 'avatar', 'banner'];

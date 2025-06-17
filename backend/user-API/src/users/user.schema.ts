@@ -5,7 +5,7 @@ import {
   PreferencesPublicResponse,
   PreferencesPrivateResponse,
   PreferencesUpdateBody
-} from './preferences.schema.js';
+} from "../preferences/preferences.schema.js";
 
 // Share Field Utilities
 // To avoid duplication, we define shared fields for user Utilities

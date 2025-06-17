@@ -1,7 +1,7 @@
 import { Type, Static } from '@sinclair/typebox';
 
-export * from '../schema/preferences.schema.js';
-export * from '../schema/user.schema.js';
+export * from '../preferences/preferences.schema.js';
+export * from '../users/user.schema.js';
 
 
 export const BlockedDBSchema = Type.Object({
@@ -9,7 +9,7 @@ export const BlockedDBSchema = Type.Object({
   user_id: Type.String({ format: 'uuid' }),
   blocked_id: Type.String({ format: 'uuid' })
 }, {
-  description: "Pending request schema for database operations",
+  description: "Database schema for blocked users",
   additionalProperties: false
 });
 
@@ -19,14 +19,15 @@ export const BlockedDBHydrateSchema = Type.Object({
   avatar: Type.Optional(Type.String()),
   banner: Type.Optional(Type.String())
 }, {
-  description: "Hydrated pending request schema with user details",
+  description: "Hydrated schema for blocked users with user details",
   additionalProperties: false
 });
 
 export const BlockedParamSchema = Type.Object({
   blockedId: Type.String({ format: 'uuid' })
 }, {
-  description: "Parameters for adding a pending request",
+  description: "Parameters for blocking or unblocking a user",
+  additionalProperties: false
 });
 
 export const HydareteDBQuerySchema = Type.Object({

@@ -3,10 +3,10 @@ import { v4 as uuidV4 } from "uuid";
 import { hashPassword, comparePassword } from "../utils/bcrypt.js";
 
 import { knexInstance, userModel, preferencesModel } from "../models/models.js";
-import { UserCreateBodyType, UserBaseType } from "../schema/user.schema.js";
-import { PreferencesBaseType } from "../schema/preferences.schema.js";
+import { UserCreateBodyType, UserBaseType } from "./user.schema.js";
+import { PreferencesBaseType } from "../preferences/preferences.schema.js";
 import { Knex } from "knex";
-import { USER_PRIVATE_COLUMNS } from "../models/userModel.js"
+import { USER_PRIVATE_COLUMNS } from "./user.model.js"
 import { redisPub } from "../utils/redis.js";
 
 
