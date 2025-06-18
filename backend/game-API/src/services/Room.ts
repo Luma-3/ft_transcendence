@@ -20,13 +20,12 @@ type StatusType = 'waiting' | 'roomReady' | 'readyToStart' | 'playing' | 'finish
  */
 export class Room {
 	id: string;
-	name: string = '';
+	name: string;
 	typeGame: GameType;
 	status: StatusType = 'waiting';
-	users: PlayerType[] = [];
-	players: [PlayerType, PlayerType][] = [];
-	pongs: Pong[] = [];
-	isFull: boolean = false;
+	players: PlayerType[];
+	pong: Pong | null;
+	isFull: boolean;
 	createdAt: Date;
 	maxPlayers: number;
 	playerReady: number;
@@ -34,47 +33,20 @@ export class Room {
 	
   constructor(typeGame: GameType) {
 		this.id = uuidv4();
+		this.name = '';
 		this.typeGame = typeGame;
 		if (typeGame === 'localpvp' || typeGame === 'localpve') {
 			this.status = 'readyToStart';
 		}
+		this.players = [];
+		this.pong = null; // Instance of Pong game
+		this.isFull = false;
 		this.createdAt = new Date();
 		this.maxPlayers = typeGame === 'tournament' ? 8 : typeGame === 'online' ? 2 : 1; // Maximum number of players in the room
 		this.playerReady = 0; // Counter for players ready to start the game
   }
 
-	findPlayerInPairByPlayerId(playerId: string): PlayerType | undefined {
-    for (const pair of this.players) {
-        if (pair[0]?.playerId === playerId) {
-            return pair[0];
-        }
-        if (pair[1]?.playerId === playerId) {
-            return pair[1];
-        }
-    }
-    return undefined;
-	}
-
-	/**
-	 * Génére un tableau de paires de joueurs de manière aléatoire à partir des utilisateurs de la salle.
-	 * Les paires sont stockées dans la propriété `players`.
-	 * 
-	 * @throws {Error} Si le nombre de joueurs est inférieur à 2.
-	 */
-	randomizePlayersPairs(): void {
-		const shuffled = [...this.users];
-		for (let i = shuffled.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-		}
-
-		for (let i = 0; i < shuffled.length; i += 2) {
-			const p1 = shuffled[i];
-			const p2 = shuffled[i + 1];
-			this.players.push([p1, p2]);
-		}
-	}
-
+	
 	/**
 	 * Ajoute un joueur à la salle si une place est disponible.
 	 *
@@ -86,21 +58,18 @@ export class Room {
 	 * - Si la salle n'a pas de nom, il sera défini comme `Room-<player.gameName>`.
 	 */
   addPlayer(player: PlayerType): boolean {
-		if (this.users.length >= this.maxPlayers) {
+		if (this.players.length >= this.maxPlayers) {
 			return false;
 		}
 
-		this.users.push(player);
-		if (this.users.length === this.maxPlayers) {
+		this.players.push(player);
+		if (this.players.length === this.maxPlayers) {
 			this.isFull = true;
-			this.randomizePlayersPairs();
 			this.status = 'roomReady';
 		}
 
-		if (this.name === '' && this.typeGame !== "tournament") {
-			this.name = `Room-${player?.gameName}`;
-		} else if (this.name === '' && this.typeGame === "tournament") {
-			this.name = `Tournament-${player?.gameName}`;
+		if (this.name === '') {
+			this.name = `Room-${player.gameName}`;
 		}
 
 		return true;
@@ -114,9 +83,9 @@ export class Room {
 	 * @returns L'objet joueur s'il est trouvé ; sinon, retourne `undefined`.
 	 */
 	getPlayerById(playerId: string): PlayerType | undefined {
-		for (const user of this.users) {
-	  		if (user?.playerId === playerId) {
-					return user;
+		for (const player of this.players) {
+	  		if (player.playerId === playerId) {
+					return player;
 	  		}
 		}
 		return undefined;
@@ -134,9 +103,9 @@ export class Room {
 	 * @returns Le joueur correspondant à l'identifiant client, ou `undefined` si aucun joueur n'est trouvé.
 	 */
   getPlayerByClientId(clientId: string): PlayerType | undefined {
-		for (const user of this.users) {
-			if (user?.clientId === clientId) {
-				return user;
+		for (const player of this.players) {
+			if (player.clientId === clientId) {
+				return player;
 			}
 		}
 		return undefined;
@@ -148,20 +117,16 @@ export class Room {
 	 * @returns {Pong | null} Retourne l'instance du jeu Pong si la création a réussi, sinon null.
 	 */
   createGame(): Pong | null {
-		if (!this.users[0]) {
-			throw new NotFoundError('Player 1');
-		}
+		this.pong = new Pong(
+			this.players[0].playerId,
+			this.players[1]?.playerId
+		);
 
-		const pong = new Pong (
-			this.users[0].playerId,
-			this.users[1]?.playerId
-		)
-		if (!pong) {
+		if (!this.pong) {
 			return null;
 		}
-		this.pongs.push(pong);
 
-		return pong;
+		return this.pong;
   }
 
 	/**
@@ -177,42 +142,21 @@ export class Room {
 	 */
   removePlayer(playerId: string): "roomEmpty" | "playerRomoved" {
 		if (this.typeGame === 'localpvp' || this.typeGame === 'localpve') {
-			this.stopGame(pong);
+			this.stopGame();
 		}
 
-		const playerIndex = this.users.findIndex(user => user?.playerId === playerId);
+		const playerIndex = this.players.findIndex(player => player.playerId === playerId);
 		if (playerIndex === -1) {
 			throw new NotFoundError('Player');
 		}
 
-		this.users.splice(playerIndex, 1);
+		this.players.splice(playerIndex, 1);
 		this.isFull = this.players.length >= this.maxPlayers;
 		if (this.players.length === 0) {
 			return "roomEmpty";
 		}
 		return "playerRomoved";
   }
-
-	startTournamentGame() {
-		if (this.typeGame !== "tournament") {
-			return false;
-		}
-		for (const pong of this.pongs) {
-			this.startGame(pong);
-		}
-		this.status = 'playing';
-	}
-
-	stopTournamentGame() {
-		if (this.typeGame !== "tournament") {
-			return false;
-		}
-		for (const pong of this.pongs) {
-			this.stopGame(pong);
-		}
-		this.pongs = [];
-		this.status = 'finished';
-	}
 
 	/**
 	 * Démarre la session de jeu pour la salle courante.
@@ -223,14 +167,12 @@ export class Room {
 	 * Cette méthode initialise la partie en appelant la méthode `start` sur l'instance `pong`
 	 * et met à jour le statut de la salle à `'playing'`.
 	 */
-  startGame(pong: Pong): void {
-		if (!pong) {
+  startGame(): void {
+		if (!this.pong) {
 			throw new InternalServerError('Game not found');
 		}
-		pong.start();
-		if (this.typeGame !== 'tournament') {
-			this.status = 'playing';
-		}
+		this.pong.start();
+		this.status = 'playing';
   }
 
 	/**
@@ -241,15 +183,14 @@ export class Room {
 	 * puis réinitialise la référence à `pong` à `null`. Elle met également à jour le statut de la salle
 	 * à 'finished' et indique que la salle n'est plus pleine.
 	 */
-  stopGame(pong: Pong) {
-		if (!pong) {
+  stopGame() {
+		if (!this.pong) {
 			return;
 		}
-		pong.stop();
-		if (this.typeGame !== 'tournament') {
-			this.status = 'finished';
-			this.isFull = false;
-		}
+		this.pong.stop();
+		this.pong = null;
+		this.status = 'finished';
+		this.isFull = false;
   }
 
 	/**
@@ -268,31 +209,19 @@ export class Room {
 
 	userInfos(player: PlayerType) {
 		return {
-			playerId: player?.playerId,
-			gameName: player?.gameName,
-			joined: player?.joined
+			playerId: player.playerId,
+			gameName: player.gameName,
+			joined: player.joined
 		};
   }
 
-  userOpponentsInfos(player: PlayerType) {
-		return this.users.filter(p => p?.playerId !== player?.playerId).map(p => ({
-			playerId: p?.playerId,
-			gameName: p?.gameName,
-			ready: p?.ready
+  userOpponentInfos(player: PlayerType) {
+		return this.players.filter(p => p.playerId !== player.playerId).map(p => ({
+			playerId: p.playerId,
+			gameName: p.gameName,
+			ready: p.ready
 		}));
   }
-
-	userOpponentInfo(player: PlayerType) : PlayerType | undefined {
-    for (const pair of this.players) {
-        if (pair[0]?.playerId === player?.playerId) {
-            return pair[1];
-        }
-        if (pair[1]?.playerId === player?.playerId) {
-            return pair[0];
-        }
-    }
-    return undefined;
-	}
 
   roomData() {
 		return {
@@ -308,9 +237,9 @@ export class Room {
 		return {
 			roomId: this.id,
 			typeGame: this.typeGame,
-			players: this.users.map(player => ({
-				playerId: player!.playerId,
-				gameName: player!.gameName,
+			players: this.players.map(player => ({
+				playerId: player.playerId,
+				gameName: player.gameName,
 			})),
 		};
   }
@@ -321,23 +250,11 @@ export class Room {
 			name: this.name,
 			typeGame: this.typeGame,
 			status: this.status,
-			users: this.users.map(user => ({
-				playerId: user!.playerId,
-				gameName: user!.gameName,
-				ready: user!.ready
+			players: this.players.map(player => ({
+				playerId: player.playerId,
+				gameName: player.gameName,
+				ready: player.ready
 			})),
-			players: this.players.map(playerPair => [
-				playerPair[0] ? {
-					playerId: playerPair[0]?.playerId,
-					gameName: playerPair[0]?.gameName,
-					ready: playerPair[0]?.ready
-				} : null,
-				playerPair[1] ? {
-					playerId: playerPair[1]?.playerId,
-					gameName: playerPair[1]?.gameName,
-					ready: playerPair[1]?.ready
-				} : null
-			]),
 			isFull: this.isFull,
 			createdAt: this.createdAt.toISOString(),
 			maxPlayers: this.maxPlayers,
