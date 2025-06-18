@@ -36,9 +36,7 @@ init-dev:
 	@cd backend/auth-API && mkdir -p data && npm i
 	@echo "${GREEN}auth-API initialisation completed\n${YELLOW}Init in game-API..${RESET}."
 	@cd backend/game-API && mkdir -p data && npm i
-	@echo "${GREEN}game-API initialisation completed\n${YELLOW}Init in social-API...${RESET}"
-	@cd backend/social-API && mkdir -p data && npm i
-	@echo "${GREEN}poeple-API initialisation completed\n${YELLOW}Init in upload-API...${RESET}"
+	@echo "${GREEN}game-API initialisation completed\n${YELLOW}Init in upload-API...${RESET}"
 	@cd backend/upload-API && npm i
 	@echo "${GREEN}upload-API initialisation completed\n${YELLOW}Init in user-API...${RESET}"
 	@cd backend/user-API && mkdir -p data && npm i
@@ -49,9 +47,7 @@ migrate-dev:
 	@echo "${YELLOW}Starting migration"
 	@echo "Migration in auth-API...${RESET}"
 	@cd backend/auth-API && npm run knex migrate:latest
-	@echo "${GREEN}auth-API migration completed\n${YELLOW}Migration in social-API...${RESET}"
-	@cd backend/social-API && npm run knex migrate:latest
-	@echo "${GREEN}social-API migration completed\n${YELLOW}Migration in user-API...${RESET}"
+	@echo "${GREEN}auth-API migration completed\n${YELLOW}Migration in user-API...${RESET}"
 	@cd backend/user-API && npm run knex migrate:latest
 	@echo "${GREEN}Everything migrated${RESET}"
 
