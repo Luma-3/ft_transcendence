@@ -1,8 +1,8 @@
 import { fetchApi } from './fetch';
 import { OtherUser, UserInfo } from '../interfaces/User';
-import { UserInPeople } from '../interfaces/PeopleInterface';
+import { UserInPeople, UserSearchResult } from '../interfaces/PeopleInterface';
 import { IApiResponse } from '../interfaces/IApiResponse';
-import { API_PEOPLE, API_USER } from './routes';
+import { API_USER } from './routes';
 
 /**
  * Getter for the current user's information.
@@ -16,27 +16,32 @@ export async function getUserInfo(): Promise<IApiResponse<UserInfo>> {
 }
 
 export async function getOtherUserInfo(id: string): Promise<IApiResponse<UserInfo>> {
-	console.log("getOtherUserInfo called with id:", id);
 	const response = await fetchApi<UserInfo>(API_USER.BASIC.BASIC + `/${id}?includePreferences=true`);
-	console.log("Response from getOtherUserInfo:", response);
+	return response;	
+}
+
+export async function getAllUsers(blocked: ("you" | "another" | "all" | "none") = "none", friends: boolean = false, hydrate: boolean = true): Promise<IApiResponse<UserInPeople[]>> {
+	const response = await fetchApi<UserInfo[]>(API_USER.BASIC.BASIC + `?blocked=${blocked}&friends=${friends}&hydrate=${hydrate}`);
+	console.log("getAllUsers response:", response);
 	return response;
 }
 
-export async function getAllUsers(): Promise<IApiResponse<OtherUser[]>> {
-	const response = await fetchApi<OtherUser[]>(API_PEOPLE.ALL);
-	return response;
-}
-
-export async function getUsersList(value: string) {
-	const response = await fetchApi<OtherUser[]>(API_PEOPLE.SEARCH + "?search=" + value);
-	return response.data!;
-}
+// export async function getUsersList(value: string) {
+// 	const response = await fetchApi<OtherUser[]>(API_PEOPLE.SEARCH + "?search=" + value);
+// 	return response.data!;
+// }
 
 export async function getFriends() {
-	const response = await fetchApi<{
-		friends: UserInPeople[];
-		blocked: UserInPeople[];
-		pending: (UserInPeople&{status: string})[];
-	}>(API_PEOPLE.SELF);
+	const response = await fetchApi<UserInPeople[]>(API_USER.SOCIAL.FRIENDS);
+	return response;
+}
+
+export async function getPending(params: "sender" | "receiver" = "sender") {
+	const response = await fetchApi< UserInPeople[]>(API_USER.SOCIAL.PENDING + `?action=${params}`);
+	return response;
+}
+
+export async function getSearchUsers(q: string, page: number = 1, limit: number = 10, hydrate: boolean = true): Promise<IApiResponse<UserSearchResult>> {
+	const response = await fetchApi<UserSearchResult>(API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}`);
 	return response;
 }

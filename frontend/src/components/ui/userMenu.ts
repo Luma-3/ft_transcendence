@@ -1,5 +1,6 @@
 import { UserInfo } from '../../interfaces/User';
 import { API_CDN } from '../../api/routes';
+import { UserInPeople } from '../../interfaces/PeopleInterface';
 
 let userNotification: boolean = false;
 
@@ -7,13 +8,19 @@ let userNotification: boolean = false;
  * Partie du menu situe en haut avec le nom de l'utilisateur et la photo de profil
  */
 export function headerUserMenu(user: UserInfo) {
-
 	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.preferences.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
 					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.preferences.avatar}" alt="User profile picture">
 				</div>
 				</div>`;
-			}
+}
+export function headerOtherUserMenu(user: UserInPeople) {
+	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.banner}')">
+	<div class="relative w-14 h-14 flex-shrink-0">
+					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.avatar}" alt="User profile picture">
+				</div>
+				</div>`;
+}
 // <span class="p-1 block bg-primary dark:bg-dprimary shadow-md rounded-lg text-responsive-size font-title overflow-hidden truncate
 //  text-tertiary dark:text-dsecondary">${user.username}</span>
 

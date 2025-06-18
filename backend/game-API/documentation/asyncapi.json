@@ -1,0 +1,90 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Transcenduck Game",
+    "version": "1.0.0",
+    "description": "Game events handler."
+  },
+  "servers": {
+    "development": {
+      "host": "localhost:5173",
+      "pathname": "/ws",
+      "protocol": "wss",
+      "description": "Game Websocket Server for real-time communication"
+    }
+  },
+  "components": {
+    "messages": {
+      "init": {
+        "summary": "Initialise clientId for further communications",
+        "payload": {
+          "$ref": "#/components/schemas/init"
+        }
+      },
+      "playerReady": {
+        "summary": "Indicate that a player is ready and create the game if all players ready",
+        "payload": {
+          "$ref": "#/components/schemas/playerReady"
+        }
+      },
+      "startGame": {
+        "summary": "Start the game indicate that the front is ready to launch the game",
+        "payload": {
+          "$ref": "#/components/schemas/startGame"
+        }
+      },
+      "move": {
+        "summary": "Indicate that a player wanted to move",
+        "payload": {
+          "$ref": "#/components/schemas/move"
+        }
+      }
+    },
+    "schemas": {
+      "init": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string",
+            "description": "Unique identifier of a room"
+          },
+          "playerId": {
+            "type": "string",
+            "description": "Unique identifier of a player"
+          }
+        }
+      },
+      "playerReady": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string",
+            "description": "Unique identifier of a room"
+          }
+        }
+      },
+      "startGame": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string",
+            "description": "Unique identifier of a room"
+          }
+        }
+      },
+      "move": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string",
+            "description": "Unique identifier of a room"
+          },
+          "direction": {
+            "type": "string",
+            "description": "Indicate the player's directions beetween \"up\" and \"down\", and when he release the key it send \"stop\""
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,9 +1,10 @@
+
 export interface UserInfo {
-	id: number;
+	id: string;
 	username: string;
-	created_at: string;
-	email: string;
-	preferences: UserPreferences;
+	created_at?: string;
+	email?: string;
+	preferences?: UserPreferences;
 }
 
 export interface UserPreferences {
@@ -17,5 +18,4 @@ export interface OtherUser {
 	username: string;
 	user_id: string;
 	blocked: boolean;
-
 }

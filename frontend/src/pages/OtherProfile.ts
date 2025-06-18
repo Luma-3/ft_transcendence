@@ -58,7 +58,7 @@ async function friends(user:User) {
 		<div class="flex flex-row justify-between w-1/2 font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
 			<span>${friend.username}</span>
 			<div class="flex flex-row space-x-2">
-				<div id="add-friend" data-username=${friend.username} data-id=${friend.user_id} class="group/item relative hover:cursor-pointer">
+				<div id="add-friend" data-username=${friend.username} data-id=${friend.id} class="group/item relative hover:cursor-pointer">
 					<span class="tooltip absolute left-1/2 -translate-x-1/2 top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
 				dark:text-dtertiary text-xs rounded py-1 px-2">
 					Add to friends

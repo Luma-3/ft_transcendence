@@ -4,13 +4,18 @@ import { onKeyDown, onKeyUp } from "../game/gameUpdate";
 import { resizeCanvas } from "../game/resizeCanvas";
 
 import { RoomData } from "../interfaces/GameData";
-import { User } from "../interfaces/User";
+import { UserInfo } from "../interfaces/User";
 
 import { socket } from "../controllers/Socket";
 import { player } from "../interfaces/GameData";
 import { gameFrontInfo } from "../game/gameCreation";
 
-function showGameOpponent(opponents: player) { return; }
+import { getPlayerInfo, getPlayerOpponentsInfos } from "../api/getterGame";
+
+function showGameOpponent(opponents: player[]) {
+	console.log(opponents);
+	return;
+}
 // 	const listOpponents = opponents.map((opponent) => `
 // 		<div id=${opponent.gameName} class="flex flex-col justify-center items-center">
 // 		<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
@@ -33,7 +38,7 @@ function showGameOpponent(opponents: player) { return; }
 
 
 
-export default async function Game(roomId: string, user: User) {
+export default async function Game(roomId: string, user: UserInfo) {
 
   addEventListener('keypress', () => { })
 	/**
@@ -85,6 +90,11 @@ export default async function Game(roomId: string, user: User) {
 	/**
 	 * Contenu HTML de la page
 	 */
+
+	const PlayerInfo = await getPlayerInfo(roomId, user.id);
+
+	showGameOpponent((await getPlayerOpponentsInfos(roomId, user.id)).data);
+
 	return `
 		${navbar(user)}
 		<div class="flex flex-col justify-center items-center text-tertiary dark:text-dtertiary">
@@ -98,7 +108,7 @@ export default async function Game(roomId: string, user: User) {
 						mb-4 transition-transform duration-800 ease-in-out
 						border-primary dark:border-dprimary" />
 						<div class="flex title-responsive-size justify-center items-center">
-						${gameFrontInfo.gameName}
+						${PlayerInfo.data?.gameName}
 						</div>
 					</div>
 					<div id="vsdiv" class="flex flex-col text-9xl justify-center items-center transition-transform duration-800 ease-in-out">

@@ -1,0 +1,19 @@
+{
+  "name": "@transcenduck/error",
+  "version": "0.1.0",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.24",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.34.33",
+    "ajv": "^8.17.1"
+  }
+}

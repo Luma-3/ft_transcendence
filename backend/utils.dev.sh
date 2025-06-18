@@ -12,7 +12,7 @@ fclean() {
 
   for dir in "${servers_data[@]}"; do
     echo "➡️ $dir"
-    cd $dir && rm -rf *.sqlite && cd ../..
+    cd $dir && rm -rf *.db && cd ../..
   done
 
   echo "✅ All data are clear"

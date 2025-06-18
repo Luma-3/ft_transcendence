@@ -17,9 +17,33 @@ export async function up(knex: Knex): Promise<void> {
     t.text('avatar');
     t.text('banner');
   })
+
+  await knex.schema.createTable('friends', (t) => {
+    t.increments('id').primary();
+    t.uuid('user_id').references('id').inTable('users').onDelete('CASCADE');
+    t.uuid('friend_id').references('id').inTable('users').onDelete('CASCADE');
+    t.unique(['user_id', 'friend_id'], 'unique_friend_pair');
+  })
+
+  await knex.schema.createTable('blocked', (t) => {
+    t.increments('id').primary();
+    t.uuid('user_id').references('id').inTable('users').onDelete('CASCADE');
+    t.uuid('blocked_id').references('id').inTable('users').onDelete('CASCADE');
+    t.unique(['user_id', 'blocked_id'], 'unique_blocked_pair');
+  })
+
+  await knex.schema.createTable('pending', (t) => {
+    t.increments('id').primary();
+    t.uuid('user_id').references('id').inTable('users').onDelete('CASCADE');
+    t.uuid('pending_id').references('id').inTable('users').onDelete('CASCADE');
+    t.unique(['user_id', 'pending_id'], 'unique_pending_pair');
+  })
 }
 
 export async function down(knex: Knex): Promise<void> {
   await knex.schema.dropTableIfExists('preferences');
   await knex.schema.dropTableIfExists('users');
+  await knex.schema.dropTableIfExists('friends');
+  await knex.schema.dropTableIfExists('blocked');
+  await knex.schema.dropTableIfExists('pending');
 }
