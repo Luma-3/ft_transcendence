@@ -1,4 +1,4 @@
-import { Knex } from 'knex';
+import { knexInstance, Knex } from "../utils/knex";
 
 import { PreferencesBaseType } from './preferences.schema.js';
 
@@ -6,8 +6,6 @@ export const PREFERENCES_PUBLIC_COLUMNS: string[] = ['user_id', 'theme', 'lang',
 export const PREFERENCES_PRIVATE_COLUMNS: string[] = ['user_id', 'theme', 'lang', 'avatar', 'banner'];
 
 export class PreferencesModel {
-  constructor(private knex: Knex) { }
-
   async create(
     trx: Knex.Transaction,
     userID: string,
@@ -26,7 +24,7 @@ export class PreferencesModel {
   async findByUserID(
     userID: string,
     columns = PREFERENCES_PUBLIC_COLUMNS) {
-    return await this.knex('preferences')
+    return await knexInstance('preferences')
       .select(columns)
       .where('user_id', userID)
       .first();
@@ -36,8 +34,10 @@ export class PreferencesModel {
     userID: string,
     data: Partial<Omit<PreferencesBaseType, 'user_id'>>,
     columns = PREFERENCES_PRIVATE_COLUMNS) {
-    return await this.knex('preferences')
+    return await knexInstance('preferences')
       .where('user_id', userID)
       .update(data, columns);
   }
 }
+
+export const preferencesModelInstance = new PreferencesModel();

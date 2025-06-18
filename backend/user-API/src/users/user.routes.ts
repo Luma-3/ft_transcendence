@@ -17,6 +17,7 @@ import {
   UserPublicResponse,
   UserPrivateResponse,
   UserCreateBody,
+  UserCreateBodyInternal,
   UserQueryGet,
   UserHeaderAuthentication,
   UserParamGet,
@@ -47,7 +48,23 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     return rep.code(201).send({ message: 'User Created', data: user });
   });
 
-  
+  fastify.post('/internal/users', {
+    schema: {
+      summary: 'Create a user (Internal)',
+      description: 'Endpoint to create a user ressources and retrieve public informations for internal use only (used by auth service for module Oauth2)',
+      tags: ['Users'],
+      body: UserCreateBodyInternal,
+      response: {
+        201: ResponseSchema(UserPublicResponse, 'User created successfully'),
+        409: ConflictResponse,
+      }
+    }
+  }, async (req, rep) => {
+    const user = await UserService.createUserInternal(req.body);
+    return rep.code(201).send({ message: 'User Created', data: user });
+  });
+
+
   fastify.get('/users', {
     schema: {
       summary: 'Create a user',
@@ -62,8 +79,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async (req, rep) => {
     const userId = req.headers['x-user-id'];
-    const {blocked, friends, hydrate} = req.query;
-    console.log("Aaaaaaaaaaaaaaaaaaa")
+    const { blocked, friends, hydrate } = req.query;
     const users = await UserService.getAllUsers(userId, blocked, friends, hydrate);
     return rep.code(200).send({ message: 'User Created', data: users });
   });

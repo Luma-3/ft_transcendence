@@ -28,6 +28,7 @@ const UserSharedFields = {
 export const UserBase = Type.Object({
   ...UserSharedFields,
   email: Type.String({ format: 'email' }),
+  google_id: Type.Optional(Type.String({ format: 'uuid' })),
   password: passwordField,
   preferences: Type.Optional(PreferencesBase)
 });
@@ -38,7 +39,7 @@ export const UserDBHydrateType = Type.Object({
   avatar: Type.Optional(Type.String({ format: 'uri' })),
   banner: Type.Optional(Type.String({ format: 'uri' })),
 });
-export type UserDBHydrateType = Static<typeof UserDBHydrateType>; 
+export type UserDBHydrateType = Static<typeof UserDBHydrateType>;
 
 export const UserDBBase = Type.Object({
   ...UserSharedFields,
@@ -79,6 +80,19 @@ export const UserCreateBody = Type.Object({
   additionalProperties: false
 });
 export type UserCreateBodyType = Static<typeof UserCreateBody>;
+
+export const UserCreateBodyInternal = Type.Object({
+  username: Type.String({ minLength: 2, maxLength: 32 }),
+  email: Type.String({ format: 'email' }),
+  googleId: Type.Optional(Type.String({ format: 'uuid' })),
+  lang: Type.Optional(Type.Union([Type.Literal('en'), Type.Literal('fr'), Type.Literal('es')], {
+    default: 'en',
+    description: 'Language preference for the user.'
+  })),
+}, {
+  additionalProperties: false
+});
+export type UserCreateBodyInternalType = Static<typeof UserCreateBodyInternal>;
 
 export const UserPasswordUpdateBody = Type.Object({
   oldPassword: Type.String(),
