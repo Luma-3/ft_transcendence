@@ -7,6 +7,8 @@ import { pipeline } from "node:stream/promises";
 import { editorImageService } from "./EditorImageService.js";
 import { MultipartFile } from "@fastify/multipart";
 import { CdnQueryType } from "../schema/upload.schema.js";
+import { redisCache } from "../utils/redis.js";
+import { hash } from "node:crypto";
 export enum TypeUpload {
   avatar = 'avatar',
   banner = 'banner'
@@ -84,15 +86,46 @@ export class UploadService {
       throw new ForbiddenError();
     }
     await this.checkFile(pathJoin);
-
+    const hashKey = 'upload.'+  hash("md5", JSON.stringify({ typePath, realPath, options: {
+        size: options.size,
+        scale: options.scale,
+        width: options.width,
+        height: options.height,
+        resizeMode: options.resizeMode,
+        blur: options.blur,
+        grayscale: options.grayscale,
+        greyscale: options.greyscale,
+        tint: options.tint,
+        rotate: options.rotate,
+    }}));
+    console.log("hashKey", hashKey);
+    if(await redisCache.exists(hashKey))
+      return redisCache.getEx(hashKey, {type: "EX", value: 60 * 60 * 24 }).then((data) => {
+          return Buffer.from(data!, 'base64');
+      });
     let bufferFile =  fs.readFileSync(pathJoin);
     const extenstion = path.extname(pathJoin);
 
     if(Object.keys(options).length && [".png", ".jpeg", ".jpg", ".webp"].includes(extenstion)){
-      return await editorImageService.edit(bufferFile, options);
+      return this.cacheFile(hashKey, await editorImageService.edit(bufferFile, options));
     }
-    return bufferFile;
+    
+    return this.cacheFile(hashKey, bufferFile);
 }
+
+  cacheFile(hashKey: string, buffer: Buffer) {
+    redisCache.set(hashKey, buffer.toString('base64'), {
+      expiration: {
+        type: "EX",
+        value: 60 * 60 * 24 // 24 hours
+      }
+    }).then(() => {
+      console.log("File cached in Redis");
+    }).catch((err) => {
+      console.error("Error caching file in Redis", err);
+    }); // Cache for 24 hours
+    return buffer;
+  }
 
   async deleteFile(typePath: string, realPath: string) {
     const pathJoin = path.join(this._uploadPath, realPath);

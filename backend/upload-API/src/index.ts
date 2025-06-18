@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';;
 import { AddressInfo } from 'net';
 import server from './fastify.js';
+import uploadRoute from './routes/upload.js';
 
 dotenv.config()
+await server.register(uploadRoute);
 
 const start = async () => {
   try {

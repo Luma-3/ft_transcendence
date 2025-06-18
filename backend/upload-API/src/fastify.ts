@@ -12,7 +12,6 @@ const server = fastify({
 
 await server.register(fastifyMultipart);
 await server.register(formatter);
-await server.register(uploadRoute);
 
 await server.register(swagger, {
     version: '1.0.0',

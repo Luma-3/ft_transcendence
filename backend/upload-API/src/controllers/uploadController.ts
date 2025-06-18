@@ -33,9 +33,9 @@ export async function getFile(req: FastifyRequest<{
   Params: UploadFileParamsType,
   Querystring: CdnQueryType
 }>, rep: FastifyReply) {
-  const url = Object.keys(req.query).length != 0? req.url.substring(0, req.url.indexOf("?")) : req.url;
+  const findQuery = req.url.indexOf("?");
+  const url = findQuery != -1 ? req.url.substring(0, findQuery) : req.url;
   const { typePath } = req.params;
-	console.log("Url: ", Object.keys(req.query))
 
   const buffer = await uploadServices.getFile(typePath, url, req.query);
 
