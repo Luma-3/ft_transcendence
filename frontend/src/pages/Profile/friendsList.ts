@@ -5,23 +5,23 @@ import { UserInfo } from '../../interfaces/User';
 
 export async function friends(user: UserInfo) {
 	let container = `
-			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
+			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-tertiary dark:text-dtertiary">
 			<div class="flex flex-row justify-between items-center space-x-4">
 					<img src="/images/duckSocial.png" alt="Duck Friends" class="w-20 h-20" />	
 					<span translate="friends">Friends</span>
 				</div>
-			<div class="flex flex-col w-full h-[400px] font-title title-responsive-size items-center justify-center space-y-4 gap-4 p-4 text-primary dark:text-dtertiary">
+			<div class="flex flex-col w-full h-[400px] font-title title-responsive-size items-center justify-center space-y-4 gap-4 p-4 text-tertiary dark:text-dtertiary">
 			`;
 	const friendsList = await getFriends();
 	
 	if (friendsList.status === "error" || friendsList.data?.length == 0) {
-		return `${container}<span class="text-secondary dark:text-dtertiary" translate="no-friends-yet">No friends found</span></div></div>`;
+		return `${container}</div></div>`;
 	}
 	
 	for(const friend of friendsList.data!) {
-		container += `<div class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
+		container += `<div class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary">
 			${headerOtherUserMenu(friend)}
-			<div class="flex flex-row justify-between items-center space-x-4 mt-4">
+			<div class="flex flex-row justify-between items-center space-x-4 mt-4 text-secondary">
 				<div name="otherProfile" data-id=${friend.id} class="flex font-title truncate hover:underline hover:cursor-pointer">${friend.username}
 				</div>
 

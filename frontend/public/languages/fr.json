@@ -88,6 +88,7 @@
 	"issues-with-invitation-refused": "Erreur avec le refus de l'invitation",
 	"issues-with-user-blocked": "Problèmes lors du blocage de l'utilisateur",
 	"user-blocked": "Utilisateur bloqué",
+	"all-users": "Tous les utilisateurs",
 	"friend-invitation-accepted": "Invitation d'ami acceptée",
 	"issues-with-invitation-accepted": "Problèmes avec l'acceptation de l'invitation",
 	"friends": "Amis",
@@ -99,6 +100,7 @@
 		"block-motherducker": "Bloquer ce fils de canard",
 	"unfriend-user": "Enlever des amies",
 	"add-friend": "Ajouter en ami",
+	"blacklist": "Liste noire",
 
 	"version": "Version",
 	"no-duck-hurt": "Aucun canard n'a été blessé",

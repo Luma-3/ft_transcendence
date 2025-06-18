@@ -15,6 +15,11 @@ export async function getUserInfo(): Promise<IApiResponse<UserInfo>> {
 	});
 }
 
+export async function getBlockedUsers(): Promise<IApiResponse<UserInPeople[]>> {
+	const response = await fetchApi<UserInPeople[]>(API_USER.SOCIAL.BLOCKED + "?hydrate=true");
+	return response;
+}
+
 export async function getOtherUserInfo(id: string): Promise<IApiResponse<UserInfo>> {
 	const response = await fetchApi<UserInfo>(API_USER.BASIC.BASIC + `/${id}?includePreferences=true`);
 	return response;	

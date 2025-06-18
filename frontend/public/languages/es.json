@@ -90,6 +90,7 @@
 	"issues-with-invitation-refused": "Problemas con el rechazo de la invitación",
 	"issues-with-user-blocked": "Problemas al bloquear usuario",
 	"user-blocked": "Usuario bloqueado",
+	"all-users": "Todos los usuarios",
 	"friend-invitation-accepted": "Invitación de amigo aceptada",
 	"issues-with-invitation-accepted": "Problemas con la aceptación de la invitación",
 	"friends": "Amigos",
@@ -101,6 +102,7 @@
 	"block-motherducker": "Bloquear a este hijo de ducka",
 	"unfriend-user": "Desamigar",
 	"add-friend": "Agregar amigo",
+	"blacklist": "Lista negra",
 
 	"version": "Versión",
 	"no-duck-hurt": "No se hirió a ningún pato",

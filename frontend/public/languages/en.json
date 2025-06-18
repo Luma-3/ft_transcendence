@@ -87,6 +87,7 @@
 	"issues-with-invitation-refused": "Issues with invitation refused",
 	"issues-with-user-blocked": "Issues while blocking user",
 	"user-blocked": "User blocked",
+	"all-users": "All users",
 	"friend-invitation-accepted": "Friend invitation accepted",
 	"issues-with-invitation-accepted": "Issues with invitation acceptance",
 	"friends": "Friends",
@@ -98,6 +99,7 @@
 	"block-motherducker": "Block this motherducker",
 	"unfriend-user": "Unfriend",
 	"add-friend": "Add friend",
+	"blacklist": "Blacklist",
 
 	"version": "Version",
 	"no-duck-hurt": "No duck was hurt",

@@ -42,15 +42,15 @@ export async function notifications() {
 	for (const invitation of invitationSend) {
 	if (invitation) {
 		content += `
-			<div class="flex flex-row justify-between w-full items-center font-title text-xl border-2 p-2 space-x-2 rounded-lg border-primary dark:border-dprimary">
+			<div class="flex flex-row justify-between w-full items-center font-title text-xl border-2 p-2 space-x-2 rounded-lg border-primary dark:border-dprimary text-secondary">
 			<div class="flex">
-				<div class="flex font-title" translate="you-sent-invitation">
+				<div class="flex font-title text-secondary" translate="you-sent-invitation">
 					<span translate="you-sent-invitation"> You sent a friend request to </span>
 				</div>
 				<div class="flex ml-1.5">${invitation.username}</div>
 			</div>
 				<div id="cancel-invitation" data-id="${invitation.id}" data-username="${invitation.username}" class="ml-4 justify-end hover:cursor-pointer  group/item relative ">
-					<span class="tooltip absolute z-10 left-1/2  top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
+					<span class="tooltip absolute z-10 left-1/2  top-full mb-1 hidden group-hover/item:block bg-primary text-secondary dark:bg-dprimary 
 				dark:text-dtertiary text-xs rounded py-1 px-2" translate="cancel-invitation">
 					Cancel this invitation
 					</span>
@@ -62,9 +62,9 @@ export async function notifications() {
 	}
 }
 
-	return `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4  text-primary dark:text-dtertiary">
+	return `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4  text-tertiary dark:text-dtertiary">
 			<span translate="notifications" >Notifications</span>
-			<div class="flex flex-col space-y-2 font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
+			<div class="flex flex-col space-y-2 font-title text-xl border-2 p-2 rounded-lg text-secondary border-primary dark:border-dprimary">
 			${content}
 			</div>
 			</div>`

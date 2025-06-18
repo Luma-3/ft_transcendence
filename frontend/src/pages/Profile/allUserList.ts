@@ -4,23 +4,23 @@ import { headerOtherUserMenu } from "../../components/ui/userMenu";
 export async function allUsers(user: UserInfo) {
 
 	let container = `
-			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-primary dark:text-dtertiary">
+			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-tertiary dark:text-dtertiary">
 				<div class="flex flex-row justify-between items-center space-x-4">
 					<img src="/images/duckCrowd.png" alt="Duck Friends" class="w-20 h-20" />	
-					<span translate="allUsers">All users</span>
+					<span translate="all-users">All users</span>
 				</div>
 			<div class="flex h-[400px] w-full overflow-y-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
 				<div class="flex flex-col w-full justify-center items-center gap-4 p-4">`;
 
 	const allUsers = await getAllUsers('you', true);
 	if (allUsers.status === "error" || !allUsers.data) {
-		return `${container}<span class="text-secondary dark:text-dtertiary" translate="no-friends">No friends found</span></div></div>`;
+		return `${container}</div></div>`;
 	}
 	
 	for(const otherUser of allUsers.data) {
 		
 		container += `
-		<div class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
+		<div class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary">
 			${headerOtherUserMenu(otherUser)}
 			<div class="flex flex-row justify-between items-center space-x-4 mt-4">
 				<div name="otherProfile" data-id=${otherUser.id} class="flex font-title truncate hover:underline hover:cursor-pointer">${otherUser.username}
