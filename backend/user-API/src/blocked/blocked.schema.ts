@@ -16,8 +16,8 @@ export const BlockedDBSchema = Type.Object({
 export const BlockedDBHydrateSchema = Type.Object({
   id: Type.String({ format: 'uuid', description: 'ID of the blocked user' }),
   username: Type.Optional(Type.String({ description: 'Username of the blocked user' })),
-  avatar: Type.Optional(Type.String({ format: 'uri', description: 'URL of the blocked user\'s avatar' })),
-  banner: Type.Optional(Type.String({ format: 'uri', description: 'URL of the blocked user\'s banner' }))
+  avatar: Type.Optional(Type.String({ description: 'URL of the blocked user\'s avatar' })),
+  banner: Type.Optional(Type.String({ description: 'URL of the blocked user\'s banner' }))
 }, {
   description: "Hydrated schema for blocked users with user details",
   additionalProperties: false

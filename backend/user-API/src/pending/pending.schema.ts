@@ -16,8 +16,8 @@ export const PendingDBSchema = Type.Object({
 export const PendingDBHydrateSchema = Type.Object({
   id: Type.String({ format: 'uuid' }),
   username: Type.String(),
-  avatar: Type.Optional(Type.String({ format: 'uri', description: 'URL of the user\'s avatar' })),
-  banner: Type.Optional(Type.String({ format: 'uri', description: 'URL of the user\'s banner' }))
+  avatar: Type.Optional(Type.String({ description: 'URL of the user\'s avatar' })),
+  banner: Type.Optional(Type.String({ description: 'URL of the user\'s banner' }))
 }, {
   description: "Hydrated pending request schema with user details",
   additionalProperties: false
