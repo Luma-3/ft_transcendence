@@ -2,6 +2,8 @@ import { google } from 'googleapis';
 import crypto from 'crypto';
 import { QueryCallbackType } from './oauth2.schema';
 
+import { SessionService } from '../session/session.service';
+
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
@@ -37,6 +39,24 @@ export class Oauth2Service {
     }
     console.log('State matches, proceeding with OAuth2 callback');
     const { tokens } = await oauth2Client.getToken(query.code);
-    return tokens;
+    oauth2Client.setCredentials(tokens)
+
+    // object oauth2 
+    const oauth2 = google.oauth2({
+      auth: oauth2Client,
+      version: 'v2'
+    })
+    const res = await oauth2.userinfo.get();
+    const userinfo = res.data
+
+    fetch(`http://${process.env.USER_IP}/users/internal/oauth2/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: userinfo.name,
+        email: userinfo.email,
+      }),
+    })
+
   }
 }

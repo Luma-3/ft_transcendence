@@ -67,8 +67,12 @@ async function verifyCredentials(username: string, password: string): Promise<{ 
 }
 
 export class SessionService {
-  static async login(username: string, password: string, clientInfo: clientInfo): Promise<{ accessToken: string; refreshToken: string }> {
-    const user = await verifyCredentials(username, password);
+  static async login(username: string, password?: string, clientInfo: clientInfo): Promise<{ accessToken: string; refreshToken: string }> {
+    let user;
+
+    if (password !== undefined) {
+      user = await verifyCredentials(username, password);
+    }
     console.log("USER Data: ", user);
 
     const family_id = crypto.randomBytes(16).toString('hex');

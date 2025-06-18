@@ -11,7 +11,8 @@ export class Oauth2Controller {
 
   static callback = async (req: FastifyRequest<{ Querystring: QueryCallbackType }>, rep: FastifyReply) => {
     const query = req.query;
-    await Oauth2Service.callback(query);
+    const { tokens } = await Oauth2Service.callback(query);
+
     rep.send({ message: "OAuth2 callback successful" });
   }
 }
