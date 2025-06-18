@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { BlockedController } from './blocked.controller.js';
-import { BlockedParamSchema, BlockedPendingResponseSchema, HydareteDBQuerySchema, UserHeaderAuthentication } from './blocked.schema.js';
+import { BlockedParamSchema, BlockedPendingResponseSchema, HydrateDBQuerySchema, UserHeaderAuthentication } from './blocked.schema.js';
 import { ResponseSchema } from '../utils/schema.js';
 import { InternalServerErrorResponse, NotFoundResponse } from '@transcenduck/error';
 import { FastifyInstance } from 'fastify';
@@ -10,9 +10,9 @@ const route: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance) => {
         schema: {
             summary: 'Get blocked users',
             description: 'Endpoint to retrieve blocked users for the current user',
-            tags: ['Friends'],
+            tags: ['Friends', 'Blocked'],
             headers: UserHeaderAuthentication,
-            querystring: HydareteDBQuerySchema,
+            querystring: HydrateDBQuerySchema,
             response: {
                 200: ResponseSchema(BlockedPendingResponseSchema, 'Blocked users retrieved successfully'),
                 404: NotFoundResponse,
@@ -24,7 +24,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance) => {
         schema: {
             summary: 'Block a user',
             description: 'Endpoint to block a user and remove them from friends if they are friends',
-            tags: ['Friends'],
+            tags: ['Friends', 'Blocked'],
             headers: UserHeaderAuthentication,
             params: BlockedParamSchema,
             response: {
@@ -38,7 +38,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance) => {
         schema: {
             summary: 'Remove a blocked user',
             description: 'Endpoint to remove a blocked user and unblock them',
-            tags: ['Friends'],
+            tags: ['Friends', 'Blocked'],
             headers: UserHeaderAuthentication,
             params: BlockedParamSchema,
             response: {

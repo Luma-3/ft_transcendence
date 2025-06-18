@@ -23,15 +23,13 @@ export class UserModel {
         this.on('users.id', '=', 'blocked_to.blocked_id').andOn('blocked_to.user_id', '=', knexInstance.raw('?', [userId]));
       }).whereNull('blocked_to.id');
     }
-    if(friends) {
+    if(!friends) {
       // Amis
       query.leftJoin('friends', function () {
         this.on('users.id', '=', 'friends.friend_id').andOn('friends.user_id', '=', knexInstance.raw('?', [userId]));
       });
       query.whereNull('friends.id');
     }
-      
-    console.log(query.toQuery())
     return (await query) as UserDBHydrateType[];
   }
 

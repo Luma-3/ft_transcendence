@@ -5,21 +5,21 @@ export * from '../users/user.schema.js';
 
 
 export const FriendDBSchema = Type.Object({
-  id: Type.Integer(),
-  user_id: Type.String({ format: 'uuid' }),
-  friend_id: Type.String({ format: 'uuid' }),
+  id: Type.Integer({ description: 'Unique identifier for the friend relationship' }),
+  user_id: Type.String({ format: 'uuid', description: 'ID of the user who has friends' }),
+  friend_id: Type.String({ format: 'uuid', description: 'ID of the user who is a friend' }),
   username: Type.String()
 });
 
 export const FriendDBHydrateSchema = Type.Object({
-  id: Type.String({ format: 'uuid' }),
-  username: Type.String(),
-  avatar: Type.Optional(Type.String()),
-  banner: Type.Optional(Type.String())
+  id: Type.String({ format: 'uuid', description: 'ID of the user who is a friend' }),
+  username: Type.String({ description: 'Username of the friend' }),
+  avatar: Type.Optional(Type.String({ format: 'uri', description: 'URL of the user\'s avatar' })),
+  banner: Type.Optional(Type.String({ format: 'uri', description: 'URL of the user\'s banner' }))
 });
 
 export const FriendParamSchema = Type.Object({
-  friendId: Type.String({ format: 'uuid' })
+  friendId: Type.String({ format: 'uuid', description: 'ID of the friend' })
 });
 
 export const FriendResponseSchema = Type.Array(FriendDBHydrateSchema);

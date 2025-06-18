@@ -6,9 +6,8 @@ export * from '../users/user.schema.js';
 
 export const PendingDBSchema = Type.Object({
   id: Type.Integer(),
-  user_id: Type.String({ format: 'uuid' }),
-  pending_id: Type.String({ format: 'uuid' }),
-  username: Type.String()
+  user_id: Type.String({ format: 'uuid', description: 'ID of the user who received the pending request' }),
+  pending_id: Type.String({ format: 'uuid', description: 'ID of the user who sent the pending request' })
 }, {
   description: "Pending request schema for database operations",
   additionalProperties: false
@@ -17,21 +16,21 @@ export const PendingDBSchema = Type.Object({
 export const PendingDBHydrateSchema = Type.Object({
   id: Type.String({ format: 'uuid' }),
   username: Type.String(),
-  avatar: Type.Optional(Type.String()),
-  banner: Type.Optional(Type.String())
+  avatar: Type.Optional(Type.String({ format: 'uri', description: 'URL of the user\'s avatar' })),
+  banner: Type.Optional(Type.String({ format: 'uri', description: 'URL of the user\'s banner' }))
 }, {
   description: "Hydrated pending request schema with user details",
   additionalProperties: false
 });
 
 export const PendingParamSchema = Type.Object({
-  pendingId: Type.String({ format: 'uuid' })
+  pendingId: Type.String({ format: 'uuid', description: 'ID of the pending request to be added' }),
 }, {
   description: "Parameters for adding a pending request",
 });
 
 export const AcceptParamSchema = Type.Object({
-  senderId: Type.String({ format: 'uuid' })
+  senderId: Type.String({ format: 'uuid', description: 'ID of the user who sent the pending request' }),
 }, {
   description: "Parameters for accepting or refusing a pending request"
 });
