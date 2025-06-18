@@ -1,11 +1,10 @@
-import { renderErrorPage, renderPrivatePage } from '../controllers/renderPage'
+import { renderPrivatePage } from '../controllers/renderPage'
 
 import { alertPublic } from '../components/ui/alert/alertPublic';
 
-import { User } from '../interfaces/User';
 import { API_SESSION } from '../api/routes';
 import { socketConnection } from '../controllers/Socket';
-import { fetchApi } from '../api/fetch';
+import { fetchApiWithNoError } from '../api/fetch';
 
 export async function loginUser() {
 
@@ -26,8 +25,8 @@ export async function loginUser() {
   /**
    * Creation de session
    */
-  const response = await fetchApi<User>(API_SESSION.CREATE,
-    { method: "POST", body: JSON.stringify(userdata) }, false)
+  const response = await fetchApiWithNoError(API_SESSION.CREATE,
+    { method: "POST", body: JSON.stringify(userdata) });
 
   if (response.status === "error") {
     alertPublic("username-or-password-incorrect", "error");

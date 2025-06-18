@@ -1,4 +1,4 @@
-import { renderPrivatePage, renderPublicPage } from './controllers/renderPage'
+import { renderErrorPage, renderPrivatePage, renderPublicPage } from './controllers/renderPage'
 import { addAllEventListenOnPage } from './controllers/Handler'
 import { fetchToken } from './api/fetchToken'
 
@@ -22,7 +22,11 @@ const publicPages = ['home', 'login', 'register'];
 document.addEventListener('DOMContentLoaded', async () => {
 
   const page = window.location.pathname.substring(1) || 'home'
-
+  
+  if (page === 'error') {
+    return renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
+  }
+  
   const user = await fetchToken();
   if (user.status === "success") {
     if (publicPages.includes(page)) {

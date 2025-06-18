@@ -6,6 +6,7 @@ import { getUserInfo } from "../api/getterUser(s)";
 import { fetchApi } from "../api/fetch";
 import { API_GAME } from "../api/routes";
 import { socket } from "../controllers/Socket";
+import { renderErrorPage } from "../controllers/renderPage";
 
 export let gameFrontInfo: { gameId: string, typeGame: string };
 
@@ -70,19 +71,11 @@ async function sendDataToServer(gameFormInfo: GameFormInfo, userTheme: string) {
 export async function createGame() {
 
 	/**
-	 * Verification de la connexion WebSocket
-	 */
-	if (socket?.readyState !== WebSocket.OPEN) {
-		alert("Connection to the server lost. Automatically reconnecting...", "error");
-		return window.location.reload();
-	}
-
-	/**
 	 * Verification de la session utilisateur
 	 */
 	const token = await fetchToken();
-	if (token && token.status === "error") {
-		window.location.href = "/login";
+	if (token.status === "error") {
+		renderErrorPage('401')
 		return;
 	}
 
@@ -91,7 +84,7 @@ export async function createGame() {
 	 */
 	const gameType = document.querySelector('input[name="game-type"]:checked') as HTMLInputElement;
 	if (!gameType) {
-		return alert("Error while getting game type (local-online)", "error");
+		return alert("no-gametype-selected", "error");
 	}
 
 	const player1 = (document.getElementById('player1-name') as HTMLInputElement).value;
@@ -138,7 +131,7 @@ export async function createGame() {
 		gameNameOpponent: (player2) ? player2 : "",
 	}
 
-	await sendDataToServer(gameFormInfo, response.data.preferences.theme);
+	await sendDataToServer(gameFormInfo, response.data.preferences?.theme || "dark");
 	initGame(gameFormInfo);
 	gameFrontInfo = {
 		gameId: gameFormInfo.gameId,

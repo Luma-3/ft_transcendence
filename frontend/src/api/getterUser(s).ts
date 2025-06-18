@@ -1,8 +1,9 @@
-import { fetchApi } from './fetch';
-import { OtherUser, UserInfo } from '../interfaces/User';
+import { fetchApi, fetchApiWithNoError } from './fetch';
+import { OtherUser, UserInfo, UserPreferences } from '../interfaces/User';
 import { UserInPeople, UserSearchResult } from '../interfaces/PeopleInterface';
 import { IApiResponse } from '../interfaces/IApiResponse';
 import { API_USER } from './routes';
+import { fetchToken } from './fetchToken';
 
 /**
  * Getter for the current user's information.
@@ -10,7 +11,13 @@ import { API_USER } from './routes';
  */
 export async function getUserInfo(): Promise<IApiResponse<UserInfo>> {
 
-	return await fetchApi<UserInfo>(API_USER.BASIC.INFOS + "?includePreferences=true", {
+
+	const token = await fetchToken();
+	if (token.status === "error") {
+		return { status: "error", message: token.message!, details: token.details };
+	}
+
+	return await fetchApiWithNoError<UserInfo>(API_USER.BASIC.INFOS + "?includePreferences=true", {
 		method: "GET",
 	});
 }
@@ -47,5 +54,14 @@ export async function getPending(params: "sender" | "receiver" = "sender") {
 
 export async function getSearchUsers(q: string, page: number = 1, limit: number = 10, hydrate: boolean = true): Promise<IApiResponse<UserSearchResult>> {
 	const response = await fetchApi<UserSearchResult>(API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}`);
+	return response;
+}
+
+//TODO: GEt vraiment juste les preferences de l'utilisateur
+export async function getUserPreferences(): Promise<IApiResponse<UserPreferences>> {
+	const response = await fetchApiWithNoError<UserPreferences>(API_USER.BASIC.ONLY_PREFERENCES, {
+		method: "GET",
+	});
+	console.log("getUserPreferences response", response);
 	return response;
 }

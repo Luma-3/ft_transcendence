@@ -1,7 +1,8 @@
 import { getAllUsers } from '../../api/getterUser(s)';
 import { headerOtherUserMenu } from "../../components/ui/userMenu";
+import { UserInPeople } from '../../interfaces/PeopleInterface';
 
-export async function allUsers(user: UserInfo) {
+export async function allUsersList() {
 
 	let container = `
 			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-tertiary dark:text-dtertiary">
@@ -9,8 +10,8 @@ export async function allUsers(user: UserInfo) {
 					<img src="/images/duckCrowd.png" alt="Duck Friends" class="w-20 h-20" />	
 					<span translate="all-users">All users</span>
 				</div>
-			<div class="flex h-[400px] w-full overflow-y-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
-				<div class="flex flex-col w-full justify-center items-center gap-4 p-4">`;
+			<div class="relative h-[400px] w-full overflow-y-auto font-title title-responsive-size items-center z-10 justify-center space-y-4 text-primary dark:text-dtertiary">
+				<div class="flex flex-col justify-center items-center w-full gap-4 p-4">`;
 
 	const allUsers = await getAllUsers('you', true);
 	if (allUsers.status === "error" || !allUsers.data) {
@@ -20,7 +21,7 @@ export async function allUsers(user: UserInfo) {
 	for(const otherUser of allUsers.data) {
 		
 		container += `
-		<div class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary">
+		<div id="user-${otherUser.id}" class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary">
 			${headerOtherUserMenu(otherUser)}
 			<div class="flex flex-row justify-between items-center space-x-4 mt-4">
 				<div name="otherProfile" data-id=${otherUser.id} class="flex font-title truncate hover:underline hover:cursor-pointer">${otherUser.username}
@@ -29,7 +30,7 @@ export async function allUsers(user: UserInfo) {
 				<div class="flex flex-row space-x-2">
 					${addFriendButton(otherUser)}
 					<div id="block-user" data-username=${otherUser.username} data-id=${otherUser.id} class="group/item relative hover:cursor-pointer">
-					<span class="tooltip absolute z-10 left-1/2  top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
+					<span class="tooltip absolute z-50 right-1/2 top-full  mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
 				dark:text-dtertiary text-xs rounded py-1 px-2"
 						translate="block-motherducker">
 					Block This MotherDucker

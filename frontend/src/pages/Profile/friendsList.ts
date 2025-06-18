@@ -1,9 +1,8 @@
 import { getFriends } from '../../api/getterUser(s)';
 import { headerOtherUserMenu } from '../../components/ui/userMenu';
-import { UserInfo } from '../../interfaces/User';
 
 
-export async function friends(user: UserInfo) {
+export async function friendsList() {
 	let container = `
 			<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-tertiary dark:text-dtertiary">
 			<div class="flex flex-row justify-between items-center space-x-4">
@@ -16,10 +15,11 @@ export async function friends(user: UserInfo) {
 	
 	if (friendsList.status === "error" || friendsList.data?.length == 0) {
 		return `${container}</div></div>`;
-	}
+	}	
 	
 	for(const friend of friendsList.data!) {
-		container += `<div class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary">
+		container += `<div id="friend-${friend.id}"
+		class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary">
 			${headerOtherUserMenu(friend)}
 			<div class="flex flex-row justify-between items-center space-x-4 mt-4 text-secondary">
 				<div name="otherProfile" data-id=${friend.id} class="flex font-title truncate hover:underline hover:cursor-pointer">${friend.username}

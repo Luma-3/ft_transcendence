@@ -50,7 +50,8 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
   'add-friend': () => handleFriendRequest(event?.target as HTMLElement, "send"),
   'accept-friend': () => handleFriendRequest(event?.target as HTMLElement, "accept"),
   'unfriend-user': () => handleUnfriend(event?.target as HTMLElement),
-  'block-user': () => blockUser(event?.target as HTMLElement),
+  'unblock-user': () => blockUser(event?.target as HTMLElement, true),
+  'block-user': () => blockUser(event?.target as HTMLElement, false),
   'cancel-invitation': () => cancelFriendInvitation(event?.target as HTMLElement),
   'refuse-invitation': () => sendRefuseInvitation(event?.target as HTMLElement),
 

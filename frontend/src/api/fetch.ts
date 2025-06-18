@@ -1,48 +1,53 @@
-import { renderErrorPage, renderPublicPage } from "../controllers/renderPage";
+import { renderErrorPage } from "../controllers/renderPage";
 import { IApiResponse } from "../interfaces/IApiResponse";
 
-export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IApiResponse<T>> {
-	
+export async function fetchApi<T>(url: string, option?: RequestInit): Promise<IApiResponse<T>> {
+		try {
+				if (option && !option.headers)
+						option.headers = { "Content-Type": "application/json" };
+				const response = await fetch(url, {
+						credentials: "include",
+						...option,
+				});
+
+				let responseData: any = null;
+				const contentType = response.headers.get("content-type");
+				if (contentType && contentType.includes("application/json")) {
+						responseData = await response.json();
+				}
+
+				if (!response.ok || responseData?.status === "error") {
+						window.location.href = "/error?status=" + response.status + "&message=" + encodeURIComponent(responseData?.message || "Unknown error");
+				}
+
+				return { ...responseData, code: response.status } as IApiResponse<T>;
+		}
+		catch (error) {
+			renderErrorPage('500');
+			return { status: "error", message: "Internal Server Error" } as IApiResponse<T>;	
+		}
+}
+
+export async function fetchApiWithNoError<T>(url: string, option?: RequestInit): Promise<IApiResponse<T>> {
 	try {
-		if(option && !option.headers)
-			option.headers = {"Content-Type": "application/json"};
+		if (option && !option.headers)
+			option.headers = { "Content-Type": "application/json" };
 		const response = await fetch(url, {
 			credentials: "include",
 			...option,
 		});
-		if (!response.ok) {
-			const errorData = await response.json();
-			return {status: "error", message: errorData.message, details: errorData.details};
-		}
 
-		const responseData = await response.json();
-		return responseData as Promise<IApiResponse<T>>;
-	} 
+		let responseData: any = null;
+		const contentType = response.headers.get("content-type");
+		if (contentType && contentType.includes("application/json")) {
+			responseData = await response.json();
+		}
+		if (responseData?.status === "error") {
+			return { status: "error", message: responseData?.message || "Unknown error" };
+		}
+		return { ...responseData, code: response.status } as IApiResponse<T>;
+	}
 	catch (error) {
-		renderErrorPage('500', '500', 'Internal Server Error');
-		return {status: "500", message: "Internal Server Error"};
+		return { status: "error", message: "Internal Server Error" };
 	}
 }
-
-export async function fetchApiWithNoBody(url:string, option?: RequestInit) {
-	try {
-		const response = await fetch(url, {
-			headers: {"Content-Type": "text/plain",
-			},
-			credentials: "include",
-			...option,
-		});
-		if (!response.ok) {
-			const errorData = await response.json();
-			return {status: "error", message: errorData.message, details: errorData.details};
-		}
-		return { status: "success" };
-	} 
-	catch (error) {
-		renderPublicPage('500', false)
-		return {status: "500", message: "Internal Server Error"}};
-}
-
-
-
-

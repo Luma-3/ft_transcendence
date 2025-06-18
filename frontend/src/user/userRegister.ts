@@ -7,7 +7,7 @@ import { loadTranslation } from '../i18n/Translate';
 import { API_USER, API_SESSION } from '../api/routes';
 
 import { socketConnection } from '../controllers/Socket';
-import { fetchApi } from '../api/fetch';
+import { fetchApiWithNoError } from '../api/fetch';
 
 function error(message: string) {
 	alertPublic(message, "error");
@@ -19,7 +19,7 @@ function verifValueForm(userData: Record<string, string>) {
 	 * Verification si le formulaire est pas corrompu
 	 */
 	if (!userData.username || !userData.password || !userData.passwordVerif) {
-		return renderErrorPage('400','400', "bad-request"), false;
+		return renderErrorPage('401');
 	}
 	/**
 	 * Verification si les mots de passe sont identiques
@@ -31,7 +31,7 @@ function verifValueForm(userData: Record<string, string>) {
 }
 
 export async function registerUser() {
-	
+	console.log("JE SUIS DANS LE REGISTER USER");
 	const form = document.forms.namedItem("registerForm") as HTMLFormElement;
 	
 	if (!form) { return; }
@@ -78,10 +78,11 @@ export async function registerUser() {
 	/**
 	 * Creation de l'utilisateur
 	 */
-	const response = await fetchApi(API_USER.BASIC.REGISTER, {
+	console.log("JE CREE L'UTILISATEUR", userData);
+	const response = await fetchApiWithNoError(API_USER.BASIC.REGISTER, {
 		method: 'POST',
 		body: JSON.stringify(userData)
-	}, false);
+	});
 	if (response.status !== "success") {
 		const errorMessage = trad[response.message] || response.message;
 		return error(errorMessage)
@@ -90,11 +91,12 @@ export async function registerUser() {
 	/**
 	 * Creation de la session
 	 */
+	console.log("JE CREE LA SESSION", userData.username, userData.password);
 	const sessionData = { username: userData.username, password:userData.password };
-	const responseSession = await fetchApi(API_SESSION.CREATE, {
+	const responseSession = await fetchApiWithNoError(API_SESSION.CREATE, {
 		method: "POST",
 		body: JSON.stringify(sessionData)
-	}, false);
+	});
 	if (responseSession.status !== "success") {
 		const errorMessage = trad[responseSession.message] || responseSession.message;
 		return error(errorMessage)

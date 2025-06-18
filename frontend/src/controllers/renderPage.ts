@@ -18,7 +18,7 @@ import { removeLoadingScreen } from '../components/utils/removeLoadingScreen'
 import { handleWelcomeYouPage } from '../pages/WelcomeYou';
 
 import { UserInfo } from '../interfaces/User'
-import { getUserInfo } from '../api/getterUser(s)'
+import { getUserInfo, getUserPreferences } from '../api/getterUser(s)'
 
 import { socket } from '../controllers/Socket'
 
@@ -86,25 +86,17 @@ const rendererPrivatePage: { [key: string]: (user: UserInfo) => string | Promise
  */
 export async function renderPrivatePage(page: string, updateHistory: boolean = true) {
 
-  if (!socket) {
-    socketConnection();
-  }
-
   let lang = 'en';
   let theme = 'dark';
-  let response;
-  let token;
-  [token , response] = await Promise.all ([
-    fetchToken(),
-    getUserInfo()
-  ])
-  if (token.status === "error" || response.status === "error") {
-    return renderErrorPage('400', '401', 'unauthorized');
-  }
-  lang = response.data!.preferences!.lang;
-  theme = response.data!.preferences!.theme;
 
-  
+  console.log("renderPrivatePage", page);
+  const user = await getUserInfo();
+  if (user.status === "error") {
+    return renderErrorPage('401');
+  }
+  lang = user.data!.preferences!.lang;
+  theme = user.data!.preferences!.theme;
+
 	fadeOut();
   
   setTimeout(async () => {
@@ -112,9 +104,9 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     const main_container = document.querySelector<HTMLDivElement>('#app')!
     const rendererFunction = rendererPrivatePage[page];
     if (!rendererFunction) {
-      return renderErrorPage('404', '404', 'not-found');
+      return renderErrorPage('404');
     }
-    const page_content = await Promise.resolve(rendererFunction(response.data!));
+    const page_content = await Promise.resolve(rendererFunction(user.data!));
 
     main_container.innerHTML = page_content;
     setupColorTheme(theme);
@@ -139,24 +131,19 @@ export async function renderGame(roomData: RoomData) {
   
   let lang = 'en';
   let theme = 'dark';
-  let response;
   
-  try {
-    [ , response] = await Promise.all ([
-      fetchToken(),
-      getUserInfo()
-    ])
-    lang = response.data!.preferences!.lang;
-    theme = response.data!.preferences!.theme;
-    
-  } catch (error){
-    return renderErrorPage('400', '401', 'unauthorized');
+  const user = await getUserInfo();
+  if (user.status === "error" || !user.data) {
+    return renderErrorPage('401');
   }
+    lang = user.data.preferences!.lang;
+    theme = user.data.preferences!.theme;
+
 	fadeOut();
   
   setTimeout(async () => {
     const main_container = document.querySelector<HTMLDivElement>('#app')!
-    const newContainer = await game(roomData.roomId, response.data!);
+    const newContainer = await game(roomData.roomId, user.data!);
     if (!newContainer) {
       return;
     }
@@ -174,6 +161,8 @@ export async function renderGame(roomData: RoomData) {
 
 import { renderOtherProfile } from '../pages/OtherProfile'
 import { redocInit } from '../components/utils/redocInit'
+import { alertPublic } from '../components/ui/alert/alertPublic'
+import { dispatchError } from './DispatchError'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 
@@ -217,28 +206,27 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 /**
  * Render des pages d'erreur
  */
-const rendererErrorPage: { [key: string]: (code: string, message: string) => string } = {
-  '404': notFoundPage,
-  '400': errorPage,
-  '500': errorPage,
-}
-
-export async function renderErrorPage(codePage: string, code: string, message: string) {
+export async function renderErrorPage(code: string) {
 
   const main_container = document.querySelector<HTMLDivElement>('#app')!
 
-  const user = await getUserInfo();
-  const lang = user.data === undefined ? 'en' : user.data!.preferences!.lang;
-  const theme = user.data === undefined ? 'dark' : user.data!.preferences!.theme;
-
-	setupColorTheme(theme);
+  let lang = 'en';
+  let theme = 'dark';
+  
+  const userPreferences = await getUserPreferences();
+  if (userPreferences.status === "success" ) {
+    lang = userPreferences.data!.lang;
+    theme = userPreferences.data!.theme;
+  }
+	
+  setupColorTheme(theme);
 	fadeOut();
 
   setTimeout(async () => {
-    const rendererFunction = rendererErrorPage[codePage] || notFoundPage;
-    const page_content = rendererFunction(code, message);
+    const page_content = dispatchError(code);
+    // const page_content = rendererFunction(code, message);
 
-    main_container.innerHTML = page_content;
+    main_container.innerHTML = page_content || errorPage(code);
     translatePage(lang);
 
     addToHistory(code, false);
