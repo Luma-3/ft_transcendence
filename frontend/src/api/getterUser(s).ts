@@ -22,7 +22,6 @@ export async function getOtherUserInfo(id: string): Promise<IApiResponse<UserInf
 
 export async function getAllUsers(blocked: ("you" | "another" | "all" | "none") = "none", friends: boolean = false, hydrate: boolean = true): Promise<IApiResponse<UserInPeople[]>> {
 	const response = await fetchApi<UserInfo[]>(API_USER.BASIC.BASIC + `?blocked=${blocked}&friends=${friends}&hydrate=${hydrate}`);
-	console.log("getAllUsers response:", response);
 	return response;
 }
 

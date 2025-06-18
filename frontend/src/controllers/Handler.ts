@@ -125,7 +125,6 @@ export function addAllEventListenOnPage(container: HTMLDivElement) {
     const target = event.target as HTMLElement;
 
     hideToggleElements(target);
-    console.log("target", target.id);
     if (target.id in clickEvent) {
       clickEvent[target.id](event);
     }

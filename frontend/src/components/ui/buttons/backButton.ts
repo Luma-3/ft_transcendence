@@ -1,6 +1,6 @@
 export function backButton() {
 	return `
-	<div id="loadBackPage" class="flex flex-col mt-2 sticky-top items-left text-primary dark:text-dtertiary justify-start
+	<div id="loaddashboard" class="flex flex-col mt-2 sticky-top items-left text-primary dark:text-dtertiary justify-start
 	w-50 p-2 lg:ml-30 md:ml-10 sm:ml-10 ml-5 transform transition-transform duration-300
 	hover:-translate-x-1 hover:scale-110">
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"

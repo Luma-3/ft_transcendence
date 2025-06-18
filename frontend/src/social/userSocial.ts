@@ -71,7 +71,7 @@ export async function cancelFriendInvitation(target: HTMLElement) {
 		return alertTemporary("error", "issues-with-invitation-cancelled", user.data!.preferences!.theme, true);
 	}
 	alertTemporary("success", "friend-invitation-cancelled", user.data!.preferences!.theme, true);
-	target.remove();
+	target.parentElement?.remove();
 }
 
 export async function blockUser(target: HTMLElement) {

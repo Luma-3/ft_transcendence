@@ -1,22 +1,8 @@
-import { alertPublic } from "../components/ui/alert/alertPublic";
 import { renderErrorPage, renderPublicPage } from "../controllers/renderPage";
 import { IApiResponse } from "../interfaces/IApiResponse";
-import { fetchToken } from "./fetchToken";
 
-export async function fetchApi<T>(url:string, option?: RequestInit, verifToken: boolean = true): Promise<IApiResponse<T>> {
+export async function fetchApi<T>(url:string, option?: RequestInit): Promise<IApiResponse<T>> {
 	
-	if (verifToken) {
-		const token = await fetchToken();
-		if (token.status === "error") {
-
-			alertPublic("Session expired, please log in again.", "error");
-
-			setTimeout(() => {
-				renderPublicPage('login', false);
-			}, 1000);
-		}
-	}
-
 	try {
 		if(option && !option.headers)
 			option.headers = {"Content-Type": "application/json"};

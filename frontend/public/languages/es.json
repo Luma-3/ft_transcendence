@@ -92,7 +92,15 @@
 	"user-blocked": "Usuario bloqueado",
 	"friend-invitation-accepted": "Invitación de amigo aceptada",
 	"issues-with-invitation-accepted": "Problemas con la aceptación de la invitación",
-
+	"friends": "Amigos",
+	"no-friends-yet": "No hay amigos por el momento",
+	"no-notifications": "No hay notificaciones",
+	"you-sent-invitation": "Has enviado una invitación de amigo a ",
+	"notifications": "Notificaciones",
+	"cancel-invitation": "Cancelar invitación",
+	"block-motherducker": "Bloquear a este hijo de ducka",
+	"unfriend-user": "Desamigar",
+	"add-friend": "Agregar amigo",
 
 	"version": "Versión",
 	"no-duck-hurt": "No se hirió a ningún pato",
