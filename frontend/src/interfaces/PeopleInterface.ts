@@ -5,3 +5,10 @@ export interface UserInPeople {
 	avatar?: string;
 	banner?: string;
 }
+
+export interface UserSearchResult {
+	page: number;
+	limit: number;
+	total: number;
+	users: UserInPeople[];
+}

@@ -1,6 +1,6 @@
 import { fetchApi } from './fetch';
 import { OtherUser, UserInfo } from '../interfaces/User';
-import { UserInPeople } from '../interfaces/PeopleInterface';
+import { UserInPeople, UserSearchResult } from '../interfaces/PeopleInterface';
 import { IApiResponse } from '../interfaces/IApiResponse';
 import { API_USER } from './routes';
 
@@ -38,5 +38,9 @@ export async function getFriends() {
 export async function getPending(params: "sender" | "receiver" = "sender") {
 	const response = await fetchApi< UserInPeople[]>(API_USER.SOCIAL.PENDING + `?action=${params}`);
 	return response;
-	
+}
+
+export async function getSearchUsers(q: string, page: number = 1, limit: number = 10, hydrate: boolean = true): Promise<IApiResponse<UserSearchResult>> {
+	const response = await fetchApi<UserSearchResult>(API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}`);
+	return response;
 }

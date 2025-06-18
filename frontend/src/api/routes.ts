@@ -2,7 +2,7 @@ const API_URL = "https://localhost:5173/api";
 
 const SERVICES = {
   USER: `${API_URL}/user/users`,
-  FRIEND: `${API_URL}/user`,
+  USER_ROOT: `${API_URL}/user`,
   SESSION: `${API_URL}/auth/session`,
   CDN: `/api/uploads`,
   GAME: `${API_URL}/game`,
@@ -29,10 +29,11 @@ export const API_USER = {
     USERNAME: `${SERVICES.USER}/me/username`,
   },
   SOCIAL: {
-    FRIENDS: `${SERVICES.FRIEND}/friends`,
-    BLOCKED: `${SERVICES.FRIEND}/blocked`,
-    PENDING: `${SERVICES.FRIEND}/pending`,
-  }
+    FRIENDS: `${SERVICES.USER_ROOT}/friends`,
+    BLOCKED: `${SERVICES.USER_ROOT}/blocked`,
+    PENDING: `${SERVICES.USER_ROOT}/pending`,
+  },
+  SEARCH: `${SERVICES.USER_ROOT}/search`, // ?q=inputValue&page=1&limit=10&hydrate=true
 }
 
 // export const API_PEOPLE = {
