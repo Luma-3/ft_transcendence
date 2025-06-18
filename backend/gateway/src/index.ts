@@ -34,7 +34,7 @@ const Services = [
   },
   {
     name: 'Auth Service', prefix: '/auth',
-    upstream: 'http://' + process.env.AUTH_IP,
+    upstream: 'https://' + process.env.AUTH_IP,
     url: '/api/auth/doc/json',
     preHandler: internalRoutes
   }
