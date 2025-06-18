@@ -1,6 +1,6 @@
 import { Paddle } from './Paddle.js';
 
-import { FRAMERATE } from './Pong.js';
+import { dt } from './Pong.js';
 
 /**
  * Classe représentant une balle dans le jeu Pong.
@@ -9,18 +9,18 @@ import { FRAMERATE } from './Pong.js';
 export class Ball {
 	x: number;
 	y: number;
-	vector_x: number;
-	vector_y: number;
+	dir_x: number;
+	dir_y: number;
 	size: number;
 	speed: number;
 
-  constructor(x = 0, y = 0, vector_x = 0, vector_y = 0, size = 20) {
+  constructor(x = 0, y = 0, dir_x = 0, dir_y = 0, size = 20) {
 	this.x = x;
 	this.y = y;
-	this.vector_x = vector_x;
-	this.vector_y = vector_y;
+	this.dir_x = dir_x;
+	this.dir_y = dir_y;
 	this.size = size;
-	this.speed = 142;
+	this.speed = 1;
   }
 
 	/**
@@ -63,16 +63,16 @@ export class Ball {
 		paddle2: Paddle,
 		width: number = 0
   ) {
-		this.x += (this.vector_x * this.speed) / FRAMERATE;
-		this.y += (this.vector_y * this.speed) / FRAMERATE;
+		this.x += (this.dir_x * this.speed) * dt;
+		this.y += (this.dir_y * this.speed) * dt;
 
 		if (this.y + this.size / 2 <= top || this.y - this.size / 2 >= bottom) {
-			this.vector_y *= -1;
+			this.dir_y *= -1;
 		}
 
 		if (this.check_collision_paddle(paddle1, width) ||
 			this.check_collision_paddle(paddle2, width)) {
-			this.vector_x *= -1;
+			this.dir_x *= -1;
 		}
   }
 
@@ -87,14 +87,14 @@ export class Ball {
   set_vectors_ball(rand: number) {
 		switch (rand) {
 			case 1:
-				this.vector_y *= -1;
+				this.dir_y *= -1;
 				break;
 			case 2:
-				this.vector_x *= -1;
+				this.dir_x *= -1;
 				break;
 			case 3:
-				this.vector_x *= -1;
-				this.vector_y *= -1;
+				this.dir_x *= -1;
+				this.dir_y *= -1;
 				break;
 			default:
 				break;

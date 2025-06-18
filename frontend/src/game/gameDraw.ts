@@ -4,14 +4,11 @@ import { socket } from "../controllers/Socket";
 import { gameFrontInfo } from "./gameCreation";
 import { clockoffset, GameSnapshot, gameSnapshots } from "../controllers/DispatchMsgSocket";
 
-const duckImage = new Image();
-duckImage.src = "/images/pp.jpg";
+// const duckImage = new Image();
+// duckImage.src = "/images/pp.jpg";
 
-let lastBall = { x: 0, y: 0 };
-let currentBall = { x: 0, y: 0 };
-let lastUpdateTime = 0;
-let interpolateDelay = 1000 / 30;
-
+export const FRAME = 30;
+let interpolateDelay = 1000 / FRAME;
 
 function findSnapshots(targetTime: number): [GameSnapshot, GameSnapshot] | null {
 	for (let i = gameSnapshots.length - 2; i >= 0; i--) {
@@ -64,66 +61,55 @@ export function drawGame(gameData: GameData, action: string = '') {
 	const ctx = game.getContext("2d");
 	if (!ctx) { return; }
 
-	if (action === 'goal') {
-		drawExplosion(ctx, gameData.ball.x, gameData.ball.y, {
-			count: 250,
-			colors: ['#744FAC', '#FF8904', '#F8E9E9', '#ffffff'],
-			maxSpeed: 6,
-			maxRadius: 5,
-			duration: 1000
-		});
-		setTimeout(() => {
-			socket?.send(JSON.stringify({
-				type: "game",
-				payload: {
-					type: 'resume',
-					data: {
-						roomId: gameFrontInfo.gameId,
-					}
-				}
-			}));
-			ctx.clearRect(0, 0, game.width, game.height);
-			ctx.save();
-			const player1Score = document.getElementById("user1Score");
-			player1Score!.innerHTML = gameData.paddle1.score.toString();
+	// if (action === 'goal') {
+	// 	drawExplosion(ctx, gameData.ball.x, gameData.ball.y, {
+	// 		count: 250,
+	// 		colors: ['#744FAC', '#FF8904', '#F8E9E9', '#ffffff'],
+	// 		maxSpeed: 6,
+	// 		maxRadius: 5,
+	// 		duration: 1000
+	// 	});
+	// 	setTimeout(() => {
+	// 		socket?.send(JSON.stringify({
+	// 			type: "game",
+	// 			payload: {
+	// 				type: 'resume',
+	// 				data: {
+	// 					roomId: gameFrontInfo.gameId,
+	// 				}
+	// 			}
+	// 		}));
+	// 		ctx.clearRect(0, 0, game.width, game.height);
+	// 		ctx.restore();
+	// 		const player1Score = document.getElementById("user1Score");
+	// 		player1Score!.innerHTML = gameData.paddle1.score.toString();
 
-			const player2Score = document.getElementById("user2Score");
-			player2Score!.innerHTML = gameData.paddle2.score.toString();
-		}, 800);
-		return;
-	}
+	// 		const player2Score = document.getElementById("user2Score");
+	// 		player2Score!.innerHTML = gameData.paddle2.score.toString();
+	// 	}, 800);
+	// 	return;
+	// }
 
 	ctx.clearRect(0, 0, game.width, game.height);
-	// ctx.save();
-	// ctx.translate(game.width / 4, game.height / 4);
 
-	// ctx.beginPath();
-	// // ctx.drawImage(duckImage, 10, gameData.paddle1.y - 50, 10, 100);
-	// ctx.rect(10, gameData.paddle1.y - 50, 10, 100);
-	// ctx.fillStyle = "blue";
-	// ctx.fill();
+	//Left Paddle
+	ctx.beginPath();
+	ctx.rect(10, gameData.paddle1.y - 50, 10, 100);
+	ctx.fillStyle = "blue";
+	ctx.fill();
 
-	// //Raquette user right
-	// // ctx.restore();
-	// // ctx.save();
-	// // ctx.translate(game.width / 4, game.height / 4);
-
-	// ctx.beginPath();
-	// ctx.rect(game.width - 10, gameData.paddle2.y - 50, 10, 100);
-	// ctx.fillStyle = "red";
-	// ctx.fill();
+	//Right Paddle
+	ctx.beginPath();
+	ctx.rect(game.width - 20, gameData.paddle2.y - 50, 10, 100);
+	ctx.fillStyle = "red";
+	ctx.fill();
 
 
 	//BALL
-	// ctx.restore();
-	// ctx.save();
-	// ctx.translate(game.width / 4, game.height / 4);
-
 	ctx.beginPath();
 	ctx.rect(gameData.ball.x, gameData.ball.y, 20, 20);
 	ctx.fillStyle = "yellow";
 	ctx.fill();
 
-	// ctx.restore();
 	ctx.save();
 }

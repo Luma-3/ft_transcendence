@@ -1,4 +1,4 @@
-import { FRAMERATE } from "./Pong.js";
+import { dt } from "./Pong.js";
 
 /**
  * La classe Paddle représente une raquette dans un jeu, avec des propriétés pour sa position,
@@ -39,7 +39,7 @@ export class Paddle {
 	 * @param bottom - La limite inférieure de déplacement.
 	 */
   move_paddle(top: number, bottom: number) {
-	this.y += this.speed / FRAMERATE;
+	this.y += this.speed * dt;
 
 	if (this.y + this.halfHeight < top) {
 	  this.y = top + this.halfHeight;

@@ -4,7 +4,19 @@ import { redisPub } from '../utils/redis.js';
 import { Ball } from './Ball.js'
 import { Paddle } from './Paddle.js'
 
-export const FRAMERATE: number = 1000 / 30;
+var lastUpdate = performance.now();
+var lastSend = 0;
+let now = performance.now();
+
+export let dt: number = 0;
+
+function tick(game: Pong) {
+    now = performance.now();
+    dt = now - lastUpdate;
+    lastUpdate = now;
+
+    game.update();
+}
 
 /**
  * Pong : Représente une partie de Pong entre deux joueurs.
@@ -38,7 +50,7 @@ export class Pong {
   TPS: number;
   time: number;
 
-  constructor(player1_uid: string, player2_uid?: string, sizeX: number = 800, sizeY: number = 600) {
+  constructor(player1_uid?: string, player2_uid?: string, sizeX: number = 800, sizeY: number = 600) {
     this.sizeX = sizeX;
     this.sizeY = sizeY;
 
@@ -74,7 +86,7 @@ export class Pong {
     const rand = Math.floor(Math.random() * 4) + 1;
     this.ball.set_vectors_ball(rand);
     this.gameIsStart = true;
-    this.interval = setInterval(() => this.update(), FRAMERATE);
+    this.interval = setInterval(tick, 1, this);
   }
 
   /**
@@ -96,27 +108,16 @@ export class Pong {
   resume() {
     if (!this.interval) {
       this.status = "playing";
-      this.interval = setInterval(() => this.update(), FRAMERATE);
+      this.interval = setInterval(tick, 1, this);
     }
   }
 
   broadcast(action: string, payload: any) {
-    const now = Date.now();
-    redisPub.publish('ws.game.out', JSON
-      .stringify({
-        clientId: this.paddle1.uid,
-        payload: {
-          action: action,
-          gameData: payload,
-          serverTime: now
-        }
-      })
-    );
-
-    if (this.paddle2.uid !== "0") {
+    if (now - lastSend >= 30) {
+      console.log("send message to front");
       redisPub.publish('ws.game.out', JSON
         .stringify({
-          clientId: this.paddle2.uid,
+          clientId: this.paddle1.uid,
           payload: {
             action: action,
             gameData: payload,
@@ -124,6 +125,20 @@ export class Pong {
           }
         })
       );
+
+      if (this.paddle2.uid !== "0") {
+        redisPub.publish('ws.game.out', JSON
+          .stringify({
+            clientId: this.paddle2.uid,
+            payload: {
+              action: action,
+              gameData: payload,
+              serverTime: now
+            }
+          })
+        );
+      }
+      lastSend = now;
     }
   }
 
@@ -174,7 +189,7 @@ export class Pong {
    * @param game - Instance de la partie Pong en cours.
    */
   async update() {
-
+    console.log(`delta time : ${dt}`);
     this.ball.move_ball(this.top, this.bottom, this.paddle1, this.paddle2, this.sizeX);
     if (this.isAgainstBot) {
       this.paddle2.y = this.ball.y;
@@ -182,11 +197,11 @@ export class Pong {
 
     if (this.ball.x <= this.left) {
       this.paddle2.add_score();
-      this.pause();
+      // this.pause();
       this.status = "goal";
     } else if (this.ball.x >= this.right) {
       this.paddle1.add_score();
-      this.pause();
+      // this.pause();
       this.status = "goal";
     }
 
@@ -197,13 +212,13 @@ export class Pong {
       return;
     }
 
-    if (performance.now() - this.time < 1000) {
-      this.TPS++;
-    } else {
-      console.log("TPS:", this.TPS);
-      this.TPS = 0;
-      this.time = performance.now();
-    }
+    // if (performance.now() - this.time < 1000) {
+    //   this.TPS++;
+    // } else {
+    //   console.log("TPS:", this.TPS);
+    //   this.TPS = 0;
+    //   this.time = performance.now();
+    // }
 
     this.broadcast('update', this.toJSON());
   }

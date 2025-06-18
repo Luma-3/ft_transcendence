@@ -16,8 +16,8 @@ export async function getPlayerInfo(roomId: string, playerId: string): Promise<I
 	});
 }
 
-export async function getPlayerOpponentsInfos(roomId: string, playerId: string): Promise<IApiResponse<player[]>> {
-	return await fetchApi<player[]>(API_GAME.ROOM_INFO + `${roomId}` + `/opponents/${playerId}`, {
+export async function getPlayerOpponentsInfos(roomId: string, playerId: string): Promise<IApiResponse<player>> {
+	return await fetchApi<player>(API_GAME.ROOM_INFO + `${roomId}` + `/opponents/${playerId}`, {
 		method: "GET"
 	});
 }

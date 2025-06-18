@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Pong } from '../game/Pong.js';
-import { PlayerType } from '../schemas/Player.js';
-import { GameType, RoomInfoType } from '../schemas/Room.js';
+import { Pong } from './Pong.js';
+import { PlayerType } from '../room/player.schema.js';
+import { GameType, RoomInfoType } from '../room/room.schema.js';
 import { NotFoundError, InternalServerError } from '@transcenduck/error';
 
 type StatusType = 'waiting' | 'roomReady' | 'readyToStart' | 'playing' | 'finished';
@@ -23,7 +23,7 @@ export class Room {
 	name: string;
 	typeGame: GameType;
 	status: StatusType = 'waiting';
-	players: PlayerType[];
+	players: [PlayerType, PlayerType] = [undefined, undefined];
 	pong: Pong | null;
 	isFull: boolean;
 	createdAt: Date;
@@ -38,14 +38,22 @@ export class Room {
 		if (typeGame === 'localpvp' || typeGame === 'localpve') {
 			this.status = 'readyToStart';
 		}
-		this.players = [];
 		this.pong = null; // Instance of Pong game
 		this.isFull = false;
 		this.createdAt = new Date();
-		this.maxPlayers = typeGame === 'tournament' ? 8 : typeGame === 'online' ? 2 : 1; // Maximum number of players in the room
-		this.playerReady = 0; // Counter for players ready to start the game
+		this.maxPlayers = typeGame === 'online' ? 2 : 1;
+		this.playerReady = 0;
   }
 
+	countPlayer() : number {
+		let nbPlayers = 0;
+		for (const player of this.players) {
+			if (player !== undefined) {
+				nbPlayers++;
+			}
+		}
+		return nbPlayers;
+	}
 	
 	/**
 	 * Ajoute un joueur à la salle si une place est disponible.
@@ -58,22 +66,26 @@ export class Room {
 	 * - Si la salle n'a pas de nom, il sera défini comme `Room-<player.gameName>`.
 	 */
   addPlayer(player: PlayerType): boolean {
-		if (this.players.length >= this.maxPlayers) {
-			return false;
-		}
+    if (this.countPlayer() >= this.maxPlayers) {
+        return false;
+    }
 
-		this.players.push(player);
-		if (this.players.length === this.maxPlayers) {
-			this.isFull = true;
-			this.status = 'roomReady';
-		}
+    if (!this.players[0]) {
+        this.players[0] = player;
+    } else if (!this.players[1]) {
+        this.players[1] = player;
+    }
 
-		if (this.name === '') {
-			this.name = `Room-${player.gameName}`;
-		}
+    if (this.countPlayer() === this.maxPlayers) {
+        this.isFull = true;
+        this.status = 'roomReady';
+    }
 
-		return true;
-  }
+    if (this.name === '') {
+        this.name = `Room-${player!.gameName}`;
+    }
+    return true;
+}
 
 	
 	/**
@@ -84,7 +96,7 @@ export class Room {
 	 */
 	getPlayerById(playerId: string): PlayerType | undefined {
 		for (const player of this.players) {
-	  		if (player.playerId === playerId) {
+	  		if (player?.playerId === playerId) {
 					return player;
 	  		}
 		}
@@ -104,7 +116,7 @@ export class Room {
 	 */
   getPlayerByClientId(clientId: string): PlayerType | undefined {
 		for (const player of this.players) {
-			if (player.clientId === clientId) {
+			if (player?.clientId === clientId) {
 				return player;
 			}
 		}
@@ -118,7 +130,7 @@ export class Room {
 	 */
   createGame(): Pong | null {
 		this.pong = new Pong(
-			this.players[0].playerId,
+			this.players[0]?.playerId,
 			this.players[1]?.playerId
 		);
 
@@ -145,14 +157,15 @@ export class Room {
 			this.stopGame();
 		}
 
-		const playerIndex = this.players.findIndex(player => player.playerId === playerId);
+		const playerIndex = this.players.findIndex(player => player?.playerId === playerId);
 		if (playerIndex === -1) {
 			throw new NotFoundError('Player');
 		}
+		// Remplace le joueur supprimé par undefined pour garder la paire [PlayerType, PlayerType]
+		this.players[playerIndex] = undefined;
 
-		this.players.splice(playerIndex, 1);
-		this.isFull = this.players.length >= this.maxPlayers;
-		if (this.players.length === 0) {
+		this.isFull = this.countPlayer() >= this.maxPlayers;
+		if (this.countPlayer() === 0) {
 			return "roomEmpty";
 		}
 		return "playerRomoved";
@@ -209,55 +222,66 @@ export class Room {
 
 	userInfos(player: PlayerType) {
 		return {
-			playerId: player.playerId,
-			gameName: player.gameName,
-			joined: player.joined
+			playerId: player!.playerId,
+			gameName: player!.gameName,
+			joined: player!.joined
 		};
   }
 
-  userOpponentInfos(player: PlayerType) {
-		return this.players.filter(p => p.playerId !== player.playerId).map(p => ({
-			playerId: p.playerId,
-			gameName: p.gameName,
-			ready: p.ready
-		}));
-  }
+	userOpponentInfo(player: PlayerType) {
+		const opponent = this.players.find(p => p && p.playerId !== player?.playerId);
+		if (!opponent) return undefined;
+		return {
+			playerId: opponent.playerId,
+			gameName: opponent.gameName,
+			ready: opponent.ready
+		};
+	}
 
   roomData() {
 		return {
 			roomId: this.id,
 			gameData: this.pong ? this.pong.toJSON() : null,
 			typeGame: this.typeGame,
-			players: this.players,
-			//opponents: this.userOpponentInfos(player)
+			players: this.players
 		};
   }
 
-  roomInfos() : RoomInfoType {
+	roomInfos(): RoomInfoType {
 		return {
 			roomId: this.id,
 			typeGame: this.typeGame,
-			players: this.players.map(player => ({
-				playerId: player.playerId,
-				gameName: player.gameName,
-			})),
+			players: [
+					this.players[0]
+						? { playerId: this.players[0].playerId, gameName: this.players[0].gameName }
+						: undefined,
+					this.players[1]
+						? { playerId: this.players[1].playerId, gameName: this.players[1].gameName }
+						: undefined,
+				] as RoomInfoType['players'],
 		};
-  }
+	}
 
-  toJSON() {
-    return {
+	toJSON() {
+		return {
+			id: this.id,
 			roomId: this.id,
 			name: this.name,
 			typeGame: this.typeGame,
 			status: this.status,
-			players: this.players.map(player => ({
+			players: this.players.map(player => player ? {
 				playerId: player.playerId,
+				clientId: player.clientId,
 				gameName: player.gameName,
-				ready: player.ready
-			})),
+				joined: player.joined,
+				ready: player.ready,
+			} : undefined),
+			pong: this.pong ? this.pong.toJSON?.() ?? this.pong : null,
 			isFull: this.isFull,
 			createdAt: this.createdAt.toISOString(),
 			maxPlayers: this.maxPlayers,
+			playerReady: this.playerReady,
+			private: this.private,
 		};
-  }
+	}
 }

@@ -40,17 +40,32 @@ export const RoomInfoSchema = Type.Object({
 		description: "Type of game being played in the room",
 		examples: ["localpvp"]
 	}),
-	players: Type.Array(Type.Object({
-		playerId: Type.String({
-			format: "uuid",
-			description: "Unique identifier for the player, formatted as a UUID",
-			examples: ["123e4567-e89b-12d3-a456-426614174001"]
-		}),
-		gameName: Type.String({
-			description: "Name of the player in the game",
-			examples: ["Player1"]
-		})
-	}))
+	players: Type.Tuple([
+		Type.Optional(Type.Object({
+			playerId: Type.String({
+				format: "uuid",
+				description: "Unique identifier for the player, formatted as a UUID",
+				examples: ["123e4567-e89b-12d3-a456-426614174001"]
+			}),
+			gameName: Type.String({
+				description: "Name of the player in the game",
+				examples: ["Player1"]
+			})
+		})),
+		Type.Optional(Type.Object({
+			playerId: Type.String({
+				format: "uuid",
+				description: "Unique identifier for the player, formatted as a UUID",
+				examples: ["123e4567-e89b-12d3-a456-426614174002"]
+			}),
+			gameName: Type.String({
+				description: "Name of the player in the game",
+				examples: ["Player2"]
+			})
+		}))
+	], {
+		description: "A pair of players; each can be undefined if not present"
+	})
 })
 
 export type RoomInfoType = Static<typeof RoomInfoSchema>;

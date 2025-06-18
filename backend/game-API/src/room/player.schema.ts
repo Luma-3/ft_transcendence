@@ -48,7 +48,7 @@ export const PlayerSchema = Type.Object({
 	$comment: "Schema for Player object in the game API"
 });
 
-export type PlayerType = Static<typeof PlayerSchema>;
+export type PlayerType = Static<typeof PlayerSchema> | undefined;
 
 export const PlayerInitialSchema = Type.Object({
 	playerId: Type.String({

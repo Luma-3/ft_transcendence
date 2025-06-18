@@ -12,31 +12,23 @@ import { gameFrontInfo } from "../game/gameCreation";
 
 import { getPlayerInfo, getPlayerOpponentsInfos } from "../api/getterGame";
 
-function showGameOpponent(opponents: player[]) {
+function showGameOpponent(opponents: player | undefined) {
+	if (!opponents) {
+		console.log("Jean-Michel");
+		return `<div class="flex flex-col justify-center items-center">
+		<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
+		border-primary dark:border-dprimary" />
+		${ "Jean-Michel" }
+		</div>`;
+	}
+
 	console.log(opponents);
-	return;
+	return `<div class="flex flex-col justify-center items-center">
+		<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
+		border-primary dark:border-dprimary" />
+		${opponents.gameName || "Waiting for opponent" }
+		</div>`;
 }
-// 	const listOpponents = opponents.map((opponent) => `
-// 		<div id=${opponent.gameName} class="flex flex-col justify-center items-center">
-// 		<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
-// 		border-primary dark:border-dprimary" />
-// 		<div class="flex title-responsive-size justify-center items-center">
-// 		${opponent.gameName}
-// 		</div>
-// 		</div>
-// 	`).join('');
-
-// 	if (opponents === 1) {
-// 		return `<div class="flex flex-col justify-center items-center">
-// 		<img src="/images/pp.jpg" alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
-// 		border-primary dark:border-dprimary" />
-// 		${opponents.gameName || "Waiting for opponent" }
-// 		</div>`;
-// 	} 
-// 	return listOpponents;
-// }
-
-
 
 export default async function Game(roomId: string, user: UserInfo) {
 
@@ -56,7 +48,6 @@ export default async function Game(roomId: string, user: UserInfo) {
 	 * ! Evenement clavier lors de l'affichage du VS (Room page)
 	 */
   onkeydown = (event) => {
-
 		const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
 			/**
 			 * Pour le premier evenement clavier, je ping le serveur pour 
@@ -77,7 +68,7 @@ export default async function Game(roomId: string, user: UserInfo) {
 				return;
 			}
 
-			onKeyDown(event);
+		onKeyDown(event);
 	}
 	
 	
@@ -116,7 +107,7 @@ export default async function Game(roomId: string, user: UserInfo) {
 					</div>
 					<div id="opponentGameProfile" class="flex flex-col w-1/2 h-1/2 p-4 justify-center items-center 
 					transition-transform duration-800 ease-in-out">
-					Jean-Michel
+					${showGameOpponent((await getPlayerOpponentsInfos(roomId, user.id)).data)}
 					</div>
 				</div>
 

@@ -4,6 +4,8 @@ import { GameData, RoomData } from "../interfaces/GameData";
 import { DisplayGameWinLose } from "../game/gameWin";
 import { showGame } from "../game/gameShow";
 
+import { FRAME } from "../game/gameDraw";
+
 import { alertGameReady } from "../components/ui/alert/alertGameReady";
 import { socket } from "./Socket";
 
@@ -17,10 +19,12 @@ export let gameSnapshots: GameSnapshot[] = [];
 
 function changeStatusPlayer(roomData: RoomData) {
 	for (const player of roomData.players) {
-		const ready = player.ready ? "ready" : "not-ready";
-		if (ready === "ready") {
-			const playerElement = document.getElementById(player.gameName);
-			playerElement?.classList.add("animate-bounce");
+		if (player) {
+			const ready = player.ready ? "ready" : "not-ready";
+			if (ready === "ready") {
+				const playerElement = document.getElementById(player.gameName);
+				playerElement?.classList.add("animate-bounce");
+			}
 		}
 	}
 }
@@ -37,13 +41,14 @@ function launchGame(roomId: string) {
 			}
 		}
 	}));
-	animate();
+	// animate();
 }
 
 let tps = 0;
 let time = performance.now();
 
 export async function handleGameSocketMessage(data: any ) {
+	console.log("action recived from back : ", data.action)
 	switch (data.action) {
 		case 'pong':
 			const t1 = performance.now();
@@ -75,18 +80,19 @@ export async function handleGameSocketMessage(data: any ) {
 			break;
 		
 		case 'goal':
-			console.log("position ball:", data.gameData.ball.x, data.gameData.ball.y);
 			drawGame(data.gameData, 'goal');
 			break;
 		
 		case 'update':
-			gameSnapshots.push({
-				serverTime: data.serverTime,
-				GameData: data.gameData
-			});
-			if (gameSnapshots.length > 30) {
-				gameSnapshots.shift();
-			}
+			// gameSnapshots.push({
+			// 	serverTime: data.serverTime,
+			// 	GameData: data.gameData
+			// });
+			// if (gameSnapshots.length > FRAME) {
+			// 	gameSnapshots.shift();
+			// }
+
+			drawGame(data.gameData);
 			if (performance.now() - time < 1000) {
 				tps++;
 			} else {
