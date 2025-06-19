@@ -135,4 +135,4 @@ export const RoomInfoAllSchema = Type.Object({
 
 export type RoomInfoAllType = Static<typeof RoomInfoAllSchema>;
 
-export type GameType = 'localpvp' | 'localpve' | 'online' | 'tournament';
+export type gameType = 'localpvp' | 'localpve' | 'online' | 'tournament';

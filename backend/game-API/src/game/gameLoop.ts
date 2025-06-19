@@ -9,7 +9,7 @@ interface Object {
   snapshot(): any;
 }
 
-class LoopManager {
+export class LoopManager {
   private ObjectsInstance: Object[] = [];
 
   private lastTick = Date.now();

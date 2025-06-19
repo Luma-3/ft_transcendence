@@ -47,14 +47,15 @@ function launchGame(roomId: string) {
 let tps = 0;
 let time = performance.now();
 
-export async function handleGameSocketMessage(data: any ) {
-	console.log("action recived from back : ", data.action)
-	switch (data.action) {
+export async function handleGameSocketMessage(payload: any ) {
+	
+	console.log("action recived from back : ", payload.action)
+	switch (payload.action) {
 		case 'pong':
 			const t1 = performance.now();
-			const rtt = t1 - data.data.clientTime;
+			const rtt = t1 - payload.data.clientTime;
 			const oneWay = rtt / 2;
-			clockoffset = data.data.serverTime + oneWay - t1;
+			clockoffset = payload.data.serverTime + oneWay - t1;
 			break;
 
 		case 'roomReady':
@@ -62,25 +63,26 @@ export async function handleGameSocketMessage(data: any ) {
 				alertGameReady();}
 			, 500);
 			setTimeout(() => {
-				renderGame(data.data);
+				renderGame(payload.data);
 			}
 			, 3500);
 			break;
 		
 		case 'playerReady':
-			changeStatusPlayer(data.data);
+			changeStatusPlayer(payload.data);
 			break;
 
 		case 'readyToStart':
+			// renderGame(payload.data);
 			showGame();
-			drawGame(data.data.gameData);
+			drawGame(payload.data.gameData);
 			setTimeout(() => {
-				launchGame(data.data.roomId);
+				launchGame(payload.data.roomId);
 			}, 3000);
 			break;
 		
 		case 'goal':
-			drawGame(data.gameData, 'goal');
+			drawGame(payload.gameData, 'goal');
 			break;
 		
 		case 'update':
@@ -92,7 +94,7 @@ export async function handleGameSocketMessage(data: any ) {
 			// 	gameSnapshots.shift();
 			// }
 
-			drawGame(data.gameData);
+			drawGame(payload.gameData);
 			if (performance.now() - time < 1000) {
 				tps++;
 			} else {

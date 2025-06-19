@@ -1,4 +1,4 @@
-import { dt } from "./Pong.js";
+import { dt } from "./Pong.ts.old";
 
 /**
  * La classe Paddle représente une raquette dans un jeu, avec des propriétés pour sa position,

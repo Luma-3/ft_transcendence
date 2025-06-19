@@ -5,17 +5,17 @@ import { fetchToken } from "./fetchToken";
 
 export async function fetchApi<T>(url:string, option?: RequestInit, verifToken: boolean = true): Promise<IApiResponse<T>> {
 	
-	if (verifToken) {
-		const token = await fetchToken();
-		if (token.status === "error") {
+	// if (verifToken) {
+	// 	const token = await fetchToken();
+	// 	if (token.status === "error") {
 
-			alertPublic("Session expired, please log in again.", "error");
+	// 		alertPublic("Session expired, please log in again.", "error");
 
-			setTimeout(() => {
-				renderPublicPage('login', false);
-			}, 1000);
-		}
-	}
+	// 		setTimeout(() => {
+	// 			renderPublicPage('login', false);
+	// 		}, 1000);
+	// 	}
+	// }
 
 	try {
 		if(option && !option.headers)

@@ -1,6 +1,6 @@
-import { Paddle } from './Paddle.js';
+import { Paddle } from './Paddle.ts.old';
 
-import { dt } from './Pong.js';
+import { dt } from './Pong.ts.old';
 
 /**
  * Classe représentant une balle dans le jeu Pong.

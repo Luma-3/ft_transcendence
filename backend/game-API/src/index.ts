@@ -3,13 +3,13 @@ import dotenv from 'dotenv'
 
 import roomRoute from './room/room.route.js';
 
-import { handlerEvent } from './room/room.route.js';
+// import { handlerEvent } from './room/room.route.js';
 
 dotenv.config();
 
 server.register(roomRoute);
 
-await handlerEvent();
+// await handlerEvent();
 
 const start = async () => {
 	server.listen({ port: 3003, host: '0.0.0.0' }).then((address) => {

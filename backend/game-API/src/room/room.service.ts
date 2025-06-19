@@ -1,12 +1,19 @@
-import { redisPub } from '../utils/redis.js';
+// import { redisPub } from '../utils/redis.js';
 
-import { Room } from '../class/Room.js';
-import { PlayerType } from './player.schema.js';
-import { InternalServerError, NotFoundError } from '@transcenduck/error';
-import { GameType } from './room.schema.js';
-import { initGameEvent, moveEvent, playerReadyEvent } from './handleEvent.js';
+// import { IPlayer, Room } from '../game/Room.js';
+// import { PlayerType } from './player.schema.js';
+import { ForbiddenError } from '@transcenduck/error';
+import { IPlayer } from '../game/Room.js';
+import { gameType } from './room.schema.js';
+// import { GameType } from './room.schema.js';
+// import { initGameEvent, moveEvent, playerReadyEvent } from './handleEvent.js';
 
-export type gameServiceType = GameService;
+// export type gameServiceType = GameService;
+
+// 						Function				Class Statless Abstract
+//
+// Route <-> [Controller] <-> [Service] <-> [Model De Jeu (RAM)]
+//																						Statfull
 
 /**
  * GameService : Service central de gestion des salles de jeu multijoueur.
@@ -34,243 +41,277 @@ export type gameServiceType = GameService;
  * await gameService.handleEvent(clientId, { type: 'move', data: { roomId, direction: 'up' } });
  * ```
  */
-class GameService {
-  players: Map<string, Room>
-  rooms: Map<string, Room>;
 
-  constructor() {
-    this.players = new Map();
-    this.rooms = new Map();
-  }
+import { roomManagerInstance } from '../game/RoomManager.js';
 
-  /**
-   * Diffuse une action à tous les joueurs d'une salle donnée.
-   * 
-   * @param room - La salle cible.
-   * @param action - L'action à diffuser.
-   * @param data - Les données associées à l'action.
-   * @throws {NotFoundError} Si la salle n'existe pas ou que l'id est invalide.
-   */
-  broadcast(room: Room, action: string, data: any) {
-    if (!room || !room.id) {
-      throw new NotFoundError('Room');
-    }
+export class RoomService {
 
-    for (const player of room.players) {
-      if (player?.clientId) {
-        redisPub.publish('ws.game.out', JSON.stringify({
-          clientId: player.clientId,
-          payload: { action: action, data: data }
-        }));
-      }
-    }
-  }
+	static joinOrCreateRoom(player: IPlayer, game_name: string, type_game: gameType) {
+		let room_id = undefined;
 
-  /**
-   * Crée une nouvelle salle de jeu du type spécifié.
-   * 
-   * @param typeGame - Le type de jeu de la nouvelle salle.
-   * @returns La nouvelle instance de Room.
-   */
-  createRoom(typeGame: GameType) {
-    const room = new Room(typeGame);
-    this.rooms.set(room.id, room);
-    return room;
-  }
+		room_id = roomManagerInstance.joinRoom(player);
+		if (!room_id) {
+			room_id = roomManagerInstance.createRoom(game_name, type_game);
+			roomManagerInstance.joinRoom(player, room_id);
+		}
+		roomManagerInstance.startRoom(room_id);
+		return room_id;
+	}
 
-  /**
-   * Récupère une salle par son identifiant.
-   * 
-   * @param roomId - L'identifiant de la salle.
-   * @returns L'instance Room si trouvée, sinon undefined.
-   */
-  getRoom(roomId: string) { return this.rooms.get(roomId); }
+	static joinRoom(player: IPlayer, room_id: string) {
+		return roomManagerInstance.joinRoom(player, room_id);
+	}
 
-  /**
-   * Ajoute un joueur à une salle donnée. Si la salle est pleine, crée une nouvelle salle du même type et y ajoute le joueur.
-   * Diffuse l'état de la salle après l'ajout du joueur.
-   * 
-   * @param room - La salle cible.
-   * @param player - Le joueur à ajouter.
-   * @throws {NotFoundError} Si la salle n'existe pas.
-   * @throws {InternalServerError} Si la création d'une nouvelle salle échoue.
-   */
-  addPlayerToRoom(room: Room, player: PlayerType) {
-    if (!room) {
-      throw new NotFoundError('Room');
-    }
-
-    if (room.addPlayer(player) == false) {
-      const newRoom = this.createRoom(room.typeGame);
-      if (!newRoom) {
-        throw new InternalServerError('Failed to create a new room');
-      }
-      newRoom.addPlayer(player);
-      this.broadcast(newRoom, 'roomCreated', newRoom.roomData());
-      return;
-    }
-
-    if (room.status === 'roomReady') {
-      this.broadcast(room, 'roomReady', room.roomData());
-    }
-  }
-
-  /**
-   * Trouve ou crée une salle disponible pour un joueur et l'y ajoute.
-   * 
-   * @param player - Le joueur à ajouter.
-   * @param typeGame - Le type de jeu souhaité.
-   * @returns L'identifiant de la salle rejointe.
-   */
-  joinRoom(player: PlayerType, typeGame: GameType) {
-    if (!player) {
-      throw new NotFoundError('Player');
-    }
-    let room: Room | undefined;
-    if (this.players.has(player.clientId)) {
-      room = this.players.get(player.playerId);
-    } else {
-      room = this.findJoinableRoom(typeGame)
-    }
-
-    if (!room) {
-      room = this.createRoom(typeGame);
-    }
-
-    this.addPlayerToRoom(room, player);
-    return room.id;
-  }
-
-  /**
-   * Cherche une salle disponible du type de jeu spécifié.
-   * 
-   * @param typeGame - Le type de jeu recherché.
-   * @returns L'identifiant d'une salle disponible, ou undefined si aucune n'est trouvée.
-   */
-  findJoinableRoom(typeGame: GameType) {
-    for (const room of this.rooms.values()) {
-      if (room.typeGame === typeGame && room.isJoinable()) {
-        return room;
-      }
-    }
-    return undefined;
-  }
-
-  /**
-   * Crée une instance de jeu dans une salle donnée.
-   * 
-   * @param room - La salle cible.
-   * @throws {NotFoundError} Si la salle n'existe pas ou si la création échoue.
-   */
-  createGameInRoom(room: Room) {
-    if (!room) throw new NotFoundError('Room');
-
-    const game = room.createGame();
-    if (!game) throw new InternalServerError('Game creation failed');
-    
-    if (room.typeGame === 'localpve' && game) { game.isAgainstBot = true; }
-  }
-
-  /**
-   * Supprime une salle et arrête toute partie en cours.
-   * 
-   * @param room - La salle à supprimer.
-   * @throws {NotFoundError} Si la salle n'existe pas.
-   */
-  deleteRoom(room: Room) {
-    if (!room) throw new NotFoundError('Room');
-
-    room.stopGame();
-    room.status = 'finished';
-    this.rooms.delete(room.id);
-  }
-
-  /**
-   * Gère un événement reçu d'un client (action joueur, changement d'état, etc).
-   * 
-   * @param clientId - L'identifiant du client.
-   * @param event - L'événement à traiter (type et données).
-   * @throws {InternalServerError} Pour les types d'événements inconnus ou opérations invalides.
-   */
-  async handleEvent(clientId: string, event: { type: string, data: any }) {
-    const data = event.data;
-    const roomId = data.roomId;
-    const room = this.getRoom(roomId);
-    if (!room) throw new NotFoundError('Room');
-
-    switch (event.type) {
-
-      case 'init':
-        initGameEvent(this, room, clientId, data);
-        break;
-
-      case 'playerReady':
-        playerReadyEvent(this, room, clientId);
-        break;
-        
-      case 'startGame':
-        if (room.status === 'readyToStart')
-          room.startGame();
-        break;
-
-      case 'resume' :
-        if (room.pong) {
-          room.pong.resume();
-        } else {
-          throw new NotFoundError('Game');
-        }
-        break;
-
-      case 'pause':
-        if (room.pong) {
-          room.pong.pause();
-        } else {
-          throw new NotFoundError('Game');
-        }
-        break;
-
-      case 'move':
-        moveEvent(room, clientId, data);
-        break;
-
-      default:
-        throw new InternalServerError(`Unknown event type: ${event.type}`);
-    }
-  }
-
-  /**
-   * Permet à un joueur de quitter une salle.
-   * 
-   * @param roomId - L'identifiant de la salle.
-   * @param playerId - L'identifiant du joueur.
-   * @returns L'identifiant de la salle quittée.
-   * @throws {InternalServerError} Si la salle ou le joueur n'existe pas.
-   */
-  leave_room(ClientId: string) {
-
-    const room = this.players.get(ClientId);
-    if (!room) {
-      throw new NotFoundError('Room');
-    }
-
-    if (room.typeGame === "localpvp" || room.typeGame === "localpve") {
-      this.deleteRoom(room);
-      return undefined;
-    }
-
-    const player = room.getPlayerByClientId(ClientId);
-    if (!player) {
-      throw new NotFoundError('Player');
-    }
-
-    console.log(`Player ${player.playerId} left room ${room.id}`);
-
-    room.removePlayer(player.playerId);
-    this.broadcast(room, "leave", player);
-  }
+	static leaveCurrentRoom(player: IPlayer) {
+		const room = roomManagerInstance.findCurrentRoom(player);
+		if (!room) {
+			throw new ForbiddenError("Player isn't in a Room");
+		}
+		roomManagerInstance.leaveRoom(player, room.id);
+	}
 }
 
-/**
- * Instance unique de `GameService` pour la gestion globale des salles, joueurs et événements de jeu.
- */
-export const gameService = new GameService();
+// class GameService {
+// 	players: Map<string, Room>
+// 	rooms: Map<string, Room>;
+
+// 	constructor() {
+// 		this.players = new Map();
+// 		this.rooms = new Map();
+// 	}
+
+// 		/**
+// 	 * Trouve ou crée une salle disponible pour un joueur et l'y ajoute.
+// 	 * 
+// 	 * @param player - Le joueur à ajouter.
+// 	 * @param typeGame - Le type de jeu souhaité.
+// 	 * @returns L'identifiant de la salle rejointe.
+// 	 */
+// 	// createRoom(newPlayer: PlayerType, typeGame: GameType) {    
+// 	// 	let room: Room | undefined;
+
+// 	// 	/**
+// 	// 	 * Vérifie si le joueur a deja lancer une partie.
+// 	// 	 */
+// 	// 	if (this.players.has(newPlayer.clientId)) {
+// 	// 		room = this.players.get(newPlayer.playerId);
+// 	// 	} else {
+// 	// 		room = this.findJoinableRoom(typeGame)
+// 	// 	}
+
+// 	// 	if (!room) {
+// 	// 		room = this.createRoom(typeGame);
+// 	// 	}
+
+// 	// 	this.addPlayerToRoom(room, newPlayer);
+// 	// 	return room.id;
+// 	// }
+
+// 	/**
+// 	 * Diffuse une action à tous les joueurs d'une salle donnée.
+// 	 * 
+// 	 * @param room - La salle cible.
+// 	 * @param action - L'action à diffuser.
+// 	 * @param data - Les données associées à l'action.
+// 	 * @throws {NotFoundError} Si la salle n'existe pas ou que l'id est invalide.
+// 	 */
+// 	broadcast(room: Room, action: string, data: any) {
+// 		if (!room || !room.id) {
+// 			throw new NotFoundError('Room');
+// 		}
+
+// 		for (const player of room.players) {
+// 			if (player?.clientId) {
+// 				redisPub.publish('ws.game.out', JSON.stringify({
+// 					clientId: player.clientId,
+// 					payload: { action: action, data: data }
+// 				}));
+// 			}
+// 		}
+// 	}
+
+
+
+// 	// createRoom(typeGame: GameType) {
+// 	// 	const room = new Room(typeGame);
+// 	// 	this.rooms.set(room.id, room);
+// 	// 	return room;
+// 	// }
+
+
+
+  
+// 	/**
+// 	 * Récupère une salle par son identifiant.
+// 	 * 
+// 	 * @param roomId - L'identifiant de la salle.
+// 	 * @returns L'instance Room si trouvée, sinon undefined.
+// 	 */
+// 	getRoom(roomId: string) { return this.rooms.get(roomId); }
+
+// 	/**
+// 	 * Ajoute un joueur à une salle donnée. Si la salle est pleine, crée une nouvelle salle du même type et y ajoute le joueur.
+// 	 * Diffuse l'état de la salle après l'ajout du joueur.
+// 	 * 
+// 	 * @param room - La salle cible.
+// 	 * @param player - Le joueur à ajouter.
+// 	 * @throws {NotFoundError} Si la salle n'existe pas.
+// 	 * @throws {InternalServerError} Si la création d'une nouvelle salle échoue.
+// 	 */
+// 	addPlayerToRoom(room: Room, player: PlayerType) {
+// 		if (!room) {
+// 			throw new NotFoundError('Room');
+// 		}
+
+// 		if (room.addPlayer(player) == false) {
+// 			const newRoom = this.createRoom(room.typeGame);
+// 			if (!newRoom) {
+// 				throw new InternalServerError('Failed to create a new room');
+// 			}
+// 			newRoom.addPlayer(player);
+// 			this.broadcast(newRoom, 'roomCreated', newRoom.roomData());
+// 			return;
+// 		}
+
+// 		if (room.status === 'roomReady') {
+// 			this.broadcast(room, 'roomReady', room.roomData());
+// 		}
+// 	}
+
+
+
+
+
+// 	/**
+// 	 * Cherche une salle disponible du type de jeu spécifié.
+// 	 * 
+// 	 * @param typeGame - Le type de jeu recherché.
+// 	 * @returns L'identifiant d'une salle disponible, ou undefined si aucune n'est trouvée.
+// 	 */
+// 	findJoinableRoom(typeGame: GameType) {
+// 		for (const room of this.rooms.values()) {
+// 			if (room.typeGame === typeGame && room.isJoinable()) {
+// 				return room;
+// 			}
+// 		}
+// 		return undefined;
+// 	}
+
+// 	/**
+// 	 * Crée une instance de jeu dans une salle donnée.
+// 	 * 
+// 	 * @param room - La salle cible.
+// 	 * @throws {NotFoundError} Si la salle n'existe pas ou si la création échoue.
+// 	 */
+// 	createGameInRoom(room: Room) {
+// 		if (!room) throw new NotFoundError('Room');
+
+// 		const game = room.createGame();
+// 		if (!game) throw new InternalServerError('Game creation failed');
+		
+// 		if (room.typeGame === 'localpve' && game) { game.isAgainstBot = true; }
+// 	}
+
+// 	/**
+// 	 * Supprime une salle et arrête toute partie en cours.
+// 	 * 
+// 	 * @param room - La salle à supprimer.
+// 	 * @throws {NotFoundError} Si la salle n'existe pas.
+// 	 */
+// 	deleteRoom(room: Room) {
+// 		if (!room) throw new NotFoundError('Room');
+
+// 		room.stopGame();
+// 		room.status = 'finished';
+// 		this.rooms.delete(room.id);
+// 	}
+
+// 	/**
+// 	 * Gère un événement reçu d'un client (action joueur, changement d'état, etc).
+// 	 * 
+// 	 * @param clientId - L'identifiant du client.
+// 	 * @param event - L'événement à traiter (type et données).
+// 	 * @throws {InternalServerError} Pour les types d'événements inconnus ou opérations invalides.
+// 	 */
+// 	async handleEvent(clientId: string, event: { type: string, data: any }) {
+// 		const data = event.data;
+// 		const roomId = data.roomId;
+// 		const room = this.getRoom(roomId);
+// 		if (!room) throw new NotFoundError('Room');
+
+// 		switch (event.type) {
+
+// 			case 'init':
+// 				initGameEvent(this, room, clientId, data);
+// 				break;
+
+// 			case 'playerReady':
+// 				playerReadyEvent(this, room, clientId);
+// 				break;
+				
+// 			case 'startGame':
+// 				if (room.status === 'readyToStart')
+// 					room.startGame();
+// 				break;
+
+// 			case 'resume' :
+// 				if (room.pong) {
+// 					room.pong.resume();
+// 				} else {
+// 					throw new NotFoundError('Game');
+// 				}
+// 				break;
+
+// 			case 'pause':
+// 				if (room.pong) {
+// 					room.pong.pause();
+// 				} else {
+// 					throw new NotFoundError('Game');
+// 				}
+// 				break;
+
+// 			case 'move':
+// 				moveEvent(room, clientId, data);
+// 				break;
+
+// 			default:
+// 				throw new InternalServerError(`Unknown event type: ${event.type}`);
+// 		}
+// 	}
+
+// 	/**
+// 	 * Permet à un joueur de quitter une salle.
+// 	 * 
+// 	 * @param roomId - L'identifiant de la salle.
+// 	 * @param playerId - L'identifiant du joueur.
+// 	 * @returns L'identifiant de la salle quittée.
+// 	 * @throws {InternalServerError} Si la salle ou le joueur n'existe pas.
+// 	 */
+// 	leave_room(ClientId: string) {
+
+// 		const room = this.players.get(ClientId);
+// 		if (!room) {
+// 			throw new NotFoundError('Room');
+// 		}
+
+// 		if (room.typeGame === "localpvp" || room.typeGame === "localpve") {
+// 			this.deleteRoom(room);
+// 			return undefined;
+// 		}
+
+// 		const player = room.getPlayerByClientId(ClientId);
+// 		if (!player) {
+// 			throw new NotFoundError('Player');
+// 		}
+
+// 		console.log(`Player ${player.playerId} left room ${room.id}`);
+
+// 		room.removePlayer(player.playerId);
+// 		this.broadcast(room, "leave", player);
+// 	}
+// }
+
+// /**
+//  * Instance unique de `GameService` pour la gestion globale des salles, joueurs et événements de jeu.
+//  */
+// export const gameService = new GameService();

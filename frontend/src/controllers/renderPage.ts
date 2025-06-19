@@ -86,21 +86,21 @@ const rendererPrivatePage: { [key: string]: (user: UserInfo) => string | Promise
  */
 export async function renderPrivatePage(page: string, updateHistory: boolean = true) {
 
-  if (!socket) {
-    console.log("No websocket found for this session, creating a new one");
-    socketConnection();
-  }
+  // if (!socket) {
+  //   console.log("No websocket found for this session, creating a new one");
+  //   socketConnection();
+  // }
 
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
-  const token = await fetchToken();
-  if (token.status === "error") {
-    return renderErrorPage('400', '401', 'Unauthorized');
-  }
+  // const token = await fetchToken();
+  // if (token.status === "error") {
+  //   return renderErrorPage('400', '401', 'Unauthorized');
+  // }
 
-  const response = await getUserInfo();
-  if (response.status === "error" || !response.data) {
-    return renderErrorPage('400', '401', 'Unauthorized');
-  }
+  // const response = await getUserInfo();
+  // if (response.status === "error" || !response.data) {
+  //   return renderErrorPage('400', '401', 'Unauthorized');
+  // }
 
   const lang = response.data.preferences.lang || 'en';
   const theme = response.data.preferences.theme || 'dark';
@@ -137,18 +137,18 @@ export async function renderGame(roomData: RoomData) {
 
   const main_container = document.querySelector<HTMLDivElement>('#app')!
 
-  const token = await fetchToken();
-  if (token.status === "error") {
-    return renderErrorPage('400', '401', 'Unauthorized');
-  }
+  // const token = await fetchToken();
+  // if (token.status === "error") {
+  //   return renderErrorPage('400', '401', 'Unauthorized');
+  // }
 
-  const response = await getUserInfo();
-  if (response.status === "error" || !response.data) {
-    return renderErrorPage('400', '401', 'Unauthorized');
-  }
+  // const response = await getUserInfo();
+  // if (response.status === "error" || !response.data) {
+  //   return renderErrorPage('400', '401', 'Unauthorized');
+  // }
 
-  const lang = response.data.preferences.lang;
-  const theme = response.data.preferences.theme;
+  const lang = 'en'
+  const theme = 'dark';
 	fadeOut();
 
   setTimeout(async () => {

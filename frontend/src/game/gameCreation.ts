@@ -7,30 +7,29 @@ import { fetchApi } from "../api/fetch";
 import { API_GAME } from "../api/routes";
 import { socket } from "../controllers/Socket";
 
-export let gameFrontInfo: { gameId: string, typeGame: string };
+export let gameFrontInfo: { gameId: string, gameType: string };
 
 type GameFormInfo = {
-	playerId: string;
 	gameId: string;
 	gameName: string;
 	typeGame: string;
 	gameNameOpponent?: string;
 }
 
-function initGame(gameFormInfo: GameFormInfo) {
-	const t0 = performance.now();
-	socket!.send(JSON.stringify({
-		type: "game",
-		payload: {
-			type: 'init',
-			data: {
-				playerId: gameFormInfo.playerId,
-				roomId: gameFormInfo.gameId,
-				clientTime: t0
-			}
-		}
-	}))
-}
+// function initGame(gameFormInfo: GameFormInfo) {
+// 	const t0 = performance.now();
+// 	socket!.send(JSON.stringify({
+// 		type: "game",
+// 		payload: {
+// 			type: 'init',
+// 			data: {
+// 				playerId: gameFormInfo.playerId,
+// 				roomId: gameFormInfo.gameId,
+// 				clientTime: t0
+// 			}
+// 		}
+// 	}))
+// }
 
 /**
  * Envoie des donnees de la partie au serveur
@@ -43,9 +42,9 @@ async function sendDataToServer(gameFormInfo: GameFormInfo, userTheme: string) {
 	const response = await fetchApi<{ id: string }>(API_GAME.CREATE, {
 		method: 'POST',
 		body: JSON.stringify({
-			playerId: gameFormInfo.playerId,
-			gameName: gameFormInfo.gameName,
-			typeGame: gameFormInfo.typeGame,
+			player_name: gameFormInfo.gameName,
+			game_name: "Ok Coral !",
+			game_type: gameFormInfo.typeGame,
 		}),
 	});
 	// player2: gameFormInfo.gameNameOpponent,
@@ -117,13 +116,6 @@ export async function createGame() {
 			break;
 	}
 
-	/**
-	 * Creation de l'instance de jeu
-	 */
-	const response = await getUserInfo();
-	if (response.status === "error" || !response.data) {
-		return alert("Error while fetching user data. Please try again later.", "error");
-	}
 
 	/**
 	 * Creation d'un objet contenant les donnees de la partie
@@ -131,17 +123,18 @@ export async function createGame() {
 	 * et l'envoi de la requete pour creer la partie
 	 */
 	const gameFormInfo = {
-		playerId: response.data.id!.toString(),
 		gameId: "",
 		gameName: player1,
 		typeGame : gameType.id,
 		gameNameOpponent: (player2) ? player2 : "",
 	}
 
-	await sendDataToServer(gameFormInfo, response.data.preferences.theme);
-	initGame(gameFormInfo);
+	const response = await getUserInfo();
+	await sendDataToServer(gameFormInfo, response.data!.preferences.theme);
+	// initGame(gameFormInfo);
+	
 	gameFrontInfo = {
 		gameId: gameFormInfo.gameId,
-		typeGame: gameFormInfo.typeGame
+		gameType: gameFormInfo.typeGame
 	}
 }

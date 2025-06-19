@@ -48,26 +48,34 @@ export const PlayerSchema = Type.Object({
 	$comment: "Schema for Player object in the game API"
 });
 
-export type PlayerType = Static<typeof PlayerSchema> | undefined;
+export type PlayerType = Static<typeof PlayerSchema>;
 
 export const PlayerInitialSchema = Type.Object({
-	playerId: Type.String({
-		format: "uuid",
-		description: "Unique identifier for the player, formatted as a UUID",
-		examples: ["123e4567-e89b-12d3-a456-426614174001"]
-	}),
-	gameName: Type.String({
-		description: "Name of the player in the game",
-		examples: ["Player1"]
-	}),
-	typeGame: Type.Union([
+	player_name: Type.String(),
+	game_type: Type.Union([
 		Type.Literal("localpvp"),
 		Type.Literal("localpve"),
 		Type.Literal("online"),
 		Type.Literal("tournament")
 	], {
 		description: "Type of game wanted by the player",
-		examples: ["localpvp"]
-	})
+	}),
+	game_name: Type.String({
+		description: "Name of the player in the game",
+		examples: ["Player1"]
+	}),
 });
 export type PlayerInitialType = Static<typeof PlayerInitialSchema>;
+
+export const HeaderBearer = Type.Object({
+	'x-user-id': Type.String({ format: 'uuid'})
+})
+export type  HeaderBearerType = Static<typeof HeaderBearer>;
+
+export const GameIdSchema = Type.Object({
+	game_id: Type.String({
+		format: 'uuid',
+		description: 'Unique identifier for the room, formatted as a UUID'
+	})
+})
+export type GameIdType = Static<typeof GameIdSchema>
