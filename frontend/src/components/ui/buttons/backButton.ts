@@ -12,8 +12,8 @@ export function backButton() {
 
 export function backButtonPublicPage(actualPage: string) {
 
-	const publicPage = ["home", "login", "register"];
-	const backPage = publicPage[publicPage.indexOf(actualPage) - 1] || "Home";
+	const publicPage = ["home", "login", "register", "verifyEmail"];
+	const backPage = publicPage[publicPage.indexOf(actualPage) - 1] || "home";
 	return `
 	<div id="load${backPage}" class="flex flex-col mt-2 sticky-top items-left text-primary dark:text-dtertiary justify-start
 	w-50 p-2 lg:ml-30 md:ml-10 sm:ml-10 ml-5 transform transition-transform duration-300

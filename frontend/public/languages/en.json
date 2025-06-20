@@ -18,6 +18,8 @@
 	"register": "Register",
 	"no-account": "Don't have an account yet?",
 	"create-account": "Create an account",
+	"you-have-to-verify-email": "Thank you! We've sent you an email. Just click the link inside to verify your address. The link will be active for 10 minutes.",
+	"verify-email": "Verify email",
 	"login": "Login",
 	"google-login": "Login with Google",
 	"username-already-in-use": "Username already in use",

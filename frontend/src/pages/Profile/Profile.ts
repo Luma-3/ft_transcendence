@@ -31,7 +31,7 @@ async function renderProfilePage(user: UserInfo) {
 	return `
 		${navbar(user)}
 		${backButton()}
-		<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
+		<div id="divImage" class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
 			${profileHeader({ avatar: user.preferences!.avatar, banner: user.preferences!.banner || 'default.webp' })}
 			${imageEditorDiv()}
 			<div id="updateForm" class="flex flex-col w-full items-center justify-center pt-5">

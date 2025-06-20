@@ -2,7 +2,7 @@ import { API_CDN } from "../../api/routes";
 
 export function profileHeader(userPref: {avatar: string, banner: string}) {
 	return `
-	<div class="flex flex-col max-w-[400px] lg:max-w-[1000px] mb-20 items-center justify-center space-y-2 pt-4">
+	<div id="profile-header" class="flex flex-col max-w-[400px] lg:max-w-[1000px] mb-20 items-center justify-center space-y-2 pt-4">
 	<div id="banner-div" class="relative w-[500px] lg:w-[1000px] h-64 editor-select ">
 		
 		<!-- ! BANNER  -->

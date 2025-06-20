@@ -13,11 +13,11 @@ async function renderDashboard(user: UserInfo) {
 		${navbar(user)}
 		<div class="flex flex-col h-full w-full lg:flex-row space-y-4 justify-center items-center pt-10 mb-70">
 
-			<div class="flex flex-col lg:flex-row max-w-[2000px]">
+			<div class="flex flex-col lg:flex-row max-w-[1200px]">
 
-				<div class="relative flex flex-col min-w-[350px] md:min-h-[350px] md:min-w-[700px] mx-4 p-4 space-y-4 dark:bg-zinc-800 bg-zinc-100 rounded-lg justify-center items-center
+				<div class="relative flex flex-col min-w-[350px] md:min-h-[350px] md:min-w-[700px] mx-4 p-4 space-y-4 dark:bg-[#121212] bg-zinc-100 rounded-lg justify-center items-center
 					drop-shadow-2xl">
-					
+
 					<div class="relative w-full">
 						<img src="${API_CDN.BANNER}/${user.preferences?.banner ?? 'default.webp'}" alt="Banner" 
 						class="flex w-[1000px] h-[300px] object-cover rounded-lg shadow-lg group-hover:blur-sm" />

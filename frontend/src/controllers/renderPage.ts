@@ -7,6 +7,7 @@ import profile from '../pages/Profile/Profile'
 import errorPage from '../pages/5xx'
 import game from '../pages/Game'
 import documentation from '../pages/Documentation'
+import verifyEmail from '../pages/VerifyEmail'
 
 // import welcomeYouPage from '../pages/WelcomeYou';
 // import { handleWelcomeYouPage } from '../pages/WelcomeYou';
@@ -31,6 +32,7 @@ const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
 	'login': login,
 	'register': register,
 	'documentation': documentation,
+	'verifyEmail': verifyEmail,
 };
 
 /**
@@ -53,17 +55,18 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 
 		const page_content = await Promise.resolve(rendererFunction());
 		main_container.innerHTML = page_content;
-
 		translatePage(lang);
 		if (updateHistory) {
 			addToHistory(page, updateHistory);
 		}
-
+		
 		removeLoadingScreen();
-
+		
 		fadeIn();
+
+		document.querySelector("footer")?.classList.add("hidden");
 	}
-		, 250);
+	, 250);
 }
 
 /**
@@ -89,6 +92,10 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 	const user = await getUserInfo();
 	if (user.status === "error") {
 		return renderErrorPage('401');
+	}
+
+	if (!socket) {
+		socketConnection();
 	}
 	lang = user.data!.preferences!.lang;
 	theme = user.data!.preferences!.theme;
@@ -158,6 +165,7 @@ export async function renderGame(data: any) {
 import { renderOtherProfile } from '../pages/OtherProfile'
 import { redocInit } from '../components/utils/redocInit'
 import { dispatchError } from './DispatchError'
+import { socket, socketConnection } from './Socket'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 
@@ -231,6 +239,7 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 		removeLoadingScreen();
 
 		fadeIn();
+		document.querySelector("footer")?.classList.add("hidden");
 	}
 		, 250);
 }

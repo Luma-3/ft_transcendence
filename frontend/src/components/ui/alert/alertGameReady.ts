@@ -40,3 +40,41 @@ export async function alertGameReady() {
 	if (result.dismiss === Swal.DismissReason.timer) {
 	}
 })}
+
+
+export async function alertWithTimer(title: string, message: string, timer: number = 3000) {
+
+	const customTheme = await getCustomAlertTheme(true);
+	if (!customTheme) {
+		return alertTemporary("error", "Error while getting user alert theme", 'dark');
+	}
+
+	const trad = await loadTranslation(customTheme.lang);
+	const headerMessage = trad[title] || title;
+	const text = trad[message] || message;
+	let timerInterval: number;
+	
+	Swal.fire({
+	title: headerMessage,
+	background: customTheme.bg,
+	color: customTheme.text,
+	icon: "info",
+	iconColor: customTheme.icon,
+	html: `${text}`,
+	timer: timer,
+	timerProgressBar: true,
+	didOpen: () => {
+		Swal.showLoading();
+		const timer = Swal.getPopup()!.querySelector("b");
+		timerInterval = setInterval(() => {
+		timer!.textContent = `${(Swal.getTimerLeft()! / 1000).toFixed(0)}`; 
+		}, 100);
+	},
+	willClose: () => {
+		clearInterval(timerInterval);
+	}
+	}).then((result) => {
+	/* Read more about handling dismissals below */
+	if (result.dismiss === Swal.DismissReason.timer) {
+	}
+})}

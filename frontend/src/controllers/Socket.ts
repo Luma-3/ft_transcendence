@@ -1,3 +1,4 @@
+import { alertWithTimer } from "../components/ui/alert/alertGameReady";
 import { alertPublic } from "../components/ui/alert/alertPublic";
 import { handleGameSocketMessage } from "./DispatchMsgSocket";
 import { renderPublicPage } from "./renderPage";
@@ -6,10 +7,17 @@ export let socket: WebSocket | null = null;
 const MAX_RECONNECT_TENTATIVE = 5;
 let reconnectTentative = 0;
 
-export function socketConnection() {
+function tryReconnection() {
+
+}
+
+
+
+export async function socketConnection() {
 	socket = new WebSocket('/api/ws');
 
 	socket.addEventListener("open", () => {
+		reconnectTentative = 0;
 		console.log("WebSocket connection established.");
 	});
 
@@ -32,6 +40,7 @@ export function socketConnection() {
 
 		if (reconnectTentative < MAX_RECONNECT_TENTATIVE) {
 			reconnectTentative++;
+			socket = null;
 			socketConnection();
 		} else {
 			alertPublic("WebSocket connection failed. Please log in again.", "error");
@@ -47,9 +56,8 @@ export function socketConnection() {
 		if (event.wasClean) {
 			console.log(`WebSocket closed cleanly, code=${event.code}, reason=${event.reason}`);
 		} else {
-			alertPublic(`WebSocket connection closed unexpectedly with code ${event.code}. Message: ${event.reason}. You will be redirected to the main page.`, "error");
-			setTimeout(() => { renderPublicPage("home") }, 2000);
-		}
-	});
+			alertWithTimer("WebSocket connection closed unexpectedly", `code ${event.code}. Message: ${event.reason}`).then(e =>
+				window.location.reload());
+	}});
 
 }

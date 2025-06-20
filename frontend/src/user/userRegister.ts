@@ -1,4 +1,4 @@
-import { renderPrivatePage, renderErrorPage } from '../controllers/renderPage'
+import { renderPrivatePage, renderErrorPage, renderPublicPage } from '../controllers/renderPage'
 
 import { alertPublic } from '../components/ui/alert/alertPublic';
 import { verifRegexPassword } from '../components/utils/regex';
@@ -110,5 +110,5 @@ export async function registerUser() {
 	/**
 	 * Affichage de la page de welcome avant le dashboard(car nouvel utilisateur)
 	 */
-	renderPrivatePage('dashboard');
+	renderPublicPage('verifyEmail');
 }

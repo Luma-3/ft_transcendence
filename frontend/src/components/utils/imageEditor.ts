@@ -3,7 +3,7 @@ import { getUserInfo } from '../../api/getterUser(s)';
 import { alertTemporary } from '../ui/alert/alertTemporary';
 import { loadTranslation } from '../../i18n/Translate';
 import { dataURLToBlob } from './convertImage';
-import { API_CDN, API_USER } from '../../api/routes';
+import { API_USER } from '../../api/routes';
 import { fetchApi } from '../../api/fetch';
 
 /**
@@ -29,6 +29,7 @@ function hideEditor() {
 		
 		setTimeout(() => {
 			editor.classList.add('hidden');
+			document.getElementById("profile-header")?.classList.replace("hidden", "flex")
 			for (const child of document.getElementsByClassName("editor-select") as HTMLCollectionOf<HTMLElement>) {
 				child.removeAttribute('hidden'); // Enable all editor-select inputs
 			}
@@ -91,6 +92,7 @@ export async function saveNewPicture() {
 async function initImageEditor(): Promise<ImageEditor | null> {
 
 	showEditor();
+	document.getElementById("profile-header")?.classList.replace("flex", "hidden")
 
 	const div_editor = document.getElementById('tui-image-editor-container') as HTMLDivElement;
 	if (!div_editor) {
@@ -102,7 +104,7 @@ async function initImageEditor(): Promise<ImageEditor | null> {
 		return alertTemporary("error", "Error while fetching user info", 'dark'), null;
 	}
 
-	const theme = user.data.preferences.theme;
+	const theme = user.data.preferences!.theme;
 	const headerColor = theme === 'dark' ? '#000000' : '#FFFFFF';
 	const loadButtonColor = theme === 'dark' ? '#FF8904' : '#44BBA4';
 	const backgroundColor = theme === 'dark' ? '#000000' : '#FFFFFF';
@@ -156,7 +158,7 @@ async function translateImageEditorLabel() {
 		alertTemporary("error", "Error while fetching user info", 'dark');
 		return;
 	}
-	const lang = infos.data.preferences.lang;
+	const lang = infos.data.preferences!.lang;
 	if (lang === "en") {
 		return;
 	}

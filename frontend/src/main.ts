@@ -1,7 +1,7 @@
 import { renderErrorPage, renderPrivatePage, renderPublicPage } from './controllers/renderPage'
 import { addAllEventListenOnPage } from './controllers/Handler'
 import { fetchToken } from './api/fetchToken'
-import { socketConnection } from './controllers/Socket.ts'
+import { socket, socketConnection } from './controllers/Socket.ts'
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 
@@ -26,9 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (page === 'error') {
     return renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
+  } else if (page === 'verifyEmail') {
+    return renderPublicPage('verifyEmail');
   }
-
-  socketConnection();
   const user = await fetchToken();
   if (user.status === "success") {
     if (publicPages.includes(page)) {
