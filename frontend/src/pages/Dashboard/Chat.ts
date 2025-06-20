@@ -1,4 +1,4 @@
-import { User } from '../interfaces/User';
+import { UserInfo } from '../../interfaces/User'
 
 export const myMessagesTemplate = `<div class="flex w-full rounded-lg justify-end items-center">
 	<div class="font-title dark:bg-dprimary bg-primary text-white p-2 rounded-lg">`;
@@ -6,7 +6,7 @@ export const myMessagesTemplate = `<div class="flex w-full rounded-lg justify-en
 export const otherMessagesTemplate = `<div class="flex w-full rounded-lg justify-start items-center">
 	<div class="font-title dark:bg-dsecondary bg-secondary text-zinc-600 p-2 rounded-lg">`;
 
-export function renderChat(user: User) {
+export function renderChat(user: UserInfo) {
 
 	//TODO: Handle tout les autres messages qui sont peut etre deja present dans le chat
 	return `<div class="flex flex-col w-full h-full max-h-[600px] max-w-[400px] mx-4

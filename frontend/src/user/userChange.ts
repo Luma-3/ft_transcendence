@@ -23,9 +23,7 @@ import { alertTemporary } from "../components/ui/alert/alertTemporary"
 import { loadTranslation } from "../i18n/Translate";
 import { getUserInfo } from "../api/getterUser(s)";
 import { patchUserInfo } from "../api/updater";
-import { userUpdateForm } from "../pages/Profile/updateForm";
-import { fetchApiWithNoError } from "../api/fetch";
-import { UserInfo } from "../interfaces/User";
+
 
 export async function changeUserNameEmail() {
 	
@@ -84,15 +82,4 @@ export async function changeUserNameEmail() {
 	 * et rerender de la page pour mettre a jour tout les element qui affiche le nom d'utilisateur ou l'email
 	 */
 	alertTemporary("success", trad["user-info-updated"], user.preferences!.theme);
-
-	const new_user = await fetchApiWithNoError<UserInfo>(API_USER.BASIC.INFOS + "?includePreferences=true", {
-			method: "GET",
-		});
-	if (new_user.status === "error" || !new_user.data) {
-		console.log("Error fetching updated user info:", new_user);
-		return;
-	}
-	setTimeout(() => {
-	window.location.href = "/profile";
-	}, 1000);
 }

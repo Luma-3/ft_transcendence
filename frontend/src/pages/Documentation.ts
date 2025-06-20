@@ -14,12 +14,11 @@ export default function documentation() {
 		${primaryButton({ id: 'showUserDoc', text: 'user api doc' })}
 		${primaryButton({ id: 'showUploadDoc', text: 'upload api doc' })}
 		${primaryButton({ id: 'showGameDoc', text: 'game api doc' })}
-		${primaryButton({ id: 'showPeopleDoc', text: 'people api doc' })}
 	</div>
 	</div>
 	<div class="flex justify-center items-center">
 	<div id='redoc-container' class="flex ml-4 mr-4 mt-10
-	 bg-white rounded-xl border-6 border-primary dark:border-dprimary"></div>
+	 bg-white rounded-xl border-6 border-primary dark:border-dprimary mb-40"></div>
 	 </div>
 	`;
 }

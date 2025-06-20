@@ -30,8 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const user = await fetchToken();
   if (user.status === "success") {
     if (publicPages.includes(page)) {
-      renderPrivatePage('dashboard', true);
-      return;
+      return renderPrivatePage('dashboard', true);
     }
     return renderPrivatePage(page);
   }

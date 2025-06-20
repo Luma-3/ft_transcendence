@@ -10,7 +10,7 @@ export function profileHeader(userPref: {avatar: string, banner: string}) {
 			<label for="banner-upload">
 			<input id="banner-upload" type="" accept="image/*" class="hidden " data-type="banner" />  
 					<img src="${API_CDN.BANNER}/${userPref.banner ?? 'default.webp'}" alt="Banner" 
-					class="w-full h-full object-cover rounded-lg shadow-lg group-hover:blur-sm" />
+					class=" w-full h-full object-cover rounded-lg shadow-lg group-hover:blur-sm" />
 					
 					<div class="absolute inset-0 flex items-center justify-center">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 

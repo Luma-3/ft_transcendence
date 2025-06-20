@@ -10,10 +10,10 @@ import { blockList } from "../pages/Profile/blockList";
 import { renderErrorPage } from "../controllers/renderPage";
 
 export async function handleUnfriend(target: HTMLElement) {
+	
 	const user = await getUserInfo();
 	if (!user || user.status === "error") {
-		renderErrorPage('401');
-		return;
+		return renderErrorPage('401');
 	}
 
 	const response = await fetchApi(API_USER.SOCIAL.FRIENDS + `/${target.dataset.id}`, {
@@ -23,6 +23,7 @@ export async function handleUnfriend(target: HTMLElement) {
 	if (response.status === "error") {
 		return alertTemporary("error", "issues-with-friend-removal", user.data!.preferences!.theme, true);
 	}
+	
 	alertTemporary("success", "friend-removed", user.data!.preferences!.theme, true);
 	target.parentElement?.parentElement?.parentElement?.remove();
 	document.getElementById("all-users-div")!.innerHTML = `${await allUsersList()}`;
@@ -32,8 +33,8 @@ export async function handleFriendRequest(target: HTMLElement, action: "send" | 
 
 	const user = await getUserInfo();
 	if (!user || user.status === "error") {
-		renderErrorPage('401');
-		return;
+		return renderErrorPage('401');
+		
 	}
 
 	const targetId = target.dataset.id;
@@ -43,13 +44,15 @@ export async function handleFriendRequest(target: HTMLElement, action: "send" | 
 			friendId: targetId,
 		})
 	});
+	
 	if (response.status === "error") {
-
-		(action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.data!.preferences!.theme, true) : alertTemporary("error", "issues-with-friend-acceptance", user.data!.preferences!.theme, true);
-
-		return;
+		return (action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.data!.preferences!.theme, true)
+																: alertTemporary("error", "issues-with-friend-acceptance", user.data!.preferences!.theme, true);
 	}
-	(action === "send") ? alertTemporary("success", "friend-invitation-sent", user.data!.preferences!.theme, true) : alertTemporary("success", "friend-invitation-accepted", user.data!.preferences!.theme, true);
+
+	(action === "send") ? alertTemporary("success", "friend-invitation-sent", user.data!.preferences!.theme, true) 
+											: alertTemporary("success", "friend-invitation-accepted", user.data!.preferences!.theme, true);
+	
 	target.parentElement?.remove();
 }
 
@@ -68,14 +71,19 @@ export async function sendRefuseInvitation(target: HTMLElement) {
 	if (response.status === "error") {
 		return alertTemporary("error", "issues-with-invitation-refused", user.data!.preferences!.theme, true);
 	}
+	
 	alertTemporary("success", "friend-invitation-refused", user.data!.preferences!.theme, true);
-
 	target.parentElement?.remove();
 	document.getElementById("all-users-div")!.innerHTML = `${await allUsersList()}`;
 }
 
 export async function cancelFriendInvitation(target: HTMLElement) {
+	
 	const user = await getUserInfo();
+	if (!user || user.status === "error") {
+		return renderErrorPage('401');
+	}
+
 	const response = await fetchApi(API_USER.SOCIAL.PENDING + `/${target.dataset.id}`, {
 		method: "DELETE",
 		body: JSON.stringify({})
@@ -91,10 +99,9 @@ export async function blockUser(target: HTMLElement, isBlocking: boolean) {
 	
 	const user = await getUserInfo();
 	if (!user || user.status === "error") {
-		window.location.href = "/login";
-		return;
+		return renderErrorPage('401');
 	}
-	
+
 	const blockId = target.dataset.id;
 	const response = await fetchApi(API_USER.SOCIAL.BLOCKED + `/${blockId}`, {
 		method: (isBlocking ? "DELETE" : "POST"),
@@ -111,6 +118,7 @@ export async function blockUser(target: HTMLElement, isBlocking: boolean) {
 	if (allUsersDiv) {
 		allUsersDiv.innerHTML = `${await allUsersList()}`;
 	}
+
 	const blockListDiv = document.getElementById("block-div");
 	if (blockListDiv) {
 		blockListDiv.innerHTML = `${await blockList()}`;

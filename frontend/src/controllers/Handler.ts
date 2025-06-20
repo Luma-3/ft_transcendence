@@ -10,7 +10,7 @@ import { renderBackPage } from '../controllers/renderPage'
 
 import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
-import { toggleGameStat } from '../components/utils/toggleGameStat'
+import { showGameStat, toggleGameStat } from '../components/utils/toggleGameStat'
 import { toggleTruc } from '../components/utils/toggleTruc'
 import { toggleGameSettings } from '../components/utils/toggleGameSettings'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
@@ -81,7 +81,6 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
   'showUserDoc': () => renderDocPages('/api/user/doc/json', "user"),
   'showUploadDoc': () => renderDocPages('/api/upload/doc/json', "upload"),
   'showGameDoc': () => renderDocPages('/api/game/doc/json', "game"),
-  'showPeopleDoc': () => renderDocPages('/api/people/doc/json', "people"),
   'showAuthDoc': () => renderDocPages('/api/auth/doc/json', "auth"),
 
 };
