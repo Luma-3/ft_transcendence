@@ -1,0 +1,10 @@
+{
+	"subject_2FA": "Code de connection: ",
+
+	"greeting": "Bonjour",
+  "verificationIntro": "Voici votre",
+	"verificationCode": "code de vérification",
+	"codeValadity": "Ce code est valable 10 minutes.",
+  "ignoreWarning": "Si vous n'avez pas fait cette demande, ignorez ce message.",
+  "signature": "L’équipe Transcenduck"
+}

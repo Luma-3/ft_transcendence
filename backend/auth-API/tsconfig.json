@@ -24,6 +24,6 @@
 	  "noFallthroughCasesInSwitch": true,
 	  "noUncheckedSideEffectImports": true,
 	},
-	"include": ["./src/**/*"],
+	"include": ["./src/**/*", "2FA"],
   "exclude": ["node_modules", "dist", "packages"],
 }

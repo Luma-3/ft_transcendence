@@ -9,11 +9,11 @@ export class Oauth2Controller {
     rep.redirect(authorizationUrl);
   }
 
-  static callback = async (req: FastifyRequest<{ Querystring: QueryCallbackType }>, rep: FastifyReply) => {
-    const query = req.query;
-    const { tokens } = await Oauth2Service.callback(query);
+  static callback = async (_req: FastifyRequest<{ Querystring: QueryCallbackType }>, _rep: FastifyReply) => {
+    // const query = req.query;
+    // const { tokens } = await Oauth2Service.callback(query);
 
-    rep.send({ message: "OAuth2 callback successful" });
+    // rep.send({ message: "OAuth2 callback successful" });
   }
 }
 

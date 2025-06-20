@@ -1,4 +1,4 @@
-import { ConflictError, NotFoundError, UnauthorizedError } from "@transcenduck/error";
+import { ConflictError, NotFoundError, UnauthorizedError, RetryWithError } from "@transcenduck/error";
 import { v4 as uuidV4 } from "uuid";
 import { hashPassword, comparePassword } from "../utils/bcrypt.js";
 
@@ -8,15 +8,24 @@ import { knexInstance, Knex } from "../utils/knex.js";
 import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS, userModelInstance } from "./user.model.js"
 import { preferencesModelInstance } from "../preferences/preferences.model.js";
 import { redisPub } from "../utils/redis.js";
+import {SendMailOptions} from 'nodemailer';
+import { transporter } from "../utils/mail.js";
+import { randomUUID } from "node:crypto";
 
+import fs from 'fs';
 
 async function verifyConflict(username: string, email: string) {
   const [existingUsername, existingEmail] = await Promise.all([
-    userModelInstance.findByUsername(username),
-    userModelInstance.findByEmail(email)
+    userModelInstance.findByUsername(username, undefined),
+    userModelInstance.findByEmail(email, undefined)
   ]);
   if (existingUsername) throw new ConflictError("Username already Exist");
   if (existingEmail) throw new ConflictError("Email already in use");
+}
+
+async function loadLang(language: string){
+  const trad = JSON.parse(fs.readFileSync(`./src/utils/languages/${language}.json`, 'utf8'));
+	return trad;
 }
 
 export class UserService {
@@ -43,16 +52,42 @@ export class UserService {
 
       const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
 
-      redisPub.publish("api.social.in", JSON.stringify({
-        userId: user.id,
-        action: "create",
-        payload: {
-          username: user.username
-        }
-      })).catch(console.error);
+      // Backdor for development purposes
+      // if (process.env.node_env !== 'development') {
+      UserService.sendVerificationEmail(user_obj.email, randomUUID(), data.preferences?.lang || 'en');
+      // }
       return { ...user, preferences }
     });
   }
+
+  static async confirmIdentity(token: string) {
+    // Backdor for development purposes
+    // if (process.env.node_env === 'development') {
+    //   return;
+    // }
+    const email = await redisPub.get("users.check." + token);
+    if (!email) throw new NotFoundError("Token not found or expired");
+    await userModelInstance.updateByEmail(email, { validated: true }, USER_PRIVATE_COLUMNS);
+    await redisPub.del("users.check." + token);
+  }
+  
+  static async sendVerificationEmail(email: string, data: string, language: string) {
+	const trad = await loadLang(language);
+	const mailOptions: SendMailOptions = {
+		from: 'Transcenduck <transcenduck@gmail.com>',
+		to: email,
+		subject: `${trad['subject_valid_email']}`,
+		html: `
+			<p>${trad['greeting']},</p>
+			<p>${trad['verificationIntro']} <strong>${trad['verificationLink']}</strong> :</p>
+			<a href=${process.env.URL}/users/register/${data}>cliques ici</a>
+			<p>${trad['linkValidity']}</p>
+			<p>${trad['ignoreWarning']}</p>
+			<p>${trad['signature']}</p>
+		`
+	}
+	await transporter.sendMail(mailOptions);
+}
 
   static async createUserInternal(data: UserCreateBodyInternalType) {
     await verifyConflict(data.username, data.email);
@@ -74,13 +109,6 @@ export class UserService {
 
       const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
 
-      redisPub.publish("api.social.in", JSON.stringify({
-        userId: user.id,
-        action: "create",
-        payload: {
-          username: user.username
-        }
-      })).catch(console.error);
       return { ...user, preferences }
     });
 
@@ -144,7 +172,7 @@ export class UserService {
     const user = await userModelInstance.findByID(id);
     if (!user) throw new NotFoundError("User");
 
-    const existingEmail = await userModelInstance.findByEmail(email);
+    const existingEmail = await userModelInstance.findByEmail(email, true);
     if (existingEmail) throw new ConflictError("Email already in use");
 
     const [updatedUser] = await userModelInstance.update(id, { email: email }, USER_PRIVATE_COLUMNS);
@@ -159,7 +187,7 @@ export class UserService {
     const user = await userModelInstance.findByID(id);
     if (!user) throw new NotFoundError("User");
 
-    const existingUsername = await userModelInstance.findByUsername(username);
+    const existingUsername = await userModelInstance.findByUsername(username, );
     if (existingUsername) throw new ConflictError("Username already in use");
 
     const [updatedUser] = await userModelInstance.update(id, { username: username }, USER_PRIVATE_COLUMNS);
@@ -167,9 +195,10 @@ export class UserService {
   }
 
   static async verifyCredentials(username: string, password: string): Promise<UserBaseType> {
-    const user = await userModelInstance.findByUsername(username, ['password', ...USER_PRIVATE_COLUMNS]);
+    const user = await userModelInstance.findByUsername(username, undefined, ['password', 'validated', ...USER_PRIVATE_COLUMNS]);
     if (!user) throw new UnauthorizedError("Invalid credentials");
-
+    if(user.validated == false)
+      throw new RetryWithError("User not validated, please check your email");
     const isValid = await comparePassword(password, user.password!);
     if (!isValid) throw new UnauthorizedError("Invalid credentials");
 

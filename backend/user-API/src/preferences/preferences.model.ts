@@ -1,4 +1,4 @@
-import { knexInstance, Knex } from "../utils/knex";
+import { knexInstance, Knex } from "../utils/knex.js";
 
 import { PreferencesBaseType } from './preferences.schema.js';
 

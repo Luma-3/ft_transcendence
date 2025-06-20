@@ -30,6 +30,9 @@ export const UserBase = Type.Object({
   email: Type.String({ format: 'email' }),
   google_id: Type.Optional(Type.String({ format: 'uuid' })),
   password: passwordField,
+  validated: Type.Boolean({
+    description: 'Indicates if the user has validated their email address.'
+  }),
   preferences: Type.Optional(PreferencesBase)
 });
 export type UserBaseType = Static<typeof UserBase>;
@@ -125,6 +128,15 @@ export const UserQueryGet = Type.Object({
   additionalProperties: false
 });
 export type UserQueryGetType = Static<typeof UserQueryGet>;
+
+
+export const ValidationEmailQueryGet = Type.Object({
+  u: Type.String({format: 'uuid', description: 'Token for user identification'}),
+}, {
+  additionalProperties: false
+});
+
+export type ValidationEmailQueryGetType = Static<typeof ValidationEmailQueryGet>;
 
 // User Header Schema
 // This schema is used for defining headers in API requests, such as passing a user ID in the header.

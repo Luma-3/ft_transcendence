@@ -1,0 +1,10 @@
+{
+	"subject_valid_email": "Validation de votre adresse e-mail",
+	
+	"greeting": "Bonjour",
+  "verificationIntro": "Voici votre",
+	"verificationLink": "lien de validation d'e-mail",
+	"linkValidity": "Ce lien est valable 10 minutes.",
+  "ignoreWarning": "Si vous n'avez pas fait cette demande, ignorez ce message.",
+  "signature": "L’équipe Transcenduck"
+}

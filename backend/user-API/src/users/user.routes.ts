@@ -26,6 +26,7 @@ import {
   UserUsernameUpdateBody,
   VerifyCredentials,
   UsersQueryGetAll,
+  ValidationEmailQueryGet,
 } from './user.schema.js';
 
 
@@ -46,6 +47,22 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
   }, async (req, rep) => {
     const user = await UserService.createUser(req.body);
     return rep.code(201).send({ message: 'User Created', data: user });
+  });
+
+
+  fastify.get('/users/register', {
+    schema: {
+      summary: 'Create a user',
+      description: 'Endpoint to create a user ressources and retrieve public informations',
+      tags: ['Users'],
+      querystring: ValidationEmailQueryGet,
+      response: {
+        404: NotFoundResponse
+      }
+    }
+  }, async (req, rep) => {
+    await UserService.confirmIdentity(req.query.u);
+    return rep.redirect(process.env.URL + '/login');
   });
 
   fastify.post('/internal/users', {

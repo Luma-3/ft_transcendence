@@ -2,7 +2,7 @@ import { google } from 'googleapis';
 import crypto from 'crypto';
 import { QueryCallbackType } from './oauth2.schema';
 
-import { SessionService } from '../session/session.service';
+// import { SessionService } from '../session/session.service';
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,

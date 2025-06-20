@@ -42,14 +42,28 @@ export class UserModel {
       .first();
   }
 
-  async findByUsername(username: string, columns = USER_PUBLIC_COLUMNS) {
+  async findByUsername(username: string, validated?:boolean, columns = USER_PUBLIC_COLUMNS) {
+    if (validated !== undefined) {
+      return (await knexInstance<UserBaseType, UserBaseType>('users')
+        .select(columns)
+        .where('username', username)
+        .andWhere('validated', validated)
+        .first()) as UserBaseType | undefined;
+    }
     return (await knexInstance<UserBaseType, UserBaseType>('users')
       .select(columns)
       .where('username', username)
       .first()) as UserBaseType | undefined;
   }
 
-  async findByEmail(email: string, columns = USER_PRIVATE_COLUMNS) {
+  async findByEmail(email: string, validated?:boolean, columns = USER_PRIVATE_COLUMNS) {
+  if (validated !== undefined) {
+      return await knexInstance<UserBaseType>('users')
+        .select(columns)
+        .where('email', email)
+        .andWhere('validated', validated)
+        .first();
+    }
     return await knexInstance<UserBaseType>('users')
       .select(columns)
       .where('email', email)
@@ -85,6 +99,15 @@ export class UserModel {
   ) {
     return await knexInstance<UserBaseType>('users')
       .where('id', id)
+      .update(data, columns);
+  } 
+  async updateByEmail(
+    email: string,
+    data: Partial<Omit<UserBaseType, 'id' | 'created_at'>>,
+    columns = USER_PRIVATE_COLUMNS
+  ) {
+    return await knexInstance<UserBaseType>('users')
+      .where('email', email)
       .update(data, columns);
   }
 }

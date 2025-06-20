@@ -8,6 +8,7 @@ export async function up(knex: Knex): Promise<void> {
     t.string("username", 32).notNullable().unique();
     t.string("email", 255).notNullable().unique();
     t.text("password").notNullable();
+    t.boolean("validated").defaultTo(false);
     t.timestamp("created_at");
   });
 

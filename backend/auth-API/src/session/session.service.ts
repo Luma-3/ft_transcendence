@@ -1,4 +1,4 @@
-import { UnauthorizedError } from '@transcenduck/error'
+import { UnauthorizedError,  RetryWithError} from '@transcenduck/error'
 import crypto from 'crypto';
 
 import { generateToken } from "../utils/jwt.js";
@@ -58,6 +58,9 @@ async function verifyCredentials(username: string, password: string): Promise<{ 
     body: JSON.stringify({ username, password }),
   })
   if (!response.ok) {
+    if (response.status ==449) {
+      throw new RetryWithError('your are not validated, please check your email');
+    }
     throw new UnauthorizedError();
   }
 
@@ -67,11 +70,14 @@ async function verifyCredentials(username: string, password: string): Promise<{ 
 }
 
 export class SessionService {
-  static async login(username: string, password?: string, clientInfo: clientInfo): Promise<{ accessToken: string; refreshToken: string }> {
+  static async login(username: string, password?: string, clientInfo?: clientInfo): Promise<{ accessToken: string; refreshToken: string }> {
     let user;
 
     if (password !== undefined) {
       user = await verifyCredentials(username, password);
+    }
+    if (!user) {
+      throw new UnauthorizedError('Invalid username or password');
     }
     console.log("USER Data: ", user);
 
@@ -82,9 +88,9 @@ export class SessionService {
     const refreshToken = await createRefreshToken({
       user_id: user.id,
       family_id: family_id,
-      device_id: clientInfo.device_id,
-      ip_address: clientInfo.ip_address,
-      user_agent: clientInfo.user_agent,
+      device_id: clientInfo!.device_id,
+      ip_address: clientInfo!.ip_address,
+      user_agent: clientInfo!.user_agent,
     })
 
     return { accessToken, refreshToken };
