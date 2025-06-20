@@ -47,6 +47,14 @@ class RoomManager {
     return this.playersInRooms.get(player.user_id);
   }
 
+  public getRoomById(room_id: string) {
+    const room = this.rooms.get(room_id);
+    if (!room) {
+      throw new NotFoundError('room');
+    }
+    return room;
+  }
+
   public startRoom(room_id: string) {
     const room = this.rooms.get(room_id);
     if (!room) {

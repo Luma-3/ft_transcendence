@@ -31,6 +31,7 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
 			socket.on('message', (raw: string) => {
 				try {
 					const { type, payload } = JSON.parse(raw);
+					console.log(`[WS] client ${user_id} -> ${type}`, payload);
 					redisPub.publish(`ws.${type}.in`, JSON.stringify({
 						user_id: socket.user_id,
 						payload: payload
@@ -56,13 +57,16 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
 	redisSub.pSubscribe('ws.*.out', (message, channel) => {
 		try {
 			const { user_id, payload } = JSON.parse(message);
-			console.log(`[WS][Redis] <- ${channel} -> client ${clientId}`);
+			console.log(`[WS][Redis] <- ${channel} -> client ${user_id}`);
 			const socket = fastify.ws_clients.get(user_id);
 			if (socket) {
 				socket.send(JSON.stringify({
 					type: channel.split('.')[1],
 					payload: payload
 				}));
+			}
+			else {
+				console.warn(`[WS][Redis] No socket found for user_id ${user_id} on channel ${channel}`);
 			}
 			// TODO faire un truc ici pour gerer l'erreur si on trouve pas le socket du gars
 		}

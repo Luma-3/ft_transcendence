@@ -2,7 +2,7 @@ import { alert } from "../components/ui/alert/alert";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
 
 import { fetchToken } from "../api/fetchToken";
-import { getUserInfo } from "../api/getterUser(s)";
+import { getUserPreferences } from "../api/getterUser(s)";
 import { fetchApi } from "../api/fetch";
 import { API_GAME } from "../api/routes";
 import { socket } from "../controllers/Socket";
@@ -48,7 +48,6 @@ async function sendDataToServer(gameFormInfo: GameFormInfo, userTheme: string) {
 			game_type: gameFormInfo.typeGame,
 		}),
 	});
-	// player2: gameFormInfo.gameNameOpponent,
 	if (!response || response.status === "error" || !response.data) {
 		return alertTemporary("error", "game-creation-failed", userTheme, true);
 	}
@@ -74,8 +73,7 @@ export async function createGame() {
 	 */
 	const token = await fetchToken();
 	if (token.status === "error") {
-		renderErrorPage('401')
-		return;
+		return renderErrorPage('401')
 	}
 
 	/**
@@ -92,7 +90,7 @@ export async function createGame() {
 	}
 
 	let player2;
-	
+
 	switch (gameType.id) {
 
 		case "localpvp":
@@ -118,12 +116,13 @@ export async function createGame() {
 	const gameFormInfo = {
 		gameId: "",
 		gameName: player1,
-		typeGame : gameType.id,
+		typeGame: gameType.id,
 		gameNameOpponent: (player2) ? player2 : "",
 	}
 
-	await sendDataToServer(gameFormInfo, response.data.preferences?.theme || "dark");
-	initGame(gameFormInfo);
+	const userPref = await getUserPreferences()
+	await sendDataToServer(gameFormInfo, userPref.data?.theme || 'dark');
+	// initGame(gameFormInfo);
 	gameFrontInfo = {
 		gameId: gameFormInfo.gameId,
 		gameType: gameFormInfo.typeGame

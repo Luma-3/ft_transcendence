@@ -25,14 +25,14 @@ function verifValueForm(userData: Record<string, string>) {
 	/**
 	 * Verification si les mots de passe sont identiques
 	 */
-	if (userData.password !== userData.passwordVerif) { 
+	if (userData.password !== userData.passwordVerif) {
 		return error("passwords-dont-match"), false;
 	}
 	return true;
 }
 
 export async function registerUser() {
-	
+
 	const form = document.forms.namedItem("registerForm") as HTMLFormElement;
 	if (!form) { return; }
 
@@ -43,17 +43,17 @@ export async function registerUser() {
 	const lang = sessionStorage.getItem('lang') || 'en';
 	sessionStorage.removeItem('lang');
 
-	
+
 	const formData = new FormData(form);
 	const formEntry = Object.fromEntries(formData) as Record<string, string>;
-	
+
 	/**
 	 * Verification des valeurs du formulaire directement avec les entrees
 	 */
 	if (verifValueForm(formEntry) === false || verifRegexPassword(formEntry.password) === false) {
 		return;
 	}
-	
+
 	/**
 	 * Chargement des traductions dans la langue selectionne
 	 * Chargement des donnees utilisateur pour les fetchs
@@ -90,7 +90,7 @@ export async function registerUser() {
 	/**
 	 * Creation de la session
 	 */
-	const sessionData = { username: userData.username, password:userData.password };
+	const sessionData = { username: userData.username, password: userData.password };
 	const responseSession = await fetchApiWithNoCriticError(API_SESSION.CREATE, {
 		method: "POST",
 		body: JSON.stringify(sessionData)
@@ -106,9 +106,9 @@ export async function registerUser() {
 	 * entre le client et le serveur qui ont besoin d'etre en temps reel
 	 */
 	socketConnection();
-	
+
 	/**
 	 * Affichage de la page de welcome avant le dashboard(car nouvel utilisateur)
 	 */
-	renderPrivatePage('WelcomeYou');
+	renderPrivatePage('dashboard');
 }

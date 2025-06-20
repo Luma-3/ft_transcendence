@@ -16,13 +16,13 @@ const knownErrors = new Map<string, string>([
 ]);
 
 
-export function dispatchError(code: string) {
+export function dispatchError(code: string, messageServer: string) {
 	switch (code) {
 		case '404':
 			return notFoundPage();
 		case '401':
 			return window.location.href = '/login';
-		default: 
-			return errorPage(code, knownErrors.get(code) || "Unknown error");
+		default:
+			return errorPage(code, knownErrors.get(code) || "Unknown error", messageServer);
 	}
 }

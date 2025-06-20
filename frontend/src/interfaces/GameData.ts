@@ -1,3 +1,9 @@
+export interface IRoomInfos {
+  room_id: string,
+  game_type: string,
+  players: IPlayer[],
+}
+
 export interface GameData {
   paddle1: {
     y: number;
@@ -27,10 +33,10 @@ export interface RoomData {
   roomId: string;
   gameData?: GameData;
   typeGame: string;
-  players: player[];
+  players: IPlayer[];
 }
 
-export interface player {
+export interface IPlayer {
   playerId: string;
   gameName: string;
   ready: boolean;

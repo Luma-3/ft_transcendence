@@ -43,6 +43,7 @@ import { gameType } from './room.schema.js';
  */
 
 import { roomManagerInstance } from '../game/RoomManager.js';
+import { handleEvent } from './handleEvent.js';
 
 export class RoomService {
 
@@ -55,6 +56,7 @@ export class RoomService {
 			roomManagerInstance.joinRoom(player, room_id);
 		}
 		roomManagerInstance.startRoom(room_id);
+		handleEvent(); // Start the event handler
 		return room_id;
 	}
 
@@ -68,6 +70,11 @@ export class RoomService {
 			throw new ForbiddenError("Player isn't in a Room");
 		}
 		roomManagerInstance.leaveRoom(player, room.id);
+	}
+
+	static getRoomById(room_id: string) {
+		const room = roomManagerInstance.getRoomById(room_id);
+		return room;
 	}
 }
 

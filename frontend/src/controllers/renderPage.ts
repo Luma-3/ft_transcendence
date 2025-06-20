@@ -50,7 +50,7 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 		if (!rendererFunction) {
 			return renderErrorPage('404');
 		}
-		
+
 		const page_content = await Promise.resolve(rendererFunction());
 		main_container.innerHTML = page_content;
 
@@ -94,9 +94,9 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 	theme = user.data!.preferences!.theme;
 
 	fadeOut();
-	
+
 	setTimeout(async () => {
-		
+
 		const main_container = document.querySelector<HTMLDivElement>('#app')!
 		const rendererFunction = rendererPrivatePage[page];
 		if (!rendererFunction) {
@@ -122,24 +122,24 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 	}, 250);
 }
 
-export async function renderGame(roomData: RoomData) {
+export async function renderGame(data: any) {
 
-	
 	let lang = 'en';
 	let theme = 'dark';
-	
+
 	const user = await getUserInfo();
 	if (user.status === "error" || !user.data) {
 		return renderErrorPage('401');
 	}
-		lang = user.data.preferences!.lang;
-		theme = user.data.preferences!.theme;
+
+	lang = user.data.preferences!.lang;
+	theme = user.data.preferences!.theme;
 
 	fadeOut();
-	
+
 	setTimeout(async () => {
 		const main_container = document.querySelector<HTMLDivElement>('#app')!
-		const newContainer = await game(roomData.roomId, user.data!);
+		const newContainer = await game(data.roomId, user.data!);
 		if (!newContainer) {
 			return;
 		}
@@ -166,14 +166,14 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 	let theme = 'dark';
 	let response;
 	try {
-		[ , response] = await Promise.all ([
+		[, response] = await Promise.all([
 			fetchToken(),
 			getUserInfo()
 		])
 		lang = response.data!.preferences!.lang;
 		theme = response.data!.preferences!.theme;
-	
-	} catch (error){
+
+	} catch (error) {
 		return renderErrorPage('401');
 	}
 
@@ -182,7 +182,7 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 	setTimeout(async () => {
 
 		const main_container = document.querySelector<HTMLDivElement>('#app')!
-		
+
 		const newContainer = await renderOtherProfile(target);
 		if (!newContainer) {
 			return;
@@ -203,27 +203,27 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 /**
  * Render des pages d'erreur
  */
-export async function renderErrorPage(code: string) {
+export async function renderErrorPage(code: string, messageServer?: string) {
 
 	const main_container = document.querySelector<HTMLDivElement>('#app')!
 
 	let lang = 'en';
 	let theme = 'dark';
-	
+
 	const userPreferences = await getUserPreferences();
-	if (userPreferences.status === "success" ) {
+	if (userPreferences.status === "success") {
 		lang = userPreferences.data!.lang;
 		theme = userPreferences.data!.theme;
 	}
-	
+
 	setupColorTheme(theme);
 	fadeOut();
 
 	setTimeout(async () => {
-		const page_content = dispatchError(code);
+		const page_content = dispatchError(code, messageServer || '');
 		// const page_content = rendererFunction(code, message);
 
-		main_container.innerHTML = page_content || errorPage(code);
+		main_container.innerHTML = page_content;
 		translatePage(lang);
 
 		addToHistory(code, false);
@@ -235,17 +235,18 @@ export async function renderErrorPage(code: string) {
 		, 250);
 }
 
-const logoDoc: { [key: string]: string } = {'user': '/images/duckHandsUp.png',
-	 'upload': '/images/duckUpload.png',
-	 'game': '/images/dashboard.png',
-	 'auth': '/images/duckPolice.png',
+const logoDoc: { [key: string]: string } = {
+	'user': '/images/duckHandsUp.png',
+	'upload': '/images/duckUpload.png',
+	'game': '/images/dashboard.png',
+	'auth': '/images/duckPolice.png',
 };
 
 export async function renderDocPages(page: string, index_logo: string) {
-	
+
 	const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
 	redoc_container.innerHTML = '';
-	 fetch(`${page}`)
+	fetch(`${page}`)
 		.then(res => res.json())
 		.then(spec => {
 			spec.info['x-logo'] = {
@@ -253,8 +254,8 @@ export async function renderDocPages(page: string, index_logo: string) {
 				backgroundColor: '#FFFFFF',
 				altText: 'Logo de l\'API',
 			};
-		redocInit(spec, redoc_container);
-	});
+			redocInit(spec, redoc_container);
+		});
 }
 
 /**

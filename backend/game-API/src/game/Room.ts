@@ -1,13 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Pong } from './Pong.js';
 import { gameType } from '../room/room.schema.js';
-import { SendReady } from '../room/handleEvent.js';
+import { SendRoomReady } from '../room/handleEvent.js';
+
 
 type StatusType = 'waiting' | 'roomReady' | 'playersReady' | 'playing' | 'finished';
 
 export interface IPlayer {
 	user_id: string,
 	player_name: string,
+	ready: boolean
 }
 
 interface IGameInfos {
@@ -34,7 +36,7 @@ export class Room {
 	// private readonly name: string;
 	private readonly gameType: gameType;
 
-	private players: IPlayer[] = [];
+	public players: IPlayer[] = [];
 	private status: StatusType = 'waiting';
 	private readonly pong: Pong = new Pong; // TODO : Go to FACTORY Sys
 	
@@ -85,7 +87,7 @@ export class Room {
 		// this.pong = new Pong()
 		this.pong.start();
 		this.status = 'playing';
-		SendReady(this.id);
+		SendRoomReady(this.id, this.players[0].user_id);
   }
 
 	changeStatus(status: StatusType) {
@@ -99,7 +101,16 @@ export class Room {
 	 */
   isJoinable(): boolean { return (this.status === 'waiting' && this.nbPlayers() < MAX_PLAYER); }
 
-	// TODO GET for HTTP Room Info
+
+	toJSON() {
+		return {
+			id: this.id,
+			game_type: this.gameType,
+			players: this.players,
+			status: this.status,
+		};
+	}
+
 }
 	
 	/**

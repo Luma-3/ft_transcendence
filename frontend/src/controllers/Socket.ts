@@ -12,10 +12,10 @@ export function socketConnection() {
 	socket.addEventListener("open", () => {
 		console.log("WebSocket connection established.");
 	});
-	
+
 	socket.addEventListener("message", (e) => {
 		const data = JSON.parse(e.data).payload;
-		
+
 		const type = JSON.parse(e.data).type;
 		switch (type) {
 			case 'game':
@@ -39,8 +39,8 @@ export function socketConnection() {
 			localStorage.removeItem('refreshToken');
 			reconnectTentative = 0;
 			socket = null;
-			setTimeout(() => {window.location.href = "/login";}, 1000);
-			}
+			setTimeout(() => { window.location.href = "/login"; }, 1000);
+		}
 	});
 
 	socket.addEventListener('close', (event) => {

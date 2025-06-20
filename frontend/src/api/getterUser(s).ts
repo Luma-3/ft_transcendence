@@ -29,7 +29,7 @@ export async function getBlockedUsers(): Promise<IApiResponse<UserInPeople[]>> {
 
 export async function getOtherUserInfo(id: string): Promise<IApiResponse<UserInfo>> {
 	const response = await fetchApi<UserInfo>(API_USER.BASIC.BASIC + `/${id}?includePreferences=true`);
-	return response;	
+	return response;
 }
 
 export async function getAllUsers(blocked: ("you" | "another" | "all" | "none") = "none", friends: boolean = false, hydrate: boolean = true): Promise<IApiResponse<UserInPeople[]>> {
@@ -48,7 +48,7 @@ export async function getFriends() {
 }
 
 export async function getPending(params: "sender" | "receiver" = "sender") {
-	const response = await fetchApi< UserInPeople[]>(API_USER.SOCIAL.PENDING + `?action=${params}`);
+	const response = await fetchApi<UserInPeople[]>(API_USER.SOCIAL.PENDING + `?action=${params}`);
 	return response;
 }
 
@@ -57,11 +57,9 @@ export async function getSearchUsers(q: string, page: number = 1, limit: number 
 	return response;
 }
 
-//TODO: GEt vraiment juste les preferences de l'utilisateur
 export async function getUserPreferences(): Promise<IApiResponse<UserPreferences>> {
 	const response = await fetchApiWithNoError<UserPreferences>(API_USER.BASIC.ONLY_PREFERENCES, {
 		method: "GET",
 	});
-	console.log("getUserPreferences response", response);
 	return response;
 }
