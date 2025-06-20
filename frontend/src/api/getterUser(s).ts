@@ -1,8 +1,9 @@
-import { fetchApi } from './fetch';
-import { OtherUser, UserInfo } from '../interfaces/User';
-import { UserInPeople } from '../interfaces/PeopleInterface';
+import { fetchApi, fetchApiWithNoError } from './fetch';
+import { OtherUser, UserInfo, UserPreferences } from '../interfaces/User';
+import { UserInPeople, UserSearchResult } from '../interfaces/PeopleInterface';
 import { IApiResponse } from '../interfaces/IApiResponse';
-import { API_PEOPLE, API_USER } from './routes';
+import { API_USER } from './routes';
+import { fetchToken } from './fetchToken';
 
 /**
  * Getter for the current user's information.
@@ -10,33 +11,57 @@ import { API_PEOPLE, API_USER } from './routes';
  */
 export async function getUserInfo(): Promise<IApiResponse<UserInfo>> {
 
-	return await fetchApi<UserInfo>(API_USER.BASIC.INFOS + "?includePreferences=true", {
+
+	const token = await fetchToken();
+	if (token.status === "error") {
+		return { status: "error", message: token.message!, details: token.details };
+	}
+
+	return await fetchApiWithNoError<UserInfo>(API_USER.BASIC.INFOS + "?includePreferences=true", {
 		method: "GET",
 	});
 }
 
+export async function getBlockedUsers(): Promise<IApiResponse<UserInPeople[]>> {
+	const response = await fetchApi<UserInPeople[]>(API_USER.SOCIAL.BLOCKED + "?hydrate=true");
+	return response;
+}
+
 export async function getOtherUserInfo(id: string): Promise<IApiResponse<UserInfo>> {
-	console.log("getOtherUserInfo called with id:", id);
 	const response = await fetchApi<UserInfo>(API_USER.BASIC.BASIC + `/${id}?includePreferences=true`);
-	console.log("Response from getOtherUserInfo:", response);
+	return response;	
+}
+
+export async function getAllUsers(blocked: ("you" | "another" | "all" | "none") = "none", friends: boolean = false, hydrate: boolean = true): Promise<IApiResponse<UserInPeople[]>> {
+	const response = await fetchApi<UserInfo[]>(API_USER.BASIC.BASIC + `?blocked=${blocked}&friends=${friends}&hydrate=${hydrate}`);
 	return response;
 }
 
-export async function getAllUsers(): Promise<IApiResponse<OtherUser[]>> {
-	const response = await fetchApi<OtherUser[]>(API_PEOPLE.ALL);
-	return response;
-}
-
-export async function getUsersList(value: string) {
-	const response = await fetchApi<OtherUser[]>(API_PEOPLE.SEARCH + "?search=" + value);
-	return response.data!;
-}
+// export async function getUsersList(value: string) {
+// 	const response = await fetchApi<OtherUser[]>(API_PEOPLE.SEARCH + "?search=" + value);
+// 	return response.data!;
+// }
 
 export async function getFriends() {
-	const response = await fetchApi<{
-		friends: UserInPeople[];
-		blocked: UserInPeople[];
-		pending: (UserInPeople&{status: string})[];
-	}>(API_PEOPLE.SELF);
+	const response = await fetchApi<UserInPeople[]>(API_USER.SOCIAL.FRIENDS);
+	return response;
+}
+
+export async function getPending(params: "sender" | "receiver" = "sender") {
+	const response = await fetchApi< UserInPeople[]>(API_USER.SOCIAL.PENDING + `?action=${params}`);
+	return response;
+}
+
+export async function getSearchUsers(q: string, page: number = 1, limit: number = 10, hydrate: boolean = true): Promise<IApiResponse<UserSearchResult>> {
+	const response = await fetchApi<UserSearchResult>(API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}`);
+	return response;
+}
+
+//TODO: GEt vraiment juste les preferences de l'utilisateur
+export async function getUserPreferences(): Promise<IApiResponse<UserPreferences>> {
+	const response = await fetchApiWithNoError<UserPreferences>(API_USER.BASIC.ONLY_PREFERENCES, {
+		method: "GET",
+	});
+	console.log("getUserPreferences response", response);
 	return response;
 }

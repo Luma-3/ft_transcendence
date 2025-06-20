@@ -1,4 +1,4 @@
-import { renderPrivatePage, renderPublicPage } from './controllers/renderPage'
+import { renderErrorPage, renderPrivatePage, renderPublicPage } from './controllers/renderPage'
 import { addAllEventListenOnPage } from './controllers/Handler'
 import { fetchToken } from './api/fetchToken'
 import { socketConnection } from './controllers/Socket.ts'
@@ -23,15 +23,18 @@ const publicPages = ['home', 'login', 'register'];
 document.addEventListener('DOMContentLoaded', async () => {
 
   const page = window.location.pathname.substring(1) || 'home'
-  socketConnection();
-  // const user = await fetchToken();
-  // if (user.status === "success") {
-  //   if (publicPages.includes(page)) {
-  //     renderPrivatePage('dashboard', true);
-  //     return;
-  //   }
-  //   return renderPrivatePage(page);
-  // }
+  
+  if (page === 'error') {
+    return renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
+  }
+  
+  const user = await fetchToken();
+  if (user.status === "success") {
+    if (publicPages.includes(page)) {
+      return renderPrivatePage('dashboard', true);
+    }
+    return renderPrivatePage(page);
+  }
   return renderPublicPage(page);
 
 });

@@ -28,18 +28,19 @@ export function socketConnection() {
 
 	socket.addEventListener('error', () => {
 
-		alertPublic("WebSocket connection error. Trying to reconnect...", "error");
+		alertPublic("WebSocket connection error. Trying to reconnect... Try " + reconnectTentative + " of " + MAX_RECONNECT_TENTATIVE, "error");
 
 		if (reconnectTentative < MAX_RECONNECT_TENTATIVE) {
 			reconnectTentative++;
 			socketConnection();
 		} else {
-			alertPublic("Failed to reconnect after multiple attempts. You will be redirected to the home page.", "error");
+			alertPublic("WebSocket connection failed. Please log in again.", "error");
+			localStorage.removeItem('accessToken');
+			localStorage.removeItem('refreshToken');
 			reconnectTentative = 0;
 			socket = null;
-			renderPublicPage("home");
-			//TODO: Delete les cookies
-		}
+			setTimeout(() => {window.location.href = "/login";}, 1000);
+			}
 	});
 
 	socket.addEventListener('close', (event) => {

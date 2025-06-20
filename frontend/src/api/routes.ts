@@ -2,6 +2,7 @@ const API_URL = "https://localhost:5173/api";
 
 const SERVICES = {
   USER: `${API_URL}/user/users`,
+  USER_ROOT: `${API_URL}/user`,
   SESSION: `${API_URL}/auth/session`,
   CDN: `/api/uploads`,
   GAME: `${API_URL}/game`,
@@ -16,6 +17,7 @@ export const API_USER = {
     DELETE: `${SERVICES.USER}/me`,
     INFOS: `${SERVICES.USER}/me`,
     PREFERENCES: `${SERVICES.USER}/me?includePreferences=true`,
+    ONLY_PREFERENCES: `${SERVICES.USER}/me/preferences`,
   },
   UPDATE: {
     PREF: {
@@ -26,17 +28,23 @@ export const API_USER = {
     PASSWORD: `${SERVICES.USER}/me/password`,
     EMAIL: `${SERVICES.USER}/me/email`,
     USERNAME: `${SERVICES.USER}/me/username`,
-  }
+  },
+  SOCIAL: {
+    FRIENDS: `${SERVICES.USER_ROOT}/friends`,
+    BLOCKED: `${SERVICES.USER_ROOT}/blocked`,
+    PENDING: `${SERVICES.USER_ROOT}/pending`,
+  },
+  SEARCH: `${SERVICES.USER_ROOT}/search`, // ?q=inputValue&page=1&limit=10&hydrate=true
 }
 
-export const API_PEOPLE = {
-  BLOCKED: `${SERVICES.PEOPLE}/blocked`,
-  FRIENDS: `${SERVICES.PEOPLE}/friends`,
-  PENDING: `${SERVICES.PEOPLE}/pending`,
-  SEARCH: `${SERVICES.PEOPLE}/`,  // ?search=inputValue
-  ALL: `${SERVICES.PEOPLE}/all`,
-  SELF: `${SERVICES.PEOPLE}/all/self`
-};
+// export const API_PEOPLE = {
+//   BLOCKED: `${SERVICES.PEOPLE}/blocked`,
+//   FRIENDS: `${SERVICES.PEOPLE}/friends`,
+//   PENDING: `${SERVICES.PEOPLE}/pending`,
+//   SEARCH: `${SERVICES.PEOPLE}/`,  // ?search=inputValue
+//   ALL: `${SERVICES.PEOPLE}/all`,
+//   SELF: `${SERVICES.PEOPLE}/all/self`
+// };
 
 export const API_SESSION = {
 

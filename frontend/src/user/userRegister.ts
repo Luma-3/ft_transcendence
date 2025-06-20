@@ -5,9 +5,9 @@ import { verifRegexPassword } from '../components/utils/regex';
 import { loadTranslation } from '../i18n/Translate';
 
 import { API_USER, API_SESSION } from '../api/routes';
+import { fetchApiWithNoError as fetchApiWithNoCriticError } from '../api/fetch';
 
 import { socketConnection } from '../controllers/Socket';
-import { fetchApi } from '../api/fetch';
 
 function error(message: string) {
 	alertPublic(message, "error");
@@ -19,8 +19,9 @@ function verifValueForm(userData: Record<string, string>) {
 	 * Verification si le formulaire est pas corrompu
 	 */
 	if (!userData.username || !userData.password || !userData.passwordVerif) {
-		return renderErrorPage('400','400', "bad-request"), false;
+		return renderErrorPage('401');
 	}
+
 	/**
 	 * Verification si les mots de passe sont identiques
 	 */
@@ -33,7 +34,6 @@ function verifValueForm(userData: Record<string, string>) {
 export async function registerUser() {
 	
 	const form = document.forms.namedItem("registerForm") as HTMLFormElement;
-	
 	if (!form) { return; }
 
 	/**
@@ -78,10 +78,10 @@ export async function registerUser() {
 	/**
 	 * Creation de l'utilisateur
 	 */
-	const response = await fetchApi(API_USER.BASIC.REGISTER, {
+	const response = await fetchApiWithNoCriticError(API_USER.BASIC.REGISTER, {
 		method: 'POST',
 		body: JSON.stringify(userData)
-	}, false);
+	});
 	if (response.status !== "success") {
 		const errorMessage = trad[response.message] || response.message;
 		return error(errorMessage)
@@ -91,10 +91,10 @@ export async function registerUser() {
 	 * Creation de la session
 	 */
 	const sessionData = { username: userData.username, password:userData.password };
-	const responseSession = await fetchApi(API_SESSION.CREATE, {
+	const responseSession = await fetchApiWithNoCriticError(API_SESSION.CREATE, {
 		method: "POST",
 		body: JSON.stringify(sessionData)
-	}, false);
+	});
 	if (responseSession.status !== "success") {
 		const errorMessage = trad[responseSession.message] || responseSession.message;
 		return error(errorMessage)

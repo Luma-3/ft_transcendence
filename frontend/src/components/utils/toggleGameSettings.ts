@@ -5,7 +5,6 @@
  */
 export function toggleGameSettings(inputValue: DOMStringMap) {
 	
-	console.log("toggleGameSettings", inputValue);
 	const type = inputValue.gametype;
 	if (!type) {
 		return;

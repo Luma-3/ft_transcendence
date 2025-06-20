@@ -1,6 +1,14 @@
 
 export interface UserInPeople { 
-	bloked: boolean;
-	user_id: string;
-	username: string;
+	id: string;
+	username?: string;
+	avatar?: string;
+	banner?: string;
+}
+
+export interface UserSearchResult {
+	page: number;
+	limit: number;
+	total: number;
+	users: UserInPeople[];
 }

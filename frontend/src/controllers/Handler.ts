@@ -10,7 +10,7 @@ import { renderBackPage } from '../controllers/renderPage'
 
 import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
-import { toggleGameStat } from '../components/utils/toggleGameStat'
+import { showGameStat, toggleGameStat } from '../components/utils/toggleGameStat'
 import { toggleTruc } from '../components/utils/toggleTruc'
 import { toggleGameSettings } from '../components/utils/toggleGameSettings'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
@@ -22,7 +22,7 @@ import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 
 import { createGame } from '../game/gameCreation'
-import { blockUser, handleFriendRequest, sendRefuseInvitation } from '../social/userSocial'
+import { blockUser, cancelFriendInvitation, handleFriendRequest, handleUnfriend, sendRefuseInvitation } from '../social/userSocial'
 import { addNewMessage } from '../chat/newMessage'
 import { renderOtherProfilePage } from '../controllers/renderPage'
 
@@ -49,7 +49,10 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
   'change-password': () => changeUserPassword(),
   'add-friend': () => handleFriendRequest(event?.target as HTMLElement, "send"),
   'accept-friend': () => handleFriendRequest(event?.target as HTMLElement, "accept"),
-  'block-user': () => blockUser(event?.target as HTMLElement),
+  'unfriend-user': () => handleUnfriend(event?.target as HTMLElement),
+  'unblock-user': () => blockUser(event?.target as HTMLElement, true),
+  'block-user': () => blockUser(event?.target as HTMLElement, false),
+  'cancel-invitation': () => cancelFriendInvitation(event?.target as HTMLElement),
   'refuse-invitation': () => sendRefuseInvitation(event?.target as HTMLElement),
 
   // * ---- Image Editor  ---- */
@@ -78,7 +81,6 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
   'showUserDoc': () => renderDocPages('/api/user/doc/json', "user"),
   'showUploadDoc': () => renderDocPages('/api/upload/doc/json', "upload"),
   'showGameDoc': () => renderDocPages('/api/game/doc/json', "game"),
-  'showPeopleDoc': () => renderDocPages('/api/people/doc/json', "people"),
   'showAuthDoc': () => renderDocPages('/api/auth/doc/json', "auth"),
 
 };
@@ -123,7 +125,6 @@ export function addAllEventListenOnPage(container: HTMLDivElement) {
     const target = event.target as HTMLElement;
 
     hideToggleElements(target);
-    console.log("target", target.id);
     if (target.id in clickEvent) {
       clickEvent[target.id](event);
     }

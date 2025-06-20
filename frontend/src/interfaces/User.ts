@@ -1,9 +1,10 @@
+
 export interface UserInfo {
 	id: string;
 	username: string;
-	created_at: string;
-	email: string;
-	preferences: UserPreferences;
+	created_at?: string;
+	email?: string;
+	preferences?: UserPreferences;
 }
 
 export interface UserPreferences {

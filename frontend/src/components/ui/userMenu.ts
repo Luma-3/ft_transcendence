@@ -1,5 +1,6 @@
 import { UserInfo } from '../../interfaces/User';
 import { API_CDN } from '../../api/routes';
+import { UserInPeople } from '../../interfaces/PeopleInterface';
 
 let userNotification: boolean = false;
 
@@ -7,13 +8,19 @@ let userNotification: boolean = false;
  * Partie du menu situe en haut avec le nom de l'utilisateur et la photo de profil
  */
 export function headerUserMenu(user: UserInfo) {
-
-	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.preferences.banner}')">
+	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.preferences!.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
-					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.preferences.avatar}" alt="User profile picture">
+					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.preferences!.avatar}" alt="User profile picture">
 				</div>
 				</div>`;
-			}
+}
+export function headerOtherUserMenu(user: UserInPeople) {
+	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.banner}')">
+	<div class="relative w-14 h-14 flex-shrink-0">
+					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.avatar}" alt="User profile picture">
+				</div>
+				</div>`;
+}
 // <span class="p-1 block bg-primary dark:bg-dprimary shadow-md rounded-lg text-responsive-size font-title overflow-hidden truncate
 //  text-tertiary dark:text-dsecondary">${user.username}</span>
 
@@ -23,9 +30,11 @@ export function headerUserMenu(user: UserInfo) {
 function UserMenuOptions() {
 
 	const listOption = [
-		{ value: "profile", icon: "M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" },
-		{ value: "stats", icon: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" },
-		{ value: "settings", icon: "M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" },
+		{ value: "profile", icon: `<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>` },
+		{ value: "stats", icon: `<path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/>` },
+		{ value: "settings", icon: `
+		<path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.894.149c-.424.07-.764.383-.929.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.398.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894Z" />
+  	<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />` },
 	];
 	const allOptions = listOption.map(element => {
 		return `<li>
@@ -33,7 +42,7 @@ function UserMenuOptions() {
 					 hover:bg-primary dark:hover:bg-myblack dark:hover:text-dtertiary">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 						class="size-6 mr-2">
- 							<path stroke-linecap="round" stroke-linejoin="round" d="${element.icon}" />
+ 							${element.icon}
 						</svg>
 						<div class="pointer-events-none" translate="${element.value}">${element.value}</div>
 					</button>
@@ -83,7 +92,7 @@ export function renderUserMenu(user: UserInfo) {
 			${headerUserMenu(user)}
 			${UserMenuOptions()}
 			<ul class="font-title py-1 text-tertiary dark:text-dsecondary md:mr-2 lg:mr-"4 aria-labelledby="dropdown">
-				<li> ${darkMode(user.preferences.theme)}</li>
+				<li> ${darkMode(user.preferences!.theme)}</li>
 				<li> ${logout()}</li>
 			</ul>`
 }

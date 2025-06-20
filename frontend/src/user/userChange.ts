@@ -17,12 +17,13 @@ export async function changeUserPassword() {
  * Gestion du changement d'email et de nom d'utilisateur
  * avec un alert de confirmation ou d'erreur
  */
-import { renderPrivatePage } from "../controllers/renderPage";
+import { renderErrorPage } from "../controllers/renderPage";
 
 import { alertTemporary } from "../components/ui/alert/alertTemporary"
 import { loadTranslation } from "../i18n/Translate";
 import { getUserInfo } from "../api/getterUser(s)";
 import { patchUserInfo } from "../api/updater";
+
 
 export async function changeUserNameEmail() {
 	
@@ -31,10 +32,11 @@ export async function changeUserNameEmail() {
 	 */
 	const response = await getUserInfo();
 	if (response.status === "error" || !response.data) {
-		return alertTemporary("error", "Error while fetching user info", 'dark');
+		renderErrorPage(response.status);
+		return;
 	}
 	const user = response.data;
-	const trad = await loadTranslation(response.data.preferences.lang);
+	const trad = await loadTranslation(response.data.preferences!.lang);
 	
 	/**
 	 * Recuperation des donnees du formulaire
@@ -52,7 +54,7 @@ export async function changeUserNameEmail() {
 	 * Verifie si il n'y a pas de changement
 	 */
 	if (user.username === dataEntry.username && user.email === dataEntry.email) {
-		return alertTemporary("info", trad["no-changes-detected"], user.preferences.theme);
+		return alertTemporary("info", trad["no-changes-detected"], user.preferences!.theme);
 	}
 
 	/**
@@ -61,7 +63,7 @@ export async function changeUserNameEmail() {
 	if (dataEntry.username !== user.username) {
 		const updateResponse = await patchUserInfo(API_USER.UPDATE.USERNAME, dataEntry.username, "username");
 		if (updateResponse.status === "error") {
-			return alertTemporary("error", trad["username-already-in-use"], user.preferences.theme);
+			return alertTemporary("error", trad["username-already-in-use"], user.preferences!.theme);
 		}
 	}
 
@@ -71,7 +73,7 @@ export async function changeUserNameEmail() {
 	if (dataEntry.email !== user.email) {
 		const updateResponse = await patchUserInfo(API_USER.UPDATE.EMAIL, dataEntry.email, "email");
 		if (updateResponse.status === "error") {
-			return alertTemporary("error", trad["email-already-in-use"], user.preferences.theme);
+			return alertTemporary("error", trad["email-already-in-use"], user.preferences!.theme);
 		}
 	}
 
@@ -79,6 +81,5 @@ export async function changeUserNameEmail() {
 	 * Affichage d'une alerte pour valider les changements
 	 * et rerender de la page pour mettre a jour tout les element qui affiche le nom d'utilisateur ou l'email
 	 */
-	alertTemporary("success", trad["user-info-updated"], user.preferences.theme);
-	return renderPrivatePage('profile', false);
+	alertTemporary("success", trad["user-info-updated"], user.preferences!.theme);
 }

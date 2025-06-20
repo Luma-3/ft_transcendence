@@ -1,7 +1,11 @@
 import dotenv from 'dotenv'
 import server from './fastify.js'
-import userRoutes from './routes/user.js'
-import preferencesRouts from './routes/preferences.js'
+import userRoutes from './users/user.routes.js'
+import preferencesRouts from './preferences/preferences.routes.js'
+import friendRoutes from './friends/friends.routes.js'
+import pendingRoutes from './pending/pending.routes.js'
+import blockedRoutes from './blocked/blocked.routes.js'
+import searchRoutes from './search/search.routes.js'
 
 dotenv.config()
 
@@ -26,6 +30,10 @@ dotenv.config()
 
 server.register(userRoutes);
 server.register(preferencesRouts);
+server.register(friendRoutes);
+server.register(pendingRoutes);
+server.register(blockedRoutes);
+server.register(searchRoutes);
 
 server.addHook('onRequest', async (req, _) => {
   console.log(`Header:${JSON.stringify(req.headers, undefined, 2)}`);

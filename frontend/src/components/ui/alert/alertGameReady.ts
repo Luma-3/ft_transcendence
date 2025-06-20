@@ -27,9 +27,9 @@ export async function alertGameReady() {
 	timerProgressBar: true,
 	didOpen: () => {
 		Swal.showLoading();
-		const timer = Swal.getPopup().querySelector("b");
+		const timer = Swal.getPopup()!.querySelector("b");
 		timerInterval = setInterval(() => {
-		timer.textContent = `${(Swal.getTimerLeft() / 1000).toFixed(0)}`; 
+		timer!.textContent = `${(Swal.getTimerLeft()! / 1000).toFixed(0)}`; 
 		}, 100);
 	},
 	willClose: () => {
@@ -38,6 +38,5 @@ export async function alertGameReady() {
 	}).then((result) => {
 	/* Read more about handling dismissals below */
 	if (result.dismiss === Swal.DismissReason.timer) {
-		console.log("I was closed by the timer");
 	}
 })}
