@@ -1,7 +1,7 @@
-import { alert } from "../components/ui/alert/alert";
+import { alert } from "../../components/ui/alert/alert";
 
-import { API_USER } from "../api/routes";
-import { fetchApi, fetchApiWithNoBody } from "../api/fetch";
+import { API_USER } from "../../api/routes";
+import { fetchApi } from "../../api/fetch";
 
 export async function deleteUser() {
 

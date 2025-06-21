@@ -1,30 +1,34 @@
-import { registerUser } from '../user/userRegister'
-import { loginUser } from '../user/userLogin'
-import { logOutUser } from '../user/userLogout'
-import { deleteUser } from '../user/userDelete'
-import { changeLanguage, changeLanguageSettings, saveDefaultLanguage } from '../i18n/Translate'
-import { handleSearchUserGame } from '../social/onlineUserSearch'
+import { registerUser } from '../events/user/userRegister'
+import { loginUser } from '../events/user/userLogin'
+import { logOutUser } from '../events/user/userLogout'
+import { deleteUser } from '../events/user/userDelete'
+import { changeLanguage, changeLanguageSettings, saveDefaultLanguage } from './Translate'
+import { handleSearchUserGame } from '../events/social/onlineUserSearch'
 
 import { renderPublicPage, renderPrivatePage, renderDocPages } from '../controllers/renderPage'
 import { renderBackPage } from '../controllers/renderPage'
 
 import { changeLightMode } from '../components/utils/toggleLight'
 import { toggleUserMenu } from '../components/utils/toggleUserMenu'
-import { showGameStat, toggleGameStat } from '../components/utils/toggleGameStat'
-import { toggleTruc } from '../components/utils/toggleTruc'
+import { toggleGameStat } from '../components/utils/toggleGameStat'
+import { toggleChat } from '../components/utils/toggleChat'
 import { toggleGameSettings } from '../components/utils/toggleGameSettings'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 
-import { changeUserNameEmail } from '../user/userChange'
-import { changeUserPassword } from '../user/userChange'
+import { changeUserNameEmail } from '../events/user/userChange'
+import { changeUserPassword } from '../events/user/userChange'
 import { showEditorPicture } from '../components/utils/imageEditor'
 import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 
-import { createGame } from '../game/gameCreation'
-import { blockUser, cancelFriendInvitation, handleFriendRequest, handleUnfriend, sendRefuseInvitation } from '../social/userSocial'
+import { createGame } from '../events/game/gameCreation'
 import { addNewMessage } from '../chat/newMessage'
 import { renderOtherProfilePage } from '../controllers/renderPage'
+import { friendRequest } from '../events/social/acceptInvitation'
+import { blockUser } from '../events/social/blockUser'
+import { cancelFriendInvitation } from '../events/social/cancelInvitation'
+import { refuseFriendInvitation } from '../events/social/refusedInvitation'
+import { unfriendUser } from '../events/social/removeFriend'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
@@ -47,13 +51,17 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
   'loadprofile': () => renderPrivatePage('profile'),
   'changeUserInfo': () => changeUserNameEmail(),
   'change-password': () => changeUserPassword(),
-  'add-friend': () => handleFriendRequest(event?.target as HTMLElement, "send"),
-  'accept-friend': () => handleFriendRequest(event?.target as HTMLElement, "accept"),
-  'unfriend-user': () => handleUnfriend(event?.target as HTMLElement),
+  
+  'add-friend': () => friendRequest(event?.target as HTMLElement, "send"),
+  'accept-friend': () => friendRequest(event?.target as HTMLElement, "accept"),
+  
+  'unfriend-user': () => unfriendUser(event?.target as HTMLElement),
+  
   'unblock-user': () => blockUser(event?.target as HTMLElement, true),
   'block-user': () => blockUser(event?.target as HTMLElement, false),
+  
   'cancel-invitation': () => cancelFriendInvitation(event?.target as HTMLElement),
-  'refuse-invitation': () => sendRefuseInvitation(event?.target as HTMLElement),
+  'refuse-invitation': () => refuseFriendInvitation(event?.target as HTMLElement),
 
   // * ---- Image Editor  ---- */
   'cancel-image': () => cancelEditor(),
@@ -74,7 +82,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 
   'loadBackPage': () => renderBackPage(),
   'showGameStat': () => toggleGameStat(),
-  'showTruc': () => toggleTruc(),
+  'showChat': () => toggleChat(),
   'createGame': () => createGame(),
 
   // * -------------- Documentation  -------------- */

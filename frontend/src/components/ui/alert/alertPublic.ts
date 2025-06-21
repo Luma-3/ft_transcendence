@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { loadTranslation } from "../../../i18n/Translate";
+import { loadTranslation } from "../../../controllers/Translate";
 import { getCustomAlertTheme } from "./alertTheme";
 import { alertTemporary } from "./alertTemporary";
 

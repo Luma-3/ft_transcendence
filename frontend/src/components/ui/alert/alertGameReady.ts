@@ -2,7 +2,7 @@ import { getCustomAlertTheme } from "../alert/alertTheme";
 import { alertTemporary } from "../alert/alertTemporary";
 import Swal from 'sweetalert2';
 
-import { loadTranslation } from "../../../i18n/Translate";
+import { loadTranslation } from "../../../controllers/Translate";
 
 export async function alertGameReady() {
 	const customTheme = await getCustomAlertTheme(true);

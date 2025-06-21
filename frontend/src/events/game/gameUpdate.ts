@@ -1,5 +1,5 @@
 import { gameFrontInfo } from "./gameCreation"
-import { socket } from "../controllers/Socket";
+import { socket } from "../../socket/Socket";
 
 let actionUserUp = false, actionUserDown = false, actionUser2Up = false, actionUser2Down = false;
 
@@ -19,7 +19,7 @@ export async function getEventAndSendGameData() {
 			data: {
 				roomId: gameFrontInfo.gameId,
 				direction: gameData.playerAction,
-				direction2: gameFrontInfo.typeGame === "localpvp" ? gameData.player2Action : "",
+				direction2: gameFrontInfo.gameType === "localpvp" ? gameData.player2Action : "",
 			}
 		},
 	}));
@@ -29,7 +29,7 @@ export function onKeyDown(event: KeyboardEvent) {
 	if (event.key === "w") actionUserUp = true;
 	if (event.key === "s") actionUserDown = true;
 
-	if (gameFrontInfo.typeGame !== "localpvp") {
+	if (gameFrontInfo.gameType !== "localpvp") {
 		if (event.key === "ArrowUp") actionUserUp = true;
 		if (event.key === "ArrowDown") actionUserDown = true;
 	} else {
@@ -47,7 +47,7 @@ export function onKeyUp(event: KeyboardEvent) {
 
 	if (event.key === "s") actionUserDown = false;
 
-	if (gameFrontInfo.typeGame !== "localpvp") {
+	if (gameFrontInfo.gameType !== "localpvp") {
 		if (event.key === "ArrowUp") actionUserUp = false;
 		if (event.key === "ArrowDown") actionUserDown = false;
 	} else {

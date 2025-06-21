@@ -4,7 +4,6 @@ import register from '../pages/Register'
 import dashboard from '../pages/Dashboard/Dashboard'
 import settings from '../pages/Settings'
 import profile from '../pages/Profile/Profile'
-import errorPage from '../pages/5xx'
 import game from '../pages/Game'
 import documentation from '../pages/Documentation'
 import verifyEmail from '../pages/VerifyEmail'
@@ -14,15 +13,14 @@ import verifyEmail from '../pages/VerifyEmail'
 
 import { addToHistory } from '../main'
 import { setupColorTheme } from '../components/utils/setColorTheme'
-import { translatePage } from '../i18n/Translate'
+import { translatePage } from './Translate'
 import { fadeIn, fadeOut } from '../components/utils/fade'
 import { removeLoadingScreen } from '../components/utils/removeLoadingScreen'
 
-import { UserInfo } from '../interfaces/User'
+import { IUserInfo } from '../interfaces/IUser'
 import { getUserInfo, getUserPreferences } from '../api/getterUser(s)'
 
 import { fetchToken } from '../api/fetchToken'
-import { RoomData } from '../interfaces/GameData'
 
 /**
  * Associe les pages publics aux fonctions de rendu
@@ -72,7 +70,7 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 /**
  * Associe les pages privees aux fonctions de rendu
  */
-const rendererPrivatePage: { [key: string]: (user: UserInfo) => string | Promise<string> } = {
+const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promise<string> } = {
 	// 'WelcomeYou': welcomeYouPage,
 	'dashboard': dashboard,
 	'settings': settings,
@@ -165,7 +163,7 @@ export async function renderGame(data: any) {
 import { renderOtherProfile } from '../pages/OtherProfile'
 import { redocInit } from '../components/utils/redocInit'
 import { dispatchError } from './DispatchError'
-import { socket, socketConnection } from './Socket'
+import { socket, socketConnection } from '../socket/Socket'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 

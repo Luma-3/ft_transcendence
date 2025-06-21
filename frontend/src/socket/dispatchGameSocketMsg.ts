@@ -1,23 +1,23 @@
-import { renderGame } from "./renderPage";
-import { animate, drawGame, setGameData } from "../game/gameDraw";
-import { GameData, RoomData } from "../interfaces/GameData";
-import { DisplayGameWinLose } from "../game/gameWin";
-import { showGame } from "../game/gameShow";
+import { renderGame } from "../controllers/renderPage";
+import { drawGame } from "../events/game/gameDraw";
+import { IGameData, IRoomData } from "../interfaces/IGame";
+import { DisplayGameWinLose } from "../events/game/gameWin";
+import { showGame } from "../events/game/gameShow";
 
-import { FRAME } from "../game/gameDraw";
+// import { FRAME } from "../game/gameDraw";
+// import { alertGameReady } from "../components/ui/alert/alertGameReady";
 
-import { alertGameReady } from "../components/ui/alert/alertGameReady";
-import { socket } from "./Socket";
+import { socket } from "../socket/Socket";
 
 export type GameSnapshot = {
 	serverTime: number;
-	GameData: GameData;
+	GameData: IGameData;
 }
 
 export let clockoffset = 0;
 export let gameSnapshots: GameSnapshot[] = [];
 
-function changeStatusPlayer(roomData: RoomData) {
+function changeStatusPlayer(roomData: IRoomData) {
 	for (const player of roomData.players) {
 		if (player) {
 			const ready = player.ready ? "ready" : "not-ready";
@@ -43,10 +43,10 @@ function launchGame(roomId: string) {
 	}));
 }
 
-let tps = 0;
-let time = performance.now();
+// let tps = 0;
+// let time = performance.now();
 
-export async function handleGameSocketMessage(payload: any) {
+export async function dispatchGameSocketMsg(payload: any) {
 
 	switch (payload.action) {
 		case 'roomReady':

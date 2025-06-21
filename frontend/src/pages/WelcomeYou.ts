@@ -1,4 +1,4 @@
-import { UserInfo } from '../interfaces/User';
+import { IUserInfo } from '../interfaces/IUser';
 import { renderPrivatePage } from '../controllers/renderPage';
 
 /**
@@ -13,14 +13,14 @@ const welcomeTemplate = `<div id="welcome-transition"
 		</div>`;
 	
 
-export default function welcomeYouPage(user: UserInfo) {
+export default function welcomeYouPage(user: IUserInfo) {
 	console.log('Welcome You Page', user);
 	const name = ' ' + user?.username;
 	return welcomeTemplate.replace('***',`<div translate="welcome">Welcome!</div> <div> ${name} </div>` );
 
 }
 
-export function reWelcomeYouPage(user: UserInfo) {
+export function reWelcomeYouPage(user: IUserInfo) {
 	const name = ' ' + user?.username;
 	return welcomeTemplate.replace('***',`<div class="flex flex-col justify-center items-center p-4">Content de te revoir</div> <div> ${name} </div>` );
 }

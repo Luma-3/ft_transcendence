@@ -1,5 +1,5 @@
 import { renderErrorPage } from "../controllers/renderPage";
-import { IApiResponse } from "../interfaces/IApiResponse";
+import { IApiResponse } from "../interfaces/IApi";
 
 export async function fetchApi<T>(url: string, option?: RequestInit): Promise<IApiResponse<T>> {
 	try {

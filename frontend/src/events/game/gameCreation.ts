@@ -1,12 +1,11 @@
-import { alert } from "../components/ui/alert/alert";
-import { alertTemporary } from "../components/ui/alert/alertTemporary";
+import { alert } from "../../components/ui/alert/alert";
+import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 
-import { fetchToken } from "../api/fetchToken";
-import { getUserPreferences } from "../api/getterUser(s)";
-import { fetchApi } from "../api/fetch";
-import { API_GAME } from "../api/routes";
-import { socket } from "../controllers/Socket";
-import { renderErrorPage } from "../controllers/renderPage";
+import { fetchToken } from "../../api/fetchToken";
+import { getUserPreferences } from "../../api/getterUser(s)";
+import { fetchApi } from "../../api/fetch";
+import { API_GAME } from "../../api/routes";
+import { renderErrorPage } from "../../controllers/renderPage";
 
 export let gameFrontInfo: { gameId: string, gameType: string };
 

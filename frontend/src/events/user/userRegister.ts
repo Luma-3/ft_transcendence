@@ -1,13 +1,13 @@
-import { renderPrivatePage, renderErrorPage, renderPublicPage } from '../controllers/renderPage'
+import { renderErrorPage, renderPublicPage } from '../../controllers/renderPage'
 
-import { alertPublic } from '../components/ui/alert/alertPublic';
-import { verifRegexPassword } from '../components/utils/regex';
-import { loadTranslation } from '../i18n/Translate';
+import { alertPublic } from '../../components/ui/alert/alertPublic';
+import { verifRegexPassword } from '../../components/utils/regex';
+import { loadTranslation } from '../../controllers/Translate';
 
-import { API_USER, API_SESSION } from '../api/routes';
-import { fetchApiWithNoError as fetchApiWithNoCriticError } from '../api/fetch';
+import { API_USER, API_SESSION } from '../../api/routes';
+import { fetchApiWithNoError as fetchApiWithNoCriticError } from '../../api/fetch';
 
-import { socketConnection } from '../controllers/Socket';
+import { socketConnection } from '../../socket/Socket';
 
 function error(message: string) {
 	alertPublic(message, "error");

@@ -1,10 +1,10 @@
-import { renderPrivatePage } from '../controllers/renderPage'
+import { renderPrivatePage } from '../../controllers/renderPage'
 
-import { alertPublic } from '../components/ui/alert/alertPublic';
+import { alertPublic } from '../../components/ui/alert/alertPublic';
 
-import { API_SESSION } from '../api/routes';
-import { socketConnection } from '../controllers/Socket';
-import { fetchApiWithNoError } from '../api/fetch';
+import { API_SESSION } from '../../api/routes';
+import { socketConnection } from '../../socket/Socket';
+import { fetchApiWithNoError } from '../../api/fetch';
 
 export async function loginUser() {
 

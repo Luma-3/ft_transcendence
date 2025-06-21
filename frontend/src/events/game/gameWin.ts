@@ -13,8 +13,7 @@ export function DisplayGameWinLose(isWin: boolean) {
 
 }
 
-import { primaryButton } from "../components/ui/buttons/primaryButton";
-import { secondaryButton } from "../components/ui/buttons/secondaryButton";
+import { secondaryButton } from "../../components/ui/buttons/secondaryButton";
 
 
 function gameWinContainer() {

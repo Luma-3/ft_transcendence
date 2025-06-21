@@ -1,17 +1,12 @@
 import { alertWithTimer } from "../components/ui/alert/alertGameReady";
 import { alertPublic } from "../components/ui/alert/alertPublic";
-import { handleGameSocketMessage } from "./DispatchMsgSocket";
-import { renderPublicPage } from "./renderPage";
+import { dispatchGameSocketMsg } from "../socket/dispatchGameSocketMsg";
 
 export let socket: WebSocket | null = null;
+
 const MAX_RECONNECT_TENTATIVE = 5;
+
 let reconnectTentative = 0;
-
-function tryReconnection() {
-
-}
-
-
 
 export async function socketConnection() {
 	socket = new WebSocket('/api/ws');
@@ -22,13 +17,15 @@ export async function socketConnection() {
 	});
 
 	socket.addEventListener("message", (e) => {
+		
 		const data = JSON.parse(e.data).payload;
-
 		const type = JSON.parse(e.data).type;
+		
 		switch (type) {
 			case 'game':
-				handleGameSocketMessage(data);
+				dispatchGameSocketMsg(data);
 				break;
+			
 			default:
 				break;
 		}

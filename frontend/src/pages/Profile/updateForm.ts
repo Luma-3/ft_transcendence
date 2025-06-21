@@ -1,7 +1,7 @@
-import { UserInfo } from '../../interfaces/User';
+import { IUserInfo } from '../../interfaces/IUser';
 import { form } from '../../components/ui/form/form';
 
-export function userUpdateForm(user: UserInfo) {
+export function userUpdateForm(user: IUserInfo) {
 	return `
 		${form({
 		name : "saveChangeBasicUserInfo",

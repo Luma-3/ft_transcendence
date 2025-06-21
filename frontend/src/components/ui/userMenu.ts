@@ -1,20 +1,20 @@
-import { UserInfo } from '../../interfaces/User';
+import { IUserInfo } from '../../interfaces/IUser';
 import { API_CDN } from '../../api/routes';
-import { UserInPeople } from '../../interfaces/PeopleInterface';
+import { IOtherUser } from '../../interfaces/PeopleInterface';
 
 let userNotification: boolean = false;
 
 /**
  * Partie du menu situe en haut avec le nom de l'utilisateur et la photo de profil
  */
-export function headerUserMenu(user: UserInfo) {
+export function headerUserMenu(user: IUserInfo) {
 	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.preferences!.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
 					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.preferences!.avatar}" alt="User profile picture">
 				</div>
 				</div>`;
 }
-export function headerOtherUserMenu(user: UserInPeople) {
+export function headerOtherUserMenu(user: IOtherUser) {
 	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
 					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.avatar}" alt="User profile picture">
@@ -86,7 +86,7 @@ function logout() {
 }
 
 
-export function renderUserMenu(user: UserInfo) {
+export function renderUserMenu(user: IUserInfo) {
 	//TODO: Verifier si l'utilisateur a des notifications pour les afficher
 	return `
 			${headerUserMenu(user)}

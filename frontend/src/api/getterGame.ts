@@ -1,8 +1,8 @@
 import { fetchApi } from "./fetch";
 import { API_GAME } from "./routes";
-import { IRoomInfos } from "../interfaces/GameData.ts";
-import { IApiResponse } from '../interfaces/IApiResponse';
-import { IPlayer } from "../interfaces/GameData.ts"
+import { IRoomInfos } from "../interfaces/IGame.ts";
+import { IApiResponse } from '../interfaces/IApi.ts';
+import { IPlayer } from "../interfaces/IGame.ts"
 
 // export async function getPlayerList(roomId: string): Promise<IApiResponse<IPlayer[]>> {
 // 	return await fetchApi<IPlayer[]>(API_GAME.ROOM_INFO + `${roomId}/players`, {

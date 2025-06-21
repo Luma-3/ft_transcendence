@@ -1,7 +1,7 @@
 import ImageEditor from 'tui-image-editor';
 import { getUserInfo } from '../../api/getterUser(s)';
 import { alertTemporary } from '../ui/alert/alertTemporary';
-import { loadTranslation } from '../../i18n/Translate';
+import { loadTranslation } from '../../controllers/Translate';
 import { dataURLToBlob } from './convertImage';
 import { API_USER } from '../../api/routes';
 import { fetchApi } from '../../api/fetch';
@@ -40,6 +40,7 @@ function hideEditor() {
 export function cancelEditor() {
 	hideEditor();
 }
+
 type TypeImageEditor = "AVATAR" | "BANNER";
 let main_editor: ImageEditor | null = null;
 let statusEditor: TypeImageEditor = "AVATAR"; // Default to avatar, can be changed to banner

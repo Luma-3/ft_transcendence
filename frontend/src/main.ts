@@ -1,7 +1,6 @@
 import { renderErrorPage, renderPrivatePage, renderPublicPage } from './controllers/renderPage'
 import { addAllEventListenOnPage } from './controllers/Handler'
 import { fetchToken } from './api/fetchToken'
-import { socket, socketConnection } from './controllers/Socket.ts'
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 

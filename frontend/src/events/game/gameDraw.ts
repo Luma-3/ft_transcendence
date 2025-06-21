@@ -1,8 +1,8 @@
-import { GameData } from "../interfaces/GameData";
-import { drawExplosion } from "./gameBallAnimation";
-import { socket } from "../controllers/Socket";
-import { gameFrontInfo } from "./gameCreation";
-import { clockoffset, GameSnapshot, gameSnapshots } from "../controllers/DispatchMsgSocket";
+import { IGameData } from "../../interfaces/IGame";
+// import { drawExplosion } from "./gameBallAnimation";
+// import { socket } from "../socket/Socket";
+// import { gameFrontInfo } from "./gameCreation";
+import { clockoffset, GameSnapshot, gameSnapshots } from "../../socket/dispatchGameSocketMsg";
 
 // const duckImage = new Image();
 // duckImage.src = "/images/pp.jpg";
@@ -32,7 +32,7 @@ export function animate() {
 		const [prev, next] = pair;
 		const range = next.serverTime - prev.serverTime;
 		const t = range > 0 ? (syncTime - prev.serverTime) / range : 0;
-		const interpolateGameData: GameData = {
+		const interpolateGameData: IGameData = {
 			ball: {
 				x: interpolate(prev.GameData.ball.x, next.GameData.ball.x, t),
 				y: interpolate(prev.GameData.ball.y, next.GameData.ball.y, t),
@@ -52,7 +52,7 @@ export function animate() {
 	requestAnimationFrame(animate);
 };
 
-export function drawGame(gameData: GameData, action: string = '') {
+export function drawGame(gameData: IGameData, action: string = '') {
 	
 	const game = document.getElementById("gamePong") as HTMLCanvasElement;
 	if (!game) {

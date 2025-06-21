@@ -4,7 +4,7 @@ export interface IRoomInfos {
   players: IPlayer[],
 }
 
-export interface GameData {
+export interface IGameData {
   paddle1: {
     y: number;
     score: number;
@@ -29,9 +29,9 @@ export interface initInfo {
   roomId: string;
 }
 
-export interface RoomData {
+export interface IRoomData {
   roomId: string;
-  gameData?: GameData;
+  gameData?: IGameData;
   typeGame: string;
   players: IPlayer[];
 }
@@ -42,8 +42,8 @@ export interface IPlayer {
   ready: boolean;
 }
 
-export interface ServerGameData {
+export interface IServerGameData {
   action: string;
-  data: RoomData;
+  data: IRoomData;
 }
 

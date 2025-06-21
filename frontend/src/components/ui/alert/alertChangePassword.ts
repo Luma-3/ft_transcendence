@@ -3,7 +3,7 @@ import { fetchApi } from "../../../api/fetch";
 import { API_USER } from "../../../api/routes";
 import { alertTemporary } from "./alertTemporary";
 import { getCustomAlertTheme } from "./alertTheme";
-import { loadTranslation } from "../../../i18n/Translate";
+import { loadTranslation } from "../../../controllers/Translate";
 import { verifRegexNewPassword } from "../../utils/regex";
 
 export async function alertChangePassword() {
