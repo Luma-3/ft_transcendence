@@ -78,13 +78,37 @@ export class UserService {
 		to: email,
 		subject: `${trad['subject_valid_email']}`,
 		html: `
-			<p>${trad['greeting']},</p>
-			<p>${trad['verificationIntro']} <strong>${trad['verificationLink']}</strong> :</p>
-			<a href=${process.env.URL}/users/register/${data}>cliques ici</a>
-			<p>${trad['linkValidity']}</p>
-			<p>${trad['ignoreWarning']}</p>
-			<p>${trad['signature']}</p>
-		`
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #f9f9f9; border-radius: 10px; color: #333;">
+        
+        <!-- Logo (optionnel) -->
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img src="https://via.placeholder.com/150x100?text=Logo" alt="Logo" style="max-width: 100px;">
+        </div>
+
+        <p style="font-size: 16px; margin: 0 0 15px 0;">${trad['greeting']},</p>
+
+        <p style="font-size: 16px; margin: 0 0 15px 0;">
+          ${trad['verificationIntro']} <strong>${trad['verificationLink']}</strong> :
+        </p>
+
+        <div style="margin: 20px 0; text-align: center;">
+          <a href="${process.env.URL}/users/register/${data}" 
+            style="display: inline-block; background-color: #007BFF; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            Cliques ici pour vérifier ton compte
+          </a>
+        </div>
+
+        <p style="font-size: 14px; margin: 0 0 10px 0;">${trad['linkValidity']}</p>
+        <p style="font-size: 14px; margin: 0 0 10px 0;">${trad['ignoreWarning']}</p>
+
+        <p style="font-size: 14px; margin-top: 30px;">${trad['signature']}</p>
+
+        <!-- Image de bas de page (optionnelle) -->
+        <div style="text-align: center; margin-top: 20px;">
+          <img src="https://via.placeholder.com/300x100?text=Merci+!" alt="Merci !" style="max-width: 100%;">
+        </div>
+      </div>
+    `
 	}
 	await transporter.sendMail(mailOptions);
 }

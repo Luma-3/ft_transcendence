@@ -8,8 +8,6 @@ import { SessionService } from "./session.service.js";
 
 import { ResponseSchema } from "../utils/schema.js";
 
-
-
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
   // ! Public
   fastify.post('/session', {
