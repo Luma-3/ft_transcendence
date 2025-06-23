@@ -1,7 +1,8 @@
 import { Room } from "./Room.js";
-import { gameType } from "../room/room.schema";
-import { IPlayer } from "./Room.js";
+import { gameType } from "../../room/room.schema.js";
+import { IPlayer } from "./Interface.js";
 import { NotFoundError } from '@transcenduck/error'
+import { IOInterface } from "../../utils/IOInterface.js";
 
 class RoomManager {
   private rooms: Map<string, Room> = new Map();
@@ -60,7 +61,9 @@ class RoomManager {
     if (!room) {
       throw new NotFoundError('room');
     }
-    room.startGame();
+    IOInterface.broadcast() // TODO : Change ! vvv
+    SendRoomReady(room.id, room.players[0].user_id);
+    // room.startGame(); // TODO : deplace la logique (shortcut for test)
   }
 }
 

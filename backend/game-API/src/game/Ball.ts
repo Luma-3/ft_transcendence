@@ -1,13 +1,15 @@
-import { Vector2 } from "./Vector";
-import { DELTA_TIME } from "./engine/gameLoop.js"; // TODO Take from ctx
+import { Vector2 } from "./engine/Vector.js";
+import { DELTA_TIME } from "./engine/LoopManager.js"; // TODO Take from ctx
 import { GameObject } from "./engine/GameObject.js";
+import { Circle } from "./engine/Shapes.js";
 
-export class Ball extends GameObject {
-  private position: Vector2 = new Vector2(0, 0);
-  private velocity: Vector2 = new Vector2(0, 0);
-  private readonly radius: number = 10; // Radius of the ball
+export class Ball extends GameObject implements Circle {
+  private velocity: Vector2 = new Vector2(-1, 0);
 
-  private readonly speed: number = 10;
+  public position: Vector2 = new Vector2(0, 0);
+  public readonly radius: number = 10; // Radius of the ball
+
+  private readonly speed: number = 100;
 
   // -- REQUIREMENTS FUNCTION --
 
@@ -17,6 +19,24 @@ export class Ball extends GameObject {
 
   update() {
     this.move();
+  }
+
+  // Collider function returns parameter for collision detection (Collider Object if you want)
+  collider(): Circle {
+    return {
+      position: this.position,
+      radius: this.radius
+    };
+  }
+
+  onCollision(other: GameObject): void {
+    if (other instanceof Ball) {
+      // Handle collision with another ball if needed
+      console.log("Collision with another ball detected");
+    } else {
+      // Handle collision with paddles or other objects
+      this.rebound();
+    }
   }
 
   // -- END REQUIREMENTS FUNCTION --
@@ -30,9 +50,18 @@ export class Ball extends GameObject {
     this.position = pos;
   }
 
+  rebound() {
+    // Reverse the ball's direction when it collides with a paddle
+    this.velocity = this.velocity.scale(-1);
+    // Optionally, adjust the position to avoid sticking to the paddle
+    // this.position = this.position.add(this.velocity.scale(0.1)); // Small adjustment to prevent sticking
+  }
+
+
 
   snapshot() {
     return {
+      id: 'ball',
       position: this.position,
       velocity: this.velocity,
       radius: this.radius

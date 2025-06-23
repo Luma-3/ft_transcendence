@@ -4,20 +4,31 @@ export interface IRoomInfos {
   players: IPlayer[],
 }
 
-export interface GameData {
-  paddle1: {
-    y: number;
-    score: number;
-  }
-  paddle2: {
-    y: number;
-    score: number;
-  }
-  ball: {
-    x: number;
-    y: number;
-  }
+// START - Jb - Part
+
+export interface Vector2 {
+  x: number;
+  y: number;
 }
+
+export interface Ball {
+  position: Vector2;
+  velocity: Vector2;
+  radius: number;
+}
+
+export interface Paddle {
+  position: Vector2;
+  scale: Vector2;
+}
+
+export interface GameData {
+  paddle1: Paddle;
+  paddle2: Paddle
+  ball: Ball;
+}
+
+// END - Jb - Part
 
 export interface FrontGameInfo {
   typeGame: string;

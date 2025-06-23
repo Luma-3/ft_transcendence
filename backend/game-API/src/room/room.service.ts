@@ -3,7 +3,7 @@
 // import { IPlayer, Room } from '../game/Room.js';
 // import { PlayerType } from './player.schema.js';
 import { ForbiddenError } from '@transcenduck/error';
-import { IPlayer } from '../game/Room.js';
+import { IPlayer } from '../game/room/Room.js';
 import { gameType } from './room.schema.js';
 // import { GameType } from './room.schema.js';
 // import { initGameEvent, moveEvent, playerReadyEvent } from './handleEvent.js';
@@ -42,40 +42,40 @@ import { gameType } from './room.schema.js';
  * ```
  */
 
-import { roomManagerInstance } from '../game/RoomManager.js';
+import { roomManagerInstance } from '../game/room/RoomManager.js';
 import { handleEvent } from './handleEvent.js';
 
 export class RoomService {
 
-	static joinOrCreateRoom(player: IPlayer, game_name: string, type_game: gameType) {
-		let room_id = undefined;
+  static joinOrCreateRoom(player: IPlayer, game_name: string, type_game: gameType) {
+    let room_id = undefined;
 
-		room_id = roomManagerInstance.joinRoom(player);
-		if (!room_id) {
-			room_id = roomManagerInstance.createRoom(game_name, type_game);
-			roomManagerInstance.joinRoom(player, room_id);
-		}
-		roomManagerInstance.startRoom(room_id);
-		handleEvent(); // Start the event handler
-		return room_id;
-	}
+    room_id = roomManagerInstance.joinRoom(player);
+    if (!room_id) {
+      room_id = roomManagerInstance.createRoom(game_name, type_game);
+      roomManagerInstance.joinRoom(player, room_id);
+    }
+    roomManagerInstance.startRoom(room_id);
+    handleEvent(); // Start the event handler
+    return room_id;
+  }
 
-	static joinRoom(player: IPlayer, room_id: string) {
-		return roomManagerInstance.joinRoom(player, room_id);
-	}
+  static joinRoom(player: IPlayer, room_id: string) {
+    return roomManagerInstance.joinRoom(player, room_id);
+  }
 
-	static leaveCurrentRoom(player: IPlayer) {
-		const room = roomManagerInstance.findCurrentRoom(player);
-		if (!room) {
-			throw new ForbiddenError("Player isn't in a Room");
-		}
-		roomManagerInstance.leaveRoom(player, room.id);
-	}
+  static leaveCurrentRoom(player: IPlayer) {
+    const room = roomManagerInstance.findCurrentRoom(player);
+    if (!room) {
+      throw new ForbiddenError("Player isn't in a Room");
+    }
+    roomManagerInstance.leaveRoom(player, room.id);
+  }
 
-	static getRoomById(room_id: string) {
-		const room = roomManagerInstance.getRoomById(room_id);
-		return room;
-	}
+  static getRoomById(room_id: string) {
+    const room = roomManagerInstance.getRoomById(room_id);
+    return room;
+  }
 }
 
 // class GameService {
@@ -147,7 +147,7 @@ export class RoomService {
 
 
 
-  
+
 // 	/**
 // 	 * Récupère une salle par son identifiant.
 // 	 * 
@@ -215,7 +215,7 @@ export class RoomService {
 
 // 		const game = room.createGame();
 // 		if (!game) throw new InternalServerError('Game creation failed');
-		
+
 // 		if (room.typeGame === 'localpve' && game) { game.isAgainstBot = true; }
 // 	}
 
@@ -255,7 +255,7 @@ export class RoomService {
 // 			case 'playerReady':
 // 				playerReadyEvent(this, room, clientId);
 // 				break;
-				
+
 // 			case 'startGame':
 // 				if (room.status === 'readyToStart')
 // 					room.startGame();
