@@ -1,7 +1,7 @@
 import { renderErrorPage, renderPrivatePage, renderPublicPage } from './controllers/renderPage'
 import { addAllEventListenOnPage } from './controllers/Handler'
 import { fetchToken } from './api/fetchToken'
-import { verifyEmailUser } from './events/user/verifUser'
+import { verifyEmailUser } from './events/user/userVerif'
 
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!

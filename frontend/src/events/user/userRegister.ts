@@ -37,7 +37,7 @@ export async function registerUser() {
 	if (!form) { return; }
 
 	/**
-	 * Recuperation de la langue precedemment selectionne par l'utilisateur
+	 * Recuperation de la langue precedemment seleREGISTERctionne par l'utilisateur
 	 * et suppression de la valeur dans le sessionStorage
 	 */
 	const lang = sessionStorage.getItem('lang') || 'en';
@@ -87,28 +87,5 @@ export async function registerUser() {
 		return error(errorMessage)
 	}
 
-	/**
-	 * Creation de la session
-	 */
-	const sessionData = { username: userData.username, password: userData.password };
-	const responseSession = await fetchApiWithNoCriticError(API_SESSION.CREATE, {
-		method: "POST",
-		body: JSON.stringify(sessionData)
-	});
-	if (responseSession.status !== "success") {
-		const errorMessage = trad[responseSession.message] || responseSession.message;
-		return error(errorMessage)
-	}
-
-	/**
-	 * Creation du socket qui sera bien utile pour le pong
-	 * le chat et toutes communications bidirectionnelles
-	 * entre le client et le serveur qui ont besoin d'etre en temps reel
-	 */
-	socketConnection();
-
-	/**
-	 * Affichage de la page de welcome avant le dashboard(car nouvel utilisateur)
-	 */
 	renderPublicPage('verifyEmail');
 }
