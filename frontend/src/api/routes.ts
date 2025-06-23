@@ -18,6 +18,10 @@ export const API_USER = {
     INFOS: `${SERVICES.USER}/me`,
     PREFERENCES: `${SERVICES.USER}/me?includePreferences=true`,
     ONLY_PREFERENCES: `${SERVICES.USER}/me/preferences`,
+  
+  },
+  VERIFY: {
+      EMAIL: `${SERVICES.USER}/verifyEmail`,
   },
   UPDATE: {
     PREF: {
@@ -36,15 +40,6 @@ export const API_USER = {
   },
   SEARCH: `${SERVICES.USER_ROOT}/search`, // ?q=inputValue&page=1&limit=10&hydrate=true
 }
-
-// export const API_PEOPLE = {
-//   BLOCKED: `${SERVICES.PEOPLE}/blocked`,
-//   FRIENDS: `${SERVICES.PEOPLE}/friends`,
-//   PENDING: `${SERVICES.PEOPLE}/pending`,
-//   SEARCH: `${SERVICES.PEOPLE}/`,  // ?search=inputValue
-//   ALL: `${SERVICES.PEOPLE}/all`,
-//   SELF: `${SERVICES.PEOPLE}/all/self`
-// };
 
 export const API_SESSION = {
 

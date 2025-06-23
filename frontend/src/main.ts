@@ -1,6 +1,8 @@
 import { renderErrorPage, renderPrivatePage, renderPublicPage } from './controllers/renderPage'
 import { addAllEventListenOnPage } from './controllers/Handler'
 import { fetchToken } from './api/fetchToken'
+import { verifyEmailUser } from './events/user/verifUser'
+
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 
@@ -26,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (page === 'error') {
     return renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
   } else if (page === 'verifyEmail') {
-    return renderPublicPage('verifyEmail');
+    return verifyEmailUser(new URLSearchParams(window.location.search).get('value') || '');
   }
   const user = await fetchToken();
   if (user.status === "success") {
