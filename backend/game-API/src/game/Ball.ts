@@ -1,120 +1,33 @@
-import { Paddle } from './Paddle.js';
+import { Vector2 } from "./Vector";
+import { DELTA_TIME } from "./gameLoop";
 
-import { FRAMERATE } from './Pong.js';
-
-/**
- * Classe représentant une balle dans le jeu Pong.
- * Elle gère la position, la vitesse et les collisions de la balle.
- */
 export class Ball {
-	x: number;
-	y: number;
-	vector_x: number;
-	vector_y: number;
-	size: number;
-	speed: number;
+  private position: Vector2 = new Vector2(0, 0);
+  private velocity: Vector2 = new Vector2(0, 0);
+  private readonly radius: number = 10; // Radius of the ball
 
-  constructor(x = 0, y = 0, vector_x = 0, vector_y = 0, size = 20) {
-	this.x = x;
-	this.y = y;
-	this.vector_x = vector_x;
-	this.vector_y = vector_y;
-	this.size = size;
-	this.speed = 142;
+  private readonly speed: number = 10;
+
+  constructor(position: Vector2, velocity: Vector2, radius: number) {
+    this.position = position;
+    this.velocity = velocity;
+    this.radius = radius;
   }
 
-	/**
-	 * Vérifie si la balle entre en collision avec une raquette.
-	 * @param paddle - La raquette à vérifier pour la collision.
-	 * @param width - La largeur du terrain de jeu, utilisée pour déterminer la position de la raquette.
-	 * @returns true si la balle entre en collision avec la raquette, false sinon.
-	 */
-  check_collision_paddle(paddle: Paddle, width: number) {
-		if (paddle.x < width / 2) {
-			return (
-				this.x <= paddle.x + paddle.width &&
-				this.x >= paddle.x &&
-				this.y >= paddle.y - paddle.height / 2 &&
-				this.y <= paddle.y + paddle.height / 2
-			);
-		} else {
-			return (
-				this.x >= paddle.x - paddle.width &&
-				this.x <= paddle.x &&
-				this.y >= paddle.y - paddle.height / 2 &&
-				this.y <= paddle.y + paddle.height / 2
-			);
-		}
+  update() {
+    this.move();
   }
 
-	/** Déplace la balle en fonction de sa vitesse et de ses vecteurs.
-	 * Vérifie les collisions avec les bords supérieur et inférieur du terrain de jeu,
-	 * ainsi qu'avec les raquettes des joueurs.
-	 * @param top - La limite supérieure du terrain de jeu.
-	 * @param bottom - La limite inférieure du terrain de jeu.
-	 * @param paddle1 - La raquette du joueur 1.
-	 * @param paddle2 - La raquette du joueur 2.
-	 * @param width - La largeur du terrain de jeu, utilisée pour déterminer la position des raquettes.
-	 * */
-  move_ball(
-		top: number,
-		bottom: number,
-		paddle1: Paddle,
-		paddle2: Paddle,
-		width: number = 0
-  ) {
-		this.x += (this.vector_x * this.speed) / FRAMERATE;
-		this.y += (this.vector_y * this.speed) / FRAMERATE;
-
-		if (this.y + this.size / 2 <= top || this.y - this.size / 2 >= bottom) {
-			this.vector_y *= -1;
-		}
-
-		if (this.check_collision_paddle(paddle1, width) ||
-			this.check_collision_paddle(paddle2, width)) {
-			this.vector_x *= -1;
-		}
+  move() {
+    this.velocity = this.velocity.normalize().scale(this.speed); // Ensure the ball moves at a constant speed ( Possible to change for acceleration later )
+    this.position = this.position.add(this.velocity.scale(DELTA_TIME)); // Update position based on velocity and delta time
   }
 
-	/**
-	 * Définit les vecteurs de la balle en fonction d'un nombre aléatoire.
-	 * @param rand - Un nombre aléatoire entre 1 et 3 pour déterminer la direction de la balle.
-	 * 1 : inverse la direction verticale,
-	 * 2 : inverse la direction horizontale,
-	 * 3 : inverse les deux directions.
-	 * Si le nombre est autre, ne fait rien.
-	 * */
-  set_vectors_ball(rand: number) {
-		switch (rand) {
-			case 1:
-				this.vector_y *= -1;
-				break;
-			case 2:
-				this.vector_x *= -1;
-				break;
-			case 3:
-				this.vector_x *= -1;
-				this.vector_y *= -1;
-				break;
-			default:
-				break;
-		}
-  }
-
-	/**
-	 * Réinitialise la position de la balle au centre du terrain de jeu.
-	 * @param centerX - La coordonnée X du centre du terrain de jeu (par défaut 400).
-	 * @param centerY - La coordonnée Y du centre du terrain de jeu (par défaut 300).
-	 */
-  reset_ball(centerX: number = 400, centerY: number = 300) {
-		this.x = centerX;
-		this.y = centerY;
-  }
-
-  toJSON() {
-		return {
-			x: this.x,
-			y: this.y,
-		};
+  snapshot() {
+    return {
+      position: this.position,
+      velocity: this.velocity,
+      radius: this.radius
+    };
   }
 }

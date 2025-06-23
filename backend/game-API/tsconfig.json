@@ -18,7 +18,7 @@
     "forceConsistentCasingInFileNames": true, // Ensure consistent file casing
   
 	  /* Linting */
-	  "strict": true,
+	  // "strict": true,
 	  "noUnusedLocals": true,
 	  "noUnusedParameters": true,
 	  "noFallthroughCasesInSwitch": true,

@@ -1,11 +1,15 @@
 import server from './fastify.js';
 import dotenv from 'dotenv'
 
-import { handlerEvent } from './controllers/gameController.js';
+import roomRoute from './room/room.route.js';
+
+// import { handlerEvent } from './room/room.route.js';
 
 dotenv.config();
 
-await handlerEvent();
+server.register(roomRoute);
+
+// await handlerEvent();
 
 const start = async () => {
 	server.listen({ port: 3003, host: '0.0.0.0' }).then((address) => {

@@ -22,7 +22,7 @@ export default function errorformater(err: BaseError | FastifyCustomError, _: Fa
   console.error(err);
   return rep.status(500).send({
     status: 'error',
-    statuscode: 500,
+    statusCode: 500,
     message: 'internal server error',
     code: 'int_serv_err',
   });

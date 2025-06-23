@@ -1,32 +1,33 @@
 import Fastify from 'fastify'
 
+import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import websocketPlugin from '@fastify/websocket';
 
-import swagger from './plugins/swagger.js'
+import swagger from './plugin/swagger.js'
 import formatter from '@transcenduck/formatter'
-
-import game from './routes/game.js';
 
 // import knex from '../plugins/knex.js'
 // import knex_config from './knex.config.js'
 
 export const server = Fastify({
   logger: true,
-});
+}).withTypeProvider<TypeBoxTypeProvider>();
+
+await server.register(websocketPlugin);
 
 await server.register(formatter);
-await server.register(websocketPlugin);
-// await server.register(game);
 
 await server.register(swagger, {
   title: 'Game Service API',
-  description: 'Endpoints for game management',
-  version: '1.0.0',
+  description: 'Endpoints for managing room, game and tournament.',
   route: '/doc/json',
+  version: '1.0.0',
   servers: [
       { url: '/game/', description: 'Game Service' }
   ],
-  tags: [],
+  tags: [
+    { name: 'Room', description: 'Endpoints for managing room.' }
+  ],
   components: {
       securitySchemes: {
           bearerAuth: {
@@ -36,12 +37,6 @@ await server.register(swagger, {
           }
       }
   }
-});
-
-await server.register(game);
-
-server.addHook('onRoute', (routeOptions) => {
-  console.log(`Route registered: ${routeOptions.method} ${routeOptions.url}`);
 });
 
 export default server;

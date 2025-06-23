@@ -1,4 +1,4 @@
-import { UserInfo } from "../../interfaces/User";
+import { IUserInfo } from "../../interfaces/IUser";
 import { API_CDN } from "../../api/routes";
 import { renderUserMenu } from "./userMenu";
 
@@ -8,7 +8,7 @@ function navbarLogo() {
 			</div>`
 }
 
-export function userMenu(user: UserInfo) {
+export function userMenu(user: IUserInfo) {
 	return `
 	<div id="user-menu" class="hidden transition-all 
 	duration-500 transform translate-y-10 opacity-0 
@@ -18,7 +18,7 @@ export function userMenu(user: UserInfo) {
 	</div>`
 }
 
-export function navbar(user: UserInfo) {
+export function navbar(user: IUserInfo) {
 	return `
 	<nav class="flex flex-row navbar-responsive-size items-center w-full flex-wrap justify-between p-2">
 			${navbarLogo()}

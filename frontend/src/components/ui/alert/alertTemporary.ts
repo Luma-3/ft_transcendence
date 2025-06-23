@@ -1,6 +1,6 @@
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import { getCustomAlertTheme } from "./alertTheme";
-import { loadTranslation } from "../../../i18n/Translate";
+import { loadTranslation } from "../../../controllers/Translate";
 
 export async function alertTemporary(level: string, message: string, theme: string, trad = false) {
 	const customTheme = await getCustomAlertTheme(true, theme);

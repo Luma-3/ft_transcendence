@@ -1,4 +1,4 @@
-import { myMessagesTemplate } from "./Chat";
+import { myMessagesTemplate } from "../pages/Dashboard/Chat";
 
 export function addNewMessage() {
 	const messageInput = document.querySelector<HTMLTextAreaElement>('#chat-input');

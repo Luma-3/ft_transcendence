@@ -6,39 +6,53 @@ import { backButton } from "../components/ui/buttons/backButton";
 
 import { getFriends, getOtherUserInfo } from "../api/getterUser(s)";
 import { API_CDN } from "../api/routes";
-import { User } from "../interfaces/User";
+import { IUserInfo } from "../interfaces/IUser";
 
 function avatarBanner(userPref: {avatar: string, banner: string}) {
-	return `
-	<div class="flex flex-col mb-20 items-center justify-center space-y-2 pt-4">
+return `
+<div class="flex flex-col mb-20 items-center justify-center space-y-2 pt-4">
+	
 	<div id="banner-div" class="relative w-[1000px] h-64 editor-select ">
-		
+	
 		<!-- ! BANNER  -->
 		<div class="relative w-full h-full group" >
-					<img src="${API_CDN.BANNER}/${userPref.banner ?? 'default.webp'}" alt="Banner" 
-					class="w-full h-full object-cover rounded-lg shadow-lg" />
+			
+			<img src="${API_CDN.BANNER}/${userPref.banner ?? 'default.webp'}" alt="Banner" 
+			class="w-full h-full object-cover rounded-lg shadow-lg" />
+
 		</div>
 
 		<!-- ! IMAGE  -->
 		<div class="flex justify-center items-center editor-select">
+			
 			<div class="absolute left-0 flex-col items-center space-y-2 ml-15 mr-15 pt-4 justify-center">
-				 <div id="img-div" class="relative w-32 h-32 group text-primary dark:text-dprimary">
+				
+				<div id="img-div" class="relative w-32 h-32 group text-primary dark:text-dprimary">
 					<img src=${API_CDN.AVATAR}/${userPref.avatar} class="w-full h-full rounded-full border-6"
 					alt="Profile picture">
 				</div>
+			
 			</div>
 		</div>
+	
 	</div>
-	</div>`;
+</div>`;
 }
 
-function userInfo(user: User) {
-	return `
-	<div class=flex flex-col justify-center w-full max-w-[800px] space-y-4">
+function userInfo(user: IUserInfo) {
+return `
+<div class=flex flex-col justify-center w-full max-w-[800px] space-y-4">
+
 	<div class="flex">
-		<span class="font-title text-4xl"> ${user.username}</span>
+
+		<span class="font-title text-4xl">
+		${user.username}
+		</span>
+
 		<span class="font-title text-2xl text-secondary dark:text-dtertiary ml-4">
-		${user.created_at}</span>
+		${user.created_at}
+		</span>
+
 	</div> `
 }
 

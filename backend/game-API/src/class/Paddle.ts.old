@@ -1,0 +1,66 @@
+import { dt } from "./Pong.ts.old";
+
+/**
+ * La classe Paddle représente une raquette dans un jeu, avec des propriétés pour sa position,
+ * sa taille, sa vitesse et son score. Elle inclut des méthodes pour déplacer la raquette
+ * dans des limites spécifiées et pour incrémenter le score.
+ */
+export class Paddle {
+	uid: string | undefined;
+	score: number;
+	width: number;
+	height: number;
+	x: number = 0;
+	y: number = 0;
+	speed: number;
+	halfHeight: number;
+
+  constructor(uid: string | undefined , x: number, y: number) {
+	if (uid === undefined) {
+		this.uid = '0';
+	} else {
+		this.uid = uid;
+	}
+
+	this.score = 0;
+	this.width = 10;
+	this.height = 100;
+	this.x = x;
+	this.y = y;
+	this.speed = 0;
+	this.halfHeight = this.height / 2;
+  }
+
+	/**
+	 * Déplace la raquette verticalement en respectant les limites spécifiées.
+	 * Si la raquette dépasse le haut ou le bas, elle est repositionnée à la limite correspondante.
+	 *
+	 * @param top - La limite supérieure de déplacement.
+	 * @param bottom - La limite inférieure de déplacement.
+	 */
+  move_paddle(top: number, bottom: number) {
+	this.y += this.speed * dt;
+
+	if (this.y + this.halfHeight < top) {
+	  this.y = top + this.halfHeight;
+	} else if (this.y - this.halfHeight > bottom) {
+	  this.y = bottom - this.halfHeight;
+	}
+  }
+
+	/**
+	 * Incrémente le score de la raquette.
+	 */
+  add_score() {
+		this.score++;
+  }
+
+  toJSON() {
+	return {
+	  score: this.score,
+	  // width: this.width,
+	  // height: this.height,
+	  y: this.y,
+	};
+  }
+}

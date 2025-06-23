@@ -5,7 +5,6 @@
  */
 export function toggleGameSettings(inputValue: DOMStringMap) {
 	
-	console.log("toggleGameSettings", inputValue);
 	const type = inputValue.gametype;
 	if (!type) {
 		return;
@@ -50,7 +49,6 @@ export function toggleGameSettings(inputValue: DOMStringMap) {
 }
 
 function hideContainer(container: HTMLDivElement) {
-	container?.classList.remove('opacity-100');
-	container?.classList.add('opacity-0');
+	container?.classList.replace('opacity-100', 'opacity-0');
 	container?.classList.add('hidden');
 }

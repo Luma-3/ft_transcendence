@@ -1,0 +1,58 @@
+import { gameFrontInfo } from "./gameCreation"
+import { socket } from "../../socket/Socket";
+
+let actionUserUp = false, actionUserDown = false, actionUser2Up = false, actionUser2Down = false;
+
+export async function getEventAndSendGameData() {
+
+	const gameData = {
+		playerAction: (actionUserUp) ? "up" : (actionUserDown) ? "down" : 'Stop',
+		player2Action: (actionUser2Up) ? "up" : (actionUser2Down) ? "down" : 'Stop',
+	}
+
+	if (socket)
+	{	
+		socket.send(JSON.stringify({
+		type: "game",
+		payload: {
+			type: 'move',
+			data: {
+				roomId: gameFrontInfo.gameId,
+				direction: gameData.playerAction,
+				direction2: gameFrontInfo.gameType === "localpvp" ? gameData.player2Action : "",
+			}
+		},
+	}));
+}}
+
+export function onKeyDown(event: KeyboardEvent) {
+	if (event.key === "w") actionUserUp = true;
+	if (event.key === "s") actionUserDown = true;
+
+	if (gameFrontInfo.gameType !== "localpvp") {
+		if (event.key === "ArrowUp") actionUserUp = true;
+		if (event.key === "ArrowDown") actionUserDown = true;
+	} else {
+		if (event.key === "ArrowUp") actionUser2Up = true;
+		if (event.key === "ArrowDown") actionUser2Down = true;
+	}
+	getEventAndSendGameData();
+}
+
+export function onKeyUp(event: KeyboardEvent) {
+
+	console.log(gameFrontInfo);
+
+	if (event.key === "w") actionUserUp = false;
+
+	if (event.key === "s") actionUserDown = false;
+
+	if (gameFrontInfo.gameType !== "localpvp") {
+		if (event.key === "ArrowUp") actionUserUp = false;
+		if (event.key === "ArrowDown") actionUserDown = false;
+	} else {
+		if (event.key === "ArrowUp") actionUser2Up = false;
+		if (event.key === "ArrowDown") actionUser2Down = false;
+	}
+	getEventAndSendGameData();
+}
