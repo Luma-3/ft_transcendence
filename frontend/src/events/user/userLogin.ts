@@ -1,4 +1,4 @@
-import { renderPrivatePage } from '../../controllers/renderPage'
+import { renderErrorPage, renderPrivatePage } from '../../controllers/renderPage'
 
 import { alertPublic } from '../../components/ui/alert/alertPublic';
 
@@ -29,7 +29,7 @@ export async function loginUser() {
     { method: "POST", body: JSON.stringify(userdata) });
 
   if (response.status === "error") {
-    alertPublic("username-or-password-incorrect", "error");
+    renderErrorPage(response.code?.toString() || '500', response.message);
     return;
   }
 

@@ -4,7 +4,7 @@ import { animateButton } from "../components/ui/buttons/animateButton";
 import { primaryButton } from "../components/ui/buttons/primaryButton";
 
 import { languageSelectorSettings } from "../components/ui/languageSelector";
-import { change2FA } from "../components/ui/buttons/change2FAButton";
+import { change2FA } from "../2FA";
 import { headerPage } from "../components/ui/headerPage";
 import { IUserInfo } from "../interfaces/IUser";
 

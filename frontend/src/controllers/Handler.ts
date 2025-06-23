@@ -29,6 +29,7 @@ import { blockUser } from '../events/social/blockUser'
 import { cancelFriendInvitation } from '../events/social/cancelInvitation'
 import { refuseFriendInvitation } from '../events/social/refusedInvitation'
 import { unfriendUser } from '../events/social/removeFriend'
+import { disable2FA, enable2FA, submit2FACode } from '../2FA'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
@@ -74,6 +75,9 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
   'deleteAccount': () => deleteUser(),
   'logout': () => logOutUser(),
 
+  // * -------------- Settings  -------------- */
+  'enable2fa': () => enable2FA(),
+  'disable2fa': () => disable2FA(),
 
   // * -------------- Chat  -------------- */
   'send-chat': () => addNewMessage(),
@@ -104,6 +108,7 @@ const changeEvent: { [key: string]: () => void } = {
 const submitEvent: { [key: string]: () => void } = {
   'loginForm': loginUser,
   'registerForm': registerUser,
+  '2faCodeForm': submit2FACode
 };
 
 /**

@@ -36,18 +36,17 @@ export async function fetchApiWithNoError<T>(url: string, option?: RequestInit):
 			credentials: "include",
 			...option,
 		});
-
 		let responseData: any = null;
 		const contentType = response.headers.get("content-type");
 		if (contentType && contentType.includes("application/json")) {
 			responseData = await response.json();
 		}
 		if (responseData?.status === "error") {
-			return { status: "error", message: responseData?.message || "Unknown error" };
+			return { status: "error", code: response.status, message: responseData.message, details: responseData.details || {} };
 		}
 		return { ...responseData, code: response.status } as IApiResponse<T>;
 	}
 	catch (error) {
-		return { status: "error", message: "Internal Server Error" };
+		return { status: "error", code: 500, message: "Internal Server Error" };
 	}
 }

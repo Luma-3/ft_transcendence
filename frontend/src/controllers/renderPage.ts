@@ -7,6 +7,8 @@ import profile from '../pages/Profile/Profile'
 import game from '../pages/Game'
 import documentation from '../pages/Documentation'
 import verifyEmail from '../pages/VerifyEmail'
+import twoFaPage from '../2FA'
+
 
 // import welcomeYouPage from '../pages/WelcomeYou';
 // import { handleWelcomeYouPage } from '../pages/WelcomeYou';
@@ -29,6 +31,7 @@ const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
 	'home': home,
 	'login': login,
 	'register': register,
+	'2FA': twoFaPage,
 	'documentation': documentation,
 	'verifyEmail': verifyEmail,
 };
@@ -75,6 +78,7 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
 	'dashboard': dashboard,
 	'settings': settings,
 	'profile': profile,
+	'2FA': twoFaPage,
 	'documentation': documentation,
 }
 
