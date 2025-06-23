@@ -38,7 +38,9 @@ return `
 </div>`
 }
 
-
+/** 
+* ! Quand l'utilisateur clique sur le bouton id = 'enable2fa' 
+*/
 export async function enable2FA() {
 	// const response = await fetchApi(API_SESSION.ACTIVATE2FA, {
 		// method: 'PUT'
