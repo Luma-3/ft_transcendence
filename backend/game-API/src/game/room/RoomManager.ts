@@ -61,8 +61,6 @@ class RoomManager {
     if (!room) {
       throw new NotFoundError('room');
     }
-    IOInterface.broadcast() // TODO : Change ! vvv
-    SendRoomReady(room.id, room.players[0].user_id);
     // room.startGame(); // TODO : deplace la logique (shortcut for test)
   }
 }
