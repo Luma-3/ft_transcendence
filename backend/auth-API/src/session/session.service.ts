@@ -39,7 +39,6 @@ async function createAccessToken(id: string, jti: string): Promise<string> {
   if (!secret) {
     throw new Error('JWT secret is not defined');
   }
-  console.log('IDIDDDDDDD:' + id)
   const payload = {
     sub: id,
     iss: 'Transcenduck-ISS-Api',

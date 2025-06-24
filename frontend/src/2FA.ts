@@ -1,5 +1,5 @@
 import { fetchApi } from './api/fetch';
-import { API_SESSION } from './api/routes';
+import { API_SESSION, API_USER } from './api/routes';
 import { renderPrivatePage, renderPublicPage } from './controllers/renderPage';
 import { IUserInfo } from './interfaces/IUser';
 import { alertTemporary } from './components/ui/alert/alertTemporary';
@@ -42,22 +42,22 @@ return `
 * ! Quand l'utilisateur clique sur le bouton id = 'enable2fa' 
 */
 export async function enable2FA() {
-	// const response = await fetchApi(API_SESSION.ACTIVATE2FA, {
-		// method: 'PUT'
-	// })
-	// if (response.status === 'error') {
-		// await alertTemporary("error", "Cannot enable 2FA, please reload the page and retry", 'dark')
-	//}
+	const response = await fetchApi(API_USER.ACTIVATE2FA, {
+		method: 'PUT'
+	})
+	if (response.status === 'error') {
+		await alertTemporary("error", "Cannot enable 2FA, please reload the page and retry", 'dark')
+	}
 	renderPublicPage('2FA')
 }
 
 export async function disable2FA() {
-	// const response = await fetchApi(API_SESSION.ACTIVATE2FA, {
-		// method: 'DELETE'
-	// })
-	// if (response.status === 'error') {
-		// await alertTemporary("error", "Cannot disable 2FA, please reload the page and retry", 'dark')
-	//}
+	const response = await fetchApi(API_USER.ACTIVATE2FA, {
+		method: 'DELETE'
+	})
+	if (response.status === 'error') {
+		await alertTemporary("error", "Cannot disable 2FA, please reload the page and retry", 'dark')
+	}
 }
 
 export async function submit2FACode() {

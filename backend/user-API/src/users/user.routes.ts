@@ -10,7 +10,8 @@ import {
   ConflictResponse,
   NotFoundResponse,
   UnauthorizedResponse,
-  ForbiddenResponse
+  ForbiddenResponse,
+  InternalServerErrorResponse
 } from '@transcenduck/error';
 
 import {
@@ -61,7 +62,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       }
     }
   }, async (req, rep) => {
-    console.log("token recived : ", req.params.token);
     await UserService.confirmIdentity(req.params.token);
     return rep.code(200).send({ message: 'Email verified successfully' });
   });
@@ -248,6 +248,50 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     console.log('password', password, 'username', username);
     const user = await UserService.verifyCredentials(username, password);
     return rep.code(200).send({ message: 'Credentials verified successfully', data: user });
+  });
+
+  fastify.put('/2fa', {
+    schema: {
+      summary: 'Enable 2fa for a user',
+      description: 'Endpoint to enable the 2 Factor Authentification',
+      tags: ['2FA'],
+      headers: UserHeaderAuthentication,
+      response: {
+        200: { message: String },
+        500: InternalServerErrorResponse
+      }
+    }
+  }, async(req, rep) => {
+    const userId = req.headers['x-user-id'];
+    const enabled = await UserService.enable2FA(userId);
+    if (enabled === false) {
+      return rep.code(500).send({ message: `Could'nt activate 2fa `});
+    } else if (enabled === undefined) {
+      return rep.code(500).send({ message: `User not found with id : ${userId} !` })
+    }
+    return rep.code(200).send({ message: "2FA successfully enabled !" });
+  });
+
+  fastify.delete('/2fa', {
+    schema: {
+      summary: 'Disable 2fa for a user',
+      description: 'Endpoint to disable the 2 Factor Authentification',
+      tags: ['2FA'],
+      headers: UserHeaderAuthentication,
+      response: {
+        200: { message: String },
+        500: InternalServerErrorResponse
+      }
+    }
+  }, async(req, rep) => {
+    const userId = req.headers['x-user-id'];
+    const disabled = await UserService.disable2FA(userId);
+    if (disabled === false) {
+      return rep.code(500).send({ message: `Could'nt desactivate 2fa `});
+    } else if (disabled === undefined) {
+      return rep.code(500).send({ message: `User not found with id : ${userId} !` })
+    }
+    return rep.code(200).send({ message: "2FA successfully disabled !" });
   });
 }
 

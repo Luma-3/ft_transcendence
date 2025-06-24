@@ -39,6 +39,8 @@ export const API_USER = {
     PENDING: `${SERVICES.USER_ROOT}/pending`,
   },
   SEARCH: `${SERVICES.USER_ROOT}/search`, // ?q=inputValue&page=1&limit=10&hydrate=true
+
+  ACTIVATE2FA: `${SERVICES.USER}/2fa`,
 }
 
 export const API_SESSION = {
@@ -49,7 +51,6 @@ export const API_SESSION = {
   VERIFY_REFRESH: `${SERVICES.SESSION}/verify/refreshToken`,
 
   REFRESH: `${SERVICES.SESSION}/refresh`,
-
 }
 
 export const API_GAME = {

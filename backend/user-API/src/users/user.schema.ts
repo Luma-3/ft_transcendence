@@ -33,6 +33,9 @@ export const UserBase = Type.Object({
   validated: Type.Boolean({
     description: 'Indicates if the user has validated their email address.'
   }),
+  twofa: Type.Boolean({
+    description: 'Indicates if the user has activated or not 2 Factor Authentification.'
+  }),
   preferences: Type.Optional(PreferencesBase)
 });
 export type UserBaseType = Static<typeof UserBase>;

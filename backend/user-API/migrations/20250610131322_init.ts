@@ -9,7 +9,7 @@ export async function up(knex: Knex): Promise<void> {
     t.string("email", 255).notNullable().unique();
     t.text("password").notNullable();
     t.boolean("validated").defaultTo(false);
-    t.boolean("2fa").defaultTo(false);
+    t.boolean("twofa").defaultTo(false);
     t.timestamp("created_at");
   });
 
