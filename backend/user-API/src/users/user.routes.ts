@@ -40,29 +40,30 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       body: UserCreateBody,
       querystring: UserQueryGet,
       response: {
-        201: ResponseSchema(UserPublicResponse, 'User created successfully'),
+        200: ResponseSchema(UserPublicResponse, 'User created successfully, verification email sent successfully'),
         409: ConflictResponse,
       }
     }
   }, async (req, rep) => {
     const user = await UserService.createUser(req.body);
-    return rep.code(201).send({ message: 'User Created', data: user });
+    return rep.code(200).send({ message: 'User Created, verification email sent', data: user });
   });
 
-
-  fastify.get('/users/register', {
+  fastify.get('/users/verifyEmail/:token', {
     schema: {
-      summary: 'Create a user',
-      description: 'Endpoint to create a user ressources and retrieve public informations',
+      summary: 'Verfiy e-mail user',
+      description: 'Endpoint to verify a user email',
       tags: ['Users'],
-      querystring: ValidationEmailQueryGet,
+      params: ValidationEmailQueryGet,
       response: {
+        200: ResponseSchema(UserPublicResponse, 'Email verified successfully'),
         404: NotFoundResponse
       }
     }
   }, async (req, rep) => {
-    await UserService.confirmIdentity(req.query.u);
-    return rep.redirect(process.env.URL + '/login');
+    console.log("token recived : ", req.params.token);
+    await UserService.confirmIdentity(req.params.token);
+    return rep.code(200).send({ message: 'Email verified successfully' });
   });
 
   fastify.post('/internal/users', {

@@ -1,0 +1,51 @@
+services:
+
+# ! Main Server frontend static files and BACKEND reverse proxy
+  gateway:
+    container_name: nginx-gateway
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 7777:443
+      - 8080:80
+    # env_file:
+    #   - .env
+    networks:
+      - gateway_back_front
+
+# ! Main Server Backend APIS Reverse Proxy
+
+  back_gateway:
+    container_name: node-gateway
+    build: 
+      context: ./backend/gateway
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/gateway/.env
+    expose:
+      - 3000
+    networks:
+      - gateway_back_front
+      - apis
+
+  user_api:
+    container_name: user_api
+    build:
+      context: ./backend/user-API
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/user-API/.env
+    expose:
+      - 3001
+    networks: 
+      - apis
+
+
+networks:
+  apis:
+    name: apis
+    driver: bridge
+  gateway_back_front:
+    name: gateway_back_front
+    driver: bridge

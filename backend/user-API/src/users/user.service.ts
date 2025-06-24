@@ -1,4 +1,4 @@
-import { ConflictError, NotFoundError, UnauthorizedError, RetryWithError } from "@transcenduck/error";
+import { ConflictError, NotFoundError, UnauthorizedError, EmailConfirmError } from "@transcenduck/error";
 import { v4 as uuidV4 } from "uuid";
 import { hashPassword, comparePassword } from "../utils/bcrypt.js";
 
@@ -8,7 +8,7 @@ import { knexInstance, Knex } from "../utils/knex.js";
 import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS, userModelInstance } from "./user.model.js"
 import { preferencesModelInstance } from "../preferences/preferences.model.js";
 import { redisPub } from "../utils/redis.js";
-import {SendMailOptions} from 'nodemailer';
+import { SendMailOptions } from 'nodemailer';
 import { transporter } from "../utils/mail.js";
 import { randomUUID } from "node:crypto";
 
@@ -28,6 +28,13 @@ async function loadLang(language: string){
 	return trad;
 }
 
+export async function generateSendToken(email: string, lang?: string ) {
+  const token = randomUUID();
+  await UserService.sendVerificationEmail(email, token, lang ?? 'en');
+  await redisPub.setEx("users.check.token." + token, 600, email);
+  await redisPub.setEx("users.check.email." + email, 600, token);
+}
+
 export class UserService {
   static async createUser(data: UserCreateBodyType) {
 
@@ -41,10 +48,10 @@ export class UserService {
     }
 
     const user_preferences = {
-      lang: data.preferences?.lang || 'en',
+      lang: data.preferences?.lang ?? 'en',
       avatar: `default.png`,
       banner: `default.png`,
-      theme: data.preferences?.theme || 'dark',
+      theme: data.preferences?.theme ?? 'dark',
     }
     return await knexInstance.transaction(async (trx: Knex.Transaction) => {
       const userID = uuidV4();
@@ -54,7 +61,7 @@ export class UserService {
 
       // Backdor for development purposes
       // if (process.env.node_env !== 'development') {
-      UserService.sendVerificationEmail(user_obj.email, randomUUID(), data.preferences?.lang || 'en');
+        generateSendToken(user_obj.email, preferences.lang);
       // }
       return { ...user, preferences }
     });
@@ -65,10 +72,16 @@ export class UserService {
     // if (process.env.node_env === 'development') {
     //   return;
     // }
-    const email = await redisPub.get("users.check." + token);
+    const email = await redisPub.get("users.check.token." + token);
     if (!email) throw new NotFoundError("Token not found or expired");
+    const tokenRedis = await redisPub.get("users.check.email." + email);
+    if (token !== tokenRedis) {
+      await redisPub.del("users.check.token." + token);
+      throw new ConflictError("Token not found or expired");
+    }
     await userModelInstance.updateByEmail(email, { validated: true }, USER_PRIVATE_COLUMNS);
-    await redisPub.del("users.check." + token);
+    await redisPub.del("users.check.token" + token);
+    await redisPub.del("users.check.email" + email);
   }
   
   static async sendVerificationEmail(email: string, data: string, language: string) {
@@ -92,7 +105,7 @@ export class UserService {
         </p>
 
         <div style="margin: 20px 0; text-align: center;">
-          <a href="${process.env.URL}/users/register/${data}" 
+          <a href="${process.env.URL}/verifyEmail?value=${data}"
             style="display: inline-block; background-color: #007BFF; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
             Cliques ici pour vérifier ton compte
           </a>
@@ -222,7 +235,7 @@ export class UserService {
     const user = await userModelInstance.findByUsername(username, undefined, ['password', 'validated', ...USER_PRIVATE_COLUMNS]);
     if (!user) throw new UnauthorizedError("Invalid credentials");
     if(user.validated == false)
-      throw new RetryWithError("User not validated, please check your email");
+      throw new EmailConfirmError('Email not already confirmed');
     const isValid = await comparePassword(password, user.password!);
     if (!isValid) throw new UnauthorizedError("Invalid credentials");
 

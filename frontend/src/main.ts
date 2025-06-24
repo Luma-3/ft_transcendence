@@ -27,8 +27,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (page === 'error') {
     return renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
-  } else if (page === 'verifyEmail') {
-    return verifyEmailUser(new URLSearchParams(window.location.search).get('value') || '');
+  } else if (page.includes('verifyEmail')) {
+    const param = new URLSearchParams(window.location.search).get('value');
+    console.log(window.location);
+    if (!param)
+      return ;
+    return verifyEmailUser(param || '');
   }
   const user = await fetchToken();
   if (user.status === "success") {
@@ -38,7 +42,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     return renderPrivatePage(page);
   }
   return renderPublicPage(page);
-
 });
 
 // * Au changement de page lors de l'utilisation du bouton back/forward

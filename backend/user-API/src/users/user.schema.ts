@@ -131,7 +131,7 @@ export type UserQueryGetType = Static<typeof UserQueryGet>;
 
 
 export const ValidationEmailQueryGet = Type.Object({
-  u: Type.String({format: 'uuid', description: 'Token for user identification'}),
+  token: Type.String({format: 'uuid', description: 'Token for user identification'}),
 }, {
   additionalProperties: false
 });

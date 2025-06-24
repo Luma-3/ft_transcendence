@@ -22,9 +22,9 @@ export function dispatchError(code: string, messageServer: string) {
 			return notFoundPage();
 		case '401':
 			return window.location.href = '/login';
-		case '440':
-			return window.location.href = 'verifyEmail';
 		case '461':
+			return window.location.href = 'verifyEmail';
+		case '460':
 			return window.location.href = '2FA';
 		default:
 			return errorPage(code, knownErrors.get(code) || "Unknown error", messageServer);

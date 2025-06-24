@@ -1,4 +1,4 @@
-import { UnauthorizedError,  RetryWithError} from '@transcenduck/error'
+import { UnauthorizedError, EmailConfirmError } from '@transcenduck/error'
 import crypto from 'crypto';
 
 import { generateToken } from "../utils/jwt.js";
@@ -58,8 +58,8 @@ async function verifyCredentials(username: string, password: string): Promise<{ 
     body: JSON.stringify({ username, password }),
   })
   if (!response.ok) {
-    if (response.status ==449) {
-      throw new RetryWithError('your are not validated, please check your email');
+    if (response.status === 461) {
+      throw new EmailConfirmError();
     }
     throw new UnauthorizedError();
   }
