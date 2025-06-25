@@ -1,7 +1,7 @@
 
 export function onlineSettings() {
-	// const list_friends = `<li class="text-zinc-600 font-title">You have no friends</li>`;
-	return `
+  // const list_friends = `<li class="text-zinc-600 font-title">You have no friends</li>`;
+  return `
 	<div id="online-settings" class="hidden flex-col w-full h-full p-4 space-y-4 mb-10
 	bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
 
@@ -19,8 +19,8 @@ export function onlineSettings() {
 	</div>`
 }
 
-export function localPVPSettings() { 
-	return `
+export function localPVPSettings() {
+  return `
 	<div id="local-PVP-settings" class="hidden flex-col w-full h-full p-4 space-y-4 mb-10
 	 bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
 
@@ -30,9 +30,9 @@ export function localPVPSettings() {
 }
 
 export function gameTypes() {
-	return `<div class="flex flex-row w-full h-full p-4 space-x-4 rounded-lg">
-				<button class="flex w-full h-full" onclick="document.getElementById('localpvp')?.click()">
-					<input type="radio" id="localpvp" name="game-type" data-gameType="localpvp" class="hidden peer" />
+  return `<div class="flex flex-row w-full h-full p-4 space-x-4 rounded-lg">
+				<button class="flex w-full h-full" onclick="document.getElementById('local')?.click()">
+					<input type="radio" id="local" name="game-type" data-gameType="local" class="hidden peer" />
 					<label for="localpvp" class="flex w-full justify-center items-center p-2 text-sm font-title
 					text-zinc-600 bg-zinc-200 dark:bg-dtertiary rounded-lg cursor-pointer
 					 peer-checked:bg-primary peer-checked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"
@@ -43,8 +43,8 @@ export function gameTypes() {
 					</label>
 				</button>
 
-				<button class="flex w-full h-full" onclick="document.getElementById('localpve')?.click()">
-					<input type="radio" id="localpve" name="game-type" data-gameType="localpve" class="hidden peer" />
+				<button class="flex w-full h-full" onclick="document.getElementById('ai')?.click()">
+					<input type="radio" id="ai" name="game-type" data-gameType="ai" class="hidden peer" />
 					<label for="localpve" class="flex w-full justify-center items-center p-2 text-sm font-title
 					text-zinc-600 bg-zinc-200 dark:bg-dtertiary rounded-lg cursor-pointer
 					 peer-checked:bg-primary peer-checked:text-white dark:peer-checked:bg-dprimary dark:peer-checked:text-white"

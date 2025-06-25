@@ -1,5 +1,5 @@
-import { SceneContext } from '../room/SceneContext.js';
-import { Circle, Rectangle } from './Shapes.js';
+import { SceneContext } from './runtime/SceneContext.js';
+import { Circle, Rectangle } from './physics/Shapes.js';
 
 
 export abstract class GameObject {

@@ -1,5 +1,5 @@
 import { Vector2 } from './Vector.js';
-import { GameObject } from './GameObject';
+import { GameObject } from '../GameObject';
 import { Circle, Rectangle } from './Shapes.js';
 
 
@@ -20,9 +20,6 @@ export class CollisionSystem {
         if (this.checkCollision(colliderA, colliderB)) {
           objA.onCollision(objB);
           objB.onCollision(objA);
-
-          // Log collision for debugging
-          console.log(`Collision detected between ${objA.constructor.name} and ${objB.constructor.name}`);
         }
       }
     }

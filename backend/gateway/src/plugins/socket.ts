@@ -56,7 +56,7 @@ interface WebSocket extends globalThis.WebSocket {
 function handleMessage(socket: WebSocket, raw: string) {
   try {
     const { service, scope, target, payload } = JSON.parse(raw);
-    console.log(`[WS] client ${socket.user_id} -> ${service}.${scope}.${target}`, payload);
+    // console.log(`[WS] client ${socket.user_id} -> ${service}:${scope}:${target}`, payload);
     if (!service || !scope || !target || !payload) {
       throw new Error('Invalid message format');
     }
@@ -118,11 +118,11 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
   redisSub.pSubscribe('*:gateway:out:*', (message, channel) => {
     try {
       const [from, service, scope, target] = channel.split(':');
-      const { payload } = JSON.parse(message);
+      const payload = JSON.parse(message);
 
       const user_id = target;
 
-      console.log(`[Redis] Received: ${channel} -> ${user_id}`, payload);
+      // console.log(`[Redis] Received: ${channel} -> ${user_id} `, payload);
       const socket = fastify.ws_clients.get(user_id);
       if (socket) {
         socket.send(JSON.stringify({
@@ -134,7 +134,7 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
         }));
       }
       else {
-        console.warn(`[WS][Redis] No socket found for user_id ${user_id} on channel ${channel}`);
+        console.warn(`[WS][Redis] No socket found for user_id ${user_id} on channel ${channel} `);
       }
       // TODO faire un truc ici pour gerer l'erreur si on trouve pas le socket du gars
     }

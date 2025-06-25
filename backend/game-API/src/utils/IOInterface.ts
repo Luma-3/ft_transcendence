@@ -4,12 +4,12 @@ export class IOInterface {
   private constructor() { }
 
   public static send(message: string, target: string): void {
-    redisPub.publish(`ws:gateway:out:${target}`, message);
+    redisPub.publish(`game:gateway:out:${target}`, message);
   }
 
   public static broadcast(message: string, target: string[]): void {
     target.forEach((playerId) => {
-      redisPub.publish(`ws:gateway:out:${playerId}`, message);
+      redisPub.publish(`game:gateway:out:${playerId}`, message);
     });
   }
 

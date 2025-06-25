@@ -55,7 +55,7 @@ export async function handleGameSocketMessage(payload: any) {
       changeStatusPlayer(payload.data);
       break;
 
-    case 'readyToStart':
+    case 'Starting':
       console.log("Show game")
       showGame();
       console.log("Draw Game");

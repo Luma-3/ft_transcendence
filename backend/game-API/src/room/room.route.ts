@@ -12,6 +12,7 @@ import { PlayerInitialType } from './player.schema.js';
 
 import { InternalServerErrorResponse } from '@transcenduck/error';
 import { RoomInfoSchema } from './player.schema.js';
+import { Player } from '../core/runtime/Interface.js';
 
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
@@ -36,11 +37,8 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
      * Verification si le joueur est deja dans une partie
      * Renvoie le roomId d'une nouvelle room ou d'une room existante
     */
-    const player = {
-      user_id: user_id,
-      player_name: player_name,
-      ready: false,
-    }
+    const player = new Player(user_id, player_name);
+
 
     const roomId = RoomService.joinOrCreateRoom(player, game_name, game_type);
     if (!roomId) {

@@ -18,20 +18,20 @@ import { getPlayerInfo, getPlayerOpponentsInfos } from "../api/getterGame";
 
 async function showMyself(allPlayer: IPlayer[], myselfId: string) {
 
-	for (const player of allPlayer) {
+  for (const player of allPlayer) {
 
-		if (player.playerId === myselfId) {
+    if (player.playerId === myselfId) {
 
-			const playerInfo = await getUserInfo();
-			return `<div id=${player.playerId} class="flex flex-col w-1/2 h-1/2 p-4 justify-center items-center
+      const playerInfo = await getUserInfo();
+      return `<div id=${player.playerId} class="flex flex-col w-1/2 h-1/2 p-4 justify-center items-center
 			transition-transform duration-800 ease-in-out">
 			<div class="flex flex-col justify-center items-center">
 				<img src=${API_CDN.AVATAR}/${playerInfo.preferences!.avatar} alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
 				border-primary dark:border-dprimary" />
 				${player.gameName}
 				</div>`;
-		}
-	}
+    }
+  }
 }
 
 // async function showGameOpponent(allPlayer: IPlayer[], myselfId: string) {
@@ -53,59 +53,59 @@ async function showMyself(allPlayer: IPlayer[], myselfId: string) {
 
 export default async function Game(roomId: string, user: UserInfo) {
 
-	addEventListener('keypress', () => { })
-	/**
-	 * Mise en place du listener sur la fenetre pour redimensionner le canvas si
-	 * la fenetre est redimensionnee
-	 */
-	window.addEventListener('resize', resizeCanvas)
+  addEventListener('keypress', () => { })
+  /**
+   * Mise en place du listener sur la fenetre pour redimensionner le canvas si
+   * la fenetre est redimensionnee
+   */
+  window.addEventListener('resize', resizeCanvas)
 
 
-	onkeyup = (event) => {
-		onKeyUp(event);
-	}
+  onkeyup = (event) => {
+    onKeyUp(event);
+  }
 
-	/**
-	 * ! Evenement clavier lors de l'affichage du VS (Room page)
-	 */
-	onkeydown = (event) => {
-		const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
-		/**
-		 * Pour le premier evenement clavier, je ping le serveur pour 
-		 * lui signifier que le joueur a bien rejoint la Room
-		*/
-		if (divGame.classList.contains("opacity-0")) {
-			console.log("Je send playerReady");
-			if (!socket) {
-				console.log("SOCKET EXISTE PAS")
-			}
-			socket?.send(JSON.stringify({
-				type: "game",
-				payload: {
-					type: 'playerReady',
-					data: {
-						roomId: roomId,
-					}
-				}
-			}));
-			return;
-		}
+  /**
+   * ! Evenement clavier lors de l'affichage du VS (Room page)
+   */
+  onkeydown = (event) => {
+    const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
+    /**
+     * Pour le premier evenement clavier, je ping le serveur pour 
+     * lui signifier que le joueur a bien rejoint la Room
+    */
+    if (divGame.classList.contains("opacity-0")) {
+      console.log("Je send playerReady");
+      if (!socket) {
+        console.log("SOCKET EXISTE PAS")
+      }
+      socket!.send(JSON.stringify({
+        service: 'game',
+        scope: 'room',
+        target: roomId,
+        payload: {
+          action: 'ready',
+          data: {}
+        }
+      }));
+      return;
+    }
 
-		onKeyDown(event);
-	}
+    onKeyDown(event);
+  }
 
 
-	/**
-	 * Recuperation des tous les joueurs present dans le Room pour afficher
-	 * tout les adversaires du joueur (tournois)
-	 */
-	const roomInfos = await getRoomInfos(roomId);
-	const myselfDiv = await showMyself(roomInfos.data?.players, user.id) || 'Bobby';
+  /**
+   * Recuperation des tous les joueurs present dans le Room pour afficher
+   * tout les adversaires du joueur (tournois)
+   */
+  const roomInfos = await getRoomInfos(roomId);
+  const myselfDiv = await showMyself(roomInfos.data?.players, user.id) || 'Bobby';
 
-	/**
-	 * Contenu HTML de la page
-	 */
-	return `
+  /**
+   * Contenu HTML de la page
+   */
+  return `
 		${navbar(user)}
 		<div class="flex flex-col justify-center items-center text-tertiary dark:text-dtertiary">
 

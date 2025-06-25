@@ -1,7 +1,7 @@
-import { Vector2 } from "./engine/Vector.js";
-import { DELTA_TIME } from "./engine/LoopManager.js"; // TODO Take from ctx
-import { GameObject } from "./engine/GameObject.js";
-import { Circle } from "./engine/Shapes.js";
+import { Vector2 } from "../core/physics/Vector.js";
+import { GameObject } from "../core/GameObject.js";
+import { Circle } from "../core/physics/Shapes.js";
+import { SceneContext } from "../core/runtime/SceneContext.js";
 
 export class Ball extends GameObject implements Circle {
   private velocity: Vector2 = new Vector2(-1, 0);
@@ -43,7 +43,7 @@ export class Ball extends GameObject implements Circle {
 
   move() {
     this.velocity = this.velocity.normalize().scale(this.speed); // Ensure the ball moves at a constant speed ( Possible to change for acceleration later )
-    this.position = this.position.add(this.velocity.scale(DELTA_TIME)); // Update position based on velocity and delta time
+    this.position = this.position.add(this.velocity.scale(SceneContext.get().loopManager.deltaTime)); // Update position based on velocity and delta time
   }
 
   startPosition(pos: Vector2) {

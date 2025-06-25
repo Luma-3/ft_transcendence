@@ -5,7 +5,7 @@ export interface IGameInfos {
   type_game: gameType,
 }
 
-export class Plauer {
+export class Player {
   public user_id: string;
   public player_name: string;
   public ready: boolean;

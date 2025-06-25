@@ -1,7 +1,6 @@
-import { Vector2 } from './engine/Vector.js';
-import { GameObject } from './engine/GameObject.js';
-import { Rectangle } from './engine/Shapes.js';
-// import { DELTA_TIME } from './engine/LoopManager.js';
+import { Vector2 } from '../core/physics/Vector.js';
+import { GameObject } from '../core/GameObject.js';
+import { Rectangle } from '../core/physics/Shapes.js';
 
 export class Paddle extends GameObject implements Rectangle {
   public position: Vector2 = new Vector2(0, 0);
