@@ -1,3 +1,4 @@
+import { InputManager } from "../../game/InputManager.js";
 import { LoopManager } from "../loop/LoopManager.js";
 import { Player } from "./Interface.js";
 import { AsyncLocalStorage } from "async_hooks";
@@ -7,10 +8,13 @@ export class SceneContext {
 
   public readonly loopManager: LoopManager;
   public readonly players: Player[] = [];
+  public inputManager: InputManager = null;
+  public id: string = null;
 
-  constructor(players: Player[], loopManager: LoopManager) {
+  constructor(id: string, players: Player[], loopManager: LoopManager) {
     this.loopManager = loopManager;
     this.players = players;
+    this.id = id;
   }
 
   static run<T>(ctx: SceneContext, fn: () => T): T {
