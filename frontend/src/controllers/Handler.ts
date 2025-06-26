@@ -91,7 +91,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 
   // * -------------- Documentation  -------------- */
   'showUserDoc': () => renderDocPages('/api/user/doc/json', "user"),
-  'showUploadDoc': () => renderDocPages('/api/upload/doc/json', "upload"),
+  'showUploadDoc': () => renderDocPages('/api/uploads/doc/json', "upload"),
   'showGameDoc': () => renderDocPages('/api/game/doc/json', "game"),
   'showAuthDoc': () => renderDocPages('/api/auth/doc/json', "auth"),
 

@@ -21,21 +21,48 @@ export const CdnQuery = Type.Object({
   size: Type.Optional(Type.Number({
     description: "The size of the image to be returned. If not specified, the original size will be used.",
   })),
-  scale: Type.Optional(Type.Union([Type.String(), Type.Number()])),
-  width: Type.Optional(Type.Number()),
-  height: Type.Optional(Type.Number()),
+  scale: Type.Optional(Type.Union([Type.String(), Type.Number()], {
+    description: "The scale factor for the image. Can be a number or a pourcentage string (e.g., '50%'). If not specified, the original size will be used.",
+  })),
+  width: Type.Optional(Type.Number({
+    description: "The width of the image to be returned. If not specified, the original width will be used.",
+  })),
+  height: Type.Optional(Type.Number({
+    description: "The height of the image to be returned. If not specified, the original height will be used.",
+  })),
   resizeMode: Type.Optional(Type.Union([
     Type.Literal('contain'),
     Type.Literal('cover'),
     Type.Literal('fill'),
     Type.Literal('inside'),
     Type.Literal('outside'),
-  ])),
-  blur: Type.Optional(Type.Number()),
-  grayscale: Type.Optional(Type.Boolean()),
-  greyscale: Type.Optional(Type.Boolean()),
-  tint: Type.Optional(Type.String()),
-  rotate: Type.Optional(Type.Number()),
+  ], {
+    description: "The resize mode for the image. Determines how the image should be resized to fit the specified dimensions.",
+    default: 'cover',
+  })),
+  blur: Type.Optional(Type.Number({
+    description: "The amount of blur to apply to the image. A value of 0 means no blur, while higher values increase the blur effect.",
+    default: 0,
+    minimum: 0,
+    maximum: 100
+  })),
+  grayscale: Type.Optional(Type.Boolean({
+    description: "Whether to apply a greyscale effect to the image. If true, the image will be converted to greyscale.",
+    default: false
+  })),
+  greyscale: Type.Optional(Type.Boolean({
+    description: "Alias for grayscale. Whether to apply a greyscale effect to the image. If true, the image will be converted to greyscale.",
+    default: false
+  })),
+  tint: Type.Optional(Type.String({
+    description: "A color to tint the image with. The color should be in RGB format R,G, B (e.g., '255,0,0' for red). If not specified, no tint will be applied.",
+  })),
+  rotate: Type.Optional(Type.Number({
+    description: "The angle in degrees to rotate the image. Positive values rotate clockwise, while negative values rotate counter-clockwise. If not specified, no rotation will be applied.",
+    default: 0,
+    minimum: -360,
+    maximum: 360
+  })),
 })
 
 

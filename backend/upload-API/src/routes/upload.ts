@@ -3,6 +3,7 @@ import * as Controller from '../controllers/uploadController.js'
 import { ResponseSchema } from '../utils/schema.js';
 import { CdnQuery, UploadFileParams, UploadFileValidation } from '../schema/upload.schema.js';
 import { ConflictResponse , ForbiddenResponse, InvalidTypeResponse, NotFoundResponse, PayloadTooLargeResponse } from '@transcenduck/error';
+import { Type } from '@sinclair/typebox';
 /**
  * typePath: c'est le type de fichier que l'on veux manipuler
  * typePath peut etre:
@@ -36,8 +37,15 @@ export default async function uploadRoute(fastify: FastifyInstance) {
       params: UploadFileParams,
       querystring: CdnQuery,
       response: {
-        200: {},
-        404: NotFoundResponse,
+        200: Type.Any({
+          description: 'File content',
+          content: {
+            'application/octet-stream': {
+              schema: Type.String({ format: 'binary' })
+            }
+          }
+        }),
+        404: NotFoundResponse
       }
     }
   }, Controller.getFile);
