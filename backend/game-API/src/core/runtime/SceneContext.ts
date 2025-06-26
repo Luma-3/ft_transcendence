@@ -1,4 +1,5 @@
 import { InputManager } from "../../game/InputManager.js";
+import { gameType } from "../../room/player.schema.js";
 import { LoopManager } from "../loop/LoopManager.js";
 import { Player } from "./Interface.js";
 import { AsyncLocalStorage } from "async_hooks";
@@ -10,11 +11,18 @@ export class SceneContext {
   public readonly players: Player[] = [];
   public inputManager: InputManager = null;
   public id: string = null;
+  public gameType: gameType;
 
-  constructor(id: string, players: Player[], loopManager: LoopManager) {
+  constructor(
+    id: string,
+    gameType: gameType,
+    players: Player[],
+    loopManager: LoopManager
+  ) {
     this.loopManager = loopManager;
     this.players = players;
     this.id = id;
+    this.gameType = gameType;
   }
 
   static run<T>(ctx: SceneContext, fn: () => T): T {

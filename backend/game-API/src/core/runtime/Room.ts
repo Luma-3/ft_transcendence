@@ -119,7 +119,7 @@ export class Room {
       }
     };
     IOInterface.broadcast(JSON.stringify(payload), this.players.map(player => player.user_id));
-    const ctx = new SceneContext(this.players, this.loopManager);
+    const ctx = new SceneContext(this.id, this.players, this.loopManager);
     SceneContext.run(ctx, game);
   }
 

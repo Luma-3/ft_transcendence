@@ -2,7 +2,7 @@ import { alertPublic } from "../components/ui/alert/alertPublic";
 import { handleGameSocketMessage } from "./DispatchMsgSocket";
 import { renderPublicPage } from "./renderPage";
 
-export let socket: WebSocket | null = null;
+export let socket: WebSocket;
 const MAX_RECONNECT_TENTATIVE = 5;
 let reconnectTentative = 0;
 
@@ -10,6 +10,7 @@ export function socketConnection() {
   socket = new WebSocket('/api/ws');
 
   socket.addEventListener("open", () => {
+    reconnectTentative = 0;
     console.log("WebSocket connection established.");
   });
 
@@ -27,18 +28,16 @@ export function socketConnection() {
   });
 
   socket.addEventListener('error', () => {
-
     alertPublic("WebSocket connection error. Trying to reconnect... Try " + reconnectTentative + " of " + MAX_RECONNECT_TENTATIVE, "error");
 
+    socket.close();
     if (reconnectTentative < MAX_RECONNECT_TENTATIVE) {
       reconnectTentative++;
       socketConnection();
     } else {
       alertPublic("WebSocket connection failed. Please log in again.", "error");
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
       reconnectTentative = 0;
-      socket = null;
+
       setTimeout(() => { window.location.href = "/login"; }, 1000);
     }
   });

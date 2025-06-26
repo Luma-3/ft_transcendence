@@ -13,10 +13,8 @@ export class IOInterface {
     });
   }
 
-  public static subscribe(channel: string, callback: (message: string) => void): void {
-    redisSub.subscribe(channel, (message) => {
-      callback(message);
-    });
+  public static subscribe(channel: string, callback: (message: string, channel?: string) => void): void {
+    redisSub.subscribe(channel, callback);
   }
 
   public static unsubscribe(channel: string): void {
