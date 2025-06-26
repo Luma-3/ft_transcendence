@@ -53,8 +53,6 @@ services:
     depends_on:
       - base
       - redis
-    ports:
-      - "3005:3005"
     expose:
       - "3005"
     networks:

@@ -7,6 +7,7 @@ const SERVICES = {
   CDN: `/api/uploads`,
   GAME: `${API_URL}/game`,
   PEOPLE: `${API_URL}/people`,
+  TWOFA: `${API_URL}/2fa`
 }
 
 export const API_USER = {
@@ -19,9 +20,6 @@ export const API_USER = {
     PREFERENCES: `${SERVICES.USER}/me?includePreferences=true`,
     ONLY_PREFERENCES: `${SERVICES.USER}/me/preferences`,
   
-  },
-  VERIFY: {
-      EMAIL: `${SERVICES.USER}/verifyEmail`,
   },
   UPDATE: {
     PREF: {
@@ -52,7 +50,7 @@ export const API_SESSION = {
 
   REFRESH: `${SERVICES.SESSION}/refresh`,
 
-  VERIFY2FA: `${SERVICES.SESSION}/2fa`
+  
 }
 
 export const API_GAME = {
@@ -66,4 +64,11 @@ export const API_GAME = {
 export const API_CDN = {
   AVATAR: `${SERVICES.CDN}/avatar`,
   BANNER: `${SERVICES.CDN}/banner`,
+}
+
+export const MODULE_TWOFA = {
+  VERIFY: {
+      EMAIL: `${SERVICES.TWOFA}/verifyEmail`,
+      TWOFA: `${SERVICES.SESSION}/2fa`,
+  },
 }

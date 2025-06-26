@@ -7,12 +7,6 @@ import { PreferencesBaseType } from "../preferences/preferences.schema.js";
 import { knexInstance, Knex } from "../utils/knex.js";
 import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS, userModelInstance } from "./user.model.js"
 import { preferencesModelInstance } from "../preferences/preferences.model.js";
-import { redisPub } from "../utils/redis.js";
-import { SendMailOptions } from 'nodemailer';
-import { transporter } from "../utils/mail.js";
-import { randomUUID } from "node:crypto";
-
-import fs from 'fs';
 
 async function verifyConflict(username: string, email: string) {
   const [existingUsername, existingEmail] = await Promise.all([
@@ -22,19 +16,6 @@ async function verifyConflict(username: string, email: string) {
   if (existingUsername) throw new ConflictError("Username already Exist");
   if (existingEmail) throw new ConflictError("Email already in use");
 }
-
-async function loadLang(language: string){
-  const trad = JSON.parse(fs.readFileSync(`./src/utils/languages/${language}.json`, 'utf8'));
-	return trad;
-}
-
-export async function generateSendToken(email: string, lang?: string ) {
-  const token = randomUUID();
-  await UserService.sendVerificationEmail(email, token, lang ?? 'en');
-  await redisPub.setEx("users.check.token." + token, 600, email);
-  await redisPub.setEx("users.check.email." + email, 600, token);
-}
-
 export class UserService {
   static async createUser(data: UserCreateBodyType) {
 
@@ -53,86 +34,25 @@ export class UserService {
       banner: `default.png`,
       theme: data.preferences?.theme ?? 'dark',
     }
-    return await knexInstance.transaction(async (trx: Knex.Transaction) => {
-      const userID = uuidV4();
-      const [user] = await userModelInstance.create(trx, userID, user_obj);
+    const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
+          const userID = uuidV4();
+          const [user] = await userModelInstance.create(trx, userID, user_obj);
 
-      const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
+          const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
 
-      // Backdor for development purposes
-      // if (process.env.node_env !== 'development') {
-        generateSendToken(user_obj.email, preferences.lang);
-      // }
-      return { ...user, preferences }
-    });
-  }
+          // Backdor for development purposes
+          // if (process.env.node_env !== 'development') {
+ 
+          // }
+          return { ...user, preferences }
+        });
 
-  static async confirmIdentity(token: string) {
-    // Backdor for development purposes
-    // if (process.env.node_env === 'development') {
-    //   return;
-    // }
-    const email = await redisPub.get("users.check.token." + token);
-    if (!email) throw new NotFoundError("Token not found or expired");
-    const tokenRedis = await redisPub.get("users.check.email." + email);
-    if (token !== tokenRedis) {
-      await redisPub.del("users.check.token." + token);
-      throw new ConflictError("Token not found or expired");
-    }
-    await userModelInstance.updateByEmail(email, { validated: true }, USER_PRIVATE_COLUMNS);
-    await redisPub.del("users.check.token" + token);
-    await redisPub.del("users.check.email" + email);
-  }
+    await fetch(`http://${process.env.AUTH_IP}/internal/2fa/sendVerifEmail`, {
+      method: 'POST',
+      body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang })
+    }).catch(console.error)
 
-  static async resendEmail (email: string, userId: string) {
-    const user = await userModelInstance.findByID(userId, ['email', 'validated', 'preferences']);
-    if (!user) throw new NotFoundError("User not found");
-    if (user.validated) throw new ConflictError("Email already validated");
-
-    const lang = user.preferences?.lang || 'en';
-    await generateSendToken(email, lang);
-  }
-  
-  static async sendVerificationEmail(email: string, data: string, language: string) {
-    const trad = await loadLang(language);
-    const mailOptions: SendMailOptions = {
-      from: 'Transcenduck <transcenduck@gmail.com>',
-      to: email,
-      subject: `${trad['subject_valid_email']}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #f9f9f9; border-radius: 10px; color: #333;">
-          
-          <!-- Logo (optionnel) -->
-          <div style="text-align: center; margin-bottom: 20px;">
-            <img src="https://via.placeholder.com/150x100?text=Logo" alt="Logo" style="max-width: 100px;">
-          </div>
-
-          <p style="font-size: 16px; margin: 0 0 15px 0;">${trad['greeting']},</p>
-
-          <p style="font-size: 16px; margin: 0 0 15px 0;">
-            ${trad['verificationIntro']} <strong>${trad['verificationLink']}</strong> :
-          </p>
-
-          <div style="margin: 20px 0; text-align: center;">
-            <a href="${process.env.URL}/verifyEmail?value=${data}"
-              style="display: inline-block; background-color: #007BFF; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
-              Cliques ici pour vérifier ton compte
-            </a>
-          </div>
-
-          <p style="font-size: 14px; margin: 0 0 10px 0;">${trad['linkValidity']}</p>
-          <p style="font-size: 14px; margin: 0 0 10px 0;">${trad['ignoreWarning']}</p>
-
-          <p style="font-size: 14px; margin-top: 30px;">${trad['signature']}</p>
-
-          <!-- Image de bas de page (optionnelle) -->
-          <div style="text-align: center; margin-top: 20px;">
-            <img src="https://via.placeholder.com/300x100?text=Merci+!" alt="Merci !" style="max-width: 100%;">
-          </div>
-        </div>
-      `
-    }
-    await transporter.sendMail(mailOptions);
+    return transactionData;
   }
 
   static async get2faStatus(userId: string): Promise<User2faStatusType> {
@@ -150,12 +70,9 @@ export class UserService {
     }
     await userModelInstance.update(userId, { twofa: true }, USER_PRIVATE_COLUMNS);
 
-    const email = user.email;
-    const lang = user.preferences?.lang;
-
-    fetch(process.env.AUTH_IP + '/internal/sendCode', {
+    await fetch('http://' + process.env.AUTH_IP + '/internal/2fa/sendCode', {
       method: 'POST',
-      body: JSON.stringify({ email, lang })
+      body: JSON.stringify({ email: user.email, lang: user.preferences?.lang })
     })
   }
 
@@ -165,12 +82,10 @@ export class UserService {
       throw new NotFoundError('User');
     }
     await userModelInstance.update(userId, { twofa: false }, USER_PRIVATE_COLUMNS);
-    const email = user.email;
-    const lang = user.preferences?.lang;
 
-    fetch(process.env.AUTH_IP + '/internal/sendCode', {
+    await fetch('http://' + process.env.AUTH_IP + '/internal/2fa/sendCode', {
       method: 'POST',
-      body: JSON.stringify({ email, lang })
+      body: JSON.stringify({ email: user.email, lang: user.preferences?.lang })
     })
   }
 

@@ -1,4 +1,3 @@
--- Active: 1750854951760@@127.0.0.1@3306
 import { UnauthorizedError, EmailConfirmError, TwoFaError } from '@transcenduck/error'
 import crypto from 'crypto';
 
@@ -6,9 +5,9 @@ import { generateToken } from "../utils/jwt.js";
 import { refreshTokenModelInstance } from "./token.model.js";
 
 import { FamiliesResponseType } from './session.schema.js';
-import { send2FACode, verifyCode } from '../2FA/2fa.service.js';
-import { generateCode } from '../2FA/2fa.route.js';
 import { redisPub } from '../utils/redis.js';
+
+import { twoFaService, generateCode } from '../2FA/twofa.service.js';
 
 interface refreshTokenInfo {
   user_id: string;
@@ -128,7 +127,7 @@ export class SessionService {
       method: 'GET'
     })
 
-    const userInfo = (await userInfosRequest.json() as { data: userInfos }).data;
+    const userInfo = (await userInfosRequest.json()).data as userInfos;
 
     if (userInfo.validated === false) {
       const response = await fetch('http://' + process.env.USER_IP + '/users/resendEmail', {
@@ -150,26 +149,26 @@ export class SessionService {
     }
 
     const email = userInfo.email;
-    const lang = userInfo.preferences?.lang;
+    const lang = userInfo.preferences!.lang;
     const code = generateCode();
     
-    send2FACode(email, code, lang);
+    await twoFaService.generateSendCode(email, lang, code)
     
-    redisPub.setEx('users.userIds.' + code + '.userId', 600, user.id)
+    redisPub.setEx('users:userIds:' + code + ':userId', 600, user.id)
     if (user.family_id) {
-      redisPub.setEx('users.userIds.' + code + '.family_id', 600, user.family_id)
+      redisPub.setEx('users:userIds:' + code + ':family_id', 600, user.family_id)
     }
     throw new TwoFaError();
   }
 
   static async login2FA (code: string, clientInfo?: clientInfo) {
-    await verifyCode(code);
+    await twoFaService.verifyCode(code);
 
-    const id = await redisPub.get('users.userIds.' + code + '.userId');
-    const family_id = await redisPub.get('users.userIds.' + code + '.family_id');
+    const id = await redisPub.get('users:userIds:' + code + ':userId');
+    const family_id = await redisPub.get('users:userIds:' + code + ':family_id');
 
-    await redisPub.del('users.userIds.' + code + '.userId');
-    await redisPub.del('users.userIds.' + code + '.family_id');
+    await redisPub.del('users:userIds:' + code + ':userId');
+    await redisPub.del('users:userIds:' + code + ':family_id');
 
     return await this.createSession({ id, family_id } as userIds, clientInfo)
   } 

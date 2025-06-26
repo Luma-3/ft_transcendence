@@ -60,7 +60,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     schema: {
       summary: 'Create a new user session after 2fa verification',
       description: 'This endpoint allows users to create a new session by providing their credentials after 2fa verification.',
-      tags: ['Sessions'],
+      tags: ['Sessions', '2FA'],
       body: twoFaBody,
       response: {
         201: ResponseSchema(undefined, 'Session created successfully')

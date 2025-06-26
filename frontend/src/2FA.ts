@@ -73,7 +73,7 @@ export async function submit2FACode() {
 		return;
 	}
 
-	const response = await fetchApi(API_SESSION.VERIFY2FA, {
+	const response = await fetchApi(API_SESSION.VERIFY.TWOFA, {
 		method: 'POST',
 		body: JSON.stringify({ code })
 	});

@@ -1,10 +1,10 @@
-import { fetchApi, fetchApiWithNoError } from "../../api/fetch";
-import { API_USER } from "../../api/routes";
+import { fetchApiWithNoError } from "../../api/fetch";
+import { MODULE_TWOFA } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
-import { renderPrivatePage, renderPublicPage } from "../../controllers/renderPage";
+import { renderPublicPage } from "../../controllers/renderPage";
 
 export async function verifyEmailUser(token: string) {
-	const response = await fetchApiWithNoError(API_USER.VERIFY.EMAIL + `/${token}`, {
+	const response = await fetchApiWithNoError(MODULE_TWOFA.VERIFY.EMAIL + `/${token}`, {
 		method: "GET",
 	});
 	if (response.status === "error") {

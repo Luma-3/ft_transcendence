@@ -27,9 +27,8 @@ import {
   UserUsernameUpdateBody,
   VerifyCredentials,
   UsersQueryGetAll,
-  ValidationEmailQueryGet,
-  User2faInfos,
   User2faStatus,
+  User2faInfos,
 } from './user.schema.js';
 
 
@@ -51,42 +50,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const user = await UserService.createUser(req.body);
     return rep.code(200).send({ message: 'User Created, verification email sent', data: user });
   });
-
-  fastify.get('/users/verifyEmail/:token', {
-    schema: {
-      summary: 'Verfiy e-mail user',
-      description: 'Endpoint to verify a user email',
-      tags: ['Users'],
-      params: ValidationEmailQueryGet,
-      response: {
-        200: ResponseSchema(UserPublicResponse, 'Email verified successfully'),
-        404: NotFoundResponse
-      }
-    }
-  }, async (req, rep) => {
-    await UserService.confirmIdentity(req.params.token);
-    return rep.code(200).send({ message: 'Email verified successfully' });
-  });
-
-  fastify.post('/users/resendEmail', {
-    schema: {
-      summary: "resend e-mail to user",
-      description: 'Endpoint to resend e-mail to a user if he not validated his e-mail',
-      tags: ['Users'],
-      body: Type.Object({ 
-        email: Type.String({ format: 'email' }), 
-        userID: Type.String({ format: 'uuid' })
-      }),
-      response: {
-        200: ResponseSchema()
-      }
-    }
-  }, async (req, rep) => {
-    const { email, userID } = req.body;
-    console.log('Resending email to:', email, 'for user ID:', userID);
-    await UserService.resendEmail(email, userID);
-    return rep.code(200).send({ message: 'Email sent successfully' });
-  })
 
   fastify.post('/internal/users', {
     schema: {
@@ -162,8 +125,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     return rep.code(200).send({ message: 'Ok', data: user })
   });
 
-  
-
   fastify.get('/internal/users/:id', {
     schema: {
       summary: 'Private information of user',
@@ -180,9 +141,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const { id } = req.params;
     const { includePreferences } = req.query;
 
-    const USER_INTERNAL_COLUMNS: string[] = ['users.id', 'email', 'validated', 'twofa'];
-
-    const user = await UserService.getUserByID(id, includePreferences, USER_INTERNAL_COLUMNS, PREFERENCES_PUBLIC_COLUMNS);
+    const user = await UserService.getUserByID(id, includePreferences, USER_PRIVATE_COLUMNS, PREFERENCES_PUBLIC_COLUMNS);
     return rep.code(200).send({ message: 'Ok', data: user })
   });
 

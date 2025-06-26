@@ -2,7 +2,7 @@ import server from './fastify.js'
 
 import sessionRoute from './session/session.route.js'
 import oauth2Route from './oauth2/oauth2.route.js'
-import twofaRoute from './2FA/2fa.route.js'
+import twofaRoute from './2FA/twofa.route.js'
 
 server.register(oauth2Route)
 server.register(sessionRoute);

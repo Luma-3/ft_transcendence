@@ -3,8 +3,20 @@ import { knexInstance } from '../utils/knex.js';
 
 import { UserBaseType, UserDBHydrateType } from './user.schema.js'
 
-export const USER_PUBLIC_COLUMNS: string[] = ['users.id', 'username', 'created_at'];
-export const USER_PRIVATE_COLUMNS: string[] = ['users.id', 'username', 'email', 'created_at'];
+export const USER_PUBLIC_COLUMNS: string[] = [
+  'users.id',
+  'username',
+  'created_at'
+];
+export const USER_PRIVATE_COLUMNS: string[] = [
+  'users.id',
+  'google_id',
+  'username',
+  'email',
+  'validated',
+  'twofa',
+  'created_at'
+];
 
 export class UserModel {
 

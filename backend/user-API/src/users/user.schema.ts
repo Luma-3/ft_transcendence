@@ -70,6 +70,8 @@ export type UserPublicResponseType = Static<typeof UserPublicResponse>;
 export const UserPrivateResponse = Type.Object({
   ...UserSharedFields,
   email: Type.String({ format: 'email' }),
+  validated: Type.Boolean(),
+  twofa: Type.Boolean(),
   preferences: Type.Optional(PreferencesPrivateResponse)
 });
 export type UserPrivateResponseType = Static<typeof UserPrivateResponse>;
@@ -131,15 +133,6 @@ export const UserQueryGet = Type.Object({
   additionalProperties: false
 });
 export type UserQueryGetType = Static<typeof UserQueryGet>;
-
-
-export const ValidationEmailQueryGet = Type.Object({
-  token: Type.String({format: 'uuid', description: 'Token for user identification'}),
-}, {
-  additionalProperties: false
-});
-
-export type ValidationEmailQueryGetType = Static<typeof ValidationEmailQueryGet>;
 
 // User Header Schema
 // This schema is used for defining headers in API requests, such as passing a user ID in the header.
