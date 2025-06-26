@@ -6,36 +6,38 @@ import { alertTemporary } from './components/ui/alert/alertTemporary';
 
 import { headerPage } from './components/ui/headerPage';
 import { primaryButton } from './components/ui/buttons/primaryButton';
+import { socketConnection } from './socket/Socket';
 
 export function change2FA() {
 
-/**
- * ! Fetch pour verifier si il a activer le 2Fa pour que le bouton propose soit de 'enable2fa' ou 'disable2fa'(enable2fa et disable2fa ne sont pas les textes affiches mais le cle pour la traduction)
-*/
-// const response = await fetchApi(API_SESSION + `/`, {
-// method: 'GET'})
+	/**
+	 * ! Fetch pour verifier si il a activer le 2Fa pour que le bouton propose soit de 'enable2fa' ou 'disable2fa'(enable2fa et disable2fa ne sont pas les textes affiches mais le cle pour la traduction)
+	*/
+	// const response = await fetchApi(API_SESSION + `/`, {
+	// 	method: 'GET'
+	// })
 
-return `
-<div class="grid sm:grid-cols-2 gap-4 items-center">
-	
-	<div class="title-responsive-size font-title justify-center" translate="2fa-auth">
+	return `
+	<div class="grid sm:grid-cols-2 gap-4 items-center">
+		
+		<div class="title-responsive-size font-title justify-center" translate="2fa-auth">
 
-		2FA Authentication
+			2FA Authentication
+
+		</div>
+
+		${primaryButton({id: 'enable2fa', weight: "1/4", text: 'Activate 2FA', translate: 'activate-2fa', type: 'button'})}
 
 	</div>
 
-	${primaryButton({id: 'enable2fa', weight: "1/4", text: 'Activate 2FA', translate: 'activate-2fa', type: 'button'})}
+	<div class="flex flex-col p-2 max-w-[800px] justify-center items-center w-full text-responsive-size font-title" translate="2fa-warning">
+		
+		Warning ! <br>
+		No 2FA reduces security
+		(as anyone can access your account)<br> and increases the
+		risk of accidental actions.<br> This is not recommended !
 
-</div>
-
-<div class="flex flex-col p-2 max-w-[800px] justify-center items-center w-full text-responsive-size font-title" translate="2fa-warning">
-	
-	Warning ! <br>
-	No 2FA reduces security
-	(as anyone can access your account)<br> and increases the
-	risk of accidental actions.<br> This is not recommended !
-
-</div>`
+	</div>`
 }
 
 /** 
@@ -58,6 +60,7 @@ export async function disable2FA() {
 	if (response.status === 'error') {
 		await alertTemporary("error", "Cannot disable 2FA, please reload the page and retry", 'dark')
 	}
+	renderPublicPage('2FA')
 }
 
 export async function submit2FACode() {
@@ -70,16 +73,17 @@ export async function submit2FACode() {
 		return;
 	}
 
-	// const response = await fetchApi(API_SESSION.VERIFY2FA, {
-	// 	method: 'POST',
-	// 	body: JSON.stringify({ code })
-	// });
-	// if (response.status === 'error') {
-	// 	await alertTemporary("error", "Invalid 2FA code, please try again", 'dark');
-	// 	return;
-	// }
+	const response = await fetchApi(API_SESSION.VERIFY2FA, {
+		method: 'POST',
+		body: JSON.stringify({ code })
+	});
+	if (response.status === 'error') {
+		await alertTemporary("error", "Invalid 2FA code, please try again", 'dark');
+		return;
+	}
 	alertTemporary("success", "2FA code verified successfully", 'dark');
 	setTimeout(() => {
+		socketConnection();
 		renderPrivatePage('dashboard');
 	}, 1000);
 }

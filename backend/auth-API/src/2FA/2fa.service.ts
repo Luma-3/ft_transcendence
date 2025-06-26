@@ -1,14 +1,17 @@
 import { SendMailOptions } from 'nodemailer'
-import { transporter } from '../utils/mail';
-import { redisPub } from '../utils/redis';
+import { transporter } from '../utils/mail.js';
+import { redisPub } from '../utils/redis.js';
 
-async function loadLang(language:string ){
-	const trad = (await fetch(`./languages/${language}.json`));
-	return trad.json();
+import { NotFoundError, UnauthorizedError } from '@transcenduck/error';
+import fs from 'fs';
+
+async function loadLang(language: string){
+  const trad = JSON.parse(fs.readFileSync(`./src/2FA/languages/${language}.json`, 'utf8'));
+	return trad;
 }
 
-export async function send2FACode(email: string, code: string, language: string) {
-	const trad = await loadLang(language);
+export async function send2FACode(email: string, code: string, language?: string) {
+	const trad = await loadLang(language ?? 'en');
 	const mailOptions: SendMailOptions = {
 		from: 'Transcenduck <transcenduck@gmail.com>',
 		to: email,
@@ -29,12 +32,12 @@ export async function send2FACode(email: string, code: string, language: string)
 
 export async function verifyCode(code: string) {
 	const email = await redisPub.get("users.check.code." + code);
-	if (!email) throw NotFoundError("Token not found or expired");
+	if (!email) throw new NotFoundError("Code not found or expired");
 
 	const codeRedis = await redisPub.get("users.check.email." + email);
-	if (token !== tokenRedis) {
-    await redisPub.del("users.check.token." + token);
-    throw new Unauthorized("Token not found or expired");
+	if (code !== codeRedis) {
+    await redisPub.del("users.check.code." + code);
+    throw new UnauthorizedError("Code not found or expired");
   }
 	await redisPub.del("users.check.code" + code);
   await redisPub.del("users.check.email" + email);

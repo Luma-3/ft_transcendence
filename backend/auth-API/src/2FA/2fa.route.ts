@@ -1,9 +1,14 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox"
 
-import { sendEmailBody, verifyCodeBody } from "./2fa.schema";
-import { send2FACode, verifyCode } from "./2fa.service";
+import { sendEmailBody } from "./2fa.schema.js";
+import { send2FACode } from "./2fa.service.js";
 
-import { UnauthorizedResponse, NotFoundResponse } from '@transcenduck/error';
+import crypto from 'crypto';
+
+export function generateCode(): string {
+  const code = crypto.randomInt(0, 1000000);
+  return code.toString().padStart(6, '0');
+}
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
 	fastify.post('/internal/sendCode', {
@@ -18,25 +23,8 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 		}
 	}, async(req, rep) => {
 		const { email, lang } = req.body;
-		await send2FACode(email, '0', lang);
+		await send2FACode(email, generateCode(), lang);
 		rep.code(200).send({ message: 'OK' });
-	})
-
-	fastify.post('/2faVerify', {
-		schema: {
-			summary: 'Verify code send in email',
-			description: 'Endpoint to verify code send by front for 2 Factor Authentification',
-			tags: ['2FA'],
-			body: verifyCodeBody,
-			response: {
-				200: { message: String },
-				401: UnauthorizedResponse,
-				404: NotFoundResponse
-			}
-		}
-	}, async (req, rep) => {
-		await verifyCode(req.body.code);
-		return rep.code(200).send({ message: 'OK' });
 	})
 }
 

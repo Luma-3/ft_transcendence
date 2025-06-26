@@ -99,6 +99,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 	if (!socket) {
 		socketConnection();
 	}
+
 	lang = user.data!.preferences!.lang;
 	theme = user.data!.preferences!.theme;
 

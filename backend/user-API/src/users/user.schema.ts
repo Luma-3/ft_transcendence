@@ -183,3 +183,18 @@ export const VerifyCredentials = Type.Object({
   additionalProperties: false
 });
 export type VerifyCredentialsType = Static<typeof VerifyCredentials>;
+
+export const User2faInfos = Type.Object({
+  id: Type.String({ format: 'uuid' }),
+  email: Type.String({ format: 'email' }),
+  validated: Type.Boolean(),
+  twofa: Type.Boolean()
+});
+export type User2faInfosType = Static<typeof User2faInfos>;
+
+export const User2faStatus = Type.Object({
+  twofa: Type.Boolean({
+    description: 'Indicates if the user has activated or not 2 Factor Authentification.'
+  })
+});
+export type User2faStatusType = Static<typeof User2faStatus>;

@@ -15,7 +15,6 @@ export const FamilyId = Type.Object({
   familyId: Type.String()
 })
 
-
 export const RefreshTokenBase = Type.Object({
   id: Type.String(),
   user_id: Type.String(),
@@ -39,3 +38,8 @@ export const UserHeaderAuthentication = Type.Object({
   additionalProperties: false
 });
 export type UserHeaderIdType = Static<typeof UserHeaderAuthentication>;
+
+export const twoFaBody = Type.Object({
+  code: Type.String()
+});
+export type twoFaBodyType = Static<typeof twoFaBody>;

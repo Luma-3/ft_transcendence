@@ -1,5 +1,6 @@
 import notFoundPage from "../pages/4xx";
 import errorPage from "../pages/5xx";
+import { renderPublicPage } from "./renderPage";
 
 const knownErrors = new Map<string, string>([
 	['400', 'bad-request'],
@@ -23,7 +24,7 @@ export function dispatchError(code: string, messageServer: string) {
 		case '401':
 			return window.location.href = '/login';
 		case '461':
-			return window.location.href = 'verifyEmail';
+			return renderPublicPage('verifyEmail', true);
 		case '460':
 			return window.location.href = '2FA';
 		default:

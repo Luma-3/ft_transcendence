@@ -2,7 +2,7 @@ import { ConflictError, NotFoundError, UnauthorizedError, EmailConfirmError } fr
 import { v4 as uuidV4 } from "uuid";
 import { hashPassword, comparePassword } from "../utils/bcrypt.js";
 
-import { UserCreateBodyType, UserBaseType, UserCreateBodyInternalType } from "./user.schema.js";
+import { UserCreateBodyType, UserBaseType, UserCreateBodyInternalType, User2faStatusType } from "./user.schema.js";
 import { PreferencesBaseType } from "../preferences/preferences.schema.js";
 import { knexInstance, Knex } from "../utils/knex.js";
 import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS, userModelInstance } from "./user.model.js"
@@ -83,6 +83,15 @@ export class UserService {
     await redisPub.del("users.check.token" + token);
     await redisPub.del("users.check.email" + email);
   }
+
+  static async resendEmail (email: string, userId: string) {
+    const user = await userModelInstance.findByID(userId, ['email', 'validated', 'preferences']);
+    if (!user) throw new NotFoundError("User not found");
+    if (user.validated) throw new ConflictError("Email already validated");
+
+    const lang = user.preferences?.lang || 'en';
+    await generateSendToken(email, lang);
+  }
   
   static async sendVerificationEmail(email: string, data: string, language: string) {
     const trad = await loadLang(language);
@@ -126,16 +135,43 @@ export class UserService {
     await transporter.sendMail(mailOptions);
   }
 
+  static async get2faStatus(userId: string): Promise<User2faStatusType> {
+    const user = await userModelInstance.findByID(userId, ['twofa']);
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+    return { twofa: user.twofa };
+  }
+
   static async enable2FA(userId: string) {
-    await userModelInstance.update(userId, { twofa: true }, USER_PRIVATE_COLUMNS);
     const user = await userModelInstance.findByID(userId);
-    return user?.twofa;
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+    await userModelInstance.update(userId, { twofa: true }, USER_PRIVATE_COLUMNS);
+
+    const email = user.email;
+    const lang = user.preferences?.lang;
+
+    fetch(process.env.AUTH_IP + '/internal/sendCode', {
+      method: 'POST',
+      body: JSON.stringify({ email, lang })
+    })
   }
 
   static async disable2FA(userId: string) {
-    await userModelInstance.update(userId, { twofa: false }, USER_PRIVATE_COLUMNS);
     const user = await userModelInstance.findByID(userId);
-    return user?.twofa;
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+    await userModelInstance.update(userId, { twofa: false }, USER_PRIVATE_COLUMNS);
+    const email = user.email;
+    const lang = user.preferences?.lang;
+
+    fetch(process.env.AUTH_IP + '/internal/sendCode', {
+      method: 'POST',
+      body: JSON.stringify({ email, lang })
+    })
   }
 
   static async createUserInternal(data: UserCreateBodyInternalType) {
@@ -246,11 +282,11 @@ export class UserService {
   static async verifyCredentials(username: string, password: string): Promise<UserBaseType> {
     const user = await userModelInstance.findByUsername(username, undefined, ['password', 'validated', ...USER_PRIVATE_COLUMNS]);
     if (!user) throw new UnauthorizedError("Invalid credentials");
-    if(user.validated == false)
-      throw new EmailConfirmError('Email not already confirmed');
     const isValid = await comparePassword(password, user.password!);
     if (!isValid) throw new UnauthorizedError("Invalid credentials");
 
+    if(user.validated === false)
+      throw new EmailConfirmError('Email not already confirmed');
     return user;
   }
 }

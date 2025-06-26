@@ -1,10 +1,14 @@
-import { UnauthorizedError, EmailConfirmError } from '@transcenduck/error'
+-- Active: 1750854951760@@127.0.0.1@3306
+import { UnauthorizedError, EmailConfirmError, TwoFaError } from '@transcenduck/error'
 import crypto from 'crypto';
 
 import { generateToken } from "../utils/jwt.js";
 import { refreshTokenModelInstance } from "./token.model.js";
 
 import { FamiliesResponseType } from './session.schema.js';
+import { send2FACode, verifyCode } from '../2FA/2fa.service.js';
+import { generateCode } from '../2FA/2fa.route.js';
+import { redisPub } from '../utils/redis.js';
 
 interface refreshTokenInfo {
   user_id: string;
@@ -56,6 +60,7 @@ async function verifyCredentials(username: string, password: string): Promise<{ 
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
   })
+
   if (!response.ok) {
     if (response.status === 461) {
       throw new EmailConfirmError();
@@ -68,18 +73,31 @@ async function verifyCredentials(username: string, password: string): Promise<{ 
   return user_data.data;
 }
 
+export interface userIds {
+  id : string,
+  family_id: string
+}
+
+export interface userInfos {
+  email: string,
+  google_id?: string,
+  password: string,
+  validated: boolean,
+  twofa: boolean,
+  id: string,
+  username: string,
+  created_at: string,
+  preferences?: {
+    theme: 'dark' | 'light',
+    lang: 'en' | 'fr' | 'es',
+    avatar: string,
+    banner: string
+  }
+}
+
 export class SessionService {
-  static async login(username: string, password?: string, clientInfo?: clientInfo): Promise<{ accessToken: string; refreshToken: string }> {
-    let user;
 
-    if (password !== undefined) {
-      user = await verifyCredentials(username, password);
-    }
-    if (!user) {
-      throw new UnauthorizedError('Invalid username or password');
-    }
-    console.log("USER Data: ", user);
-
+  static async createSession(user: userIds, clientInfo?: clientInfo) {
     const family_id = crypto.randomBytes(16).toString('hex');
 
     const accessToken = await createAccessToken(user.id, family_id);
@@ -94,6 +112,67 @@ export class SessionService {
 
     return { accessToken, refreshToken };
   }
+
+  static async login(username: string, password?: string, clientInfo?: clientInfo) {
+    let user;
+    
+    if (password !== undefined) {
+      user = await verifyCredentials(username, password);
+    }
+
+    if (!user) {
+      throw new UnauthorizedError('Invalid username or password');
+    }
+      
+    const userInfosRequest = await fetch('http://' + process.env.USER_IP + '/internal/users/' + user.id + '?includePreferences=true', {
+      method: 'GET'
+    })
+
+    const userInfo = (await userInfosRequest.json() as { data: userInfos }).data;
+
+    if (userInfo.validated === false) {
+      const response = await fetch('http://' + process.env.USER_IP + '/users/resendEmail', {
+        method: 'POST',
+        body: JSON.stringify({ email: userInfo.email, userId: userInfo.id }),
+      })
+
+      if (response.status === 200) {
+        throw new EmailConfirmError('Email confirmation sent');
+      } else if (response.status === 406) {
+        throw new UnauthorizedError('Email already confirmed');
+      } else {
+        throw new UnauthorizedError('Email confirmation failed: ' + response.statusText);
+      }
+    }
+
+    if (userInfo.twofa === false) {
+      return this.createSession(user, clientInfo);
+    }
+
+    const email = userInfo.email;
+    const lang = userInfo.preferences?.lang;
+    const code = generateCode();
+    
+    send2FACode(email, code, lang);
+    
+    redisPub.setEx('users.userIds.' + code + '.userId', 600, user.id)
+    if (user.family_id) {
+      redisPub.setEx('users.userIds.' + code + '.family_id', 600, user.family_id)
+    }
+    throw new TwoFaError();
+  }
+
+  static async login2FA (code: string, clientInfo?: clientInfo) {
+    await verifyCode(code);
+
+    const id = await redisPub.get('users.userIds.' + code + '.userId');
+    const family_id = await redisPub.get('users.userIds.' + code + '.family_id');
+
+    await redisPub.del('users.userIds.' + code + '.userId');
+    await redisPub.del('users.userIds.' + code + '.family_id');
+
+    return await this.createSession({ id, family_id } as userIds, clientInfo)
+  } 
 
   static async refreshToken(tokenId: string) {
 

@@ -51,6 +51,8 @@ export const API_SESSION = {
   VERIFY_REFRESH: `${SERVICES.SESSION}/verify/refreshToken`,
 
   REFRESH: `${SERVICES.SESSION}/refresh`,
+
+  VERIFY2FA: `${SERVICES.SESSION}/2fa`
 }
 
 export const API_GAME = {

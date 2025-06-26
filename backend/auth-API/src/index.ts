@@ -1,4 +1,3 @@
-import dotenv from 'dotenv'
 import server from './fastify.js'
 
 import sessionRoute from './session/session.route.js'

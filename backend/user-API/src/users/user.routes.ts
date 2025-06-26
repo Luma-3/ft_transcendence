@@ -28,6 +28,8 @@ import {
   VerifyCredentials,
   UsersQueryGetAll,
   ValidationEmailQueryGet,
+  User2faInfos,
+  User2faStatus,
 } from './user.schema.js';
 
 
@@ -65,6 +67,26 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     await UserService.confirmIdentity(req.params.token);
     return rep.code(200).send({ message: 'Email verified successfully' });
   });
+
+  fastify.post('/users/resendEmail', {
+    schema: {
+      summary: "resend e-mail to user",
+      description: 'Endpoint to resend e-mail to a user if he not validated his e-mail',
+      tags: ['Users'],
+      body: Type.Object({ 
+        email: Type.String({ format: 'email' }), 
+        userID: Type.String({ format: 'uuid' })
+      }),
+      response: {
+        200: ResponseSchema()
+      }
+    }
+  }, async (req, rep) => {
+    const { email, userID } = req.body;
+    console.log('Resending email to:', email, 'for user ID:', userID);
+    await UserService.resendEmail(email, userID);
+    return rep.code(200).send({ message: 'Email sent successfully' });
+  })
 
   fastify.post('/internal/users', {
     schema: {
@@ -137,7 +159,30 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const { includePreferences } = req.query;
 
     const user = await UserService.getUserByID(id, includePreferences, USER_PUBLIC_COLUMNS, PREFERENCES_PUBLIC_COLUMNS);
+    return rep.code(200).send({ message: 'Ok', data: user })
+  });
 
+  
+
+  fastify.get('/internal/users/:id', {
+    schema: {
+      summary: 'Private information of user',
+      description: 'Endpoint to retrieve private informations of a user',
+      tags: ['Users'],
+      params: UserParamGet,
+      querystring: UserQueryGet,
+      response: {
+        200: ResponseSchema(User2faInfos, 'Ok'),
+        404: NotFoundResponse,
+      }
+    }
+  }, async (req, rep) => {
+    const { id } = req.params;
+    const { includePreferences } = req.query;
+
+    const USER_INTERNAL_COLUMNS: string[] = ['users.id', 'email', 'validated', 'twofa'];
+
+    const user = await UserService.getUserByID(id, includePreferences, USER_INTERNAL_COLUMNS, PREFERENCES_PUBLIC_COLUMNS);
     return rep.code(200).send({ message: 'Ok', data: user })
   });
 
@@ -245,9 +290,24 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async (req, rep) => {
     const { username, password } = req.body;
-    console.log('password', password, 'username', username);
     const user = await UserService.verifyCredentials(username, password);
     return rep.code(200).send({ message: 'Credentials verified successfully', data: user });
+  });
+
+  fastify.get('/2fa', {
+    schema: {
+      summary: 'Get 2fa infos for a user',
+      description: 'Endpoint to get the 2 Factor Authentification informations',
+      tags: ['2FA'],
+      headers: UserHeaderAuthentication,
+      response: {
+        200: ResponseSchema(User2faStatus, 'Ok')
+      }
+    }
+  }, async(req, rep) => {
+    const userId = req.headers['x-user-id'];
+    const twoFaStatus = await UserService.get2faStatus(userId);
+    return rep.code(200).send({ message: 'Ok', data: twoFaStatus });
   });
 
   fastify.put('/2fa', {
@@ -263,12 +323,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async(req, rep) => {
     const userId = req.headers['x-user-id'];
-    const enabled = await UserService.enable2FA(userId);
-    if (enabled === false) {
-      return rep.code(500).send({ message: `Could'nt activate 2fa `});
-    } else if (enabled === undefined) {
-      return rep.code(500).send({ message: `User not found with id : ${userId} !` })
-    }
+    await UserService.enable2FA(userId);
     return rep.code(200).send({ message: "2FA successfully enabled !" });
   });
 
@@ -285,12 +340,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async(req, rep) => {
     const userId = req.headers['x-user-id'];
-    const disabled = await UserService.disable2FA(userId);
-    if (disabled === false) {
-      return rep.code(500).send({ message: `Could'nt desactivate 2fa `});
-    } else if (disabled === undefined) {
-      return rep.code(500).send({ message: `User not found with id : ${userId} !` })
-    }
+    await UserService.disable2FA(userId);
     return rep.code(200).send({ message: "2FA successfully disabled !" });
   });
 }
