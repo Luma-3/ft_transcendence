@@ -9,10 +9,12 @@ import { MultipartFile } from "@fastify/multipart";
 import { CdnQueryType } from "../schema/upload.schema.js";
 import { redisCache } from "../utils/redis.js";
 import { hash } from "node:crypto";
+import { compress, uncompress } from "snappy";
 export enum TypeUpload {
   avatar = 'avatar',
   banner = 'banner'
 };
+
 
 export class UploadService {
   _uploadPath: string;
@@ -98,10 +100,9 @@ export class UploadService {
         tint: options.tint,
         rotate: options.rotate,
     }}));
-    console.log("hashKey", hashKey);
     if(await redisCache.exists(hashKey))
-      return redisCache.getEx(hashKey, {type: "EX", value: 60 * 60 * 24 }).then((data) => {
-          return Buffer.from(data!, 'base64');
+      return redisCache.getEx(hashKey, {type: "EX", value: 60 * 60 * 24 }).then(async (data) => {
+          return await uncompress(Buffer.from(data!, 'base64'));
       });
     let bufferFile =  fs.readFileSync(pathJoin);
     const extenstion = path.extname(pathJoin);
@@ -114,16 +115,19 @@ export class UploadService {
 }
 
   cacheFile(hashKey: string, buffer: Buffer) {
-    redisCache.set(hashKey, buffer.toString('base64'), {
+    compress(buffer).then((buffer: Buffer) => {
+      redisCache.set(hashKey, buffer.toString('base64'), {
       expiration: {
         type: "EX",
         value: 60 * 60 * 24 // 24 hours
       }
-    }).then(() => {
-      console.log("File cached in Redis");
-    }).catch((err) => {
-      console.error("Error caching file in Redis", err);
-    }); // Cache for 24 hours
+      }).then(() => {
+        console.log("File cached in Redis");
+      }).catch((err) => {
+        console.error("Error caching file in Redis", err);
+      }); // Cache for 24 hours
+    });
+    
     return buffer;
   }
 
