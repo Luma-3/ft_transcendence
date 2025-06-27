@@ -19,6 +19,10 @@ export class Vector2 {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
+  dot(other: Vector2): number {
+    return this.x * other.x + this.y * other.y;
+  }
+
   normalize(): Vector2 {
     let mag = this.magnitude();
     return mag === 0 ? new Vector2(0, 0) : this.scale(1 / mag);

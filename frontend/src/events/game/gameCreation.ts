@@ -16,21 +16,6 @@ type GameFormInfo = {
 	gameNameOpponent?: string;
 }
 
-// function initGame(gameFormInfo: GameFormInfo) {
-// 	const t0 = performance.now();
-// 	socket!.send(JSON.stringify({
-// 		type: "game",
-// 		payload: {
-// 			type: 'init',
-// 			data: {
-// 				playerId: gameFormInfo.playerId,
-// 				roomId: gameFormInfo.gameId,
-// 				clientTime: t0
-// 			}
-// 		}
-// 	}))
-// }
-
 /**
  * Envoie des donnees de la partie au serveur
  * et stockage de l'ID de la partie dans l'interface GameInfo

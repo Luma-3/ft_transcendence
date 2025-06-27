@@ -3,56 +3,53 @@ import { socket } from "../../socket/Socket";
 
 let actionUserUp = false, actionUserDown = false, actionUser2Up = false, actionUser2Down = false;
 
-export async function getEventAndSendGameData() {
+export function getEventAndSendGameData(playerId: string) {
 
-	const gameData = {
-		playerAction: (actionUserUp) ? "up" : (actionUserDown) ? "down" : 'Stop',
-		player2Action: (actionUser2Up) ? "up" : (actionUser2Down) ? "down" : 'Stop',
-	}
+  const movement = {
+    up: actionUserUp,
+    down: actionUserDown,
+  }
 
-	if (socket)
-	{	
-		socket.send(JSON.stringify({
-		type: "game",
-		payload: {
-			type: 'move',
-			data: {
-				roomId: gameFrontInfo.gameId,
-				direction: gameData.playerAction,
-				direction2: gameFrontInfo.gameType === "localpvp" ? gameData.player2Action : "",
-			}
-		},
-	}));
-}}
-
-export function onKeyDown(event: KeyboardEvent) {
-	if (event.key === "w") actionUserUp = true;
-	if (event.key === "s") actionUserDown = true;
-
-	if (gameFrontInfo.gameType !== "localpvp") {
-		if (event.key === "ArrowUp") actionUserUp = true;
-		if (event.key === "ArrowDown") actionUserDown = true;
-	} else {
-		if (event.key === "ArrowUp") actionUser2Up = true;
-		if (event.key === "ArrowDown") actionUser2Down = true;
-	}
-	getEventAndSendGameData();
+  const otherMovement = {
+    up: actionUser2Up,
+    down: actionUser2Down
+  }
+  socket.send(JSON.stringify({
+    service: "game",
+    scope: "player",
+    target: playerId,
+    payload: {
+      type: 'input',
+      data: {
+        movement: movement,
+        otherMovement: (gameFrontInfo.gameType === "local") ? otherMovement : undefined,
+      }
+    },
+  }));
 }
 
-export function onKeyUp(event: KeyboardEvent) {
+export function onKeyDown(event: KeyboardEvent, playerId: string) {
+  if (event.key !== "w" && event.key !== "s" && event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+  actionUserUp = (event.key === "w")
+  actionUserDown = (event.key === "s")
 
-	console.log(gameFrontInfo);
 
-	if (event.key === "w") actionUserUp = false;
+  if (gameFrontInfo.gameType === "local") {
+    actionUser2Up = (event.key === "ArrowUp");
+    actionUser2Down = (event.key === "ArrowDown");
+  }
+  getEventAndSendGameData(playerId);
+}
 
-	if (event.key === "s") actionUserDown = false;
+export function onKeyUp(event: KeyboardEvent, playerId: string) {
+  if (event.key !== "w" && event.key !== "s" && event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+  actionUserUp = (event.key === "w" && !actionUserUp);
+  actionUserDown = (event.key === "s" && !actionUserDown);
 
-	if (gameFrontInfo.gameType !== "localpvp") {
-		if (event.key === "ArrowUp") actionUserUp = false;
-		if (event.key === "ArrowDown") actionUserDown = false;
-	} else {
-		if (event.key === "ArrowUp") actionUser2Up = false;
-		if (event.key === "ArrowDown") actionUser2Down = false;
-	}
-	getEventAndSendGameData();
+
+  if (gameFrontInfo.gameType === "local") {
+    actionUser2Up = (event.key === "ArrowUp" && !actionUser2Up);
+    actionUser2Down = (event.key === "ArrowDown" && !actionUser2Down);
+  }
+  getEventAndSendGameData(playerId);
 }

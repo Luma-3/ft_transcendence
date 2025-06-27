@@ -1,6 +1,6 @@
 import { Room } from "./Room.js";
-import { gameType } from "../room/room.schema";
-import { IPlayer } from "./Room.js";
+import { gameType } from "../../room/room.schema.js";
+import { Player } from "./Interface.js";
 import { NotFoundError } from '@transcenduck/error'
 
 class RoomManager {
@@ -17,12 +17,13 @@ class RoomManager {
     this.rooms.delete(id);
   }
 
-  public joinRoom(player: IPlayer, id?: string) {
+  public joinRoom(player: Player, id?: string) {
     if (id) {
       const room = this.rooms.get(id);
       if (!room) {
         throw new NotFoundError('room');
       }
+      console.log(`Player ${player.user_id} joining room ${id}`);
       room.addPlayer(player);
       return room.id;
     }
@@ -36,14 +37,14 @@ class RoomManager {
     return undefined;
   }
 
-  public leaveRoom(player: IPlayer, room_id: string) {
+  public leaveRoom(player: Player, room_id: string) {
     // const room = this.rooms.get(room_id);
     room_id = room_id;
     // TODO :  room.removePlayer()
     this.playersInRooms.delete(player.user_id);
   }
 
-  public findCurrentRoom(player: IPlayer) {
+  public findCurrentRoom(player: Player) {
     return this.playersInRooms.get(player.user_id);
   }
 
@@ -53,14 +54,6 @@ class RoomManager {
       throw new NotFoundError('room');
     }
     return room;
-  }
-
-  public startRoom(room_id: string) {
-    const room = this.rooms.get(room_id);
-    if (!room) {
-      throw new NotFoundError('room');
-    }
-    room.startGame();
   }
 }
 
