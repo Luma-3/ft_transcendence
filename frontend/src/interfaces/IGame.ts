@@ -18,13 +18,13 @@ export interface Ball {
 }
 
 export interface Paddle {
+  id: string;
   position: Vector2;
   scale: Vector2;
 }
 
 export interface IGameData {
-  paddle1: Paddle;
-  paddle2: Paddle
+  paddles: Paddle[]
   ball: Ball;
 }
 

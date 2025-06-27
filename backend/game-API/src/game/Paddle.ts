@@ -11,12 +11,11 @@ export class Paddle extends GameObject implements Rectangle {
   private id: string = '';
   private user_id: string = '';
 
-  constructor(id: string, pos: Vector2, user_id: string) {
+  constructor(id: string, pos: Vector2) {
     super();
 
     console.log('Paddle Constructor', id);
     this.id = id;
-    this.user_id = user_id;
     this.startPosition(pos); // Set the initial position of the paddle
   }
 
@@ -66,7 +65,7 @@ export class Paddle extends GameObject implements Rectangle {
 
   snapshot() {
     return {
-      id: 'paddle' + this.id, // TODO : Make this dynamic or unique per paddle
+      id: this.id, // TODO : Make this dynamic or unique per paddle
       position: this.position,
       scale: this.scale
     };

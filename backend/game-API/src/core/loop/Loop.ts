@@ -10,23 +10,21 @@ export class NetworkLoop extends ALoop {
   }
 
   protected update(): void {
-    const snapshot: Record<string, any> = {};
+    const tab = [];
     this.objects.forEach((obj) => {
       if (!obj.enabled) return;
-      const objSnapshot = obj.snapshot();
-      if (objSnapshot && objSnapshot.id) {
-        snapshot[objSnapshot.id] = objSnapshot;
-      }
+      tab.push(obj.snapshot());
     });
-    if (Object.keys(snapshot).length > 0) {
-      this.sendBatch(snapshot);
+    if (tab.length > 0) {
+      this.sendBatch(tab);
     }
   }
 
-  private sendBatch(snapshot: Record<string, any>) {
+  private sendBatch(snapshot: any[]): void {
     const payload = {
+
       action: "snapshot",
-      gameData: snapshot,
+      data: snapshot,
     }
     const player = SceneContext.get().players;
     IOInterface.broadcast(JSON.stringify(payload), player.map(p => p.user_id));

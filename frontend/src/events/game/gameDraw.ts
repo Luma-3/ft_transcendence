@@ -112,8 +112,9 @@ export function drawGame(gameData: IGameData, action: string = '') {
   //ctx.fill();
 
   drawBall(ctx, gameData.ball.position, gameData.ball.radius);
-  drawPaddle(ctx, gameData.paddle1.position, gameData.paddle1.scale, "blue");
-  drawPaddle(ctx, gameData.paddle2.position, gameData.paddle2.scale, "red");
+  gameData.paddles.forEach((paddle, index) => {
+    drawPaddle(ctx, paddle.position, paddle.scale, index === 0 ? "blue" : "red");
+  });
 
   ctx.save();
 }
