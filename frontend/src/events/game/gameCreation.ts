@@ -16,12 +16,6 @@ type GameFormInfo = {
 	gameNameOpponent?: string;
 }
 
-/**
- * Envoie des donnees de la partie au serveur
- * et stockage de l'ID de la partie dans l'interface GameInfo
- * @param gameInfo - Donnees de la partie a envoyer
- * @param user - Les donnees de l'utilisateur present sur le client
- */
 async function sendDataToServer(gameFormInfo: GameFormInfo, userTheme: string) {
 
 	const response = await fetchApi<{ id: string }>(API_GAME.CREATE, {
@@ -40,9 +34,9 @@ async function sendDataToServer(gameFormInfo: GameFormInfo, userTheme: string) {
 	gameFormInfo.typeGame = gameFormInfo.typeGame;
 
 	/**
-	 * Petit alert de success qui s'affiche a gauche sur l'ecran
+	 * Petit alert de success qui s'affiche a droite sur l'ecran
 	 */
-	alertTemporary("success", "game-created-successfully", userTheme, true);
+	await alertTemporary("success", "game-created-successfully", userTheme, true);
 }
 
 
@@ -106,7 +100,7 @@ export async function createGame() {
 
 	const userPref = await getUserPreferences()
 	await sendDataToServer(gameFormInfo, userPref.data?.theme || 'dark');
-	// initGame(gameFormInfo);
+	
 	gameFrontInfo = {
 		gameId: gameFormInfo.gameId,
 		gameType: gameFormInfo.typeGame

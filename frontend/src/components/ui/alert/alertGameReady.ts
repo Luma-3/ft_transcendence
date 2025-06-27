@@ -29,7 +29,9 @@ export async function alertGameReady() {
 		Swal.showLoading();
 		const timer = Swal.getPopup()!.querySelector("b");
 		timerInterval = setInterval(() => {
-		timer!.textContent = `${(Swal.getTimerLeft()! / 1000).toFixed(0)}`; 
+			if (timer) {
+				timer!.textContent = `${(Swal.getTimerLeft()! / 1000).toFixed(0)}`;
+			}
 		}, 100);
 	},
 	willClose: () => {

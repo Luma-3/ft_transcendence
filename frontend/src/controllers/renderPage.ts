@@ -145,7 +145,7 @@ export async function renderGame(data: any) {
 	theme = user.data.preferences!.theme;
 
 	fadeOut();
-
+	
 	setTimeout(async () => {
 		const main_container = document.querySelector<HTMLDivElement>('#app')!
 		const newContainer = await game(data.roomId, user.data!);

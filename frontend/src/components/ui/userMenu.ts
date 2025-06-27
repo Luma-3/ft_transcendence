@@ -1,8 +1,8 @@
 import { IUserInfo } from '../../interfaces/IUser';
 import { API_CDN } from '../../api/routes';
-import { IOtherUser } from '../../interfaces/PeopleInterface';
+import { IOtherUser } from '../../interfaces/IUser';
 
-let userNotification: boolean = false;
+// let userNotification: boolean = false;
 
 /**
  * Partie du menu situe en haut avec le nom de l'utilisateur et la photo de profil
