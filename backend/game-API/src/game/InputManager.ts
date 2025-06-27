@@ -42,7 +42,7 @@ export class InputManager {
     }
 
 
-    if (payload.type !== 'input') return;
+    if (payload.action !== 'input') return;
 
     console.log("InputManager: handleInput", payload, playerId);
 

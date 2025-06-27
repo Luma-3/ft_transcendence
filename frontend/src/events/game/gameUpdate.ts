@@ -19,7 +19,7 @@ export function getEventAndSendGameData(playerId: string) {
     scope: "player",
     target: playerId,
     payload: {
-      type: 'input',
+      action: 'input',
       data: {
         movement: movement,
         otherMovement: (gameFrontInfo.gameType === "local") ? otherMovement : undefined,

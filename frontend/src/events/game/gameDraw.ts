@@ -1,4 +1,4 @@
-import { IGameData, Vector2 } from "../../interfaces/IGame";
+import { IBall, IPaddle, IGameObject, Vector2 } from "../../interfaces/IGame";
 // import { drawExplosion } from "./gameBallAnimation";
 // import { socket } from "../socket/Socket";
 // import { gameFrontInfo } from "./gameCreation";
@@ -52,7 +52,8 @@ export const FRAME = 30;
 //   requestAnimationFrame(animate);
 // };
 
-export function drawGame(gameData: IGameData, action: string = '') {
+export function drawGame(gameData: IGameObject[], action: string = '') {
+  console.log("gameData", gameData);
 
   const game = document.getElementById("gamePong") as HTMLCanvasElement;
   if (!game) {
@@ -92,28 +93,17 @@ export function drawGame(gameData: IGameData, action: string = '') {
 
   ctx.clearRect(0, 0, game.width, game.height);
 
-  //Left Paddle
-  // ctx.beginPath();
-  // ctx.rect(10, gameData.paddle1.y - 50, 10, 100);
-  // ctx.fillStyle = "blue";
-  // ctx.fill();
-  //
-  // //Right Paddle
-  // ctx.beginPath();
-  // ctx.rect(game.width - 20, gameData.paddle2.y - 50, 10, 100);
-  // ctx.fillStyle = "red";
-  // ctx.fill();
-
-
-  ////BALL
-  //ctx.beginPath();
-  //ctx.rect(gameData.ball.x, gameData.ball.y, 20, 20);
-  //ctx.fillStyle = "yellow";
-  //ctx.fill();
-
-  drawBall(ctx, gameData.ball.position, gameData.ball.radius);
-  gameData.paddles.forEach((paddle, index) => {
-    drawPaddle(ctx, paddle.position, paddle.scale, index === 0 ? "blue" : "red");
+  gameData.forEach((gameObject) => {
+    switch (gameObject.type) {
+      case 'ball': ;
+        drawBall(ctx, (<IBall>gameObject).position, (<IBall>gameObject).radius);
+        break;
+      case 'paddle':
+        drawPaddle(ctx, (<IPaddle>gameObject).position, (<IPaddle>gameObject).scale, 'red'); // TODO : color
+        break;
+      default:
+        console.warn("Unknown game object type:", gameObject.type);
+    }
   });
 
   ctx.save();

@@ -2,6 +2,7 @@ export interface IRoomInfos {
   room_id: string,
   game_type: string,
   players: IPlayer[],
+  status: string,
 }
 
 // START - Jb - Part
@@ -11,22 +12,24 @@ export interface Vector2 {
   y: number;
 }
 
-export interface Ball {
+export interface IGameObject {
+  type: string;
+}
+
+export interface IBall {
+  type: string;
   position: Vector2;
-  velocity: Vector2;
+  // velocity: Vector2;
   radius: number;
 }
 
-export interface Paddle {
+export interface IPaddle {
+  type: string;
   id: string;
   position: Vector2;
   scale: Vector2;
 }
 
-export interface IGameData {
-  paddles: Paddle[]
-  ball: Ball;
-}
 
 // END - Jb - Part
 
@@ -42,14 +45,13 @@ export interface initInfo {
 
 export interface IRoomData {
   roomId: string;
-  gameData?: IGameData;
   typeGame: string;
   players: IPlayer[];
 }
 
 export interface IPlayer {
-  playerId: string;
-  gameName: string;
+  user_id: string;
+  player_name: string;
   ready: boolean;
 }
 

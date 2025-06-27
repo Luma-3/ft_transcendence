@@ -9,7 +9,6 @@ export class Paddle extends GameObject implements Rectangle {
   // private speed: number = 300; // Speed of the paddle movement
 
   private id: string = '';
-  private user_id: string = '';
 
   constructor(id: string, pos: Vector2) {
     super();
@@ -45,8 +44,8 @@ export class Paddle extends GameObject implements Rectangle {
     // Paddle movement logic can be added here (e.g., based on user input)
     // For now, it remains stationary
 
-    const playerInput = SceneContext.get().inputManager.get(this.user_id);
-    console.log('Paddle ID', this.user_id);
+    const playerInput = SceneContext.get().inputManager.get(this.id);
+    console.log('Paddle ID', this.id);
 
     console.log('Paddle Input', playerInput);
     if (playerInput) {
@@ -65,6 +64,7 @@ export class Paddle extends GameObject implements Rectangle {
 
   snapshot() {
     return {
+      type: 'paddle',
       id: this.id, // TODO : Make this dynamic or unique per paddle
       position: this.position,
       scale: this.scale

@@ -47,7 +47,6 @@ export async function dispatchGameSocketMsg(payload: any) {
 
   switch (payload.action) {
     case 'roomReady':
-      console.log("RenderGame")
       renderGame(payload.data);
       break;
 
@@ -56,12 +55,10 @@ export async function dispatchGameSocketMsg(payload: any) {
       break;
 
     case 'Starting':
-      console.log("Show game")
       showGame();
-      console.log("Draw Game");
-      drawGame(payload.data.gameData);
+      drawGame(payload.data);
       setTimeout(() => {
-        launchGame(payload.data.roomId);
+        launchGame(payload.data.roomId); //Stocker roomId en dehors
       }, 3000);
       break;
 
@@ -70,7 +67,7 @@ export async function dispatchGameSocketMsg(payload: any) {
       break;
 
     case 'snapshot':
-      drawGame(payload.gameData);
+      drawGame(payload.data);
       break;
     case 'win':
       DisplayGameWinLose(true);

@@ -61,6 +61,7 @@ export class Ball extends GameObject implements Circle {
 
   snapshot() {
     return {
+      type: 'ball',
       id: 'ball',
       position: this.position,
       velocity: this.velocity,
