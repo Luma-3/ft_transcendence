@@ -22,8 +22,8 @@ export function showGame() {
 		gameContainer.classList.add("opacity-100");
 
 		drawGame({
-			paddle1: { position: {x: 0, y: 300 }, score: 0 },
-			paddle2: { position: {x: 790, y: 300 }, score: 0 },
+			paddle1: { position: {x: 0, y: 300 }, scale: { x: 10, y: 100 }},
+			paddle2: { position: {x: 790, y: 300 }, scale: { x: 10, y: 100 }},
 			ball: { position: { x: 400, y: 300 }, radius: 10 }
 		});
 	}, 1500);
