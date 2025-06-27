@@ -3,7 +3,7 @@ import { socket } from "../controllers/Socket";
 
 let actionUserUp = false, actionUserDown = false, actionUser2Up = false, actionUser2Down = false;
 
-export async function getEventAndSendGameData(playerId: string) {
+export function getEventAndSendGameData(playerId: string) {
 
   const movement = {
     up: actionUserUp,
@@ -19,7 +19,7 @@ export async function getEventAndSendGameData(playerId: string) {
     scope: "player",
     target: playerId,
     payload: {
-      type: 'move',
+      type: 'input',
       data: {
         movement: movement,
         otherMovement: (gameFrontInfo.gameType === "local") ? otherMovement : undefined,
@@ -29,13 +29,12 @@ export async function getEventAndSendGameData(playerId: string) {
 }
 
 export function onKeyDown(event: KeyboardEvent, playerId: string) {
+  if (event.key !== "w" && event.key !== "s" && event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
   actionUserUp = (event.key === "w")
   actionUserDown = (event.key === "s")
 
-  if (gameFrontInfo.gameType !== "local") {
-    actionUserUp = (event.key === "ArrowUp");
-    actionUserDown = (event.key === "ArrowDown");
-  } else {
+
+  if (gameFrontInfo.gameType === "local") {
     actionUser2Up = (event.key === "ArrowUp");
     actionUser2Down = (event.key === "ArrowDown");
   }
@@ -43,15 +42,14 @@ export function onKeyDown(event: KeyboardEvent, playerId: string) {
 }
 
 export function onKeyUp(event: KeyboardEvent, playerId: string) {
-  actionUserUp = !(event.key === "w");
-  actionUserDown = !(event.key === "s");
+  if (event.key !== "w" && event.key !== "s" && event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+  actionUserUp = (event.key === "w" && !actionUserUp);
+  actionUserDown = (event.key === "s" && !actionUserDown);
 
-  if (gameFrontInfo.gameType !== "local") {
-    actionUserUp = !(event.key === "ArrowUp");
-    actionUserDown = !(event.key === "ArrowDown");
-  } else {
-    actionUser2Up = !(event.key === "ArrowUp");
-    actionUser2Down = !(event.key === "ArrowDown");
+
+  if (gameFrontInfo.gameType === "local") {
+    actionUser2Up = (event.key === "ArrowUp" && !actionUser2Up);
+    actionUser2Down = (event.key === "ArrowDown" && !actionUser2Down);
   }
   getEventAndSendGameData(playerId);
 }

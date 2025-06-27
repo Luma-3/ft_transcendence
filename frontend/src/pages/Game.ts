@@ -77,9 +77,6 @@ export default async function game(roomId: string, user: UserInfo) {
    */
   window.addEventListener('resize', resizeCanvas)
 
-  if (!socket) {
-    console.warn("Handle this error, socket does not exist");
-  }
   onkeyup = (event) => {
     onKeyUp(event, user.id);
   }
@@ -95,7 +92,7 @@ export default async function game(roomId: string, user: UserInfo) {
     */
 
     if (divGame.classList.contains("opacity-0")) {
-      readyEventListener(user.id);
+      readyEventListener(roomId);
     }
 
     onKeyDown(event, user.id);
@@ -108,11 +105,6 @@ export default async function game(roomId: string, user: UserInfo) {
    * tout les adversaires du joueur (tournois)
    */
   const roomInfos = await getRoomInfos(roomId);
-  if (!roomInfos) {
-    console.error("Room infos not found");
-    return `<div class="text-red-500">Room not found</div>`;
-    // TODO Gerer cette erreur
-  }
   const myselfDiv = await showMyself(roomInfos.data!.players, user.id) ?? 'Bobby';
 
   /**

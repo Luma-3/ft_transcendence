@@ -56,14 +56,14 @@ interface WebSocket extends globalThis.WebSocket {
 function handleMessage(socket: WebSocket, raw: string) {
   try {
     const { service, scope, target, payload } = JSON.parse(raw);
-    // console.log(`[WS] client ${socket.user_id} -> ${service}:${scope}:${target}`, payload);
+    console.log(`[WS] client ${socket.user_id} -> ${service}:${scope}:${target}`, payload);
     if (!service || !scope || !target || !payload) {
       throw new Error('Invalid message format');
     }
     // Publish to Redis
     redisPub.publish(`ws:${service}:${scope}:${target}`, JSON.stringify({
       user_id: socket.user_id,
-      payload: payload
+      ...payload
     }));
   } catch (err) {
     console.error('Error parsing message:', err);

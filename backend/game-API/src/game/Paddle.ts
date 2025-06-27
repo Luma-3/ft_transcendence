@@ -1,6 +1,7 @@
 import { Vector2 } from '../core/physics/Vector.js';
 import { GameObject } from '../core/GameObject.js';
 import { Rectangle } from '../core/physics/Shapes.js';
+import { SceneContext } from '../core/runtime/SceneContext.js';
 
 export class Paddle extends GameObject implements Rectangle {
   public position: Vector2 = new Vector2(0, 0);
@@ -8,12 +9,14 @@ export class Paddle extends GameObject implements Rectangle {
   // private speed: number = 300; // Speed of the paddle movement
 
   private id: string = '';
+  private user_id: string = '';
 
-  constructor(id: string, pos: Vector2) {
+  constructor(id: string, pos: Vector2, user_id: string) {
     super();
 
     console.log('Paddle Constructor', id);
     this.id = id;
+    this.user_id = user_id;
     this.startPosition(pos); // Set the initial position of the paddle
   }
 
@@ -42,6 +45,19 @@ export class Paddle extends GameObject implements Rectangle {
   move() {
     // Paddle movement logic can be added here (e.g., based on user input)
     // For now, it remains stationary
+
+    const playerInput = SceneContext.get().inputManager.get(this.user_id);
+    console.log('Paddle ID', this.user_id);
+
+    console.log('Paddle Input', playerInput);
+    if (playerInput) {
+      if (playerInput.up) {
+        this.position.y -= 5; // Move up
+      }
+      if (playerInput.down) {
+        this.position.y += 5; // Move down
+      }
+    }
   }
 
   startPosition(pos: Vector2) {

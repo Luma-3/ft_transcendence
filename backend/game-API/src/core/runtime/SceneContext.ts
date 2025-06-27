@@ -17,12 +17,14 @@ export class SceneContext {
     id: string,
     gameType: gameType,
     players: Player[],
-    loopManager: LoopManager
+    loopManager: LoopManager,
+    inputManager: InputManager
   ) {
     this.loopManager = loopManager;
     this.players = players;
     this.id = id;
     this.gameType = gameType;
+    this.inputManager = inputManager;
   }
 
   static run<T>(ctx: SceneContext, fn: () => T): T {

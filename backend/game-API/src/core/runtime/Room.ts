@@ -5,6 +5,7 @@ import { IOInterface } from '../../utils/IOInterface.js';
 import { SceneContext } from './SceneContext.js';
 import { Player, IGameInfos } from './Interface.js';
 import { game } from '../../game/Pong.js';
+import { InputManager } from '../../game/InputManager.js';
 
 type StatusType = 'waiting' | 'roomReady' | 'playing' | 'finished';
 
@@ -19,6 +20,7 @@ export class Room {
   private status: StatusType = 'waiting';
 
   public loopManager: LoopManager = new LoopManager();
+  public inputManager: InputManager = new InputManager();
   // public ioManager: IOManager = new IOManager();
 
   // private readonly createdAt: Date = new Date();
@@ -63,9 +65,10 @@ export class Room {
       players: this.players.map(p => p.toJSON()),
       status: this.status
     }
-
+    console.log("Game type:", this.gameType);
     // Local or AI game with only one player
     if ((this.gameType === 'local' || this.gameType === 'ai') && this.nbPlayers() === 1) {
+      console.log("Room is ready for local or AI game with one player");
       this.status = 'roomReady';
       IOInterface.subscribe(`ws:game:room:${this.id}`, this.callbackPlayerReady);
       IOInterface.send(JSON.stringify({ action: 'roomReady', data: data }), this.players[0].user_id);
@@ -80,9 +83,9 @@ export class Room {
 
   callbackPlayerReady = (message: string) => {
     console.log("callbackPlayerReady", message);
-    const { user_id, payload } = JSON.parse(message);
+    const { user_id, action } = JSON.parse(message);
 
-    if (payload.action !== 'ready') return;
+    if (action !== 'ready') return;
     const player = this.players.find(p => p.user_id === user_id);
 
     if (!player) return;
@@ -119,7 +122,7 @@ export class Room {
       }
     };
     IOInterface.broadcast(JSON.stringify(payload), this.players.map(player => player.user_id));
-    const ctx = new SceneContext(this.id, this.players, this.loopManager);
+    const ctx = new SceneContext(this.id, this.gameType, this.players, this.loopManager, this.inputManager);
     SceneContext.run(ctx, game);
   }
 

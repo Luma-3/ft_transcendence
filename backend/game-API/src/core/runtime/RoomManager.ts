@@ -23,6 +23,7 @@ class RoomManager {
       if (!room) {
         throw new NotFoundError('room');
       }
+      console.log(`Player ${player.user_id} joining room ${id}`);
       room.addPlayer(player);
       return room.id;
     }
