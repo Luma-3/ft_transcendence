@@ -9,11 +9,11 @@ export function showGame() {
 	document.getElementById("vsdiv")!.classList.add("opacity-0");
 	document.getElementById("goToActionGame")!.classList.add("opacity-0");
 
-	setTimeout(() => {
-		// userGameProfile.classList.add("-translate-x-full");
-		// opponentGameProfile.classList.add("translate-x-full");
-	}, 200);
-
+	// setTimeout(() => {
+	// 	// userGameProfile.classList.add("-translate-x-full");
+	// 	// opponentGameProfile.classList.add("translate-x-full");
+	// }, 200);
+	
 	setTimeout(() => {
 		// userGameProfile.classList.add("opacity-0");
 		// opponentGameProfile.classList.add("opacity-0");
@@ -22,7 +22,7 @@ export function showGame() {
 		gameContainer.classList.add("opacity-100");
 
 		drawGame({
-			paddle1: { position: {x: 0, y: 300 }, scale: { x: 10, y: 100 }},
+			paddle: { position: {x: 0, y: 300 }, scale: { x: 10, y: 100 }},
 			paddle2: { position: {x: 790, y: 300 }, scale: { x: 10, y: 100 }},
 			ball: { position: { x: 400, y: 300 }, radius: 10 }
 		});

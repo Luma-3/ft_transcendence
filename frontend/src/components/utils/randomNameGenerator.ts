@@ -18,7 +18,6 @@ export function randomNameGenerator() {
 		"Bot",
 		"Master",
 		"King",
-		"Waddle",
 		"Duck-Vador",
 		"Zilla",
 		"Pongster",

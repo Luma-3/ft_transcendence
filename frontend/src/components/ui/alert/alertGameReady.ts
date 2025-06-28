@@ -24,6 +24,7 @@ export async function alertGameReady() {
 	iconColor: customTheme.icon,
 	html: `${text}`,
 	timer: 3000,
+	position: 'center-top',
 	timerProgressBar: true,
 	didOpen: () => {
 		Swal.showLoading();

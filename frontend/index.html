@@ -14,7 +14,7 @@
 		<script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
 		<title>Transcenduck</title>
 	</head>
-	<body>
+	<body class="min-h-screen flex flex-col">
 		<!--- Loading Page-->
 		<div id="loading" class="absolute inset-0 h-screen flex items-center justify-center z-10">
 			<div class="flex flex-col items-center justify-center">
@@ -24,13 +24,12 @@
 		</div>
 
 		<!--- Main div-->
-		<div id="app" class="flex-col z-10 opacity-0 scale-95 transition-all duration-200"></div>
+		<div id="app" class="flex-col z-10 opacity-0 scale-95 transition-all duration-200 flex-grow"></div>
 		<script type="module" src="src/main.ts" defer></script>
 		
-		<!--- Footer -->
-		<footer class="relative hidden z-50"><div class="flex left-0 w-full md:h-40 lg:h-30 mt-10
-		bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary
-		items-center justify-between rounded-sm">
+	<!--- Footer -->
+	<footer class="w-full mt-auto z-50">
+		<div class="flex w-full md:h-40 lg:h-30 bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary items-center justify-between border-t border-gray-300 dark:border-gray-600">
 		
 		<div class="flex max-w-[1000px] w-full mx-auto justify-between items-center">
 			<div class="text-responsive-size justify-start ml-2 font-title">
@@ -59,7 +58,6 @@
 					<a class="hover:underline" translate="contact">Contact</a> <br>
 				</div>
 			</div>
-		</div>
 		</div>
 	</footer>
 	</body>
