@@ -37,22 +37,26 @@ export class UserService {
       const [user] = await userModel.create(trx, userID, user_obj);
 
       const [preferences] = await preferencesModel.create(trx, userID, user_preferences);
-      
-			redisPub.publish("api.social.in", JSON.stringify({userId: user.id, 
-				action: "create",
-				payload: {
-				username: user.username
-			}})).catch(console.error);
+      redisPub.DEL(`users:data:all`).catch(console.error);
 			return { ...user, preferences }
     });
   }
 
   static async getAllUsers(userId: string, blocked: ("you" | "another"| "all" | "none") = "all", friends: boolean = false, hydrate: boolean = true) {
-      return await userModel.findAll(userId, blocked, friends, hydrate, USER_PUBLIC_COLUMNS);
+    const data = await redisPub.getEx(`users:data:all`, {type:'EX', value: 3600 });  
+    if (data) {
+      const listUsers = JSON.parse(data) as UserBaseType[];
+      return listUsers;
+    }
+    const listUsers = await userModel.findAll(userId, blocked, friends, hydrate, USER_PUBLIC_COLUMNS);
+    redisPub.setEx(`users:data:all`, 3600 , JSON.stringify(listUsers)).catch(console.error);
+    return listUsers;
   }
 
   static async deleteUser(id: string) {
     await userModel.delete(id);
+    redisPub.DEL(`users:data:${id}`).catch(console.error);
+    redisPub.DEL(`users:data:${id}:hydrate`).catch(console.error);
     return id;
   }
 
@@ -63,9 +67,18 @@ export class UserService {
     preferencesColumns: string[]
   ): Promise<UserBaseType & { preferences?: PreferencesBaseType }> {
     if (!includePreferences) {
+      const data = await redisPub.getEx(`users:data:${id}`, {type:'EX', value: 3600 });
+      if (data) {
+        return JSON.parse(data);
+      }
       const user = await userModel.findByID(id, userColumns);
       if (!user) throw new NotFoundError("User");
+      await redisPub.setEx(`users:data:${id}`, 3600 , JSON.stringify(user));
       return user;
+    }
+    const data = await redisPub.getEx(`users:data:${id}:hydrate`, {type:'EX', value: 3600 });
+    if (data) {
+      return JSON.parse(data);
     }
 
     const [user, preferences] = await Promise.all([
@@ -76,7 +89,9 @@ export class UserService {
     if (!user) throw new NotFoundError("User");
     if (!preferences) throw new NotFoundError("Preferences");
 
-    return { ...user, preferences }
+    const userWithPreferences = { ...user, preferences };
+    await redisPub.setEx(`users:data:${id}:hydrate`, 3600 , JSON.stringify(userWithPreferences));
+    return userWithPreferences;
   }
 
   static async updateUserPassword(
@@ -95,6 +110,7 @@ export class UserService {
     const hash_pass = await hashPassword(newPassword);
     const [updatedUser] = await userModel.update(id, { password: hash_pass }, USER_PRIVATE_COLUMNS);
 
+    redisPub.DEL(`users:credentials:${updatedUser.username}`).catch(console.error);
     return updatedUser;
   }
 
@@ -110,6 +126,8 @@ export class UserService {
 
     const [updatedUser] = await userModel.update(id, { email: email }, USER_PRIVATE_COLUMNS);
 
+  redisPub.DEL(`users:data:${id}:hydrate`).catch(console.error);
+  redisPub.DEL(`users:data:${id}`).catch(console.error);
     return updatedUser;
   }
 
@@ -124,6 +142,9 @@ export class UserService {
     if (existingUsername) throw new ConflictError("Username already in use");
 
     const [updatedUser] = await userModel.update(id, { username: username }, USER_PRIVATE_COLUMNS);
+
+  redisPub.DEL(`users:data:${id}:hydrate`).catch(console.error);
+  redisPub.DEL(`users:data:${id}`).catch(console.error);
     return updatedUser;
   }
 
@@ -133,7 +154,6 @@ export class UserService {
 
     const isValid = await comparePassword(password, user.password!);
     if (!isValid) throw new UnauthorizedError("Invalid credentials");
-
     return user;
   }
 }
