@@ -5,6 +5,7 @@ import swagger from "./plugins/swagger.js";
 import formatter from "@transcenduck/formatter";
 import uploadRoute from "./routes/upload.js";
 import fastifyMultipart from "@fastify/multipart";
+import fastifyCompress from "@fastify/compress";
 
 const server = fastify({
   logger: true,
@@ -12,7 +13,10 @@ const server = fastify({
 
 await server.register(fastifyMultipart);
 await server.register(formatter);
-
+await server.register(fastifyCompress, { 
+  global: true,
+  threshold: 0
+});
 await server.register(swagger, {
     version: '1.0.0',
     title: 'Upload Service API',
@@ -34,5 +38,9 @@ await server.register(swagger, {
       }
     }
   });
-
+server.addHook('onSend', (request, reply, payload, done) => {
+  const contentEncoding = reply.getHeader('Content-Encoding');
+  console.log(`Content-Encoding: ${contentEncoding}`);
+  done();
+});
 export default server;

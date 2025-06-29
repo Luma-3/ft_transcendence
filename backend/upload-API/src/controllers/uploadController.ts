@@ -38,8 +38,8 @@ export async function getFile(req: FastifyRequest<{
   const { typePath } = req.params;
 
   const buffer = await uploadServices.getFile(typePath, url, req.query);
-
-  return rep.code(200).header('Content-Type', mine.contentType(path.extname(url))).send(buffer);
+  rep.code(200).header('Content-Type', mine.contentType(path.extname(url)));
+  return buffer;
 }
 
 export async function deleteFile(req: FastifyRequest<

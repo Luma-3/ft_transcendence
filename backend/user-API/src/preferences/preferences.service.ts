@@ -3,13 +3,15 @@ import { NotFoundError } from "@transcenduck/error";
 import { preferencesModel } from "../models/models.js"
 import { PreferencesBaseType } from "./preferences.schema.js";
 import { redisPub } from "../utils/redis.js";
+import { PREFERENCES_PRIVATE_COLUMNS } from "./preferences.model.js";
 
 export class PreferencesService {
   static async getPreferences(
     userID: string,
     columns: string[]
   ): Promise<PreferencesBaseType> {
-    const data = await redisPub.getEx(`preferences:data:${userID}`, { type: 'EX', value: 3600 });
+    const privateColumns = columns.length === PREFERENCES_PRIVATE_COLUMNS.length;
+    const data = await redisPub.getEx(`preferences:data:${userID}` + (privateColumns ? ':private' : ''), { type: 'EX', value: 3600 });
     if (data) {
       return JSON.parse(data) as PreferencesBaseType;
     }
@@ -25,7 +27,8 @@ export class PreferencesService {
     columns: string[]
   ): Promise<PreferencesBaseType> {
     const [updatePreferences] = await preferencesModel.update(userID, data, columns);
-    redisPub.setEx(`preferences:data:${userID}`, 3600, JSON.stringify(updatePreferences));
+    redisPub.DEL(`preferences:data:${userID}`).catch(console.error);
+    redisPub.DEL(`preferences:data:${userID}:private`).catch(console.error);
     redisPub.DEL(`users:data:${userID}:hydrate`).catch(console.error);
     return updatePreferences;
   }

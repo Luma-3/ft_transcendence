@@ -88,7 +88,7 @@ export class UploadService {
       throw new ForbiddenError();
     }
     await this.checkFile(pathJoin);
-    const hashKey = 'upload.'+  hash("md5", JSON.stringify({ typePath, realPath, options: {
+    const hashKey = 'upload:' + hash("md5", JSON.stringify({ typePath, realPath, options: {
         size: options.size,
         scale: options.scale,
         width: options.width,
@@ -100,10 +100,9 @@ export class UploadService {
         tint: options.tint,
         rotate: options.rotate,
     }}));
-    if(await redisCache.exists(hashKey))
-      return redisCache.getEx(hashKey, {type: "EX", value: 60 * 60 * 24 }).then(async (data) => {
-          return await uncompress(Buffer.from(data!, 'base64'));
-      });
+    const data = await redisCache.getEx(hashKey, {type: "EX", value: 60 * 60 * 24 });
+    if(data)
+      return uncompress(Buffer.from(data!, 'base64'));
     let bufferFile =  fs.readFileSync(pathJoin);
     const extenstion = path.extname(pathJoin);
 
