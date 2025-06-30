@@ -67,8 +67,8 @@ export class PendingService {
                 throw new ConflictError(`You cannot accept a pending request from yourself`);
             }
             await pendingModel.delete(trx, id, pendingId);
-            await friendsModel.create(trx, id, pendingId);
-            await friendsModel.create(trx, pendingId, id);
+            await FriendsService.addFriend(trx, id, pendingId);
+            await FriendsService.addFriend(trx, pendingId, id);
         });
     }
 
