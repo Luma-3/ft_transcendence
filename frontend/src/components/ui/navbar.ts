@@ -13,9 +13,10 @@ export function userMenu(user: IUserInfo) {
 	<div id="user-menu" class="hidden transition-all 
 	duration-500 transform translate-y-10 opacity-0 
 	pointer-events-none absolute right-0 z-50 my-2 mx-4 w-56 md:w-70 lg:w-80
-	 text-tertiary bg-secondary rounded dark:text-dtertiary dark:bg-dprimary">
-	${renderUserMenu(user)}
-	</div>`
+	 text-tertiary rounded dark:text-dtertiary
+	 bg-gradient-to-r dark:from-dprimary dark:to-gray-800 dark:to-grey-700 from-primary/80 to-primary">
+			${renderUserMenu(user)}
+			</div>`
 }
 
 export function navbar(user: IUserInfo) {

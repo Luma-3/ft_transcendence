@@ -4,6 +4,7 @@ import register from '../pages/Register'
 import dashboard from '../pages/Dashboard/Dashboard'
 import settings from '../pages/Settings'
 import profile from '../pages/Profile/Profile'
+import friends from '../pages/Friends/Friends'
 import game from '../pages/Game'
 import documentation from '../pages/Documentation'
 import verifyEmail from '../pages/VerifyEmail'
@@ -78,6 +79,7 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
 	'dashboard': dashboard,
 	'settings': settings,
 	'profile': profile,
+	'friends': friends,
 	'2FA': twoFaPage,
 	'documentation': documentation,
 }
@@ -241,7 +243,6 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 		removeLoadingScreen();
 
 		fadeIn();
-		document.querySelector("footer")?.classList.add("hidden");
 	}
 		, 250);
 }

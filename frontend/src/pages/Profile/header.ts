@@ -4,7 +4,7 @@ export function profileHeader(userPref: {avatar: string, banner: string}) {
 return `
 <div id="profile-header" class="flex flex-col max-w-[400px] lg:max-w-[1000px] mb-20 items-center justify-center space-y-2 pt-4">
 
-	<div id="banner-div" class="relative w-[500px] lg:w-[1000px] h-64 editor-select ">
+	<div id="banner-div" class="relative w-[700px] lg:w-[1000px] h-64 editor-select ">
 
 		<!-- ! BANNER  -->
 		<div class="relative w-full h-full group" >

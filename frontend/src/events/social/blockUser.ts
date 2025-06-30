@@ -3,8 +3,8 @@ import { getUserInfo } from "../../api/getterUser(s)";
 import { API_USER } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { renderErrorPage } from "../../controllers/renderPage";
-import { allUsersList } from "../../pages/Profile/allUsersList";
-import { blockList } from "../../pages/Profile/blockList";
+import { allUsersList } from "../../pages/Friends/allUsersList";
+import { blockList } from "../../pages/Friends/blockList";
 
 export async function blockUser(target: HTMLElement, isBlocking: boolean) {
 	

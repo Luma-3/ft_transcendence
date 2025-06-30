@@ -3,7 +3,7 @@ import { backButton, backButtonPublicPage } from "./buttons/backButton";
 // ! Icons for the header page
 
 const settingsIcon: string = `
-<img src="/images/duckSettings.png" alt="settingsIcon" class="flex h-40 w-40 icon-responsive-size" />`;
+<img src="/images/duckSettings.png" alt="settingsIcon" class="flex h-50 w-50 icon-responsive-size" />`;
 
 const emailIcon: string = `
 <img src="/images/duckEmail.png" alt="settingsIcon" class="flex h-50 w-50 icon-responsive-size" />`;
