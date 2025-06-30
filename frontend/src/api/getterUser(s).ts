@@ -47,8 +47,8 @@ export async function getFriends() {
 	return response;
 }
 
-export async function getPending(params: "sender" | "receiver" = "sender") {
-	const response = await fetchApi<IOtherUser[]>(API_USER.SOCIAL.PENDING + `?action=${params}`);
+export async function getNotifications(params: "sender" | "receiver" = "sender") {
+	const response = await fetchApi<IOtherUser[]>(API_USER.SOCIAL.NOTIFICATIONS + `?action=${params}`);
 	return response;
 }
 

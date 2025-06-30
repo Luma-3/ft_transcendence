@@ -79,7 +79,7 @@ function darkMode(theme: string) {
 					
 						<input ${isChecked} id="switch-component" type="checkbox"
 						class="peer appearance-none w-11 h-5 md:w-14 md:h-7 bg-slate-100 rounded-full
-						 checked:bg-primary cursor-pointer transition-colors duration-300" />
+						 checked:bg-myblack cursor-pointer transition-colors duration-300" />
 					
 						<label id="switch-component-label" for="switch-component"
 						class="absolute top-0 left-0 w-5 h-5 md:w-8 md:h-7 bg-white rounded-full border 
@@ -94,14 +94,14 @@ function darkMode(theme: string) {
 function logout() {
 	return `<button id="logout" translate="logout" 
 	class="flex py-2 px-4 text-responsive-size w-full justify-left items-left
-	dark:text-dsecondary hover:bg-primary dark:hover:bg-gray-600 dark:hover:text-white">
+	dark:text-dsecondary dark:hover:text-white hover:curosr-pointer">
 	Sign out
 	</button>`
 }
 
 function notifications() {
 	return `<button id="notifications" class="flex py-2 pl-4 text-responsive-size w-full justify-left items-left
-	dark:text-dsecondary hover:bg-primary dark:hover:bg-gray-600 dark:hover:text-white">
+	dark:text-dsecondary dark:hover:text-white hover:cursor-pointer">
 	Notifications
 	</button>`;
 }
@@ -113,8 +113,8 @@ export function renderUserMenu(user: IUserInfo) {
 			${headerUserMenu(user)}
 			${UserMenuOptions()}
 			<ul class="font-title text-tertiary dark:text-dsecondary md:mr-2 lg:mr-4 aria-labelledby="dropdown">
-			<li> ${notifications()}</li>
-				<li> ${darkMode(user.preferences!.theme)}</li>
-				<li> ${logout()}</li>
+			<div> ${notifications()}</div>
+				<div> ${darkMode(user.preferences!.theme)}</div>
+				<div> ${logout()}</div>
 			</ul>`
 }

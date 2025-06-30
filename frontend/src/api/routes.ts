@@ -36,7 +36,7 @@ export const API_USER = {
   SOCIAL: {
     FRIENDS: `${SERVICES.USER_ROOT}/friends`,
     BLOCKED: `${SERVICES.USER_ROOT}/blocked`,
-    PENDING: `${SERVICES.USER_ROOT}/pending`,
+    NOTIFICATIONS: `${SERVICES.USER_ROOT}/pending`,
   },
   SEARCH: `${SERVICES.USER_ROOT}/search`, // ?q=inputValue&page=1&limit=10&hydrate=true
 }

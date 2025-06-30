@@ -1,4 +1,4 @@
-import { getPending as getNotifications } from '../../api/getterUser(s)';
+import { getNotifications } from '../../api/getterUser(s)';
 
 
 export async function notifications() {

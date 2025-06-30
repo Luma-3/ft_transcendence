@@ -14,7 +14,7 @@ ${navbar(user)}
 
 	<div class="flex flex-col lg:flex-row max-w-[1200px]">
 
-		<div id="mainPanel" class="relative flex flex-col min-w-[350px] md:min-h-[350px] md:min-w-[700px] mx-4 p-4 space-y-4 dark:bg-gradient-to-b dark:from-myblack dark:via-dprimary dark:to-myblack bg-zinc-100 rounded-lg justify-center items-center drop-shadow-2xl transition-all ease-in-out duration-300">
+		<div id="mainPanel" class="relative flex flex-col min-w-[350px] md:min-h-[350px] md:min-w-[700px] mx-4 p-4 space-y-4 dark:bg-gradient-to-b dark:from-purple-800 dark:via-dprimary dark:to-dsecondary bg-zinc-100 rounded-lg justify-center items-center drop-shadow-2xl transition-all ease-in-out duration-300">
 
 			<div class="relative w-full">
 				
@@ -70,7 +70,7 @@ function generateRankBadge(_user: IUserInfo) {
 		level: 1,
 		image: 'petitVolatile.png',
 		colors: 'from-purple-600 via-purple-700 to-purple-800',
-		textColors: 'from-purple-600 via-purple-700 to-purple-800',
+		textColors: 'from-tertiary via-gray-800 to-tertiary dark:from-dtertiary dark:via-white dark:to-dtertiary',
 		shadowColor: 'purple'
 	};
 	
@@ -80,7 +80,7 @@ function generateRankBadge(_user: IUserInfo) {
 			level: Math.floor(wins / 10),
 			image: 'duckHappy.png',
 			colors: 'from-yellow-400 via-yellow-500 to-yellow-600',
-			textColors: 'from-yellow-400 via-yellow-500 to-yellow-600',
+			textColors: 'from-dsecondary via-yellow-600 to-orange-700 dark:from-dsecondary dark:via-yellow-400 dark:to-yellow-600',
 			shadowColor: 'yellow'
 		};
 	} else if (totalGames >= 30 && wins >= 20) {
@@ -89,7 +89,7 @@ function generateRankBadge(_user: IUserInfo) {
 			level: Math.floor(wins / 8),
 			image: 'caneton.png',
 			colors: 'from-gray-200 via-gray-300 to-gray-500',
-			textColors: 'from-gray-200 via-gray-300 to-gray-500',
+			textColors: 'from-tertiary via-gray-700 to-gray-900 dark:from-gray-300 dark:via-gray-100 dark:to-dtertiary',
 			shadowColor: 'gray'
 		};
 	} else if (totalGames >= 20 && wins >= 12) {
@@ -98,7 +98,7 @@ function generateRankBadge(_user: IUserInfo) {
 			level: Math.floor(wins / 5),
 			image: 'duckNormal.png',
 			colors: 'from-yellow-400 via-orange-500 to-red-600',
-			textColors: 'from-yellow-400 via-orange-500 to-red-600',
+			textColors: 'from-red-700 via-dsecondary to-red-800 dark:from-dsecondary dark:via-orange-400 dark:to-yellow-500',
 			shadowColor: 'yellow'
 		};
 	}
