@@ -3,6 +3,7 @@ import * as mine from 'mime-types';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { TypeUpload, uploadServices } from '../services/UploadService.js';
 import { CdnQueryType, UploadFileParamsType } from '../schema/upload.schema.js';
+import { Readable } from 'stream';
 
 
 
@@ -39,7 +40,8 @@ export async function getFile(req: FastifyRequest<{
 
   const buffer = await uploadServices.getFile(typePath, url, req.query);
   rep.code(200).header('Content-Type', mine.contentType(path.extname(url)));
-  return buffer;
+
+  rep.compress(buffer);
 }
 
 export async function deleteFile(req: FastifyRequest<

@@ -27,9 +27,11 @@ export class PreferencesService {
     columns: string[]
   ): Promise<PreferencesBaseType> {
     const [updatePreferences] = await preferencesModel.update(userID, data, columns);
-    redisPub.DEL(`preferences:data:${userID}`).catch(console.error);
-    redisPub.DEL(`preferences:data:${userID}:private`).catch(console.error);
-    redisPub.DEL(`users:data:${userID}:hydrate`).catch(console.error);
+    const multi = redisPub.multi();
+    multi.DEL(`preferences:data:${userID}`);
+    multi.DEL(`preferences:data:${userID}:private`);
+    multi.DEL(`users:data:${userID}:hydrate`);
+    multi.exec().catch(console.error);
     return updatePreferences;
   }
 }

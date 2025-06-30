@@ -43,20 +43,15 @@ export class UserService {
   }
 
   static async getAllUsers(userId: string, blocked: ("you" | "another"| "all" | "none") = "all", friends: boolean = false, hydrate: boolean = true) {
-    const data = await redisPub.getEx(`users:data:all`, {type:'EX', value: 3600 });  
-    if (data) {
-      const listUsers = JSON.parse(data) as UserBaseType[];
-      return listUsers;
-    }
-    const listUsers = await userModel.findAll(userId, blocked, friends, hydrate, USER_PUBLIC_COLUMNS);
-    redisPub.setEx(`users:data:all`, 3600 , JSON.stringify(listUsers)).catch(console.error);
-    return listUsers;
+    return await userModel.findAll(userId, blocked, friends, hydrate, USER_PUBLIC_COLUMNS);
   }
 
   static async deleteUser(id: string) {
     await userModel.delete(id);
-    redisPub.DEL(`users:data:${id}`).catch(console.error);
-    redisPub.DEL(`users:data:${id}:hydrate`).catch(console.error);
+    const multi = redisPub.multi();
+    multi.DEL(`users:data:${id}`);
+    multi.DEL(`users:data:${id}:hydrate`);
+    multi.exec().catch(console.error);
     return id;
   }
 
@@ -126,10 +121,12 @@ export class UserService {
 
     const [updatedUser] = await userModel.update(id, { email: email }, USER_PRIVATE_COLUMNS);
 
-  redisPub.DEL(`users:data:${id}:hydrate`).catch(console.error);
-  redisPub.DEL(`users:data:${id}`).catch(console.error);
-    return updatedUser;
-  }
+  const multi = redisPub.multi();
+  multi.DEL(`users:data:${id}:hydrate`);
+  multi.DEL(`users:data:${id}`);
+  multi.exec().catch(console.error);
+  return updatedUser;
+}
 
   static async updateUserUsername(
     id: string,
@@ -143,10 +140,12 @@ export class UserService {
 
     const [updatedUser] = await userModel.update(id, { username: username }, USER_PRIVATE_COLUMNS);
 
-  redisPub.DEL(`users:data:${id}:hydrate`).catch(console.error);
-  redisPub.DEL(`users:data:${id}`).catch(console.error);
-    return updatedUser;
-  }
+  const multi = redisPub.multi();
+  multi.DEL(`users:data:${id}:hydrate`);
+  multi.DEL(`users:data:${id}`);
+  multi.exec().catch(console.error);
+  return updatedUser;
+}
 
   static async verifyCredentials(username: string, password: string): Promise<UserBaseType> {
     const user = await userModel.findByUsername(username, ['password', ...USER_PRIVATE_COLUMNS]);

@@ -102,7 +102,7 @@ export class UploadService {
     }}));
     const data = await redisCache.getEx(hashKey, {type: "EX", value: 60 * 60 * 24 });
     if(data)
-      return uncompress(Buffer.from(data!, 'base64'));
+      return Buffer.from(await uncompress(Buffer.from(data!, 'base64')));
     let bufferFile =  fs.readFileSync(pathJoin);
     const extenstion = path.extname(pathJoin);
 
