@@ -1,5 +1,5 @@
 export interface PayloadUserSocketMsg {
-    type: 'pending' | 'alert' | 'render' | 'redirect';
+    type: 'pending' | 'friend';
     action: string;
     data: string; // is userId
 }
@@ -23,6 +23,16 @@ function dispatchPending(action: string, userId: string) {
     }
 }
 
+function dispatchFriend(action: string, userId: string) {
+    switch (action) {
+        case 'remove':
+            alert(`Friendship removed with user ${userId}`);
+            break;
+        default:
+            console.error(`Unknown friend action: ${action}`);
+    }
+}
+
 export function dispatchUserSocketMsg(payload: PayloadUserSocketMsg) {
     const { type, action, data } = payload;
 
@@ -30,6 +40,11 @@ export function dispatchUserSocketMsg(payload: PayloadUserSocketMsg) {
         case 'pending':
             dispatchPending(action, data);
             break;
-
+        case 'friend':
+            dispatchFriend(action, data);
+            break;
+        default:
+            console.error(`Unknown user socket message type: ${type}`);
+            break;
     }
 }

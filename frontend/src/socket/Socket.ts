@@ -28,6 +28,7 @@ export function socketConnection() {
         break;
       case 'user': {
         dispatchUserSocketMsg(data.payload as PayloadUserSocketMsg);
+        break;
       }
       default:
         break;
