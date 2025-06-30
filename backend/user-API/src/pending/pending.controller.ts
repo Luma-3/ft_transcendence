@@ -1,7 +1,7 @@
 import { PendingService } from "./pending.services.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AcceptParamType, PendingParamType, TypePendingQueryType, UserHeaderIdType } from "./pending.schema.js";
-import { redisPub } from "../utils/redis.js";
+import { redisCache, redisPub } from "../utils/redis.js";
 
 
 
@@ -12,7 +12,7 @@ export class PendingsController {
         Querystring: TypePendingQueryType
     }>, rep: FastifyReply) => {
         const userId = req.headers['x-user-id'];
-        const data = await redisPub.getEx(`users:data:${userId}:pendings:${req.query.action}`, {type:'EX', value: 3600 });
+        const data = await redisCache.getEx(`users:data:${userId}:pendings:${req.query.action}`, {type:'EX', value: 3600 });
         if (data) {
             const pending = JSON.parse(data);
             return rep.status(200).send({
@@ -21,7 +21,7 @@ export class PendingsController {
             });
         }
         const pending = await PendingService.findByID(userId, req.query.action);
-        redisPub.setEx(`users:data:${userId}:pendings:${req.query.action}`, 3600 , JSON.stringify(pending)).catch(console.error);
+        redisCache.setEx(`users:data:${userId}:pendings:${req.query.action}`, 3600 , JSON.stringify(pending)).catch(console.error);
         
         return rep.status(200).send({
             message: 'Pending requests retrieved successfully',
@@ -36,11 +36,16 @@ export class PendingsController {
         const userId = req.headers['x-user-id'];
         const { pendingId } = req.params;
         await PendingService.addPending(userId, pendingId);
-        const multi = redisPub.multi();
+        const multi = redisCache.multi();
 
         multi.DEL(`users:data:${userId}:pendings:sender`);
         multi.DEL(`users:data:${pendingId}:pendings:receiver`);
         multi.exec().catch(console.error);
+        redisPub.publish(`user:gateway:out:${pendingId}`, JSON.stringify({
+            type: 'pending',
+            action: 'add',
+            data: userId
+        })).catch(console.error);
         return rep.status(201).send({ message: 'Pending request added successfully' });
     }
 
@@ -52,10 +57,15 @@ export class PendingsController {
         const userId = req.headers['x-user-id'];
         const { pendingId } = req.params;
         await PendingService.removePending(userId, pendingId);
-        const multi = redisPub.multi();
+        const multi = redisCache.multi();
         multi.DEL(`users:data:${userId}:pendings:sender`);
         multi.DEL(`users:data:${pendingId}:pendings:receiver`);
         multi.exec().catch(console.error);
+        redisPub.publish(`user:gateway:out:${pendingId}`, JSON.stringify({
+            type: 'pending',
+            action: 'remove',
+            data: userId
+        })).catch(console.error);
         return rep.status(201).send({ message: 'Pending request removed successfully' });
     }
 
@@ -67,12 +77,17 @@ export class PendingsController {
         const { senderId } = req.params;
         
         await PendingService.acceptPending(senderId, userId);
-        const multi = redisPub.multi();
+        const multi = redisCache.multi();
         multi.DEL(`users:data:${userId}:friends`);
         multi.DEL(`users:data:${senderId}:friends`);
         multi.DEL(`users:data:${userId}:pendings:receiver`);
         multi.DEL(`users:data:${senderId}:pendings:sender`);
         multi.exec().catch(console.error);
+        redisPub.publish(`user:gateway:out:${senderId}`, JSON.stringify({
+            type: 'pending',
+            action: 'accept',
+            data: userId
+        })).catch(console.error);
         return rep.status(200).send({ message: 'Pending request accepted successfully' });
     }
 
@@ -84,10 +99,15 @@ export class PendingsController {
         const { senderId } = req.params;
 
         await PendingService.removePending(senderId, userId);
-        const multi = redisPub.multi();
+        const multi = redisCache.multi();
         multi.DEL(`users:data:${userId}:pendings:receiver`);
         multi.DEL(`users:data:${senderId}:pendings:sender`);
         multi.exec().catch(console.error);
+        redisPub.publish(`user:gateway:out:${senderId}`, JSON.stringify({
+            type: 'pending',
+            action: 'refuse',
+            data: userId
+        })).catch(console.error);
         return rep.status(200).send({ message: 'Pending request refused successfully' });
     }
 

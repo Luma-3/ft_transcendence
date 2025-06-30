@@ -2,6 +2,7 @@
 import { alertPublic } from "../components/ui/alert/alertPublic";
 import { renderPublicPage } from "../controllers/renderPage";
 import { dispatchGameSocketMsg } from "../socket/dispatchGameSocketMsg";
+import { dispatchUserSocketMsg, PayloadUserSocketMsg } from "./dispatchUserSocketMsg";
 
 export let socket: WebSocket;
 const MAX_RECONNECT_TENTATIVE = 5;
@@ -17,6 +18,7 @@ export function socketConnection() {
   });
 
   socket.addEventListener("message", (e) => {
+    console.log("WebSocket message received:", e.data);
     const data = JSON.parse(e.data);
 
     const from = JSON.parse(e.data).from;
@@ -24,6 +26,9 @@ export function socketConnection() {
       case 'game':
         dispatchGameSocketMsg(data.payload);
         break;
+      case 'user': {
+        dispatchUserSocketMsg(data.payload as PayloadUserSocketMsg);
+      }
       default:
         break;
     }

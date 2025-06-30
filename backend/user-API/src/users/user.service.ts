@@ -7,7 +7,7 @@ import { UserCreateBodyType, UserBaseType } from "./user.schema.js";
 import { PreferencesBaseType } from "../preferences/preferences.schema.js";
 import { Knex } from "knex";
 import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS } from "./user.model.js"
-import { redisPub } from "../utils/redis.js";
+import { redisCache, redisPub } from "../utils/redis.js";
 
 
 export class UserService {
@@ -121,7 +121,7 @@ export class UserService {
 
     const [updatedUser] = await userModel.update(id, { email: email }, USER_PRIVATE_COLUMNS);
 
-  const multi = redisPub.multi();
+  const multi = redisCache.multi();
   multi.DEL(`users:data:${id}:hydrate`);
   multi.DEL(`users:data:${id}`);
   multi.exec().catch(console.error);
@@ -140,7 +140,7 @@ export class UserService {
 
     const [updatedUser] = await userModel.update(id, { username: username }, USER_PRIVATE_COLUMNS);
 
-  const multi = redisPub.multi();
+  const multi = redisCache.multi();
   multi.DEL(`users:data:${id}:hydrate`);
   multi.DEL(`users:data:${id}`);
   multi.exec().catch(console.error);
