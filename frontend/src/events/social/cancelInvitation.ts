@@ -11,7 +11,7 @@ export async function cancelFriendInvitation(target: HTMLElement) {
 		return renderErrorPage('401');
 	}
 
-	const response = await fetchApi(API_USER.SOCIAL.PENDING + `/${target.dataset.id}`, {
+	const response = await fetchApi(API_USER.SOCIAL.NOTIFICATIONS + `/${target.dataset.id}`, {
 		method: "DELETE",
 		body: JSON.stringify({})
 	});

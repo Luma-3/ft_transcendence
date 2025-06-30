@@ -10,8 +10,8 @@ export async function getCustomAlertTheme(needUser: boolean = true, theme: strin
 			alertTemporary("error", "Error while fetching user info", 'dark');
 			return;
 		}
-		lang = response.data.preferences.lang || 'en';
-		theme = response.data.preferences.theme;
+		lang = response.data.preferences!.lang || 'en';
+		theme = response.data.preferences!.theme;
 	}
 	const bg = theme === 'dark' ? '#000000' : '#FFFFFF';
 	const text = theme === 'dark' ? '#F8E9E9' : '#000000';

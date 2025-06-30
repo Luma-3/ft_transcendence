@@ -45,5 +45,8 @@ export async function alert(reason: string, level: string) {
 	return result.isConfirmed;
 }
 
+// Export the alertNotifications function
+export { alertNotifications } from "./alertNotifications";
+
 
 

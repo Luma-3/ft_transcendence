@@ -13,7 +13,7 @@ export async function friendRequest(target: HTMLElement, action: "send" | "accep
 	}
 
 	const targetId = target.dataset.id;
-	const response = await fetchApi(API_USER.SOCIAL.PENDING + `${(action == "send" ? "" : "/accept")}/${targetId}`, {
+	const response = await fetchApi(API_USER.SOCIAL.NOTIFICATIONS + `${(action == "send" ? "" : "/accept")}/${targetId}`, {
 		method: "POST",
 		body: JSON.stringify({
 			friendId: targetId,

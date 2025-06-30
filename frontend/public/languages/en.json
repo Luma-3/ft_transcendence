@@ -107,6 +107,9 @@
 	"add-friend": "Add friend",
 	"blacklist": "Blacklist",
 
+	"new-friend-request": "New friend request from",
+	"your-friend-request-was-accepted": "Your friend request was accepted by ",
+
 	"version": "Version",
 	"no-duck-hurt": "No duck was hurt",
 	"during-development": "during the development of this website",

@@ -105,7 +105,9 @@
 	"unfriend-user": "Enlever des amies",
 	"add-friend": "Ajouter en ami",
 	"blacklist": "Liste noire",
-
+	"new-friend-request": "Nouvelle demande d'ami de",
+	"your-friend-request-was-accepted": "Votre demande d'ami a été acceptée par ",
+	
 	"version": "Version",
 	"no-duck-hurt": "Aucun canard n'a été blessé",
 	"during-development": "durant le développement de ce site web",

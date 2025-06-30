@@ -1,7 +1,7 @@
 import { pendingModel } from "./pending.model.js";
 import { ConflictError, NotFoundError } from "@transcenduck/error";
 import { Knex, knexInstance } from "../utils/knex.js";
-import { friendsModel } from "../friends/friends.model.js";
+// import { friendsModel } from "../friends/friends.model.js";
 import { FriendsService } from "../friends/friends.services.js";
 import { BlockedService } from "../blocked/blocked.services.js";
 

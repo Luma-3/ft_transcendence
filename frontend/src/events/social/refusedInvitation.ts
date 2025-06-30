@@ -12,7 +12,7 @@ export async function refuseFriendInvitation(target: HTMLElement) {
 	}
 
 	const targetId = target.dataset.id;
-	const response = await fetchApi(API_USER.SOCIAL.PENDING + `/refuse/${targetId}`, {
+	const response = await fetchApi(API_USER.SOCIAL.NOTIFICATIONS + `/refuse/${targetId}`, {
 		method: "DELETE",
 		body: JSON.stringify({})
 	});

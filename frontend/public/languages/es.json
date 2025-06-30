@@ -110,6 +110,9 @@
 	"add-friend": "Agregar amigo",
 	"blacklist": "Lista negra",
 
+	"new-friend-request": "Nueva solicitud de amistad de",
+	"your-friend-request-was-accepted": "Tu solicitud de amistad ha sido aceptada por ",
+
 	"version": "Versión",
 	"no-duck-hurt": "No se hirió a ningún pato",
 	"during-development": "durante el desarrollo de este sitio web",
