@@ -4,7 +4,18 @@ import dotenv from 'dotenv';
 import process from 'node:process';
 
 import { internalRoutes } from './plugins/internalRoute.js';
+import cluster from 'node:cluster';
+const numClusterWorkers = 2;
+if (cluster.isPrimary) {
+  for (let i = 0; i < numClusterWorkers; i++) {
+    cluster.fork();
+  }
 
+  cluster.on(
+    "exit",
+    (worker, _code, _signal) => console.log(`worker ${worker.process.pid} died`),
+  );
+} else {
 dotenv.config()
 
 const Services = [
@@ -56,3 +67,4 @@ const start = async () => {
   })
 }
 start();
+}
