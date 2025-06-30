@@ -3,13 +3,15 @@ import { Ball } from "./Ball.js";
 import { SceneContext } from "../core/runtime/SceneContext.js";
 import { Paddle } from "./Paddle.js";
 import { Vector2 } from "../core/physics/Vector.js";
+import { EdgeCollider } from "./EdgeCollider.js";
 
 export const game = () => {
-  // Here we can instantiate game objects, e.g.:
-  // GameObject.instantiate();
   console.log("Game started");
 
+  GameObject.instantiate(EdgeCollider, new Vector2(0, 0)); // Top edge
+  GameObject.instantiate(EdgeCollider, new Vector2(0, 600)); // Bottom edge
   GameObject.instantiate(Ball);
+
   GameObject.instantiate(Paddle, SceneContext.get().players[0].user_id, new Vector2(50, 250)); // Left paddle
   if (SceneContext.get().gameType === "local" || SceneContext.get().gameType === "ai") {
     GameObject.instantiate(Paddle, 'other', new Vector2(750, 250)); // Right paddle for local game
@@ -19,4 +21,5 @@ export const game = () => {
   }
   SceneContext.get().inputManager.start(); // Start the input manager
   SceneContext.get().loopManager.start(); // Start the game loop
+
 }

@@ -6,7 +6,8 @@ import { SceneContext } from '../core/runtime/SceneContext.js';
 export class Paddle extends GameObject implements Rectangle {
   public position: Vector2 = new Vector2(0, 0);
   public scale: Vector2 = new Vector2(10, 100); // Width and height of the paddle
-  // private speed: number = 300; // Speed of the paddle movement
+  private speed: number = 300; // Speed of the paddle movement
+  public velocity: Vector2 = new Vector2(0, 0); // Velocity of the paddle movement
 
   private id: string = '';
 
@@ -20,11 +21,44 @@ export class Paddle extends GameObject implements Rectangle {
 
   // -- REQUIREMENTS FUNCTION --
 
-  onInstantiate(): void {
+  startPosition(pos: Vector2) {
+    this.position = pos;
   }
 
   update() {
+    this.calcutateInput();
     this.move();
+  }
+
+
+  // -- END REQUIREMENTS FUNCTION --
+
+  calcutateInput() {
+    const playerInput = SceneContext.get().inputManager.get(this.id);
+    if (playerInput) {
+      if (playerInput.up) {
+        this.velocity.y = -1; // Move up
+      } else if (playerInput.down) {
+        this.velocity.y = 1; // Move down
+      } else {
+        this.velocity.y = 0; // Stop moving
+      }
+    }
+  }
+
+  clampPosition(max: number, min: number) {
+    // Clamp the paddle position to stay within the game area
+    if (this.position.y < min) {
+      this.position.y = min;
+    } else if (this.position.y + this.scale.y > max) {
+      this.position.y = max - this.scale.y;
+    }
+  }
+
+  move() {
+    this.velocity = this.velocity.normalize().scale(this.speed);
+    this.position = this.position.add(this.velocity.scale(SceneContext.get().loopManager.deltaTime)); // Update position based on velocity and delta time
+    this.clampPosition(600 - 10, 0 + 10); // Clamp the paddle position to stay within the game area
   }
 
   collider(): Rectangle {
@@ -32,34 +66,6 @@ export class Paddle extends GameObject implements Rectangle {
       position: this.position,
       scale: this.scale
     };
-  }
-
-  onCollision(other: GameObject): void {
-    other = other; // Placeholder for collision handling
-  }
-
-  // -- END REQUIREMENTS FUNCTION --
-
-  move() {
-    // Paddle movement logic can be added here (e.g., based on user input)
-    // For now, it remains stationary
-
-    const playerInput = SceneContext.get().inputManager.get(this.id);
-    console.log('Paddle ID', this.id);
-
-    console.log('Paddle Input', playerInput);
-    if (playerInput) {
-      if (playerInput.up) {
-        this.position.y -= 5; // Move up
-      }
-      if (playerInput.down) {
-        this.position.y += 5; // Move down
-      }
-    }
-  }
-
-  startPosition(pos: Vector2) {
-    this.position = pos;
   }
 
   snapshot() {
