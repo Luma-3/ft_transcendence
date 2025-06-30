@@ -6,20 +6,17 @@ import { SceneContext } from '../core/runtime/SceneContext.js';
 export class Paddle extends GameObject implements Rectangle {
   public position: Vector2 = new Vector2(0, 0);
   public scale: Vector2 = new Vector2(10, 100); // Width and height of the paddle
-  private speed: number = 300; // Speed of the paddle movement
   public velocity: Vector2 = new Vector2(0, 0); // Velocity of the paddle movement
 
   private id: string = '';
 
+  private readonly speed: number = 300;
   constructor(id: string, pos: Vector2) {
     super();
 
-    console.log('Paddle Constructor', id);
     this.id = id;
-    this.startPosition(pos); // Set the initial position of the paddle
+    this.startPosition(pos);
   }
-
-  // -- REQUIREMENTS FUNCTION --
 
   startPosition(pos: Vector2) {
     this.position = pos;
@@ -67,11 +64,10 @@ export class Paddle extends GameObject implements Rectangle {
       scale: this.scale
     };
   }
-
   snapshot() {
     return {
       type: 'paddle',
-      id: this.id, // TODO : Make this dynamic or unique per paddle
+      id: this.id,
       position: this.position,
       scale: this.scale
     };

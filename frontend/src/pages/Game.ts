@@ -67,7 +67,7 @@ const readyEventListener = (playerId: string) => {
 
 export default async function game(roomId: string, user: IUserInfo) {
 
-  addEventListener('keypress', () => { })
+  // addEventListener('keypress', () => { })
   /**
    * Mise en place du listener sur la fenetre pour redimensionner le canvas si
    * la fenetre est redimensionnee

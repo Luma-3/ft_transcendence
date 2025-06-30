@@ -11,6 +11,10 @@ export class Vector2 {
     return new Vector2(this.x - other.x, this.y - other.y);
   }
 
+  mult(other: Vector2): Vector2 {
+    return new Vector2(this.x * other.x, this.y * other.y);
+  }
+
   scale(scalar: number): Vector2 {
     return new Vector2(this.x * scalar, this.y * scalar);
   }

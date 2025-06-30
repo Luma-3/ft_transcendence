@@ -53,7 +53,6 @@ export const FRAME = 30;
 // };
 
 export function drawGame(gameData: IGameObject[], action: string = '') {
-  console.log("gameData", gameData);
 
   const game = document.getElementById("gamePong") as HTMLCanvasElement;
   if (!game) {
@@ -96,6 +95,7 @@ export function drawGame(gameData: IGameObject[], action: string = '') {
   gameData.forEach((gameObject) => {
     switch (gameObject.type) {
       case 'ball': ;
+        console.log("Ball Velocity:", (<IBall>gameObject).velocity);
         drawBall(ctx, (<IBall>gameObject).position, (<IBall>gameObject).radius);
         break;
       case 'paddle':

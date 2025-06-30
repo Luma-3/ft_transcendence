@@ -19,7 +19,7 @@ export interface IGameObject {
 export interface IBall {
   type: string;
   position: Vector2;
-  // velocity: Vector2;
+  velocity: Vector2;
   radius: number;
 }
 

@@ -8,6 +8,7 @@ import { showGame } from "../events/game/gameShow";
 // import { alertGameReady } from "../components/ui/alert/alertGameReady";
 
 import { socket } from "../socket/Socket";
+import { Paddle } from "../events/game/Paddle";
 
 export type GameSnapshot = {
   serverTime: number;
@@ -44,7 +45,7 @@ function launchGame(roomId: string) {
 }
 
 export async function dispatchGameSocketMsg(payload: any) {
-
+  console.log("dispatchGameSocketMsg", payload);
   switch (payload.action) {
     case 'roomReady':
       renderGame(payload.data);
@@ -56,10 +57,7 @@ export async function dispatchGameSocketMsg(payload: any) {
 
     case 'Starting':
       showGame();
-      drawGame(payload.data);
-      setTimeout(() => {
-        launchGame(payload.data.roomId); //Stocker roomId en dehors
-      }, 3000);
+      launchGame(payload.data.roomId); // TODO : Stocker roomId en dehors
       break;
 
     case 'goal':

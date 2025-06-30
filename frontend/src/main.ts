@@ -24,7 +24,6 @@ const publicPages = ['home', 'login', 'register'];
 document.addEventListener('DOMContentLoaded', async () => {
 
   const page = window.location.pathname.substring(1) || 'home'
-
   if (page === 'error') {
     return renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
   } else if (page === 'verifyEmail') {
