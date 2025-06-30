@@ -53,7 +53,6 @@ export const FRAME = 30;
 // };
 
 export function drawGame(gameData: IGameObject[], action: string = '') {
-  console.log("gameData", gameData);
 
   const game = document.getElementById("gamePong") as HTMLCanvasElement;
   if (!game) {

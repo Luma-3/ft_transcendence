@@ -5,20 +5,17 @@ import { SceneContext } from '../core/runtime/SceneContext.js';
 
 export class Paddle extends GameObject implements Rectangle {
   public position: Vector2 = new Vector2(0, 0);
-  public scale: Vector2 = new Vector2(10, 100); // Width and height of the paddle
-  // private speed: number = 300; // Speed of the paddle movement
-
+  public scale: Vector2 = new Vector2(10, 100);
+  public velocity: Vector2 = new Vector2(0, 0);
   private id: string = '';
 
+  private readonly speed: number = 300;
   constructor(id: string, pos: Vector2) {
     super();
 
-    console.log('Paddle Constructor', id);
     this.id = id;
-    this.startPosition(pos); // Set the initial position of the paddle
+    this.startPosition(pos);
   }
-
-  // -- REQUIREMENTS FUNCTION --
 
   onInstantiate(): void {
   }
@@ -34,28 +31,19 @@ export class Paddle extends GameObject implements Rectangle {
     };
   }
 
-  onCollision(other: GameObject): void {
-    other = other; // Placeholder for collision handling
-  }
-
-  // -- END REQUIREMENTS FUNCTION --
-
   move() {
-    // Paddle movement logic can be added here (e.g., based on user input)
-    // For now, it remains stationary
-
     const playerInput = SceneContext.get().inputManager.get(this.id);
-    console.log('Paddle ID', this.id);
 
-    console.log('Paddle Input', playerInput);
-    if (playerInput) {
-      if (playerInput.up) {
-        this.position.y -= 5; // Move up
-      }
-      if (playerInput.down) {
-        this.position.y += 5; // Move down
-      }
+    if (!playerInput) return;
+    this.velocity = new Vector2(0, 0);
+    if (playerInput.up) {
+      this.velocity.y -= 1;
     }
+    if (playerInput.down) {
+      this.velocity.y += 1;
+    }
+
+    this.position = this.position.add(this.velocity.scale(this.speed * SceneContext.get().loopManager.deltaTime));
   }
 
   startPosition(pos: Vector2) {
@@ -65,7 +53,7 @@ export class Paddle extends GameObject implements Rectangle {
   snapshot() {
     return {
       type: 'paddle',
-      id: this.id, // TODO : Make this dynamic or unique per paddle
+      id: this.id,
       position: this.position,
       scale: this.scale
     };

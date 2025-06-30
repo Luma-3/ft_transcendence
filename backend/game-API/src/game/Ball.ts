@@ -2,26 +2,26 @@ import { Vector2 } from "../core/physics/Vector.js";
 import { GameObject } from "../core/GameObject.js";
 import { Circle } from "../core/physics/Shapes.js";
 import { SceneContext } from "../core/runtime/SceneContext.js";
+import { Paddle } from "./Paddle.js";
 
 export class Ball extends GameObject implements Circle {
-  private velocity: Vector2 = new Vector2(-1, 0);
+  private velocity: Vector2 = new Vector2(-1, 1);
 
   public position: Vector2 = new Vector2(0, 0);
-  public readonly radius: number = 10; // Radius of the ball
+  public readonly radius: number = 10;
 
-  private readonly speed: number = 100;
-
-  // -- REQUIREMENTS FUNCTION --
+  private readonly minSpeed: number = 100;
+  private readonly maxSpeed: number = 500;
 
   onInstantiate(): void {
-    this.startPosition(new Vector2(400, 300)); // Start position of the ball (Pos base on Pong scale) TODO: Get Scale from the context
+    this.startPosition(new Vector2(400, 300));
   }
 
   update() {
     this.move();
+    this.checkTopBottomCollision();
   }
 
-  // Collider function returns parameter for collision detection (Collider Object if you want)
   collider(): Circle {
     return {
       position: this.position,
@@ -30,34 +30,38 @@ export class Ball extends GameObject implements Circle {
   }
 
   onCollision(other: GameObject): void {
-    if (other instanceof Ball) {
-      // Handle collision with another ball if needed
-      console.log("Collision with another ball detected");
-    } else {
-      // Handle collision with paddles or other objects
-      this.rebound();
+    if (other instanceof Paddle) {
+      this.rebound(other);
     }
   }
 
-  // -- END REQUIREMENTS FUNCTION --
+
+  checkTopBottomCollision() {
+    if (this.position.y - this.radius < 0 || this.position.y + this.radius > 600) {
+      this.velocity = this.velocity.mult(new Vector2(1, -1));
+    }
+  }
 
   move() {
-    this.velocity = this.velocity.normalize().scale(this.speed); // Ensure the ball moves at a constant speed ( Possible to change for acceleration later )
-    this.position = this.position.add(this.velocity.scale(SceneContext.get().loopManager.deltaTime)); // Update position based on velocity and delta time
+    const direction = this.velocity.normalize();
+    let speed = this.velocity.magnitude();
+
+    speed = Math.max(this.minSpeed, Math.min(this.maxSpeed, speed));  // Clamp speed
+    this.position = this.position.add(direction.scale(speed * SceneContext.get().loopManager.deltaTime));
+    this.velocity = direction.scale(speed);
   }
 
   startPosition(pos: Vector2) {
     this.position = pos;
   }
 
-  rebound() {
-    // Reverse the ball's direction when it collides with a paddle
-    this.velocity = this.velocity.scale(-1);
-    // Optionally, adjust the position to avoid sticking to the paddle
-    // this.position = this.position.add(this.velocity.scale(0.1)); // Small adjustment to prevent sticking
+  rebound(paddle: Paddle) {
+    const paddleVelocity = paddle.velocity;
+
+    this.velocity = this.velocity.add(paddleVelocity.scale(0.2)); // Add some paddle velocity to the ball
+
+    this.velocity = this.velocity.mult(new Vector2(-1, 1));
   }
-
-
 
   snapshot() {
     return {
