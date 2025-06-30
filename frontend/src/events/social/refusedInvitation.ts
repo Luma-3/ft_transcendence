@@ -2,7 +2,7 @@ import { fetchApi } from "../../api/fetch";
 import { getUserInfo } from "../../api/getterUser(s)";
 import { API_USER } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
-import { allUsersList } from "../../pages/Profile/allUsersList";
+import { allUsersList } from "../../pages/Friends/allUsersList";
 
 export async function refuseFriendInvitation(target: HTMLElement) {
 	

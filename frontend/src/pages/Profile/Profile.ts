@@ -8,9 +8,9 @@ import { IUserInfo } from "../../interfaces/IUser"
 import { userUpdateForm } from "./updateForm";
 import { notifications } from "./notifications";
 import { profileHeader } from "./header";
-import { allUsersList } from "./allUsersList";
-import { friendsList } from "./friendsList";
-import { blockList } from "./blockList";
+import { allUsersList } from "../Friends/allUsersList";
+import { friendsList } from "../Friends/friendsList";
+import { blockList } from "../Friends/blockList";
 
 
 function imageEditorDiv() {
@@ -57,7 +57,7 @@ ${backButton()}
 
 	<div class="flex flex-col w-full max-w-[1000px] items-center justify-center pt-5">
 
-		<img src="/images/duckBell.png" alt="Duck Bell" class="w-20 h-20" />
+		<img src="/images/duckBell.png" alt="Duck Bell" class="w-40 h-40" />
 		${await notifications()}
 
 	</div>
@@ -66,21 +66,6 @@ ${backButton()}
 
 <div class="flex flex-col justify-center items-center">
 
-	<div class="flex flex-col lg:flex-row justify-between items-center w-full max-w-[1500px] space-x-4 space-y-4">
-
-		<div id="friends-div" class="flex flex-col w-full max-w-[1000px]">
-			${await friendsList()}
-		</div>
-
-		<div id="all-users-div" class="flex flex-col justify-center w-full max-w-[1000px]">
-			${await allUsersList()}
-		</div>
-
-		<div id="block-div" class="flex flex-col w-full max-w-[1000px]">
-			${await blockList()}
-		</div>
-
-	</div>
 	<div class="flex h-[100px]">
 	</div>
 

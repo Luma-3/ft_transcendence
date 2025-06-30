@@ -14,7 +14,7 @@ ${navbar(user)}
 
 	<div class="flex flex-col lg:flex-row max-w-[1200px]">
 
-		<div id="mainPanel" class="relative flex flex-col min-w-[350px] md:min-h-[350px] md:min-w-[700px] mx-4 p-4 space-y-4 dark:bg-myblack bg-zinc-100 rounded-lg justify-center items-center drop-shadow-2xl transition-all ease-in-out duration-300">
+		<div id="mainPanel" class="relative flex flex-col min-w-[350px] md:min-h-[350px] md:min-w-[700px] mx-4 p-4 space-y-4 dark:bg-gradient-to-b dark:from-myblack dark:via-dprimary dark:to-myblack bg-zinc-100 rounded-lg justify-center items-center drop-shadow-2xl transition-all ease-in-out duration-300">
 
 			<div class="relative w-full">
 				
@@ -22,20 +22,7 @@ ${navbar(user)}
 						
 				<div id="dashboardScreen" class="absolute w-full flex inset-0 items-center justify-center">
 				
-					<img src="${API_CDN.AVATAR}/${user.preferences?.avatar ?? 'default.webp'}" alt="Bienvenue" class="rounded-full w-50 mb-18" />
-				</div>
-				<div class="absolute w-full h-[70px] flex bottom-0 bg-primary dark:bg-dprimary rounded-sm drop-shadow-2xl" >
-					
-					<div class="flex flex-row justify-end items-center w-full h-full  space-x-4 rounded-lg">
-						
-					
-							
-						<div class="flex p-1 justify-center items-center mt-4 mb-4 mx-4 bg-primary dark:bg-dprimary rounded-lg">
-							
-							
-						
-						</div>
-					</div>
+					<img src="${API_CDN.AVATAR}/${user.preferences?.avatar ?? 'default.webp'}" alt="Bienvenue" class="rounded-full w-50" />
 				</div>
 			</div>
 		<div class="flex flex-col w-full justify-center items-center space-y-4 text-primary dark:text-dtertiary mb-10 ">
@@ -101,8 +88,8 @@ function generateRankBadge(_user: IUserInfo) {
 			name: 'Caneton',
 			level: Math.floor(wins / 8),
 			image: 'caneton.png',
-			colors: 'from-gray-400 via-gray-500 to-gray-600',
-			textColors: 'from-gray-400 via-gray-500 to-gray-600',
+			colors: 'from-gray-200 via-gray-300 to-gray-500',
+			textColors: 'from-gray-200 via-gray-300 to-gray-500',
 			shadowColor: 'gray'
 		};
 	} else if (totalGames >= 20 && wins >= 12) {

@@ -69,11 +69,15 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
   'save-image': () => saveNewPicture(),
   'file-upload': () => showEditorPicture(),
   'banner-upload': () => showEditorPicture("BANNER"),
+
   // * -------------- Settings Page  -------------- */
   'loadsettings': () => renderPrivatePage('settings'),
   'saveLang': () => saveDefaultLanguage(),
   'deleteAccount': () => deleteUser(),
   'logout': () => logOutUser(),
+
+  // * -------------- Friends Page   -------------- */
+  'loadfriends': () => renderPrivatePage('friends'),
 
   // * -------------- Settings  -------------- */
   'enable2fa': () => enable2FA(),
