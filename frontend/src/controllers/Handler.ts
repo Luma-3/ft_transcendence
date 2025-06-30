@@ -79,6 +79,9 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
   // * -------------- Friends Page   -------------- */
   'loadfriends': () => renderPrivatePage('friends'),
 
+
+  'notifications': () => showNotificationDiv(),
+
   // * -------------- Settings  -------------- */
   'enable2fa': () => enable2FA(),
   'disable2fa': () => disable2FA(),

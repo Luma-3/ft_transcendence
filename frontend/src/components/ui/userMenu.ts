@@ -99,6 +99,13 @@ function logout() {
 	</button>`
 }
 
+function notifications() {
+	return `<button id="notifications" class="flex py-2 pl-4 text-responsive-size w-full justify-left items-left
+	dark:text-dsecondary hover:bg-primary dark:hover:bg-gray-600 dark:hover:text-white">
+	Notifications
+	</button>`;
+}
+
 
 export function renderUserMenu(user: IUserInfo) {
 	//TODO: Verifier si l'utilisateur a des notifications pour les afficher
@@ -106,6 +113,7 @@ export function renderUserMenu(user: IUserInfo) {
 			${headerUserMenu(user)}
 			${UserMenuOptions()}
 			<ul class="font-title text-tertiary dark:text-dsecondary md:mr-2 lg:mr-4 aria-labelledby="dropdown">
+			<li> ${notifications()}</li>
 				<li> ${darkMode(user.preferences!.theme)}</li>
 				<li> ${logout()}</li>
 			</ul>`

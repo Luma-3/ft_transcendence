@@ -6,16 +6,6 @@ export async function blockList() {
 let container = `
 <div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-tertiary dark:text-dtertiary">
 
-	<div class="flex flex-row justify-between items-center space-x-4">
-		
-		<img src="/images/duckPolice.png" alt="Duck Friends" class="w-16 h-16" />	
-		<span translate="blacklist">
-		
-			BlackList
-		
-		</span>
-	
-	</div>
 	<div class="relative h-[400px] w-full z-10 overflow-y-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
 
 		<div class="flex flex-col w-full justify-center items-center gap-4 p-4">`;
