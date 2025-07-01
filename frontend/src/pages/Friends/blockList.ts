@@ -4,7 +4,7 @@ import { headerOtherUserMenu } from '../../components/ui/userMenu';
 
 export async function blockList() {
 let container = `
-<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-tertiary dark:text-dtertiary">
+<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-5 text-tertiary dark:text-dtertiary">
 
 	<div class="relative h-[400px] w-full z-10 overflow-y-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
 
@@ -13,13 +13,13 @@ let container = `
 		const blockedUsers = await getBlockedUsers();
 
 		if (blockedUsers.status === "error" || blockedUsers.data?.length == 0) {
-			return `${container}</div></div>`;
+			return `${container}</div></div></div>`;
 		}
 		
 		for(const user of blockedUsers.data!) {
 			container += `
-			<div id="block-user-${user.id}"
-			class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
+				<div id="user-${user.id}" class="flex flex-col justify-between w-full font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary
+			bg-myblack from-primary to-secondary">
 
 				${headerOtherUserMenu(user)}
 

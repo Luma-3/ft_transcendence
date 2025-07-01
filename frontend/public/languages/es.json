@@ -109,6 +109,11 @@
 	"unfriend-user": "Desamigar",
 	"add-friend": "Agregar amigo",
 	"blacklist": "Lista negra",
+	"my-friends": "Mis amigos",
+	"see-all-my-friends": "Ver todos mis amigos",
+	"discover-new-friends": "Descubrir nuevos amigos",
+	"blocked-users": "Usuarios bloqueados",
+	"manage-your-block-list": "Gestionar tu lista de bloqueo",
 
 	"new-friend-request": "Nueva solicitud de amistad de",
 	"your-friend-request-was-accepted": "Tu solicitud de amistad ha sido aceptada por ",

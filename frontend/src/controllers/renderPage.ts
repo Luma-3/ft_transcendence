@@ -119,9 +119,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		setupColorTheme(theme);
 
 		translatePage(lang);
-		if (updateHistory) {
-			addToHistory(page, updateHistory);
-		}
+		addToHistory(page, updateHistory);
 
 		removeLoadingScreen();
 

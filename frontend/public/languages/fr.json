@@ -107,6 +107,11 @@
 	"blacklist": "Liste noire",
 	"new-friend-request": "Nouvelle demande d'ami de",
 	"your-friend-request-was-accepted": "Votre demande d'ami a été acceptée par ",
+	"my-friends": "Mes amis",
+	"see-all-my-friends": "Voir tous mes amis",
+	"discover-new-friends": "Découvrez de nouveaux amis",
+	"blocked-users": "Utilisateurs bloqués",
+	"manage-your-block-list": "Gérer votre liste de blocage",
 	
 	"version": "Version",
 	"no-duck-hurt": "Aucun canard n'a été blessé",

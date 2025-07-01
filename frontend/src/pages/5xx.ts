@@ -30,9 +30,9 @@ return `
 	
 	</div>
 	
-	${messageErrorFromTheServer()}
+	${messageErrorFromTheServer() || ''}
 
-	<div class="flex font-title text-xl p-4 bg-zinc-200 rounded=lg">
+	<div class="flex font-title text-xl p-4 rounded=lg">
 
 	${message_error}
 

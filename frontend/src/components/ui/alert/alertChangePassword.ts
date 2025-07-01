@@ -23,8 +23,8 @@ export async function alertChangePassword() {
 		color: customTheme.text,
 		iconColor: customTheme.icon,
 		confirmButtonColor: customTheme.confirmButtonColor,
-		confirmButtonAriaLabel: trad['confirm'],
-		cancelButtonAriaLabel: trad['cancel'],
+		confirmButtonText: trad['confirm'],
+		cancelButtonText: trad['cancel'],
 		cancelButtonColor: customTheme.cancelButtonColor,
 		
 		html: `
@@ -41,7 +41,6 @@ export async function alertChangePassword() {
 		</div>
 		`,
 		showCancelButton: true,
-		confirmButtonText: "Confirm",
 		showLoaderOnConfirm: true,
 	
 		preConfirm: () => {

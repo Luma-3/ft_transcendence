@@ -51,12 +51,12 @@ export function socketConnection() {
 	});
 
 	socket.addEventListener('close', (event) => {
-		if (event.wasClean) {
-			console.log(`WebSocket closed cleanly, code=${event.code}, reason=${event.reason}`);
-		} else {
+		if (event.wasClean!) {
 			alertPublic(`WebSocket connection closed unexpectedly with code ${event.code}. Message: ${event.reason}. You will be redirected to the main page.`, "error");
-			setTimeout(() => { renderPublicPage("home") }, 2000);
+			setTimeout(() => { 
+				renderPublicPage("home") }, 2000);
 		}
 	});
 
 }
+	

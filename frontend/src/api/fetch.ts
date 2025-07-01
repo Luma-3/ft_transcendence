@@ -28,7 +28,7 @@ export async function fetchApi<T>(url: string, option?: RequestInit): Promise<IA
 	}
 }
 
-export async function fetchApiWithNoError<T>(url: string, option?: RequestInit): Promise<IApiResponse<T>> {
+export async function 	fetchApiWithNoError<T>(url: string, option?: RequestInit): Promise<IApiResponse<T>> {
 	try {
 		if (option && !option.headers)
 			option.headers = { "Content-Type": "application/json" };

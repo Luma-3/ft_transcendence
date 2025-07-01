@@ -47,7 +47,7 @@ function UserMenuOptions() {
 						</div>
 						
 						<div class="flex items-center justify-center w-1/3 h-full relative overflow-hidden
-						bg-gradient-to-l from-primary/20 dark:from-dprimary/20 dark:to-transparent">
+						bg-gradient-to-l from-primary/20 dark:from-dprimary/20 dark:to-transparent pointer-events-none">
 							<div class="absolute invert dark:invert-0 inset-0 bg-no-repeat bg-center bg-contain
 							opacity-70 hover:opacity-100 transition-opacity duration-300 filter hover:brightness-110"
 							style="background-image: url('/images/${element.icon}')"></div>

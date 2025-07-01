@@ -53,24 +53,15 @@ ${backButton()}
 
 </div>
 
-<div class="flex flex-col w-full justify-center items-center space-y-4 text-primary dark:text-dtertiary">
-
-	<div class="flex flex-col w-full max-w-[1000px] items-center justify-center pt-5">
-
-		<img src="/images/duckBell.png" alt="Duck Bell" class="w-40 h-40" />
-		${await notifications()}
-
-	</div>
-
-</div>
-
 <div class="flex flex-col justify-center items-center">
 
 	<div class="flex h-[100px]">
 	</div>
 
 </div>`
-	}
+}
+
+
 
 export default function profilePage(user: IUserInfo) {
 	const container = renderProfilePage(user);
@@ -79,4 +70,13 @@ export default function profilePage(user: IUserInfo) {
 
 
 
+// <div class="flex flex-col w-full justify-center items-center space-y-4 text-primary dark:text-dtertiary">
 
+// 	<div class="flex flex-col w-full max-w-[1000px] items-center justify-center pt-5">
+
+// 		<img src="/images/duckBell.png" alt="Duck Bell" class="w-40 h-40" />
+// 		${await notifications()}
+
+// 	</div>
+
+// </div>

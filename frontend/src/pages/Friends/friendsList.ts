@@ -17,7 +17,8 @@ let container = `
 	for(const friend of friendsList.data!) {
 		container += `
 		<div id="friend-${friend.id}"
-		class="flex flex-col justify-between w-[300px] font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary">
+	class="flex flex-col justify-between w-full font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary
+			bg-myblack from-primary to-secondary">
 			
 			${headerOtherUserMenu(friend)}
 			
