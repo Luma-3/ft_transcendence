@@ -30,7 +30,7 @@ import {
   User2faStatus,
   User2faInfos,
   UserActivateAccountParams,
-  UserCreateRedis,
+  UserCreateRedis
 } from './user.schema.js';
 import { SearchResponseSchema } from '../search/search.schema.js';
 
@@ -268,7 +268,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       tags: ['Users'],
       body: VerifyCredentials,
       response: {
-        200: ResponseSchema(UserPublicResponse, 'Credentials verified successfully'),
+        200: ResponseSchema(UserPrivateResponse, 'Credentials verified successfully'),
         401: UnauthorizedResponse,
       } // No NotFoundResponse here for security reasons 
     }
@@ -288,12 +288,12 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
         email: Type.String(),
       }),
       response: {
-        201: ResponseSchema(UserPublicResponse, 'User created from OAuth2'),
+        201: ResponseSchema(UserPrivateResponse, 'User created from OAuth2'),
         409: ConflictResponse,
       }
     }
   }, async (req, rep) => {
-    const find = await UserService.getUserByEmail(req.body.email);
+  const find = await UserService.getUserByEmail(req.body.email, ['validated', ...USER_PRIVATE_COLUMNS]);
     if (!find) {
       const user = await UserService.createUser({
         username: req.body.username,

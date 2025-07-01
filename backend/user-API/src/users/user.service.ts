@@ -289,7 +289,8 @@ export class UserService {
   static async verifyCredentials(username: string, password: string): Promise<UserBaseType> {
     const user = await userModelInstance.findByUsername(username, undefined, ['password', 'validated', ...USER_PRIVATE_COLUMNS]);
     if (!user) throw new UnauthorizedError("Invalid credentials");
-    const isValid = await comparePassword(password, user.password!);
+    if(!user.password) throw new UnauthorizedError("Only OAuth users can login with password");
+    const isValid = await comparePassword(password, user.password);
     if (!isValid) throw new UnauthorizedError("Invalid credentials");
 
     if(user.validated === false)

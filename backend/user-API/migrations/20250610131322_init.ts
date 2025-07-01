@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     t.uuid("google_id").unique();
     t.string("username", 32).notNullable().unique();
     t.string("email", 255).notNullable().unique();
-    t.text("password").notNullable();
+    t.text("password").nullable();
     t.boolean("validated").defaultTo(false);
     t.boolean("twofa").defaultTo(false);
     t.timestamp("created_at");

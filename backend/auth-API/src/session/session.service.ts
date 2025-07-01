@@ -112,13 +112,20 @@ export class SessionService {
     return { accessToken, refreshToken };
   }
 
-  static async login(username: string, password?: string, clientInfo?: clientInfo, o2aut: boolean = false) {
+  static async login(infoUser: {username?: string, password?: string, email?: string}, clientInfo: clientInfo, o2aut: boolean = false) {
     let user;
-    if (!o2aut && password !== undefined) {
-      user = await verifyCredentials(username, password);
+    if (!o2aut && infoUser.password !== undefined) {
+      user = await verifyCredentials(infoUser.username!, infoUser.password);
     }else if(o2aut){
-      //TODO: Faire une requete pour recuperer l'utilisateur par son id 
-      user = {id: username, family_id: 'unkwon'};
+      user = await (await fetch(`http://${process.env.USER_IP}/users/internal/oauth2`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: infoUser.username,
+          email: infoUser.email,
+        })
+      })).json();
+    console.log(user);
     } else if(!user){
       throw new UnauthorizedError('Username and password are required for login');
     }
@@ -137,6 +144,7 @@ export class SessionService {
     if (userInfo.twofa === false) {
       return this.createSession(user, clientInfo);
     }
+    const family_id = crypto.randomBytes(16).toString('hex');
 
     const email = userInfo.email;
     const lang = userInfo.preferences!.lang;
@@ -145,9 +153,7 @@ export class SessionService {
     await twoFaService.generateSendCode(email, lang, code)
     
     redisPub.setEx('users:userIds:' + code + ':userId', 600, user.id)
-    if (user.family_id) {
-      redisPub.setEx('users:userIds:' + code + ':family_id', 600, user.family_id)
-    }
+    redisPub.setEx('users:userIds:' + code + ':family_id', 600, family_id)
     throw new TwoFaError();
   }
 

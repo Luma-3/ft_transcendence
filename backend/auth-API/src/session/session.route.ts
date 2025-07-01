@@ -29,7 +29,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 
     // const parser = new UAParser(userAgent);
 
-    const { accessToken, refreshToken } = await SessionService.login(username, password, {
+    const { accessToken, refreshToken } = await SessionService.login({username, password}, {
       ip_address: req.ip,
       // user_agent: parser.getBrowser().toString(),
       // device_id: parser.getDevice().toString(),

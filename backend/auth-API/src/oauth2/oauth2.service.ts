@@ -28,7 +28,7 @@ export class Oauth2Service {
     return authorizationUrl;
   }
 
-  static async callback(query: QueryCallbackType): Promise<{statusCode: number, data?: {id: string; username: string; email: string}}> {
+  static async callback(query: QueryCallbackType) {
     if (query.error) {
       throw new Error(`Error during OAuth2 callback: ${query.error}`);
     }
@@ -45,25 +45,6 @@ export class Oauth2Service {
       version: 'v2'
     })
     const res = await oauth2.userinfo.get();
-    const userinfo = res.data
-
-      try {
-      const request = (await fetch(`http://${process.env.USER_IP}/users/internal/oauth2`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: userinfo.name,
-          email: userinfo.email,
-        })
-      }));
-
-
-      const body = await request.json();
-      console.log('Response from user service:', body);
-      return body as any;
-    } catch (error) {
-      console.error('Error during OAuth2 callback:', error);
-      throw error;
-    }
+    return res.data;
   }
 }

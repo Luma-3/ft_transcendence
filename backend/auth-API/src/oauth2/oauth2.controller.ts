@@ -13,10 +13,13 @@ export class Oauth2Controller {
   static callback = async (req: FastifyRequest<{ Querystring: QueryCallbackType }>, rep: FastifyReply) => {
     const query = req.query;
     const dataUser = await Oauth2Service.callback(query);
-    if(!dataUser.data)
+    if(!dataUser.email || !dataUser.name)
       throw new UnauthorizedError('No user data returned from OAuth2 callback');
 
-    const { accessToken, refreshToken } = await SessionService.login(dataUser.data.id, undefined, {
+    const { accessToken, refreshToken } = await SessionService.login({
+      username: dataUser.name!,
+      email: dataUser.email!
+    }, {
       ip_address: req.ip,
       // user_agent: parser.getBrowser().toString(),
       // device_id: parser.getDevice().toString(),
