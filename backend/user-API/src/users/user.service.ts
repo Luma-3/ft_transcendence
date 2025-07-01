@@ -12,6 +12,8 @@ import fetch from "node-fetch";
 import https from "https"
 import { redisPub, redisCache } from "../utils/redis.js";
 
+const httpsAgent = new https.Agent({ rejectUnauthorized: false })
+
 async function verifyConflict(username: string, email: string) {
   const [existingUsername, existingEmail] = await Promise.all([
     userModelInstance.findByUsername(username, undefined),
@@ -44,35 +46,39 @@ export class UserService {
       user_preferences
     });
 
-    const userID = uuidV4();
-    redisPub.setEx(`users:pendingUser:${userID}`, 660, user);
-    redisPub.setEx(`users:pendingUser:${user_obj.username}`, 660, userID);
-
     // Backdor for development purposes
-    // if (process.env.node_env !== 'development') {
-    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendVerifEmail`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json'
-      },
-      body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang, token: userID }),
-      agent: new https.Agent({ rejectUnauthorized: false })
-    }).catch(console.error)
-    
-    return;
-    // }
+    if (process.env.node_env !== 'development') {
 
-    const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
       const userID = uuidV4();
+      redisPub.setEx(`users:pendingUser:${userID}`, 660, user);
+      redisPub.setEx(`users:pendingUser:${user_obj.username}`, 660, userID);
+
+      await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendVerifEmail`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json'
+        },
+        body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang, token: userID }),
+        agent: httpsAgent
+      }).catch(console.error)
+      
+      return;
+    }
+
+    // this part is called on developpement environnement only
+    const userID = uuidV4();
+    const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
       const [user] = await userModelInstance.create(trx, userID, user_obj);
 
       const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
 
       return { ...user, preferences }
     });
+    await userModelInstance.update(userID, { validated: true }, USER_PRIVATE_COLUMNS);
     return transactionData;
   }
+
   static async createUserO2Auth(data: { username: string, email: string }) {
 
     await verifyConflict(data.username, data.email);
@@ -132,7 +138,7 @@ export class UserService {
         'accept': 'application/json'
       },
       body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
-      agent: new https.Agent({ rejectUnauthorized: false })
+      agent: httpsAgent
     }).catch(console.error)
   }
 
@@ -150,7 +156,7 @@ export class UserService {
         'accept': 'application/json'
       },
       body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
-      agent: new https.Agent({ rejectUnauthorized: false })
+      agent: httpsAgent
     }).catch(console.error)
   }
 
@@ -185,8 +191,8 @@ export class UserService {
   static async deleteUser(id: string) {
     await userModelInstance.delete(id);
     const multi = redisPub.multi();
-    multi.DEL(`users:data:${id}`);
-    multi.DEL(`users:data:${id}:hydrate`);
+    multi.del(`users:data:${id}`);
+    multi.del(`users:data:${id}:hydrate`);
     multi.exec().catch(console.error);
   }
 

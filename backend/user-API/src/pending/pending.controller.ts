@@ -38,8 +38,8 @@ export class PendingsController {
         await PendingService.addPending(userId, pendingId);
         const multi = redisCache.multi();
 
-        multi.DEL(`users:data:${userId}:pendings:sender`);
-        multi.DEL(`users:data:${pendingId}:pendings:receiver`);
+        multi.del(`users:data:${userId}:pendings:sender`);
+        multi.del(`users:data:${pendingId}:pendings:receiver`);
         multi.exec().catch(console.error);
         redisPub.publish(`user:gateway:out:${pendingId}`, JSON.stringify({
             type: 'pending',
@@ -58,8 +58,8 @@ export class PendingsController {
         const { pendingId } = req.params;
         await PendingService.removePending(userId, pendingId);
         const multi = redisCache.multi();
-        multi.DEL(`users:data:${userId}:pendings:sender`);
-        multi.DEL(`users:data:${pendingId}:pendings:receiver`);
+        multi.del(`users:data:${userId}:pendings:sender`);
+        multi.del(`users:data:${pendingId}:pendings:receiver`);
         multi.exec().catch(console.error);
         redisPub.publish(`user:gateway:out:${pendingId}`, JSON.stringify({
             type: 'pending',
@@ -78,10 +78,10 @@ export class PendingsController {
         
         await PendingService.acceptPending(senderId, userId);
         const multi = redisCache.multi();
-        multi.DEL(`users:data:${userId}:friends`);
-        multi.DEL(`users:data:${senderId}:friends`);
-        multi.DEL(`users:data:${userId}:pendings:receiver`);
-        multi.DEL(`users:data:${senderId}:pendings:sender`);
+        multi.del(`users:data:${userId}:friends`);
+        multi.del(`users:data:${senderId}:friends`);
+        multi.del(`users:data:${userId}:pendings:receiver`);
+        multi.del(`users:data:${senderId}:pendings:sender`);
         multi.exec().catch(console.error);
         redisPub.publish(`user:gateway:out:${senderId}`, JSON.stringify({
             type: 'pending',
@@ -100,8 +100,8 @@ export class PendingsController {
 
         await PendingService.removePending(senderId, userId);
         const multi = redisCache.multi();
-        multi.DEL(`users:data:${userId}:pendings:receiver`);
-        multi.DEL(`users:data:${senderId}:pendings:sender`);
+        multi.del(`users:data:${userId}:pendings:receiver`);
+        multi.del(`users:data:${senderId}:pendings:sender`);
         multi.exec().catch(console.error);
         redisPub.publish(`user:gateway:out:${senderId}`, JSON.stringify({
             type: 'pending',
