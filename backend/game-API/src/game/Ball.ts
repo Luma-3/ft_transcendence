@@ -35,12 +35,18 @@ export class Ball extends GameObject implements Circle {
     }
   }
 
-
   checkTopBottomCollision() {
-
     if (this.position.y - this.radius < 0 || this.position.y + this.radius > 600) {
       this.velocity = this.velocity.mult(new Vector2(1, -1));
+      // Ensure the ball is not stuck in the wall
+      this.position.y = Math.max(this.radius, Math.min(this.position.y, 600 - this.radius));
     }
+  }
+
+  checkGoal() {
+    if (this.position.x < 0) return 'left';
+    if (this.position.x > 800) return 'right';
+    return null;
   }
 
   move() {
@@ -57,25 +63,35 @@ export class Ball extends GameObject implements Circle {
     this.position = pos;
   }
 
-  ClampVelocity() {
-    const maxSpeed = 300; // Maximum speed of the ball
-    if (this.velocity.magnitude() > maxSpeed) {
-      this.velocity = this.velocity.normalize().scale(maxSpeed);
-    }
-  }
 
   rebound(paddle_vec: Vector2) {
-    // this.velocity = this.velocity.add(paddle_vec.scale(0.5));
     this.velocity = this.velocity.multiply(new Vector2(-1, 1));
 
     // Ensure the ball has no stick to the paddle
     const paddleDirection = paddle_vec.normalize();
     const paddleSpeed = paddle_vec.magnitude();
 
-    const dir = this.velocity.normalize().add(paddleDirection).normalize();
-    this.position = this.position.add(this.velocity.normalize().scale(this.radius * 0.2)); // Move the ball away from the paddle to prevent sticking
-    this.velocity = dir.scale(Math.max(this.minSpeed, Math.min(paddleSpeed, this.maxSpeed)));
 
+    const dir = this.velocity.normalize().add(paddleDirection).normalize();
+    const currentSpeed = this.velocity.magnitude();
+
+    const newSpeed = Math.max(this.minSpeed, Math.min(currentSpeed + (paddleSpeed * 0.2), this.maxSpeed));
+
+    const newVelocity = dir.scale(newSpeed);
+
+    const minX = 0.5
+    let postDirection = newVelocity.normalize();
+    const postSpeed = newVelocity.magnitude();
+    if (Math.abs(postDirection.x) < minX) {
+      const sign = Math.sign(postDirection.x) || 1; // Ensure we have a sign to avoid zero division
+      postDirection.x = sign * minX;
+
+      const remaining = Math.sqrt(1 - minX * minX);
+      postDirection.y = postDirection.y >= 0 ? remaining : -remaining;
+    }
+    this.velocity = postDirection.scale(postSpeed);
+
+    this.position = this.position.add(this.velocity.normalize().scale(this.radius * 0.2)); // Move the ball away from the paddle to prevent sticking
   }
 
   snapshot() {

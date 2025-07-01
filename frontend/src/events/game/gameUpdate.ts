@@ -14,7 +14,6 @@ export function getEventAndSendGameData(playerId: string) {
     up: actionUser2Up,
     down: actionUser2Down
   }
-  console.log("Sending game data", movement, otherMovement);
   socket.send(JSON.stringify({
     service: "game",
     scope: "player",

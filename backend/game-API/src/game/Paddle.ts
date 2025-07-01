@@ -45,10 +45,10 @@ export class Paddle extends GameObject implements Rectangle {
 
   clampPosition(max: number, min: number) {
     // Clamp the paddle position to stay within the game area
-    if (this.position.y < min) {
-      this.position.y = min;
-    } else if (this.position.y + this.scale.y > max) {
-      this.position.y = max - this.scale.y;
+    if (this.position.y < min + this.scale.y / 2) {
+      this.position.y = min + this.scale.y / 2;
+    } else if (this.position.y > max - this.scale.y / 2) {
+      this.position.y = max - this.scale.y / 2;
     }
   }
 

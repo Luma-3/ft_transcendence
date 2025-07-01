@@ -34,7 +34,7 @@ function launchGame(roomId: string) {
   console.log("Launching game for room:", roomId);
   //TODO: Animate 3,2,1....Go
   socket?.send(JSON.stringify({
-    type: "game",
+    action: "game",
     payload: {
       type: 'startGame',
       data: {
@@ -57,10 +57,10 @@ export async function dispatchGameSocketMsg(payload: any) {
 
     case 'Starting':
       showGame();
-      launchGame(payload.data.roomId); // TODO : Stocker roomId en dehors
+      // launchGame(payload.data.roomId); // TODO : Stocker roomId en dehors
       break;
 
-    case 'goal':
+    case 'score':
       drawGame(payload.gameData, 'goal');
       break;
 

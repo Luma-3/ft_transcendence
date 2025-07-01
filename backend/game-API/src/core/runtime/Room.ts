@@ -70,6 +70,10 @@ export class Room {
     if ((this.gameType === 'local' || this.gameType === 'ai') && this.nbPlayers() === 1) {
       console.log("Room is ready for local or AI game with one player");
       this.status = 'roomReady';
+
+      this.players.push(new Player('other', 'other'));
+      this.players[1].ready = true; // AI or other player is always ready
+
       IOInterface.subscribe(`ws:game:room:${this.id}`, this.callbackPlayerReady);
       IOInterface.send(JSON.stringify({ action: 'roomReady', data: data }), this.players[0].user_id);
     }

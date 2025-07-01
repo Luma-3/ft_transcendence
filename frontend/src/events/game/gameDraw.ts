@@ -52,43 +52,11 @@ export const FRAME = 30;
 //   requestAnimationFrame(animate);
 // };
 
-export function drawGame(gameData: IGameObject[], action: string = '') {
-
+export function drawGame(gameData: IGameObject[]) {
   const game = document.getElementById("gamePong") as HTMLCanvasElement;
-  if (!game) {
-    return;
-  }
+  if (!game) return;
   const ctx = game.getContext("2d");
-  if (!ctx) { return; }
-
-  // if (action === 'goal') {
-  // 	drawExplosion(ctx, gameData.ball.x, gameData.ball.y, {
-  // 		count: 250,
-  // 		colors: ['#744FAC', '#FF8904', '#F8E9E9', '#ffffff'],
-  // 		maxSpeed: 6,
-  // 		maxRadius: 5,
-  // 		duration: 1000
-  // 	});
-  // 	setTimeout(() => {
-  // 		socket?.send(JSON.stringify({
-  // 			type: "game",
-  // 			payload: {
-  // 				type: 'resume',
-  // 				data: {
-  // 					roomId: gameFrontInfo.gameId,
-  // 				}
-  // 			}
-  // 		}));
-  // 		ctx.clearRect(0, 0, game.width, game.height);
-  // 		ctx.restore();
-  // 		const player1Score = document.getElementById("user1Score");
-  // 		player1Score!.innerHTML = gameData.paddle1.score.toString();
-
-  // 		const player2Score = document.getElementById("user2Score");
-  // 		player2Score!.innerHTML = gameData.paddle2.score.toString();
-  // 	}, 800);
-  // 	return;
-  // }
+  if (!ctx) return;
 
   ctx.clearRect(0, 0, game.width, game.height);
 
@@ -109,6 +77,33 @@ export function drawGame(gameData: IGameObject[], action: string = '') {
   ctx.save();
 }
 
+// function Score(ctx: CanvasRenderingContext2D, pos: Vector2, score: number) {
+//   drawExplosion(ctx, pos, {
+//     count: 250,
+//     colors: ['#744FAC', '#FF8904', '#F8E9E9', '#ffffff'],
+//     maxSpeed: 6,
+//     maxRadius: 5,
+//     duration: 1000
+//   });
+//   // setTimeout(() => {
+//   // 	socket?.send(JSON.stringify({
+//   // 		type: "game",
+//   // 		payload: {
+//   // 			type: 'resume',
+//   // 			data: {
+//   // 				roomId: gameFrontInfo.gameId,
+//   // 			}
+//   // 		}
+//   // 	}));
+//   ctx.clearRect(0, 0, game.width, game.height);
+//   ctx.restore();
+//   const player1Score = document.getElementById("user1Score");
+//   player1Score!.innerHTML = gameData.paddle1.score.toString();
+//
+//   const player2Score = document.getElementById("user2Score");
+//   player2Score!.innerHTML = gameData.paddle2.score.toString();
+// }
+
 function drawBall(ctx: CanvasRenderingContext2D, pos: Vector2, radius: number) {
   ctx.beginPath();
   ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
@@ -119,7 +114,7 @@ function drawBall(ctx: CanvasRenderingContext2D, pos: Vector2, radius: number) {
 
 function drawPaddle(ctx: CanvasRenderingContext2D, pos: Vector2, scale: Vector2, color: string) {
   ctx.beginPath();
-  ctx.rect(pos.x, pos.y, scale.x, scale.y);
+  ctx.rect(pos.x - scale.x / 2, pos.y - scale.y / 2, scale.x, scale.y);
   ctx.fillStyle = color;
   ctx.fill();
   ctx.closePath();
