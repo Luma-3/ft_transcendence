@@ -3,6 +3,7 @@ import { getUserInfo } from "../../api/getterUser(s)";
 import { API_USER } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { renderErrorPage } from "../../controllers/renderPage";
+import { notificationList } from "../../pages/Friends/Lists/notificationsList";
 
 export async function friendRequest(target: HTMLElement, action: "send" | "accept") {
 
@@ -27,6 +28,45 @@ export async function friendRequest(target: HTMLElement, action: "send" | "accep
 
 	(action === "send") ? alertTemporary("success", "friend-invitation-sent", user.data!.preferences!.theme, true) 
 											: alertTemporary("success", "friend-invitation-accepted", user.data!.preferences!.theme, true);
+
 	
-	target.parentElement?.remove();
+	target.parentElement?.parentElement?.parentElement?.remove();
+	const targetDiv = document.getElementById("notifications-div");
+	if (targetDiv) {
+		targetDiv.innerHTML = "";
+		targetDiv.innerHTML = await notificationList(user.data!)
+	}
+
 }
+
+// export async function acceptFriendRequest(target: HTMLElement) {
+
+// 	const user = await getUserInfo();
+// 	if (!user || user.status === "error") {
+// 		return renderErrorPage('401');
+		
+// 	}
+
+// 	const targetId = target.dataset.id;
+// 	const response = await fetchApi(API_USER.SOCIAL.NOTIFICATIONS + `"/accept"/${targetId}`, {
+// 		method: "POST",
+// 		body: JSON.stringify({
+// 			friendId: targetId,
+// 		})
+// 	});
+	
+// 	if (response.status === "error") {
+// 		return  alertTemporary("error", "issues-with-friend-acceptance", user.data!.preferences!.theme, true);
+// 	}
+
+
+// 	alertTemporary("success", "friend-invitation-accepted", user.data!.preferences!.theme, true);
+
+// 	target.parentElement?.parentElement?.parentElement?.remove();
+// 	const targetDiv = document.getElementById("notification-list");
+// 	if (targetDiv) {
+// 		targetDiv.innerHTML = "";
+// 		targetDiv.innerHTML = await notificationList(user.data!)
+// 	}
+// }
+

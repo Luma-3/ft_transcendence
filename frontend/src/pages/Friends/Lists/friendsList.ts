@@ -1,5 +1,5 @@
-import { getFriends } from '../../api/getterUser(s)';
-import { headerOtherUserMenu } from '../../components/ui/userMenu';
+import { getFriends } from '../../../api/getterUser(s)';
+import { headerOtherUserMenu } from '../../../components/ui/userMenu';
 
 
 export async function friendsList() {

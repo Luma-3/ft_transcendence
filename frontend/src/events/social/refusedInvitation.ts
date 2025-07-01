@@ -2,7 +2,7 @@ import { fetchApi } from "../../api/fetch";
 import { getUserInfo } from "../../api/getterUser(s)";
 import { API_USER } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
-import { allUsersList } from "../../pages/Friends/allUsersList";
+import { allUsersList } from "../../pages/Friends/Lists/allUsersList";
 
 export async function refuseFriendInvitation(target: HTMLElement) {
 	
@@ -21,6 +21,6 @@ export async function refuseFriendInvitation(target: HTMLElement) {
 	}
 	
 	alertTemporary("success", "friend-invitation-refused", user.data!.preferences!.theme, true);
-	target.parentElement?.remove();
+	target.parentElement?.parentElement?.remove();
 	document.getElementById("all-users-div")!.innerHTML = `${await allUsersList()}`;
 }

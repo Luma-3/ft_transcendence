@@ -12,7 +12,15 @@ export async function handleSearchUserGame(value: string) {
 	}
 	
 	for (const user of searchData.data!.users) {
-		container!.innerHTML += `<li class="flex items-center h-[30px] font-title rounded-lg pl-2
-		 hover:bg-tertiary hover:text-primary hover:dark:bg-dtertiary hover:dark:text-dprimary hover:cursor-pointer">${user.username}</li>`;
+		container!.innerHTML += `
+		<div class="flex flex-row justify-between items-center w-full space-x-2 ">
+		<div class="flex justify-start items-center space-x-2">
+			<img src="${user.avatar}" alt="Avatar" class="w-8 h-8 rounded-full">
+			<div class="flex font-title text-secondary dark:text-dsecondary">${user.username}</div>
+		</div>
+		<div name="otherProfile" data-id="${user.id}" class="flex p-4 items-center h-[30px] font-title rounded-lg pl-2 hover:bg-tertiary hover:text-primary hover:dark:bg-dtertiary hover:dark:text-dprimary hover:cursor-pointer">
+			See Profile
+		</div>
+	</div>`;
 	}
 }

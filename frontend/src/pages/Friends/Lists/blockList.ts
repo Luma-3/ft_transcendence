@@ -1,5 +1,5 @@
-import { getBlockedUsers } from '../../api/getterUser(s)';
-import { headerOtherUserMenu } from '../../components/ui/userMenu';
+import { getBlockedUsers } from '../../../api/getterUser(s)';
+import { headerOtherUserMenu } from '../../../components/ui/userMenu';
 
 
 export async function blockList() {

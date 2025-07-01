@@ -3,6 +3,7 @@ import { getUserInfo } from "../../api/getterUser(s)";
 import { API_USER } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { renderErrorPage } from "../../controllers/renderPage";
+import { allUsersList } from "../../pages/Friends/Lists/allUsersList";
 
 export async function cancelFriendInvitation(target: HTMLElement) {
 	
@@ -19,5 +20,10 @@ export async function cancelFriendInvitation(target: HTMLElement) {
 		return alertTemporary("error", "issues-with-invitation-cancelled", user.data!.preferences!.theme, true);
 	}
 	alertTemporary("success", "friend-invitation-cancelled", user.data!.preferences!.theme, true);
-	target.parentElement?.remove();
+	target.parentElement?.parentElement?.parentElement?.remove();
+	const targetDiv = document.getElementById("all-users-div");
+	if (targetDiv) {
+		targetDiv.innerHTML = "";
+		targetDiv.innerHTML = await allUsersList();
+	}
 }

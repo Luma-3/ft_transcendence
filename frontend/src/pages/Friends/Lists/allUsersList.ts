@@ -1,5 +1,5 @@
-import { getAllUsers } from '../../api/getterUser(s)';
-import { headerOtherUserMenu } from "../../components/ui/userMenu";
+import { getAllUsers } from '../../../api/getterUser(s)';
+import { headerOtherUserMenu } from "../../../components/ui/userMenu";
 import { IOtherUser } from '../../interfaces/PeopleInterface';
 
 export async function allUsersList() {

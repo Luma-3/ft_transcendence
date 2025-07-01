@@ -3,7 +3,7 @@ import { getUserInfo } from "../../api/getterUser(s)";
 import { API_USER } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { renderErrorPage } from "../../controllers/renderPage";
-import { allUsersList } from "../../pages/Friends/allUsersList";
+import { allUsersList } from "../../pages/Friends/Lists/allUsersList";
 
 export async function unfriendUser(target: HTMLElement) {
 	

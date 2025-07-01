@@ -1,22 +1,18 @@
+import { searchBar } from "../../components/ui/searchBar"
 
 export function onlineSettings() {
   // const list_friends = `<li class="text-zinc-600 font-title">You have no friends</li>`;
   return `
-	<div id="online-settings" class="hidden flex-col w-full h-full p-4 space-y-4 mb-10
-	bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
+<div id="online-settings" class="hidden flex-col w-full h-full p-4 space-y-4 mb-10 bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
 
-	<label for="search-user" class="text-2xl font-title text-zinc-600 mb-4" translate="search-opponent">Search Opponent</label>
-	<input type="text" id="search-user" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="enter-username" placeholder="enter-username"/>
-	<div id="search-user-list" class="flex flex-col w-full h-full max-h-[300px] overflow-auto p-2 space-y-2
-	text-secondary dark:text-dsecondary bg-primary dark:bg-dprimary rounded-lg">
-	</div>
+	${searchBar()}
 	<div class="flex flex-col font-title justify-center items-center w-full">
-	<div class="flex flex-col w-full h-full p-2 space-y-2
-	text-secondary dark:text-dsecondary bg-zinc-200 rounded-lg">
-	Or click directly on play for a random opponent
-	</div> 
-	 </div>
-	</div>`
+		<div class="flex flex-col w-full h-full p-2 space-y-2 text-secondary dark:text-dsecondary bg-zinc-200 rounded-lg">
+			Or click directly for play against a random opponent
+		</div> 
+	</div>
+
+</div>`
 }
 
 export function localPVPSettings() {

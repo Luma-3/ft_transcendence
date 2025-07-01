@@ -8,9 +8,9 @@ import { IUserInfo } from "../../interfaces/IUser"
 import { userUpdateForm } from "./updateForm";
 import { notifications } from "./notifications";
 import { profileHeader } from "./header";
-import { allUsersList } from "../Friends/allUsersList";
-import { friendsList } from "../Friends/friendsList";
-import { blockList } from "../Friends/blockList";
+import { allUsersList } from "../Friends/Lists/allUsersList";
+import { friendsList } from "../Friends/Lists/friendsList";
+import { blockList } from "../Friends/Lists/blockList";
 
 
 function imageEditorDiv() {

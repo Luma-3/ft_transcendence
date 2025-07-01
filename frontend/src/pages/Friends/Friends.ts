@@ -1,10 +1,11 @@
 import { backButton } from "../../components/ui/buttons/backButton";
 import { navbar } from "../../components/ui/navbar";
+import { searchBar } from "../../components/ui/searchBar";
 import { IUserInfo } from "../../interfaces/IUser";
-import { allUsersList } from "./allUsersList";
-import { blockList } from "./blockList";
-import { friendsList } from "./friendsList";
-import { notificationList } from "./notificationsList";
+import { allUsersList } from "./Lists/allUsersList";
+import { blockList } from "./Lists/blockList";
+import { friendsList } from "./Lists/friendsList";
+import { notificationList } from "./Lists/notificationsList";
 
 async function renderFriendsPage(user: IUserInfo) {
 return `
@@ -16,29 +17,29 @@ ${backButton()}
 
 	<div class="grid grid-cols-2 lg:grid-cols-2 gap-8 w-full max-w-[1000px] mb-8">
 
-
-	<!-- Section Pending Operations -->
-	<div class="w-full max-w-[1000px] ">
-		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-			<div class="bg-gradient-to-r from-yellow-500 to-orange-400 p-6 text-white">
-				<div class="flex items-center justify-center space-x-3">
-					<div class="bg-white/20 rounded-full p-2">
-						<img src="/images/duckWaiting.png" alt="Duck Notifications" class="w-20 h-20 invert" />
-					</div>
-					<div class="text-center">
-						<div class="text-2xl font-bold" translate="pending-operations">Opérations en Attente</div>
-						<div class="text-yellow-100 text-sm" translate="manage-your-invitations">Gérez vos invitations</div>
+		<!-- Section Pending Operations -->
+		<div class="w-full max-w-[1000px] ">
+			<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl">
+				<div class="bg-gradient-to-r from-yellow-500 to-orange-400 p-6 text-white">
+					<div class="flex items-center justify-center space-x-3">
+						<div class="bg-white/20 rounded-full p-2">
+							<img src="/images/duckWaiting.png" alt="Duck Notifications" class="w-20 h-20 invert" />
+						</div>
+						<div class="text-center">
+							<div class="text-2xl font-bold" translate="pending-operations">Opérations en Attente</div>
+							<div class="text-yellow-100 text-sm" translate="manage-your-invitations">Gérez vos invitations</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div id="notifications-div" class="p-6">
-				${await notificationList(user)}
+				${searchBar("search-notifications", "Search for a specific notification")}
+				<div id="notifications-div" class="p-6">
+					${await notificationList(user)}
+				</div>
 			</div>
 		</div>
-	</div>
 		
 		<!-- Section Friends -->
-		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl">
 			<div class="bg-gradient-to-r from-dprimary to-gray-400 p-6 text-white">
 				<div class="flex items-center space-x-3">
 					<div class="bg-white/20 rounded-full p-2">
@@ -52,13 +53,14 @@ ${backButton()}
 					</div>
 				</div>
 			</div>
+			${searchBar("search-friends", "Search for a friend")}
 			<div id="friends-div" class="p-6">
 				${await friendsList()}
 			</div>
 		</div>
 
 		<!-- Section All Users -->
-		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl ">
 			<div class="bg-gradient-to-r from-dsecondary to-gray-400 p-6 text-white">
 				<div class="flex items-center space-x-3">
 					<div class="bg-white/20 rounded-full p-2">
@@ -70,6 +72,7 @@ ${backButton()}
 					</div>
 				</div>
 			</div>
+			${searchBar()}
 			<div id="all-users-div" class="p-6">
 				${await allUsersList()}
 			</div>
@@ -78,7 +81,7 @@ ${backButton()}
 
 
 	<!-- Section Block List (pleine largeur) -->
-		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl">
 			<div class="bg-gradient-to-r from-dprimary to-dsecondary p-6 text-white">
 				<div class="flex items-center justify-center space-x-3">
 					<div class="bg-white/20 rounded-full p-2">
