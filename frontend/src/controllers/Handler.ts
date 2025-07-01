@@ -41,7 +41,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
   'loadregister': () => renderPublicPage('register'),
   'loginForm': () => loginUser(),
   'google': () => {
-    window.location.href = 'http://localhost:3000/api/user/login/google'
+    window.location.href = 'https://localhost:5173/api/auth/oauth2/google'
   },
 
   // * -------------- Private Page Load -------------- */

@@ -89,6 +89,13 @@ export class UserService {
     return userWithPreferences;
   }
 
+  static async getUserByEmail(
+    email: string,
+    columns: string[] = USER_PUBLIC_COLUMNS
+  ): Promise<UserBaseType | undefined> {
+    return await userModel.findByEmail(email, columns) as UserBaseType | undefined;
+  }
+
   static async updateUserPassword(
     id: string,
     oldPassword: string,
