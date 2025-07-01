@@ -35,14 +35,14 @@ import { showNotificationDiv } from '../events/notifications/notificationsDiv'
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 
-	// * -------------- Public Page Load -------------- */
-	'loadhome': () => renderPublicPage('home'),
-	'loadlogin': () => renderPublicPage('login'),
-	'loadregister': () => renderPublicPage('register'),
-	'loginForm': () => loginUser(),
-	'google': () => {
-		window.location.href = 'http://localhost:3000/api/user/login/google'
-	},
+  // * -------------- Public Page Load -------------- */
+  'loadhome': () => renderPublicPage('home'),
+  'loadlogin': () => renderPublicPage('login'),
+  'loadregister': () => renderPublicPage('register'),
+  'loginForm': () => loginUser(),
+  'google': () => {
+    window.location.href = 'https://localhost:5173/api/auth/oauth2/google'
+  },
 
 	// * -------------- Private Page Load -------------- */
 	'loaddashboard': () => renderPrivatePage('dashboard'),

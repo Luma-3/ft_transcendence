@@ -214,6 +214,34 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const user = await UserService.verifyCredentials(username, password);
     return rep.code(200).send({ message: 'Credentials verified successfully', data: user });
   });
+
+  fastify.post('/users/internal/oauth2', {
+    schema: {
+      summary: 'Create user from OAuth2',
+      description: 'Endpoint to create a user from OAuth2 credentials',
+      tags: ['Users'],
+      body: Type.Object({
+        username: Type.String(),
+        email: Type.String(),
+      }),
+      response: {
+        201: ResponseSchema(UserPublicResponse, 'User created from OAuth2'),
+        409: ConflictResponse,
+      }
+    }
+  }, async (req, rep) => {
+    const find = await UserService.getUserByEmail(req.body.email);
+    if (!find) {
+      const user = await UserService.createUser({
+        username: req.body.username,
+        email: req.body.email,
+        password: crypto.randomUUID(), // Password is not required for OAuth2 users
+      });
+      return rep.code(201).send({ message: 'User created from OAuth2', data: user });
+    }
+
+    return rep.code(201).send({ message: 'User created from OAuth2', data: find });
+  });
 }
 
 export default route;

@@ -1,4 +1,5 @@
 import fastify from "fastify";
+import fs from "fs";
 
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import cookie from "@fastify/cookie";
@@ -9,6 +10,10 @@ import { destroyKnex } from "./utils/knex.js";
 
 const server = fastify({
   logger: true,
+  https: {
+    key: fs.readFileSync('./cert/key.dev.pem'),
+    cert: fs.readFileSync('./cert/cert.dev.pem'),
+  }
 }).withTypeProvider<TypeBoxTypeProvider>();
 
 await server.register(cookie);

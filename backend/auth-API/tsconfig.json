@@ -23,6 +23,10 @@
 	  "noUnusedParameters": true,
 	  "noFallthroughCasesInSwitch": true,
 	  "noUncheckedSideEffectImports": true,
+    "paths": {
+      "@transcenduck/error": ["./packages/error"],
+      "@transcenduck/formatter": ["./packages/formatter"]
+    },  
 	},
 	"include": ["./src/**/*"],
   "exclude": ["node_modules", "dist", "packages"],

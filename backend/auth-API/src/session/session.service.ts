@@ -51,7 +51,7 @@ async function createAccessToken(id: string, jti: string): Promise<string> {
   return generateToken(payload, secret);
 }
 
-async function verifyCredentials(username: string, password: string): Promise<{ id: string; family_id: string }> {
+async function verifyCredentials(username: string, password: string): Promise<{ id: string; }> {
   const response = await fetch(`http://${process.env.USER_IP}/users/internal/authentications`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -61,14 +61,22 @@ async function verifyCredentials(username: string, password: string): Promise<{ 
     throw new UnauthorizedError();
   }
 
-  const user_data = await response.json();
+  const user_data = await response.json() as any;
 
   return user_data.data;
 }
 
 export class SessionService {
-  static async login(username: string, password: string, clientInfo: clientInfo): Promise<{ accessToken: string; refreshToken: string }> {
-    const user = await verifyCredentials(username, password);
+  static async login(username: string, password: string|undefined, clientInfo: clientInfo, o2aut: boolean): Promise<{ accessToken: string; refreshToken: string }> {
+    let user;
+
+    if (!o2aut && password !== undefined) {
+      user = await verifyCredentials(username, password);
+    }else if(o2aut){
+      user = {id: username};
+    } else if(!user){
+      throw new UnauthorizedError('Username and password are required for login');
+    }
     console.log("USER Data: ", user);
 
     const family_id = crypto.randomBytes(16).toString('hex');

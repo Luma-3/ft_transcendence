@@ -37,7 +37,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       // device_id: parser.getDevice().toString(),
       user_agent: req.headers['user-agent'] || 'unknown',
       device_id: 'unknown',
-    });
+    }, false);
 
     rep.code(201).send({
       message: 'Session created successfully',

@@ -41,6 +41,7 @@ server.register(jwt, {
     { method: 'POST', url: '/user/users' }, // Create user
     { method: 'POST', url: '/auth/session' }, // Create session
     { method: 'PUT', url: '/auth/session' }, // Refresh token
+    { method: 'GET', url: '/auth/oauth2/google' }, // Get Google OAuth2 authorization URL
     { method: 'GET', url: '/uploads/avatar' }, // Refresh token
     { method: 'GET', url: '/uploads/banner' }, // Refresh token
     { method: 'GET', url: /^\/[^\/]+\/doc\/json$/ }, // Swagger json
