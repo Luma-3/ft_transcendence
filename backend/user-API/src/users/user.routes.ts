@@ -26,6 +26,7 @@ import {
   VerifyCredentials,
   UsersQueryGetAll,
 } from './user.schema.js';
+import { SearchResponseSchema } from '../search/search.schema.js';
 
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
@@ -50,21 +51,26 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
   
   fastify.get('/users', {
     schema: {
-      summary: 'Create a user',
-      description: 'Endpoint to create a user ressources and retrieve public informations',
-      tags: ['Users'],
+      summary: 'Get all users (public)',
+      description: 'Endpoint to retrieve all users public informations with options to filter by blocked, friends, pending status and hydration',
+      tags: ['Users', 'Search'],
       headers: UserHeaderAuthentication,
       querystring: UsersQueryGetAll,
       response: {
-        201: ResponseSchema(Type.Array(UserPublicResponse), 'User created successfully'),
+        201: ResponseSchema(SearchResponseSchema, 'All User result for the given query'),
         409: ConflictResponse,
       }
     }
   }, async (req, rep) => {
     const userId = req.headers['x-user-id'];
-    const {blocked, friends, hydrate} = req.query;
-    const users = await UserService.getAllUsers(userId, blocked, friends, hydrate);
-    return rep.code(200).send({ message: 'User Created', data: users });
+    const {blocked, friends, pending, page = 1, limit = 10, hydrate} = req.query;
+    const users = await UserService.getAllUsers(userId, blocked, friends, pending, page, limit, hydrate);
+    return rep.code(200).send({ message: 'All User result for the given query', data: {
+                page,
+                limit,
+                total: users.length,
+                users
+            } });
   });
 
   fastify.delete('/users/me', {

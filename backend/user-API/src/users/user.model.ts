@@ -8,7 +8,7 @@ export const USER_PRIVATE_COLUMNS: string[] = ['users.id', 'username', 'email', 
 
 export class UserModel {
 
-  async findAll(userId: string, blocked: ("you" | "another"| "all" | "none") = "none", friends: boolean = false, hydrate: boolean = true, columns = USER_PUBLIC_COLUMNS) {
+  async findAll(userId: string, blocked: ("you" | "another"| "all" | "none") = "none", friends: boolean = false, pending: boolean = false, page: number = 1, limit: number = 10, hydrate: boolean = true, columns = USER_PUBLIC_COLUMNS) {
     const query =  knexInstance<UserDBHydrateType>('users')
       .select(hydrate ? [...columns, 'preferences.avatar', 'preferences.banner'] : columns)
       .join('preferences', 'users.id', 'preferences.user_id')
@@ -30,6 +30,16 @@ export class UserModel {
       });
       query.whereNull('friends.id');
     }
+    if(!pending) {
+      // Pending
+      query.leftJoin('pending', function () {
+        this.on('users.id', '=', 'pending.pending_id').andOn('pending.user_id', '=', knexInstance.raw('?', [userId]));
+      });
+      query.whereNull('pending.id');
+    }
+    query
+      .limit(limit)
+      .offset((page - 1) * limit);
     return (await query) as UserDBHydrateType[];
   }
 

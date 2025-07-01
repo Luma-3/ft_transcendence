@@ -1,6 +1,5 @@
 import { fetchApi, fetchApiWithNoError } from './fetch';
-import { IOtherUser, IUserInfo, IUserPreferences } from '../interfaces/IUser';
-import { IOtherUser, UserSearchResult } from '../interfaces/PeopleInterface';
+import { IOtherUser, IUserInfo, IUserPreferences, UserSearchResult } from '../interfaces/IUser';
 import { IApiResponse } from '../interfaces/IApi';
 import { API_USER } from './routes';
 import { fetchToken } from './fetchToken';
@@ -32,8 +31,8 @@ export async function getOtherUserInfo(id: string): Promise<IApiResponse<IUserIn
 	return response;
 }
 
-export async function getAllUsers(blocked: ("you" | "another" | "all" | "none") = "none", friends: boolean = false, hydrate: boolean = true): Promise<IApiResponse<IOtherUser[]>> {
-	const response = await fetchApi<IUserInfo[]>(API_USER.BASIC.BASIC + `?blocked=${blocked}&friends=${friends}&hydrate=${hydrate}`);
+export async function getAllUsers(blocked: ("you" | "another" | "all" | "none") = "none", friends: boolean = false, pending: boolean = false, page: number = 1, limit: number = 10, hydrate: boolean = true) {
+	const response = await fetchApi<UserSearchResult>(API_USER.BASIC.BASIC + `?blocked=${blocked}&friends=${friends}&pending=${pending}&limit=${limit}&page=${page}&hydrate=${hydrate}`);
 	return response;
 }
 

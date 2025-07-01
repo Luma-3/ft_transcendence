@@ -42,8 +42,8 @@ export class UserService {
     });
   }
 
-  static async getAllUsers(userId: string, blocked: ("you" | "another"| "all" | "none") = "all", friends: boolean = false, hydrate: boolean = true) {
-    return await userModel.findAll(userId, blocked, friends, hydrate, USER_PUBLIC_COLUMNS);
+  static async getAllUsers(userId: string, blocked: ("you" | "another"| "all" | "none") = "all", friends: boolean = false, pending: boolean = false, page: number = 1, limit: number = 10, hydrate: boolean = true) {
+    return await userModel.findAll(userId, blocked, friends, pending, page, limit, hydrate, USER_PUBLIC_COLUMNS);
   }
 
   static async deleteUser(id: string) {

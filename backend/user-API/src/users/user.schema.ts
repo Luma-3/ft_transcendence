@@ -135,6 +135,12 @@ export const UsersQueryGetAll = Type.Object({
     default: false,
     description: 'Include friends in the response. If true, only friends will be returned.'
   })),
+  pending: Type.Optional(Type.Boolean({
+    default: false,
+    description: 'If true, includes pending friend requests in the response.'
+  })),
+  page: Type.Optional(Type.Number({ description: 'Page number for pagination', default: 1, minimum: 1 })),
+  limit: Type.Optional(Type.Number({ description: 'Number of results per page', default: 10 , minimum: 1, maximum: 100 })),
   hydrate: Type.Optional(Type.Boolean({
     default: false,
     description: 'If true, includes additional user data such as avatar and banner.'

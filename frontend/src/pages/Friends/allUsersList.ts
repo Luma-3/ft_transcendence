@@ -9,12 +9,14 @@ let container = `
 	<div class="relative h-[400px] w-full overflow-y-auto font-title title-responsive-size items-center z-10 justify-center space-y-4 text-primary dark:text-dtertiary">
 
 		<div class="grid grid-cols-1 gap-4 p-4">`;
-		const allUsers = await getAllUsers('you', false, true);
+		
+		const allUsers = await getAllUsers('you', false, false, 1, 100, true);
+		console.log(allUsers);
 		if (allUsers.status === "error" || !allUsers.data) {
 			return `${container}</div></div>`;
 		}
-		console.log(allUsers.data);
-		for(const otherUser of allUsers.data) {
+		
+		for(const otherUser of allUsers.data!.users) {
 		container += `
 			<div id="user-${otherUser.id}" class="flex flex-col justify-between w-full font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary
 			bg-myblack from-primary to-secondary">
