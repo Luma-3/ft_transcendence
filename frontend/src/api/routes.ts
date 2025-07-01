@@ -7,7 +7,7 @@ const SERVICES = {
   CDN: `/api/uploads`,
   GAME: `${API_URL}/game`,
   PEOPLE: `${API_URL}/people`,
-  TWOFA: `${API_URL}/2fa`
+  TWOFA: `${API_URL}/auth/2fa`
 }
 
 export const API_USER = {
@@ -38,7 +38,7 @@ export const API_USER = {
   },
   SEARCH: `${SERVICES.USER_ROOT}/search`, // ?q=inputValue&page=1&limit=10&hydrate=true
 
-  ACTIVATE2FA: `${SERVICES.USER}/2fa`,
+  TWOFA: `${SERVICES.USER}/2fa`,
 }
 
 export const API_SESSION = {
@@ -49,8 +49,6 @@ export const API_SESSION = {
   VERIFY_REFRESH: `${SERVICES.SESSION}/verify/refreshToken`,
 
   REFRESH: `${SERVICES.SESSION}/refresh`,
-
-  
 }
 
 export const API_GAME = {
@@ -67,8 +65,9 @@ export const API_CDN = {
 }
 
 export const MODULE_TWOFA = {
+  RESEND_EMAIL: `${SERVICES.TWOFA}/resendVerifEmail`,
   VERIFY: {
       EMAIL: `${SERVICES.TWOFA}/verifyEmail`,
-      TWOFA: `${SERVICES.SESSION}/2fa`,
+      TWOFA: `${SERVICES.TWOFA}/verifyCode`,
   },
 }

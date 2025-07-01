@@ -32,8 +32,10 @@ export async function loginUser() {
     
   if (response.code === 460) {
     renderPublicPage('2FA');
+    return;
   } else if (response.code === 461) {
     renderPublicPage('verifyEmail');
+    return;
   } else if (response.status === "error") {
     renderErrorPage(response.code?.toString() || '500', response.message);
     return;

@@ -68,17 +68,19 @@ export class UserModel {
       .first()) as UserBaseType | undefined;
   }
 
-  async findByEmail(email: string, validated?:boolean, columns = USER_PRIVATE_COLUMNS) {
+  async findByEmail(email: string, validated?:boolean, columns = USER_PRIVATE_COLUMNS): Promise<UserBaseType | undefined> {
   if (validated !== undefined) {
       return await knexInstance<UserBaseType>('users')
         .select(columns)
         .where('email', email)
         .andWhere('validated', validated)
+        .join('preferences', 'users.id', 'preferences.user_id')
         .first();
     }
     return await knexInstance<UserBaseType>('users')
       .select(columns)
       .where('email', email)
+      .join('preferences', 'users.id', 'preferences.user_id')
       .first();
   }
 

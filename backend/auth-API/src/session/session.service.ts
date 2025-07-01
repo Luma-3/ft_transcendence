@@ -129,19 +129,11 @@ export class SessionService {
 
     const userInfo = (await userInfosRequest.json()).data as userInfos;
 
-    if (userInfo.validated === false) {
-      const response = await fetch('http://' + process.env.USER_IP + '/users/resendEmail', {
-        method: 'POST',
-        body: JSON.stringify({ email: userInfo.email, userId: userInfo.id }),
-      })
 
-      if (response.status === 200) {
-        throw new EmailConfirmError('Email confirmation sent');
-      } else if (response.status === 406) {
-        throw new UnauthorizedError('Email already confirmed');
-      } else {
-        throw new UnauthorizedError('Email confirmation failed: ' + response.statusText);
-      }
+
+    if (userInfo.validated === false) {
+      twoFaService.generateSendToken(userInfo.email, userInfo.preferences?.lang ?? 'en');
+      throw new EmailConfirmError()
     }
 
     if (userInfo.twofa === false) {

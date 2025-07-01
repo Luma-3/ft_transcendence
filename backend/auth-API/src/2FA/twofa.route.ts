@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox"
 
-import { sendEmailBody, ValidationEmailQueryGet } from "./twofa.schema.js";
+import { CodeValidationBody, sendEmailBody, UserPublicResponse, ValidationEmailQueryGet } from "./twofa.schema.js";
 import { twoFaService } from "./twofa.service.js";
 import { ResponseSchema } from "../utils/schema.js";
 
@@ -28,12 +28,28 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 			tags: ['2FA'],
 			body: sendEmailBody,
 			response: {
+				200: ResponseSchema(UserPublicResponse, 'e-mail verified succefully and user definitivelly created'),
+			}
+		}
+	}, async (req, rep) => {
+		const { email, lang, token } = req.body;
+		await twoFaService.generateSendToken(email, lang, token);
+		rep.code(200).send({ message: 'OK' });
+	})
+
+	fastify.post('/2fa/resendVerifEmail', {
+		schema: {
+			summary: 'Resend e-mail verification',
+			description: 'Endpoint to resend an e-mail to verify the user e-mail',
+			tags: ['2FA'],
+			body: sendEmailBody,
+			response: {
 				200: ResponseSchema()
 			}
 		}
 	}, async (req, rep) => {
 		const { email, lang } = req.body;
-		await twoFaService.generateSendToken(email, lang);
+		await twoFaService.resendEmail(email, lang);
 		rep.code(200).send({ message: 'OK' });
 	})
 
@@ -51,6 +67,21 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     await twoFaService.verifyEmail(req.params.token)
     return rep.code(200).send({ message: 'Email verified successfully' });
   });
+
+	fastify.post('/2fa/verifyCode', {
+		schema: {
+      summary: 'Verfiy code 2fa',
+      description: 'Endpoint to verify code send on e-mail for 2fa',
+      tags: ['Users'],
+      body: CodeValidationBody,
+      response: {
+        200: ResponseSchema()
+      }
+    }
+	}, async (req, rep) => {
+		await twoFaService.verifyCode(req.body.code);
+		return rep.code(200).send({ message: 'Code verified successfully' })
+	})
 }
 
 export default route;

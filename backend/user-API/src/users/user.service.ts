@@ -2,11 +2,15 @@ import { ConflictError, NotFoundError, UnauthorizedError, EmailConfirmError } fr
 import { v4 as uuidV4 } from "uuid";
 import { hashPassword, comparePassword } from "../utils/bcrypt.js";
 
-import { UserCreateBodyType, UserBaseType, UserCreateBodyInternalType, User2faStatusType } from "./user.schema.js";
+import { UserCreateBodyType, UserBaseType, UserCreateBodyInternalType, User2faStatusType, UserRedisType } from "./user.schema.js";
 import { PreferencesBaseType } from "../preferences/preferences.schema.js";
 import { knexInstance, Knex } from "../utils/knex.js";
 import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS, userModelInstance } from "./user.model.js"
 import { preferencesModelInstance } from "../preferences/preferences.model.js";
+
+import fetch from "node-fetch";
+import https from "https"
+import { redisPub } from "../utils/redis.js";
 
 async function verifyConflict(username: string, email: string) {
   const [existingUsername, existingEmail] = await Promise.all([
@@ -34,24 +38,39 @@ export class UserService {
       banner: `default.png`,
       theme: data.preferences?.theme ?? 'dark',
     }
-    const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
-          const userID = uuidV4();
-          const [user] = await userModelInstance.create(trx, userID, user_obj);
 
-          const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
+    const user = JSON.stringify({
+      user_obj,
+      user_preferences
+    });
 
-          // Backdor for development purposes
-          // if (process.env.node_env !== 'development') {
- 
-          // }
-          return { ...user, preferences }
-        });
+    const userID = uuidV4();
+    redisPub.setEx(`users:pendingUser:${userID}`, 660, user);
+    redisPub.setEx(`users:pendingUser:${user_obj.username}`, 660, userID);
 
-    await fetch(`http://${process.env.AUTH_IP}/internal/2fa/sendVerifEmail`, {
+    // Backdor for development purposes
+    // if (process.env.node_env !== 'development') {
+    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendVerifEmail`, {
       method: 'POST',
-      body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang })
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang, token: userID }),
+      agent: new https.Agent({ rejectUnauthorized: false })
     }).catch(console.error)
+    
+    return;
+    // }
 
+    const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
+      const userID = uuidV4();
+      const [user] = await userModelInstance.create(trx, userID, user_obj);
+
+      const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
+
+      return { ...user, preferences }
+    });
     return transactionData;
   }
 
@@ -63,6 +82,14 @@ export class UserService {
     return { twofa: user.twofa };
   }
 
+  static async activateUserAccount(email: string) {
+    const user = await userModelInstance.findByEmail(email);
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+    await userModelInstance.update(user.id, { validated: true }, USER_PRIVATE_COLUMNS);
+  }
+
   static async enable2FA(userId: string) {
     const user = await userModelInstance.findByID(userId);
     if (!user) {
@@ -70,10 +97,15 @@ export class UserService {
     }
     await userModelInstance.update(userId, { twofa: true }, USER_PRIVATE_COLUMNS);
 
-    await fetch('http://' + process.env.AUTH_IP + '/internal/2fa/sendCode', {
+    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendCode`, {
       method: 'POST',
-      body: JSON.stringify({ email: user.email, lang: user.preferences?.lang })
-    })
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
+      agent: new https.Agent({ rejectUnauthorized: false })
+    }).catch(console.error)
   }
 
   static async disable2FA(userId: string) {
@@ -83,10 +115,15 @@ export class UserService {
     }
     await userModelInstance.update(userId, { twofa: false }, USER_PRIVATE_COLUMNS);
 
-    await fetch('http://' + process.env.AUTH_IP + '/internal/2fa/sendCode', {
+    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendCode`, {
       method: 'POST',
-      body: JSON.stringify({ email: user.email, lang: user.preferences?.lang })
-    })
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
+      agent: new https.Agent({ rejectUnauthorized: false })
+    }).catch(console.error)
   }
 
   static async createUserInternal(data: UserCreateBodyInternalType) {
@@ -103,6 +140,7 @@ export class UserService {
       email: data.email,
       googleId: data.googleId || null,
     }
+
     return await knexInstance.transaction(async (trx: Knex.Transaction) => {
       const userID = uuidV4();
       const [user] = await userModelInstance.create(trx, userID, user_obj);
@@ -111,7 +149,30 @@ export class UserService {
 
       return { ...user, preferences }
     });
+  }
 
+  static async createUserRedis(userId: string) {
+
+    const user = await redisPub.get(`users:pendingUser:${userId}`);
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+
+    const userData = JSON.parse(user) as UserRedisType;
+    
+    const multi = redisPub.multi();
+    multi.del(`users:pendingUser:${userId}`);
+    multi.del(`users:pendingUser:${userData.user_obj.username}`)
+    multi.exec().catch(console.error);
+
+    return await knexInstance.transaction(async (trx: Knex.Transaction) => {
+      const userID = userId;
+      const [user] = await userModelInstance.create(trx, userID, userData.user_obj);
+
+      const [preferences] = await preferencesModelInstance.create(trx, userID, userData.user_preferences);
+
+      return { ...user, preferences }
+    });
   }
 
   static async getAllUsers(userId: string, blocked: ("you" | "another" | "all" | "none") = "all", friends: boolean = false, hydrate: boolean = true) {

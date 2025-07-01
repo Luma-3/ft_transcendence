@@ -5,6 +5,7 @@ import { transporter } from '../utils/mail.js';
 import { redisPub } from '../utils/redis.js';
 import { SendMailOptions } from 'nodemailer'
 import { randomUUID } from 'crypto';
+import fetch from 'node-fetch'
 
 import { NotFoundError, UnauthorizedError, ConflictError } from '@transcenduck/error';
 
@@ -96,8 +97,9 @@ async function send2FACode(email: string, code: string, language?: string) {
 }
 
 export class twoFaService {
-	static async generateSendToken(email: string, lang: string ) {
-		const token = randomUUID();
+	static async generateSendToken(email: string, lang: string, token?: string) {
+		if (!token)
+			token = randomUUID();
 		await sendVerificationEmail(email, token, lang);
 		await redisPub.setEx("users:check:token:" + token, 600, email);
 		await redisPub.setEx("users:check:email:" + email, 600, token);
@@ -111,6 +113,14 @@ export class twoFaService {
 		await redisPub.setEx("users:check:email:" + email, 600, code);
 	}
 
+	static async resendEmail(email: string, lang: string) {
+		const token = await redisPub.get("user:check:email" + email);
+		if (token) {
+			throw new ConflictError('Email already sent and not expired');
+		}
+		this.generateSendToken(email, lang);
+	}
+
 	static async verifyEmail(token: string) {
 		const email = await redisPub.get("users:check:token:" + token);
 		if (!email) throw new NotFoundError("Token not found or expired");
@@ -119,8 +129,23 @@ export class twoFaService {
 			await redisPub.del("users:check:token:" + token);
 			throw new ConflictError("Token not found or expired");
 		}
-		await redisPub.del("users:check:token:" + token);
-		await redisPub.del("users:check:email:" + email);
+
+		await fetch(`http://${process.env.USER_IP}/internal/createUser`, {
+			method: 'POST',
+			headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+			body: JSON.stringify({ userID: token })
+		})
+
+		const multi = redisPub.multi();
+		multi.del("users:check:token:" + token);
+		multi.del("users:check:email:" + email);
+		multi.exec().catch(console.error);
+		await fetch(`http://${process.env.USER_IP}/users/internal/activeAccount/${email}`, {
+			method: 'PATCH'
+		})
 	}
 
 	static async verifyCode(code: string) {

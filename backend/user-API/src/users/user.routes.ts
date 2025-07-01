@@ -29,6 +29,8 @@ import {
   UsersQueryGetAll,
   User2faStatus,
   User2faInfos,
+  UserActivateAccountParams,
+  UserCreateRedis,
 } from './user.schema.js';
 
 
@@ -64,6 +66,23 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async (req, rep) => {
     const user = await UserService.createUserInternal(req.body);
+    return rep.code(201).send({ message: 'User Created', data: user });
+  });
+
+  fastify.post('/internal/createUser', {
+    schema: {
+      summary: 'Create a user (Internal)',
+      description: 'Endpoint to create a user ressources and retrieve public informations for internal use only (used by auth service for module 2fa)',
+      tags: ['Users'],
+      body: UserCreateRedis,
+      response: {
+        201: ResponseSchema(UserPublicResponse, 'User created successfully'),
+        409: ConflictResponse,
+      }
+    }
+  }, async (req, rep) => {
+    const userID = req.body.userID;
+    const user = await UserService.createUserRedis(userID);
     return rep.code(201).send({ message: 'User Created', data: user });
   });
 
@@ -252,6 +271,22 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const user = await UserService.verifyCredentials(username, password);
     return rep.code(200).send({ message: 'Credentials verified successfully', data: user });
   });
+
+  fastify.patch('/users/internal/activeAccount/:email', {
+    schema: {
+      summary: 'Active account of a user',
+      description: 'Endpoint to activate user account after verifying his e-mail',
+      tags: ['2FA'],
+      params: UserActivateAccountParams,
+      response: {
+        200: ResponseSchema(User2faStatus, 'Ok')
+      }
+    }
+  }, async (req, rep) => {
+    const email = req.params.email;
+    await UserService.activateUserAccount(email);
+    return rep.code(200).send({ message: 'Ok' });
+  })
 
   fastify.get('/2fa', {
     schema: {

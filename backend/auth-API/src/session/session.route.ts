@@ -36,7 +36,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       user_agent: req.headers['user-agent'] || 'unknown',
       device_id: 'unknown',
     });
-
+    
     const { accessToken, refreshToken } = response;
 
     rep.code(201).send({

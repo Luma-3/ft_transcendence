@@ -102,6 +102,10 @@ export const UserCreateBodyInternal = Type.Object({
 });
 export type UserCreateBodyInternalType = Static<typeof UserCreateBodyInternal>;
 
+export const UserCreateRedis = Type.Object({
+  userID: Type.String({ format: 'uuid' })
+});
+
 export const UserPasswordUpdateBody = Type.Object({
   oldPassword: Type.String(),
   password: passwordField
@@ -141,6 +145,10 @@ export const UserHeaderAuthentication = Type.Object({
   'x-user-id': Type.String({ format: 'uuid' }),
 }, {
   additionalProperties: true
+});
+
+export const UserActivateAccountParams = Type.Object({
+  'email': Type.String({ format: 'email' })
 });
 
 export const UsersQueryGetAll = Type.Object({
@@ -191,3 +199,18 @@ export const User2faStatus = Type.Object({
   })
 });
 export type User2faStatusType = Static<typeof User2faStatus>;
+
+export const UserRedis = Type.Object({
+  user_obj: Type.Object({
+    username: Type.String({ format: 'uuid' }),
+    password: Type.String(),
+    email: Type.String({ format: 'email' }),
+  }),
+  user_preferences: Type.Object({
+    lang: Type.Union([Type.Literal('en'), Type.Literal('fr'), Type.Literal('es')]),
+    avatar: Type.String(),
+    banner: Type.String(),
+    theme: Type.Union([Type.Literal('dark'), Type.Literal('light')]),
+  })
+})
+export type UserRedisType = Static<typeof UserRedis>
