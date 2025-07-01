@@ -30,6 +30,7 @@ export class UserService {
       username: data.username,
       password: hash_pass,
       email: data.email,
+      validated: process.env.NODE_ENV === 'development' ? true : false
     }
 
     const user_preferences = {
@@ -49,19 +50,19 @@ export class UserService {
     redisPub.setEx(`users:pendingUser:${user_obj.username}`, 660, userID);
 
     // Backdor for development purposes
-    // if (process.env.node_env !== 'development') {
-    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendVerifEmail`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json'
-      },
-      body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang, token: userID }),
-      agent: new https.Agent({ rejectUnauthorized: false })
-    }).catch(console.error)
-    
-    return;
-    // }
+    if (process.env.NODE_ENV !== 'development') {
+      await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendVerifEmail`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json'
+        },
+        body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang, token: userID }),
+        agent: new https.Agent({ rejectUnauthorized: false })
+      }).catch(console.error)
+      
+      return;
+    }
 
     const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
       const userID = uuidV4();
@@ -73,6 +74,7 @@ export class UserService {
     });
     return transactionData;
   }
+  
   static async createUserO2Auth(data: { username: string, email: string }) {
 
     await verifyConflict(data.username, data.email);
