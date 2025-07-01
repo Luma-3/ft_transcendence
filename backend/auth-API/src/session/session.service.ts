@@ -111,47 +111,43 @@ export class SessionService {
     return { accessToken, refreshToken };
   }
 
-  static async login(infoUser: {username?: string, password?: string, email?: string}, clientInfo: clientInfo, o2aut: boolean = false) {
-    let user;
-    if (!o2aut && infoUser.password !== undefined) {
-      user = await verifyCredentials(infoUser.username!, infoUser.password);
+  static async login(data: {username?: string, password?: string, email?: string}, clientInfo: clientInfo, o2aut: boolean = false) {
+    let userInfo;
+    if (!o2aut && data.password !== undefined) {
+      userInfo = await verifyCredentials(data.username!, data.password);
     }else if(o2aut){
-      user = await (await fetch(`http://${process.env.USER_IP}/users/internal/oauth2`, {
+      userInfo = (await (await fetch(`http://${process.env.USER_IP}/users/internal/oauth2`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: infoUser.username,
-          email: infoUser.email,
+          username: data.username,
+          email: data.email,
         })
-      })).json();
-    console.log(user);
-    } else if(!user){
+      })).json()).data;
+    console.log(userInfo);
+    } else if(!userInfo){
       throw new UnauthorizedError('Username and password are required for login');
     }
       
-    const userInfosRequest = await fetch('http://' + process.env.USER_IP + '/internal/users/' + user.id + '?includePreferences=true', {
-      method: 'GET'
-    })
-
-    const userInfo = (await userInfosRequest.json()).data as userInfos;
-
+    const preferences = (await (await fetch(`http://${process.env.USER_IP}/users/${userInfo.id}/preferences`)).json());
+    console.log(preferences);
     if (userInfo.validated === false) {
-      twoFaService.generateSendToken(userInfo.email, userInfo.preferences?.lang ?? 'en');
+      twoFaService.generateSendToken(userInfo.email, preferences!.data.lang ?? 'en');
       throw new EmailConfirmError()
     }
 
     if (userInfo.twofa === false) {
-      return this.createSession(user, clientInfo);
+      return this.createSession(userInfo, clientInfo);
     }
     const family_id = crypto.randomBytes(16).toString('hex');
 
     const email = userInfo.email;
-    const lang = userInfo.preferences!.lang;
+    const lang = preferences!.data.lang;
     const code = generateCode();
     
     await twoFaService.generateSendCode(email, lang, code)
     
-    redisPub.setEx('users:userIds:' + code + ':userId', 600, user.id)
+    redisPub.setEx('users:userIds:' + code + ':userId', 600, userInfo.id)
     redisPub.setEx('users:userIds:' + code + ':family_id', 600, family_id)
     throw new TwoFaError();
   }

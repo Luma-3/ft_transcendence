@@ -73,7 +73,7 @@ export class UserService {
     });
     return transactionData;
   }
-  static async createUserO2Auth(data: UserCreateBodyType) {
+  static async createUserO2Auth(data: { username: string, email: string }) {
 
     await verifyConflict(data.username, data.email);
 
@@ -174,7 +174,6 @@ export class UserService {
       const [user] = await userModelInstance.create(trx, userID, user_obj);
 
       const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
-      redisPub.DEL(`users:data:all`).catch(console.error);
 			return { ...user, preferences }
     });
   }

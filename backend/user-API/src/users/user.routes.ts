@@ -293,13 +293,13 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       }
     }
   }, async (req, rep) => {
-  const find = await UserService.getUserByEmail(req.body.email, ['validated', ...USER_PRIVATE_COLUMNS]);
+  const find = await UserService.getUserByEmail(req.body.email, [...USER_PRIVATE_COLUMNS]);
     if (!find) {
-      const user = await UserService.createUser({
+      const user = await UserService.createUserO2Auth({
         username: req.body.username,
-        email: req.body.email,
-        password: crypto.randomUUID(), // Password is not required for OAuth2 users
+        email: req.body.email
       });
+      console.log(user);
       return rep.code(201).send({ message: 'User created from OAuth2', data: user });
     }
 
