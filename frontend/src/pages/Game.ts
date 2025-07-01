@@ -153,7 +153,7 @@ export default async function game(roomId: string, user: IUserInfo) {
 				<img src=${API_CDN.AVATAR}/${leftOpponentInfos?.data?.preferences?.avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player1Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
-					<div>Score: <span class="relative bottom-0 text-8xl" id="p1Score">0</span></div>
+					<div>Score: <div id="playerLeftScore" class="relative bottom-0 text-8xl">0</div></div>
 				</div>
 			</div>
 		</div>
@@ -171,7 +171,7 @@ export default async function game(roomId: string, user: IUserInfo) {
 					<img src=${API_CDN.AVATAR}/${rightOpponentInfos?.data?.preferences?.avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player2Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
-					<div>Score: <span class="relative bottom-0 text-8xl" id="p2Score">0</span></div>
+					<div>Score: <div id="playerRightScore" class="relative bottom-0 text-8xl">0</div></div>
 				</div>
 			</div>
 		</div>

@@ -8,6 +8,8 @@ import { showGame } from "../events/game/gameShow";
 // import { alertGameReady } from "../components/ui/alert/alertGameReady";
 
 import { socket } from "../socket/Socket";
+import { drawExplosion } from "../events/game/gameBallAnimation";
+import { changeScore } from "../events/game/gameUpdate";
 
 export type GameSnapshot = {
 	serverTime: number;
@@ -30,47 +32,40 @@ function changeStatusPlayer(roomData: IRoomData) {
 }
 
 function launchGame(roomId: string) {
-  console.log("Launching game for room:", roomId);
-  //TODO: Animate 3,2,1....Go
-  socket?.send(JSON.stringify({
-    action: "game",
-    payload: {
-      type: 'startGame',
-      data: {
-        roomId: roomId,
-      }
-    }
-  }));
+	console.log("Launching game for room:", roomId);
+	//TODO: Animate 3,2,1....Go
+	socket?.send(JSON.stringify({
+		action: "game",
+		payload: {
+			type: 'startGame',
+			data: {
+				roomId: roomId,
+			}
+		}
+	}));
 }
 
 export async function dispatchGameSocketMsg(payload: any) {
-  console.log("dispatchGameSocketMsg", payload);
-  switch (payload.action) {
-    case 'roomReady':
-      renderGame(payload.data);
-      break;
-
+	switch (payload.action) {
+		case 'roomReady':
+			renderGame(payload.data);
+			break;
 		case 'playerReady':
 			changeStatusPlayer(payload.data);
 			break;
-
-    case 'Starting':
-      showGame();
-      // launchGame(payload.data.roomId); // TODO : Stocker roomId en dehors
-      break;
-	  
-    case 'score':
-      drawGame(payload.gameData, 'goal');
-      break;
-
+		case 'Starting':
+			showGame();
+			break;
+		case 'score':
+			console.log("dispatchGameSocketMsg", payload);
+			drawExplosion(payload.data.ball.position.x, payload.data.ball.position.y);
+			changeScore(payload.data.player);
+			break;
 		case 'snapshot':
-			drawGame(payload.data, 'snapshot');
+			drawGame(payload.data);
 			break;
-		case 'win':
-			DisplayGameWinLose(true);
-			break;
-		case 'lose':
-			DisplayGameWinLose(false);
+		case 'end':
+			DisplayGameWinLose(payload.data.player);
 			break;
 		default:
 			break;

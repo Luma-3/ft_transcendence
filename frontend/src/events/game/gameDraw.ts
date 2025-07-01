@@ -53,27 +53,29 @@ export const FRAME = 30;
 // };
 
 export function drawGame(gameData: IGameObject[]) {
-  const game = document.getElementById("gamePong") as HTMLCanvasElement;
-  if (!game) return;
-  const ctx = game.getContext("2d");
-  if (!ctx) return;
+	
+	const game = document.getElementById("gamePong") as HTMLCanvasElement;
+	if (!game) return;
+	const ctx = game.getContext("2d");
+	if (!ctx) return;
 
 	ctx.clearRect(0, 0, game.width, game.height);
-  gameData.forEach((gameObject) => {
-    switch (gameObject.type) {
-      case 'ball': ;
-        console.log("Ball Velocity:", (<IBall>gameObject).velocity);
-        drawBall(ctx, (<IBall>gameObject).position, (<IBall>gameObject).radius);
-        break;
-      case 'paddle':
-        drawPaddle(ctx, (<IPaddle>gameObject).position, (<IPaddle>gameObject).scale, 'red'); // TODO : color
-        break;
-      default:
-        console.warn("Unknown game object type:", gameObject.type);
-    }
-  });
+	gameData.forEach((gameObject) => {
+		switch (gameObject.type) {
+			case 'ball': ;
+				// console.log("Ball Velocity:", (<IBall>gameObject).velocity);
+				drawBall(ctx, (<IBall>gameObject).position, (<IBall>gameObject).radius);
+				break;
+			case 'paddle':
+				drawPaddle(ctx, (<IPaddle>gameObject).position, (<IPaddle>gameObject).scale, 'red'); // TODO : color
+				break;
+			default:
+				console.warn("Unknown game object type:", gameObject.type);
+		}
+	});
 
-  ctx.save();
+	ctx.save();
+
 }
 
 // function Score(ctx: CanvasRenderingContext2D, pos: Vector2, score: number) {
@@ -112,9 +114,9 @@ function drawBall(ctx: CanvasRenderingContext2D, pos: Vector2, radius: number) {
 }
 
 function drawPaddle(ctx: CanvasRenderingContext2D, pos: Vector2, scale: Vector2, color: string) {
-  ctx.beginPath();
-  ctx.rect(pos.x - scale.x / 2, pos.y - scale.y / 2, scale.x, scale.y);
-  ctx.fillStyle = color;
-  ctx.fill();
-  ctx.closePath();
+	ctx.beginPath();
+	ctx.rect(pos.x - scale.x / 2, pos.y - scale.y / 2, scale.x, scale.y);
+	ctx.fillStyle = color;
+	ctx.fill();
+	ctx.closePath();
 }

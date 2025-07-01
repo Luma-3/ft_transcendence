@@ -53,6 +53,8 @@ export interface IPlayer {
   user_id: string;
   player_name: string;
   ready: boolean;
+  score: number;
+  win: boolean;
 }
 
 export interface IServerGameData {

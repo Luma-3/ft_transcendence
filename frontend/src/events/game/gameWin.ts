@@ -1,9 +1,16 @@
-export function DisplayGameWinLose(isWin: boolean) {
+export async function DisplayGameWinLose(players: IPlayer[]) {
 
-	console.log("Game Win Displayed");
-	
+	const response = await getUserInfo();
+	const myId = response.data?.id;
+	let isWin = false;
+	for (const player of players) {
+		if (player.user_id === myId && player.win === true) {
+			isWin = true;
+			break;
+		}
+	}
+
 	const game = document.getElementById("hiddenGame") as HTMLDivElement;
-	console.log(game);
 	game.classList.remove("opacity-100");
 	game.classList.add("opacity-0");
 	setTimeout(() => {
@@ -13,12 +20,14 @@ export function DisplayGameWinLose(isWin: boolean) {
 
 }
 
+import { getUserInfo } from "../../api/getterUser(s)";
 import { secondaryButton } from "../../components/ui/buttons/secondaryButton";
+import { IPlayer } from "../../interfaces/IGame";
 
 
 function gameWinContainer() {
 	return `<div class="flex flex-col">
-	<div class="flex flex-col items-center justify-center h-full mt-20">
+	<div class="flex flex-col items-center justify-center mt-20">
 	<img src="/images/duckHappy.png" alt="Duck Happy" class="w-140 h-140" />
 	<div class="font-title text-8xl text-center font-bold mb-4"> You Win !</div>
 		</div>
@@ -38,7 +47,7 @@ function gameWinContainer() {
 // ${primaryButton({id: 'playAgain', weight: "1/2", text: "Play Again", translate: "play-again", type: "button"})}
 function gameLoseContainer() {
 	return `<div class="flex flex-col">
-	<div class="flex flex-col items-center justify-center h-full mt-20">
+	<div class="flex flex-col items-center justify-center mt-20">
 	<img src="/images/duckSad.png" alt="Duck Sad" class="w-140 h-140" />
 	<div class="font-title text-8xl text-center font-bold mb-4"> You Lose !</div>
 		</div>

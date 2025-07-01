@@ -1,7 +1,20 @@
 import { gameFrontInfo } from "./gameCreation"
 import { socket } from "../../socket/Socket";
+import { IPlayer } from "../../interfaces/IGame";
+
+
+export function changeScore(players: IPlayer[]) {
+  const player1Score = document.getElementById("playerLeftScore");
+	player1Score!.innerHTML = players[0].score.toString();
+
+	const player2Score = document.getElementById("playerRightScore");
+	player2Score!.innerHTML = players[1].score.toString();
+}
 
 let actionUserUp = false, actionUserDown = false, actionUser2Up = false, actionUser2Down = false;
+
+
+
 
 export function getEventAndSendGameData(playerId: string) {
 

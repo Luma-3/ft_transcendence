@@ -10,6 +10,8 @@ export class Player {
   public player_name: string;
   public ready: boolean;
   public score: number = 0;
+  public win: boolean = false;
+   // TODO : mettre le check de score ici ! 
 
   constructor(user_id: string, player_name: string) {
     this.user_id = user_id;
@@ -29,7 +31,8 @@ export class Player {
     return {
       user_id: this.user_id,
       player_name: this.player_name,
-      ready: this.ready
+      ready: this.ready,
+      score: this.score
     };
   }
 }

@@ -12,7 +12,7 @@ return `
 
 function divHomePage() {
 return `
-<div class='flex flex-col items-center justify-center mt-60 space-y-8'>
+<div class='flex flex-col items-center justify-center mt-40 space-y-8'>
 	
 	${logo()}
 	${languageSelectorHome()}

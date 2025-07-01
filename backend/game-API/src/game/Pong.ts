@@ -18,12 +18,34 @@ export class Pong extends GameObject {
     this.checkBallGaol();
   }
 
+  checkWin() {
+    const players = SceneContext.get().players;
+    for (const player of players) {
+      if (player.score >= 11) {
+        player.win = true;
+        return (true);
+      }
+    }
+    return false;
+  }
+
+  stopGame() {
+    SceneContext.get().loopManager.stop();
+    const payload = {
+      action: 'end',
+      data: {
+        roomId: SceneContext.get().id,
+        player: SceneContext.get().players.map(player => player.toJSON())
+      }
+    }
+    IOInterface.broadcast(JSON.stringify(payload), SceneContext.get().players.map(player => player.user_id))
+  }
+
   checkBallGaol() {
     if (!this.ball) return;
     const goal = this.ball.checkGoal();
     if (!goal) return; // No goal detected
     this.ball.enabled = false;
-    console.log(`Goal detected: ${goal}`);
     if (goal === 'left') {
       SceneContext.get().players[0].addScore();
     } else if (goal === 'right') {
@@ -33,14 +55,16 @@ export class Pong extends GameObject {
       action: 'score',
       data: {
         roomId: SceneContext.get().id,
-        ballPosition: this.ball.position,
-        playerScores: SceneContext.get().players.map(player => ({
-          user_id: player.user_id,
-          score: player.score
-        }))
+        ball: this.ball.snapshot(),
+        player: SceneContext.get().players.map(player => player.toJSON())
       }
     }
     IOInterface.broadcast(JSON.stringify(payload), SceneContext.get().players.map(player => player.user_id));
+    if (this.checkWin() === true) {
+      this.stopGame();
+      return;
+    }
+
     this.ball.startPosition(new Vector2(400, 300));
     this.ball.enabled = true;
   }

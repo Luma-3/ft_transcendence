@@ -18,17 +18,22 @@ interface ExplosionOptions {
 }
 
 export function drawExplosion(
-  ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
   options: ExplosionOptions = {}
 ): void {
   const particles: Particle[] = [];
   const particleCount = options.count ?? 500;
-  const colors = options.colors ?? ['#ff0000', '#ff9900', '#ffff00', '#ffffff'];
+  const colors = options.colors ?? ['#744FAC', '#7500AC', '#200FAC', '#ffffff'];
   const maxSpeed = options.maxSpeed ?? 6;
   const maxRadius = options.maxRadius ?? 5;
-  const duration = options.duration ?? 1000; // en millisecondes
+  const duration = options.duration ?? 1000;
+  
+  const game = document.getElementById("gamePong") as HTMLCanvasElement;
+  if (!game) return;
+  const ctx = game.getContext("2d");
+  if (ctx === null) return;
+
   ctx.save();
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   x += 10;
@@ -50,13 +55,14 @@ export function drawExplosion(
 
   const startTime = performance.now();
 
-  function animateExplosion(time: number) {
+  function animateExplosion( time: number) {
     const elapsed = time - startTime;
     const progress = elapsed / duration;
 
     // Nettoyer uniquement la zone autour de l'explosion
     // const clearRadius = maxSpeed * duration / 1000 + maxRadius;
     // ctx.clearRect(x - clearRadius, y - clearRadius, clearRadius * 2, clearRadius * 2);
+    if (! ctx) return;
 
     particles.forEach((p) => {
       p.x += p.dx;
@@ -83,3 +89,5 @@ export function drawExplosion(
   requestAnimationFrame(animateExplosion);
   ctx.restore();
 }
+
+
