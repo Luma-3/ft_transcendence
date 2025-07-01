@@ -59,7 +59,7 @@ export function drawExplosion(
     // ctx.clearRect(x - clearRadius, y - clearRadius, clearRadius * 2, clearRadius * 2);
 
     particles.forEach((p) => {
-      p.x  += p.dx;
+      p.x += p.dx;
       p.y += p.dy;
       p.life += 16; // Approximation pour 60fps 
       p.alpha = 1 - p.life / duration;

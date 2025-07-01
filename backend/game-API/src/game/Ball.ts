@@ -2,26 +2,26 @@ import { Vector2 } from "../core/physics/Vector.js";
 import { GameObject } from "../core/GameObject.js";
 import { Circle } from "../core/physics/Shapes.js";
 import { SceneContext } from "../core/runtime/SceneContext.js";
+import { Paddle } from "./Paddle.js";
 
 export class Ball extends GameObject implements Circle {
-  private velocity: Vector2 = new Vector2(-1, 0);
+  private velocity: Vector2 = new Vector2(-1, 1);
 
   public position: Vector2 = new Vector2(0, 0);
-  public readonly radius: number = 10; // Radius of the ball
+  public readonly radius: number = 10;
 
-  private readonly speed: number = 100;
-
-  // -- REQUIREMENTS FUNCTION --
+  private readonly minSpeed: number = 100;
+  private readonly maxSpeed: number = 500;
 
   onInstantiate(): void {
-    this.startPosition(new Vector2(400, 300)); // Start position of the ball (Pos base on Pong scale) TODO: Get Scale from the context
+    this.startPosition(new Vector2(400, 300));
   }
 
   update() {
     this.move();
+    this.checkTopBottomCollision();
   }
 
-  // Collider function returns parameter for collision detection (Collider Object if you want)
   collider(): Circle {
     return {
       position: this.position,
@@ -30,34 +30,69 @@ export class Ball extends GameObject implements Circle {
   }
 
   onCollision(other: GameObject): void {
-    if (other instanceof Ball) {
-      // Handle collision with another ball if needed
-      console.log("Collision with another ball detected");
-    } else {
-      // Handle collision with paddles or other objects
-      this.rebound();
+    if (other instanceof Paddle) {
+      this.rebound(other.velocity);
     }
   }
 
-  // -- END REQUIREMENTS FUNCTION --
+  checkTopBottomCollision() {
+    if (this.position.y - this.radius < 0 || this.position.y + this.radius > 600) {
+      this.velocity = this.velocity.mult(new Vector2(1, -1));
+      // Ensure the ball is not stuck in the wall
+      this.position.y = Math.max(this.radius, Math.min(this.position.y, 600 - this.radius));
+    }
+  }
+
+  checkGoal() {
+    if (this.position.x < 0) return 'left';
+    if (this.position.x > 800) return 'right';
+    return null;
+  }
 
   move() {
-    this.velocity = this.velocity.normalize().scale(this.speed); // Ensure the ball moves at a constant speed ( Possible to change for acceleration later )
-    this.position = this.position.add(this.velocity.scale(SceneContext.get().loopManager.deltaTime)); // Update position based on velocity and delta time
+    const direction = this.velocity.normalize();
+    const currentSpeed = this.velocity.magnitude();
+
+    const clampedSpeed = Math.max(this.minSpeed, Math.min(currentSpeed, this.maxSpeed)); // Clamped speed
+
+    this.position = this.position.add(direction.scale(clampedSpeed * SceneContext.get().loopManager.deltaTime));
+    this.velocity = direction.scale(clampedSpeed);
   }
 
   startPosition(pos: Vector2) {
     this.position = pos;
   }
 
-  rebound() {
-    // Reverse the ball's direction when it collides with a paddle
-    this.velocity = this.velocity.scale(-1);
-    // Optionally, adjust the position to avoid sticking to the paddle
-    // this.position = this.position.add(this.velocity.scale(0.1)); // Small adjustment to prevent sticking
+
+  rebound(paddle_vec: Vector2) {
+    this.velocity = this.velocity.multiply(new Vector2(-1, 1));
+
+    // Ensure the ball has no stick to the paddle
+    const paddleDirection = paddle_vec.normalize();
+    const paddleSpeed = paddle_vec.magnitude();
+
+
+    const dir = this.velocity.normalize().add(paddleDirection).normalize();
+    const currentSpeed = this.velocity.magnitude();
+
+    const newSpeed = Math.max(this.minSpeed, Math.min(currentSpeed + (paddleSpeed * 0.2), this.maxSpeed));
+
+    const newVelocity = dir.scale(newSpeed);
+
+    const minX = 0.5
+    let postDirection = newVelocity.normalize();
+    const postSpeed = newVelocity.magnitude();
+    if (Math.abs(postDirection.x) < minX) {
+      const sign = Math.sign(postDirection.x) || 1; // Ensure we have a sign to avoid zero division
+      postDirection.x = sign * minX;
+
+      const remaining = Math.sqrt(1 - minX * minX);
+      postDirection.y = postDirection.y >= 0 ? remaining : -remaining;
+    }
+    this.velocity = postDirection.scale(postSpeed);
+
+    this.position = this.position.add(this.velocity.normalize().scale(this.radius * 0.2)); // Move the ball away from the paddle to prevent sticking
   }
-
-
 
   snapshot() {
     return {

@@ -8,7 +8,6 @@ import { showGame } from "../events/game/gameShow";
 // import { alertGameReady } from "../components/ui/alert/alertGameReady";
 
 import { socket } from "../socket/Socket";
-import { alertGameReady } from "../components/ui/alert/alertGameReady";
 
 export type GameSnapshot = {
 	serverTime: number;
@@ -31,44 +30,38 @@ function changeStatusPlayer(roomData: IRoomData) {
 }
 
 function launchGame(roomId: string) {
-	console.log("Launching game for room:", roomId);
-	//TODO: Animate 3,2,1....Go
-	socket?.send(JSON.stringify({
-		type: "game",
-		payload: {
-			type: 'startGame',
-			data: {
-				roomId: roomId,
-			}
-		}
-	}));
+  console.log("Launching game for room:", roomId);
+  //TODO: Animate 3,2,1....Go
+  socket?.send(JSON.stringify({
+    action: "game",
+    payload: {
+      type: 'startGame',
+      data: {
+        roomId: roomId,
+      }
+    }
+  }));
 }
 
 export async function dispatchGameSocketMsg(payload: any) {
-
-	switch (payload.action) {
-		case 'roomReady':
-			await alertGameReady();
-			setTimeout(() => {
-				renderGame(payload.data);
-			}, 3000);
-			break;
+  console.log("dispatchGameSocketMsg", payload);
+  switch (payload.action) {
+    case 'roomReady':
+      renderGame(payload.data);
+      break;
 
 		case 'playerReady':
 			changeStatusPlayer(payload.data);
 			break;
 
-		case 'Starting':
-			showGame();
-			drawGame(payload.data, 'start');
-			setTimeout(() => {
-				launchGame(payload.data.roomId); //Stocker roomId en dehors
-			}, 3000);
-			break;
-
-		case 'goal':
-			drawGame(payload.data, 'goal');
-			break;
+    case 'Starting':
+      showGame();
+      // launchGame(payload.data.roomId); // TODO : Stocker roomId en dehors
+      break;
+	  
+    case 'score':
+      drawGame(payload.gameData, 'goal');
+      break;
 
 		case 'snapshot':
 			drawGame(payload.data, 'snapshot');

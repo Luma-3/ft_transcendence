@@ -11,8 +11,24 @@ export class Vector2 {
     return new Vector2(this.x - other.x, this.y - other.y);
   }
 
+  mult(other: Vector2): Vector2 {
+    return new Vector2(this.x * other.x, this.y * other.y);
+  }
+
   scale(scalar: number): Vector2 {
     return new Vector2(this.x * scalar, this.y * scalar);
+  }
+
+  multiply(other: Vector2): Vector2 {
+    return new Vector2(this.x * other.x, this.y * other.y);
+  }
+
+  static zero(): Vector2 {
+    return new Vector2(0, 0);
+  }
+
+  static one(): Vector2 {
+    return new Vector2(1, 1);
   }
 
   magnitude(): number {

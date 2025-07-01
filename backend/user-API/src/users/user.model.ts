@@ -10,7 +10,6 @@ export const USER_PUBLIC_COLUMNS: string[] = [
 ];
 export const USER_PRIVATE_COLUMNS: string[] = [
   'users.id',
-  'google_id',
   'username',
   'email',
   'validated',
@@ -97,15 +96,14 @@ export class UserModel {
   async create(
     trx: Knex.Transaction,
     id: string,
-    data: Partial<Pick<UserBaseType, 'username' | 'email' | 'password' | 'google_id'>>,
+    data: Partial<Pick<UserBaseType, 'username' | 'email' | 'password'>>,
     columns = USER_PRIVATE_COLUMNS
   ) {
     return await trx<UserBaseType>('users').insert({
       id: id,
       username: data.username,
       email: data.email,
-      google_id: data.google_id || undefined,
-      password: data.password || undefined,
+      password: data.password,
       created_at: knexInstance.fn.now()
     }, columns);
   }

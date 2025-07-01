@@ -44,8 +44,8 @@ export class CollisionSystem {
 
   public static circleIntersectRect(circle: Circle, rect: Rectangle): boolean {
     const closest = new Vector2(
-      Math.max(rect.position.x, Math.min(circle.position.x, rect.position.x + rect.scale.x)),
-      Math.max(rect.position.y, Math.min(circle.position.y, rect.position.y + rect.scale.y))
+      Math.max(rect.position.x - rect.scale.x / 2, Math.min(circle.position.x, rect.position.x + rect.scale.x / 2)),
+      Math.max(rect.position.y - rect.scale.y / 2, Math.min(circle.position.y, rect.position.y + rect.scale.y / 2))
     );
 
     const distance = new Vector2(

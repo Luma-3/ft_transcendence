@@ -52,62 +52,56 @@ export const FRAME = 30;
 //   requestAnimationFrame(animate);
 // };
 
-export function drawGame(gameData: IGameObject[], action: string = '') {
-
-	const game = document.getElementById("gamePong") as HTMLCanvasElement;
-	if (!game) {
-		return;
-	}
-	const ctx = game.getContext("2d");
-	if (!ctx) { return; }
-
-	// if (action === 'goal') {
-	// 	drawExplosion(ctx, gameData.ball.x, gameData.ball.y, {
-	// 		count: 250,
-	// 		colors: ['#744FAC', '#FF8904', '#F8E9E9', '#ffffff'],
-	// 		maxSpeed: 6,
-	// 		maxRadius: 5,
-	// 		duration: 1000
-	// 	});
-	// 	setTimeout(() => {
-	// 		socket?.send(JSON.stringify({
-	// 			type: "game",
-	// 			payload: {
-	// 				type: 'resume',
-	// 				data: {
-	// 					roomId: gameFrontInfo.gameId,
-	// 				}
-	// 			}
-	// 		}));
-	// 		ctx.clearRect(0, 0, game.width, game.height);
-	// 		ctx.restore();
-	// 		const player1Score = document.getElementById("user1Score");
-	// 		player1Score!.innerHTML = gameData.paddle1.score.toString();
-
-	// 		const player2Score = document.getElementById("user2Score");
-	// 		player2Score!.innerHTML = gameData.paddle2.score.toString();
-	// 	}, 800);
-	// 	return;
-	// }
+export function drawGame(gameData: IGameObject[]) {
+  const game = document.getElementById("gamePong") as HTMLCanvasElement;
+  if (!game) return;
+  const ctx = game.getContext("2d");
+  if (!ctx) return;
 
 	ctx.clearRect(0, 0, game.width, game.height);
-	if (action === 'snapshot') {
-		for (const gameObject of gameData) {
-			switch (gameObject.type) {
-				case 'ball': ;
-					drawBall(ctx, (<IBall>gameObject).position, (<IBall>gameObject).radius);
-					break;
-				case 'paddle':
-					drawPaddle(ctx, (<IPaddle>gameObject).position, (<IPaddle>gameObject).scale, 'red'); // TODO : color
-					break;
-				default:
-					console.warn("Unknown game object type:", gameObject.type);
-			}
-	}
+  gameData.forEach((gameObject) => {
+    switch (gameObject.type) {
+      case 'ball': ;
+        console.log("Ball Velocity:", (<IBall>gameObject).velocity);
+        drawBall(ctx, (<IBall>gameObject).position, (<IBall>gameObject).radius);
+        break;
+      case 'paddle':
+        drawPaddle(ctx, (<IPaddle>gameObject).position, (<IPaddle>gameObject).scale, 'red'); // TODO : color
+        break;
+      default:
+        console.warn("Unknown game object type:", gameObject.type);
+    }
+  });
+
+  ctx.save();
 }
 
-	ctx.save();
-}
+// function Score(ctx: CanvasRenderingContext2D, pos: Vector2, score: number) {
+//   drawExplosion(ctx, pos, {
+//     count: 250,
+//     colors: ['#744FAC', '#FF8904', '#F8E9E9', '#ffffff'],
+//     maxSpeed: 6,
+//     maxRadius: 5,
+//     duration: 1000
+//   });
+//   // setTimeout(() => {
+//   // 	socket?.send(JSON.stringify({
+//   // 		type: "game",
+//   // 		payload: {
+//   // 			type: 'resume',
+//   // 			data: {
+//   // 				roomId: gameFrontInfo.gameId,
+//   // 			}
+//   // 		}
+//   // 	}));
+//   ctx.clearRect(0, 0, game.width, game.height);
+//   ctx.restore();
+//   const player1Score = document.getElementById("user1Score");
+//   player1Score!.innerHTML = gameData.paddle1.score.toString();
+//
+//   const player2Score = document.getElementById("user2Score");
+//   player2Score!.innerHTML = gameData.paddle2.score.toString();
+// }
 
 function drawBall(ctx: CanvasRenderingContext2D, pos: Vector2, radius: number) {
 	ctx.beginPath();
@@ -118,9 +112,9 @@ function drawBall(ctx: CanvasRenderingContext2D, pos: Vector2, radius: number) {
 }
 
 function drawPaddle(ctx: CanvasRenderingContext2D, pos: Vector2, scale: Vector2, color: string) {
-	ctx.beginPath();
-	ctx.rect(pos.x, pos.y, scale.x, scale.y);
-	ctx.fillStyle = color;
-	ctx.fill();
-	ctx.closePath();
+  ctx.beginPath();
+  ctx.rect(pos.x - scale.x / 2, pos.y - scale.y / 2, scale.x, scale.y);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.closePath();
 }

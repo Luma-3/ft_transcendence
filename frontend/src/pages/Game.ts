@@ -41,12 +41,12 @@ const readyEventListener = (playerId: string) => {
 
 export default async function game(roomId: string, user: IUserInfo) {
 
-	addEventListener('keypress', () => { })
-	/**
-	 * Mise en place du listener sur la fenetre pour redimensionner le canvas si
-	 * la fenetre est redimensionnee
-	 */
-	window.addEventListener('resize', resizeCanvas)
+  // addEventListener('keypress', () => { })
+  /**
+   * Mise en place du listener sur la fenetre pour redimensionner le canvas si
+   * la fenetre est redimensionnee
+   */
+  window.addEventListener('resize', resizeCanvas)
 
 	onkeyup = (event) => {
 		onKeyUp(event, user.id);
@@ -77,7 +77,7 @@ export default async function game(roomId: string, user: IUserInfo) {
 	const roomInfos = await getRoomInfos(roomId);
 
 	const leftOpponentInfos = await getOtherUserInfo(roomInfos.data!.players[0].user_id);
-	const rightOpponentInfos = roomInfos.data!.players.length > 1
+	const rightOpponentInfos = (roomInfos.data!.players.length > 1 && roomInfos.data!.players[1].user_id !== "other")
 		? await getOtherUserInfo(roomInfos.data!.players[1].user_id)
 		: {
 			data: {

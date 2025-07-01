@@ -79,7 +79,6 @@ export interface userIds {
 
 export interface userInfos {
   email: string,
-  google_id?: string,
   password: string,
   validated: boolean,
   twofa: boolean,

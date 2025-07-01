@@ -73,6 +73,34 @@ export class UserService {
     });
     return transactionData;
   }
+  static async createUserO2Auth(data: UserCreateBodyType) {
+
+    await verifyConflict(data.username, data.email);
+
+    const user_obj = {
+      username: data.username,
+      password: null,
+      email: data.email,
+      validated: true
+    }
+
+    const user_preferences: Omit<PreferencesBaseType, 'user_id'> = {
+      lang: 'en',
+      avatar: `default.png`,
+      banner: `default.png`,
+      theme: 'dark',
+    }
+
+    const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
+      const userID = uuidV4();
+      const [user] = await userModelInstance.create(trx, userID, user_obj);
+
+      const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
+
+      return { ...user, preferences }
+    });
+    return transactionData;
+  }
 
   static async get2faStatus(userId: string): Promise<User2faStatusType> {
     const user = await userModelInstance.findByID(userId, ['twofa']);

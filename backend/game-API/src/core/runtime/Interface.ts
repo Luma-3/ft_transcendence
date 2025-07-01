@@ -9,11 +9,16 @@ export class Player {
   public user_id: string;
   public player_name: string;
   public ready: boolean;
+  public score: number = 0;
 
   constructor(user_id: string, player_name: string) {
     this.user_id = user_id;
     this.player_name = player_name;
     this.ready = false;
+  }
+
+  public addScore() {
+    this.score++;
   }
 
   setReady(ready: boolean) {

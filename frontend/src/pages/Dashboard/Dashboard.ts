@@ -8,9 +8,9 @@ import { gameUserStat } from "./userStatDiv";
 import { API_CDN } from "../../api/routes";
 
 async function renderDashboard(user: IUserInfo) {
-return `
+  return `
 ${navbar(user)}
-<div class="flex flex-col h-full w-full lg:flex-row space-y-4 justify-center items-center pt-10 mb-70">
+<div class="flex flex-col h-full w-full lg:flex-row space-y-4 justify-center items-center pt-10 mb-10">
 
 	<div class="flex flex-col lg:flex-row max-w-[1200px]">
 
@@ -43,7 +43,7 @@ ${navbar(user)}
 
 				<div class="flex w-full justify-center items-center mb-10">
 				
-					${primaryButton({id: 'createGame', weight: "1/2", text: "Play", translate: "play", type: "button"})}
+					${primaryButton({ id: 'createGame', weight: "1/2", text: "Play", translate: "play", type: "button" })}
 				
 				</div>
 			

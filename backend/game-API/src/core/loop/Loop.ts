@@ -27,7 +27,9 @@ export class NetworkLoop extends ALoop {
       data: snapshot,
     }
     const player = SceneContext.get().players;
-    IOInterface.broadcast(JSON.stringify(payload), player.map(p => p.user_id));
+    IOInterface.broadcast(JSON.stringify(payload), player.flatMap(p =>
+      p.user_id !== "other" ? [p.user_id] : []
+    ));
   }
 }
 

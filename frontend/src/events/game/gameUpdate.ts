@@ -29,27 +29,24 @@ export function getEventAndSendGameData(playerId: string) {
 }
 
 export function onKeyDown(event: KeyboardEvent, playerId: string) {
-  if (event.key !== "w" && event.key !== "s" && event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
-  actionUserUp = (event.key === "w")
-  actionUserDown = (event.key === "s")
-
-
-  if (gameFrontInfo.gameType === "local") {
-    actionUser2Up = (event.key === "ArrowUp");
-    actionUser2Down = (event.key === "ArrowDown");
+  if (event.repeat) return;
+  switch (event.key) {
+    case "w": actionUserUp = true; break;
+    case "s": actionUserDown = true; break;
+    case "ArrowUp": if (gameFrontInfo.gameType === "local") actionUser2Up = true; event.preventDefault(); break;
+    case "ArrowDown": if (gameFrontInfo.gameType === "local") actionUser2Down = true; event.preventDefault(); break;
   }
+
   getEventAndSendGameData(playerId);
 }
 
 export function onKeyUp(event: KeyboardEvent, playerId: string) {
-  if (event.key !== "w" && event.key !== "s" && event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
-  actionUserUp = (event.key === "w" && !actionUserUp);
-  actionUserDown = (event.key === "s" && !actionUserDown);
-
-
-  if (gameFrontInfo.gameType === "local") {
-    actionUser2Up = (event.key === "ArrowUp" && !actionUser2Up);
-    actionUser2Down = (event.key === "ArrowDown" && !actionUser2Down);
+  if (event.repeat) return;
+  switch (event.key) {
+    case "w": actionUserUp = false; break;
+    case "s": actionUserDown = false; break;
+    case "ArrowUp": if (gameFrontInfo.gameType === "local") actionUser2Up = false; event.preventDefault(); break;
+    case "ArrowDown": if (gameFrontInfo.gameType === "local") actionUser2Down = false; event.preventDefault(); break;
   }
   getEventAndSendGameData(playerId);
 }
