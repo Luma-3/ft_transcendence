@@ -36,7 +36,7 @@ export class Oauth2Controller {
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
     }
-    ).redirect('/login');
+    ).redirect(`${process.env.REDIRECT_URI}/dashboard`);
   }
 }
 
