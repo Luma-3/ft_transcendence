@@ -124,11 +124,10 @@ export class SessionService {
           email: data.email,
         })
       })).json()).data;
-    console.log(userInfo);
-    } else if(!userInfo){
+    }
+    if(!userInfo){
       throw new UnauthorizedError('Username and password are required for login');
     }
-      
     const preferences = (await (await fetch(`http://${process.env.USER_IP}/users/${userInfo.id}/preferences`)).json());
     console.log(preferences);
     if (userInfo.validated === false) {
@@ -158,9 +157,10 @@ export class SessionService {
     const id = await redisPub.get('users:userIds:' + code + ':userId');
     const family_id = await redisPub.get('users:userIds:' + code + ':family_id');
 
-    await redisPub.del('users:userIds:' + code + ':userId');
-    await redisPub.del('users:userIds:' + code + ':family_id');
-
+    const multi = redisPub.multi();
+    multi.del('users:userIds:' + code + ':userId');
+    multi.del('users:userIds:' + code + ':family_id');
+    await multi.exec();
     return await this.createSession({ id, family_id } as userIds, clientInfo)
   } 
 

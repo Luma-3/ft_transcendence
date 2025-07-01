@@ -96,7 +96,7 @@ export class UserModel {
   async create(
     trx: Knex.Transaction,
     id: string,
-    data: Partial<Pick<UserBaseType, 'username' | 'email' | 'password'>>,
+    data: Partial<Pick<UserBaseType, 'username' | 'email' | 'password'| 'validated'>>,
     columns = USER_PRIVATE_COLUMNS
   ) {
     return await trx<UserBaseType>('users').insert({
@@ -104,7 +104,8 @@ export class UserModel {
       username: data.username,
       email: data.email,
       password: data.password,
-      created_at: knexInstance.fn.now()
+      created_at: knexInstance.fn.now(),
+      validated: data.validated ?? false
     }, columns);
   }
 
