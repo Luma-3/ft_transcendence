@@ -27,6 +27,7 @@
     "@fastify/cors": "^10.0.2",
     "@types/knex": "^0.15.2",
     "@types/node": "^22.15.23",
+    "@types/nodemailer": "^6.4.17",
     "nodemon": "^3.1.10",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
@@ -47,6 +48,8 @@
     "fastify-plugin": "^5.0.1",
     "fs": "^0.0.1-security",
     "knex": "^3.1.0",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^7.0.3",
     "redis": "^5.1.0",
     "sqlite3": "^5.1.7",
     "ts-node": "^10.9.2",

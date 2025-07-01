@@ -10,13 +10,15 @@ import {
   ConflictResponse,
   NotFoundResponse,
   UnauthorizedResponse,
-  ForbiddenResponse
+  ForbiddenResponse,
+  InternalServerErrorResponse
 } from '@transcenduck/error';
 
 import {
   UserPublicResponse,
   UserPrivateResponse,
   UserCreateBody,
+  UserCreateBodyInternal,
   UserQueryGet,
   UserHeaderAuthentication,
   UserParamGet,
@@ -25,6 +27,10 @@ import {
   UserUsernameUpdateBody,
   VerifyCredentials,
   UsersQueryGetAll,
+  User2faStatus,
+  User2faInfos,
+  UserActivateAccountParams,
+  UserCreateRedis,
 } from './user.schema.js';
 import { SearchResponseSchema } from '../search/search.schema.js';
 
@@ -39,16 +45,49 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       body: UserCreateBody,
       querystring: UserQueryGet,
       response: {
-        201: ResponseSchema(UserPublicResponse, 'User created successfully'),
+        200: ResponseSchema(UserPublicResponse, 'User created successfully, verification email sent successfully'),
         409: ConflictResponse,
       }
     }
   }, async (req, rep) => {
     const user = await UserService.createUser(req.body);
+    return rep.code(200).send({ message: 'User Created, verification email sent', data: user });
+  });
+
+  fastify.post('/internal/users', {
+    schema: {
+      summary: 'Create a user (Internal)',
+      description: 'Endpoint to create a user ressources and retrieve public informations for internal use only (used by auth service for module Oauth2)',
+      tags: ['Users'],
+      body: UserCreateBodyInternal,
+      response: {
+        201: ResponseSchema(UserPublicResponse, 'User created successfully'),
+        409: ConflictResponse,
+      }
+    }
+  }, async (req, rep) => {
+    const user = await UserService.createUserInternal(req.body);
     return rep.code(201).send({ message: 'User Created', data: user });
   });
 
-  
+  fastify.post('/internal/createUser', {
+    schema: {
+      summary: 'Create a user (Internal)',
+      description: 'Endpoint to create a user ressources and retrieve public informations for internal use only (used by auth service for module 2fa)',
+      tags: ['Users'],
+      body: UserCreateRedis,
+      response: {
+        201: ResponseSchema(UserPublicResponse, 'User created successfully'),
+        409: ConflictResponse,
+      }
+    }
+  }, async (req, rep) => {
+    const userID = req.body.userID;
+    const user = await UserService.createUserRedis(userID);
+    return rep.code(201).send({ message: 'User Created', data: user });
+  });
+
+
   fastify.get('/users', {
     schema: {
       summary: 'Get all users (public)',
@@ -108,7 +147,26 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const { includePreferences } = req.query;
 
     const user = await UserService.getUserByID(id, includePreferences, USER_PUBLIC_COLUMNS, PREFERENCES_PUBLIC_COLUMNS);
+    return rep.code(200).send({ message: 'Ok', data: user })
+  });
 
+  fastify.get('/internal/users/:id', {
+    schema: {
+      summary: 'Private information of user',
+      description: 'Endpoint to retrieve private informations of a user',
+      tags: ['Users'],
+      params: UserParamGet,
+      querystring: UserQueryGet,
+      response: {
+        200: ResponseSchema(User2faInfos, 'Ok'),
+        404: NotFoundResponse,
+      }
+    }
+  }, async (req, rep) => {
+    const { id } = req.params;
+    const { includePreferences } = req.query;
+
+    const user = await UserService.getUserByID(id, includePreferences, USER_PRIVATE_COLUMNS, PREFERENCES_PUBLIC_COLUMNS);
     return rep.code(200).send({ message: 'Ok', data: user })
   });
 
@@ -216,7 +274,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async (req, rep) => {
     const { username, password } = req.body;
-    console.log('password', password, 'username', username);
     const user = await UserService.verifyCredentials(username, password);
     return rep.code(200).send({ message: 'Credentials verified successfully', data: user });
   });
@@ -247,6 +304,72 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
 
     return rep.code(201).send({ message: 'User created from OAuth2', data: find });
+  });
+
+  fastify.patch('/users/internal/activeAccount/:email', {
+    schema: {
+      summary: 'Active account of a user',
+      description: 'Endpoint to activate user account after verifying his e-mail',
+      tags: ['2FA'],
+      params: UserActivateAccountParams,
+      response: {
+        200: ResponseSchema(User2faStatus, 'Ok')
+      }
+    }
+  }, async (req, rep) => {
+    const email = req.params.email;
+    await UserService.activateUserAccount(email);
+    return rep.code(200).send({ message: 'Ok' });
+  })
+
+  fastify.get('/2fa', {
+    schema: {
+      summary: 'Get 2fa infos for a user',
+      description: 'Endpoint to get the 2 Factor Authentification informations',
+      tags: ['2FA'],
+      headers: UserHeaderAuthentication,
+      response: {
+        200: ResponseSchema(User2faStatus, 'Ok')
+      }
+    }
+  }, async(req, rep) => {
+    const userId = req.headers['x-user-id'];
+    const twoFaStatus = await UserService.get2faStatus(userId);
+    return rep.code(200).send({ message: 'Ok', data: twoFaStatus });
+  });
+
+  fastify.put('/2fa', {
+    schema: {
+      summary: 'Enable 2fa for a user',
+      description: 'Endpoint to enable the 2 Factor Authentification',
+      tags: ['2FA'],
+      headers: UserHeaderAuthentication,
+      response: {
+        200: { message: String },
+        500: InternalServerErrorResponse
+      }
+    }
+  }, async(req, rep) => {
+    const userId = req.headers['x-user-id'];
+    await UserService.enable2FA(userId);
+    return rep.code(200).send({ message: "2FA successfully enabled !" });
+  });
+
+  fastify.delete('/2fa', {
+    schema: {
+      summary: 'Disable 2fa for a user',
+      description: 'Endpoint to disable the 2 Factor Authentification',
+      tags: ['2FA'],
+      headers: UserHeaderAuthentication,
+      response: {
+        200: { message: String },
+        500: InternalServerErrorResponse
+      }
+    }
+  }, async(req, rep) => {
+    const userId = req.headers['x-user-id'];
+    await UserService.disable2FA(userId);
+    return rep.code(200).send({ message: "2FA successfully disabled !" });
   });
 }
 

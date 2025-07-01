@@ -31,6 +31,7 @@ import { refuseFriendInvitation } from '../events/social/refusedInvitation'
 import { unfriendUser } from '../events/social/removeFriend'
 import { disable2FA, enable2FA, submit2FACode } from '../2FA'
 import { showNotificationDiv } from '../events/notifications/notificationsDiv'
+import { sendEmail } from '../components/utils/sendEmail'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
@@ -102,6 +103,9 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'showUploadDoc': () => renderDocPages('/api/uploads/doc/json', "upload"),
 	'showGameDoc': () => renderDocPages('/api/game/doc/json', "game"),
 	'showAuthDoc': () => renderDocPages('/api/auth/doc/json', "auth"),
+
+  // * -------------- Email  -------------- */
+  'sendEmail': () => sendEmail(),
 
 };
 

@@ -1,0 +1,14 @@
+{
+	"subject_2FA": "Login code: ",
+	"subject_valid_email": "Validate your email address",
+
+	"greeting": "Hello",
+	"verificationIntro": "Here is your",
+	"verificationCode": "verification code",
+	"verificationLink": "email validation link",
+	"verifyButton": "Click here to verify your email",
+	"codeValadity": "This code is valid for 10 minutes.",
+	"linkValidity": "This link is valid for 10 minutes.",
+	"ignoreWarning": "If you did not make this request, please ignore this message.",
+	"signature": "The Transcenduck's Team"
+}

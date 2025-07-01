@@ -1,23 +1,29 @@
-import { ConflictError, NotFoundError, UnauthorizedError } from "@transcenduck/error";
+import { ConflictError, NotFoundError, UnauthorizedError, EmailConfirmError } from "@transcenduck/error";
 import { v4 as uuidV4 } from "uuid";
 import { hashPassword, comparePassword } from "../utils/bcrypt.js";
 
-import { knexInstance, userModel, preferencesModel } from "../models/models.js";
-import { UserCreateBodyType, UserBaseType } from "./user.schema.js";
+import { UserCreateBodyType, UserBaseType, UserCreateBodyInternalType, User2faStatusType, UserRedisType } from "./user.schema.js";
 import { PreferencesBaseType } from "../preferences/preferences.schema.js";
-import { Knex } from "knex";
-import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS } from "./user.model.js"
-import { redisCache, redisPub } from "../utils/redis.js";
+import { knexInstance, Knex } from "../utils/knex.js";
+import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS, userModelInstance } from "./user.model.js"
+import { preferencesModelInstance } from "../preferences/preferences.model.js";
 
+import fetch from "node-fetch";
+import https from "https"
+import { redisPub, redisCache } from "../utils/redis.js";
 
+async function verifyConflict(username: string, email: string) {
+  const [existingUsername, existingEmail] = await Promise.all([
+    userModelInstance.findByUsername(username, undefined),
+    userModelInstance.findByEmail(email, undefined)
+  ]);
+  if (existingUsername) throw new ConflictError("Username already Exist");
+  if (existingEmail) throw new ConflictError("Email already in use");
+}
 export class UserService {
   static async createUser(data: UserCreateBodyType) {
-    const [existingUsername, existingEmail] = await Promise.all([
-      userModel.findByUsername(data.username),
-      userModel.findByEmail(data.email)
-    ]);
-    if (existingUsername) throw new ConflictError("Username already Exist");
-    if (existingEmail) throw new ConflictError("Email already in use");
+
+    await verifyConflict(data.username, data.email);
 
     const hash_pass = await hashPassword(data.password);
     const user_obj = {
@@ -27,32 +33,158 @@ export class UserService {
     }
 
     const user_preferences = {
-      lang: data.preferences?.lang || 'en',
+      lang: data.preferences?.lang ?? 'en',
       avatar: `default.png`,
       banner: `default.png`,
-      theme: data.preferences?.theme || 'dark',
+      theme: data.preferences?.theme ?? 'dark',
     }
+
+    const user = JSON.stringify({
+      user_obj,
+      user_preferences
+    });
+
+    const userID = uuidV4();
+    redisPub.setEx(`users:pendingUser:${userID}`, 660, user);
+    redisPub.setEx(`users:pendingUser:${user_obj.username}`, 660, userID);
+
+    // Backdor for development purposes
+    // if (process.env.node_env !== 'development') {
+    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendVerifEmail`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang, token: userID }),
+      agent: new https.Agent({ rejectUnauthorized: false })
+    }).catch(console.error)
+    
+    return;
+    // }
+
+    const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
+      const userID = uuidV4();
+      const [user] = await userModelInstance.create(trx, userID, user_obj);
+
+      const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
+
+      return { ...user, preferences }
+    });
+    return transactionData;
+  }
+
+  static async get2faStatus(userId: string): Promise<User2faStatusType> {
+    const user = await userModelInstance.findByID(userId, ['twofa']);
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+    return { twofa: user.twofa };
+  }
+
+  static async activateUserAccount(email: string) {
+    const user = await userModelInstance.findByEmail(email);
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+    await userModelInstance.update(user.id, { validated: true }, USER_PRIVATE_COLUMNS);
+  }
+
+  static async enable2FA(userId: string) {
+    const user = await userModelInstance.findByID(userId);
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+    await userModelInstance.update(userId, { twofa: true }, USER_PRIVATE_COLUMNS);
+
+    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendCode`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
+      agent: new https.Agent({ rejectUnauthorized: false })
+    }).catch(console.error)
+  }
+
+  static async disable2FA(userId: string) {
+    const user = await userModelInstance.findByID(userId);
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+    await userModelInstance.update(userId, { twofa: false }, USER_PRIVATE_COLUMNS);
+
+    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendCode`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
+      agent: new https.Agent({ rejectUnauthorized: false })
+    }).catch(console.error)
+  }
+
+  static async createUserInternal(data: UserCreateBodyInternalType) {
+    await verifyConflict(data.username, data.email);
+
+    const user_preferences = { // TODO: preferences rework for simplify system
+      lang: data.lang || 'en',
+      avatar: `default.png`,
+      banner: `default.png`,
+      theme: 'dark' as 'dark'
+    }
+    const user_obj = {
+      username: data.username,
+      email: data.email,
+      googleId: data.googleId || null,
+    }
+
     return await knexInstance.transaction(async (trx: Knex.Transaction) => {
       const userID = uuidV4();
-      const [user] = await userModel.create(trx, userID, user_obj);
+      const [user] = await userModelInstance.create(trx, userID, user_obj);
 
-      const [preferences] = await preferencesModel.create(trx, userID, user_preferences);
+      const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
       redisPub.DEL(`users:data:all`).catch(console.error);
 			return { ...user, preferences }
     });
   }
 
   static async getAllUsers(userId: string, blocked: ("you" | "another"| "all" | "none") = "all", friends: boolean = false, pending: boolean = false, page: number = 1, limit: number = 10, hydrate: boolean = true) {
-    return await userModel.findAll(userId, blocked, friends, pending, page, limit, hydrate, USER_PUBLIC_COLUMNS);
+    return await userModelInstance.findAll(userId, blocked, friends, pending, page, limit, hydrate, USER_PUBLIC_COLUMNS);
   }
 
   static async deleteUser(id: string) {
-    await userModel.delete(id);
+    await userModelInstance.delete(id);
     const multi = redisPub.multi();
     multi.DEL(`users:data:${id}`);
     multi.DEL(`users:data:${id}:hydrate`);
     multi.exec().catch(console.error);
-    return id;
+  }
+
+  static async createUserRedis(userId: string) {
+
+    const user = await redisPub.get(`users:pendingUser:${userId}`);
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+
+    const userData = JSON.parse(user) as UserRedisType;
+    
+    const multi = redisPub.multi();
+    multi.del(`users:pendingUser:${userId}`);
+    multi.del(`users:pendingUser:${userData.user_obj.username}`)
+    multi.exec().catch(console.error);
+
+    return await knexInstance.transaction(async (trx: Knex.Transaction) => {
+      const userID = userId;
+      const [user] = await userModelInstance.create(trx, userID, userData.user_obj);
+
+      const [preferences] = await preferencesModelInstance.create(trx, userID, userData.user_preferences);
+
+      return { ...user, preferences }
+    });
   }
 
   static async getUserByID(
@@ -66,7 +198,7 @@ export class UserService {
       if (data) {
         return JSON.parse(data);
       }
-      const user = await userModel.findByID(id, userColumns);
+      const user = await userModelInstance.findByID(id, userColumns);
       if (!user) throw new NotFoundError("User");
       await redisPub.setEx(`users:data:${id}`, 3600 , JSON.stringify(user));
       return user;
@@ -77,8 +209,8 @@ export class UserService {
     }
 
     const [user, preferences] = await Promise.all([
-      userModel.findByID(id, userColumns),
-      preferencesModel.findByUserID(id, preferencesColumns)
+      userModelInstance.findByID(id, userColumns),
+      preferencesModelInstance.findByUserID(id, preferencesColumns)
     ]);
 
     if (!user) throw new NotFoundError("User");
@@ -93,7 +225,7 @@ export class UserService {
     email: string,
     columns: string[] = USER_PUBLIC_COLUMNS
   ): Promise<UserBaseType | undefined> {
-    return await userModel.findByEmail(email, columns) as UserBaseType | undefined;
+    return await userModelInstance.findByEmail(email, true, columns) as UserBaseType | undefined;
   }
 
   static async updateUserPassword(
@@ -102,7 +234,7 @@ export class UserService {
     newPassword: string,
   ): Promise<UserBaseType> {
     {
-      const user = await userModel.findByID(id, ['password'])
+      const user = await userModelInstance.findByID(id, ['password'])
       if (!user) throw new NotFoundError("User");
 
       const isValid = await comparePassword(oldPassword, user.password!);
@@ -110,7 +242,7 @@ export class UserService {
     }
 
     const hash_pass = await hashPassword(newPassword);
-    const [updatedUser] = await userModel.update(id, { password: hash_pass }, USER_PRIVATE_COLUMNS);
+    const [updatedUser] = await userModelInstance.update(id, { password: hash_pass }, USER_PRIVATE_COLUMNS);
 
     redisPub.DEL(`users:credentials:${updatedUser.username}`).catch(console.error);
     return updatedUser;
@@ -120,13 +252,13 @@ export class UserService {
     id: string,
     email: string
   ): Promise<UserBaseType> {
-    const user = await userModel.findByID(id);
+    const user = await userModelInstance.findByID(id);
     if (!user) throw new NotFoundError("User");
 
-    const existingEmail = await userModel.findByEmail(email);
+    const existingEmail = await userModelInstance.findByEmail(email, true);
     if (existingEmail) throw new ConflictError("Email already in use");
 
-    const [updatedUser] = await userModel.update(id, { email: email }, USER_PRIVATE_COLUMNS);
+    const [updatedUser] = await userModelInstance.update(id, { email: email }, USER_PRIVATE_COLUMNS);
 
   const multi = redisCache.multi();
   multi.DEL(`users:data:${id}:hydrate`);
@@ -139,13 +271,13 @@ export class UserService {
     id: string,
     username: string
   ): Promise<UserBaseType> {
-    const user = await userModel.findByID(id);
+    const user = await userModelInstance.findByID(id);
     if (!user) throw new NotFoundError("User");
 
-    const existingUsername = await userModel.findByUsername(username);
+    const existingUsername = await userModelInstance.findByUsername(username, );
     if (existingUsername) throw new ConflictError("Username already in use");
 
-    const [updatedUser] = await userModel.update(id, { username: username }, USER_PRIVATE_COLUMNS);
+    const [updatedUser] = await userModelInstance.update(id, { username: username }, USER_PRIVATE_COLUMNS);
 
   const multi = redisCache.multi();
   multi.DEL(`users:data:${id}:hydrate`);
@@ -155,11 +287,13 @@ export class UserService {
 }
 
   static async verifyCredentials(username: string, password: string): Promise<UserBaseType> {
-    const user = await userModel.findByUsername(username, ['password', ...USER_PRIVATE_COLUMNS]);
+    const user = await userModelInstance.findByUsername(username, undefined, ['password', 'validated', ...USER_PRIVATE_COLUMNS]);
     if (!user) throw new UnauthorizedError("Invalid credentials");
-
     const isValid = await comparePassword(password, user.password!);
     if (!isValid) throw new UnauthorizedError("Invalid credentials");
+
+    if(user.validated === false)
+      throw new EmailConfirmError('Email not already confirmed');
     return user;
   }
 }

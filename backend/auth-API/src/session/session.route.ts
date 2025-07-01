@@ -2,13 +2,11 @@
 import { UnauthorizedError } from '@transcenduck/error'
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 
-import { SessionPostBody, UserHeaderAuthentication, FamilyId, FamiliesResponse } from "./session.schema.js";
+import { SessionPostBody, UserHeaderAuthentication, FamilyId, FamiliesResponse, twoFaBody } from "./session.schema.js";
 
 import { SessionService } from "./session.service.js";
 
 import { ResponseSchema } from "../utils/schema.js";
-
-
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
   // ! Public
@@ -37,6 +35,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       // device_id: parser.getDevice().toString(),
       user_agent: req.headers['user-agent'] || 'unknown',
       device_id: 'unknown',
+
     }, false);
 
     rep.code(201).send({
@@ -55,6 +54,42 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
     );
   });
+
+  fastify.post('/session/2fa', {
+    schema: {
+      summary: 'Create a new user session after 2fa verification',
+      description: 'This endpoint allows users to create a new session by providing their credentials after 2fa verification.',
+      tags: ['Sessions', '2FA'],
+      body: twoFaBody,
+      response: {
+        201: ResponseSchema(undefined, 'Session created successfully')
+      }
+    }
+  }, async (req, rep) => {
+    const { accessToken, refreshToken } = await SessionService.login2FA(req.body.code, {
+      ip_address: req.ip,
+      // user_agent: parser.getBrowser().toString(),
+      // device_id: parser.getDevice().toString(),
+      user_agent: req.headers['user-agent'] || 'unknown',
+      device_id: 'unknown',
+    });
+    
+    rep.code(201).send({
+      message: 'Session created successfully',
+    }).setCookie(
+      "accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
+      path: '/',
+    }).setCookie(
+      "refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
+    }
+    );
+  })
 
   // ! Private
   fastify.get('/session', {

@@ -17,7 +17,7 @@ ${headerPage("settings")}
 	
 	${languageSelectorSettings(user.preferences!.lang)}
 	<br>
-	${change2FA()}
+	${await change2FA()}
 	<br>
 	
 	<div class="flex flex-col w-full max-w-[800px] font-title border-red-600 border-2 space-y-2 p-2 justify-center items-center rounded-lg">

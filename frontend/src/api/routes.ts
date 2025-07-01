@@ -7,6 +7,7 @@ const SERVICES = {
   CDN: `/api/uploads`,
   GAME: `${API_URL}/game`,
   PEOPLE: `${API_URL}/people`,
+  TWOFA: `${API_URL}/auth/2fa`
 }
 
 export const API_USER = {
@@ -19,9 +20,6 @@ export const API_USER = {
     PREFERENCES: `${SERVICES.USER}/me?includePreferences=true`,
     ONLY_PREFERENCES: `${SERVICES.USER}/me/preferences`,
   
-  },
-  VERIFY: {
-      EMAIL: `${SERVICES.USER}/verifyEmail`,
   },
   UPDATE: {
     PREF: {
@@ -39,6 +37,8 @@ export const API_USER = {
     NOTIFICATIONS: `${SERVICES.USER_ROOT}/pending`,
   },
   SEARCH: `${SERVICES.USER_ROOT}/search`, // ?q=inputValue&page=1&limit=10&hydrate=true
+
+  TWOFA: `${SERVICES.USER}/2fa`,
 }
 
 export const API_SESSION = {
@@ -49,7 +49,6 @@ export const API_SESSION = {
   VERIFY_REFRESH: `${SERVICES.SESSION}/verify/refreshToken`,
 
   REFRESH: `${SERVICES.SESSION}/refresh`,
-
 }
 
 export const API_GAME = {
@@ -63,4 +62,12 @@ export const API_GAME = {
 export const API_CDN = {
   AVATAR: `${SERVICES.CDN}/avatar`,
   BANNER: `${SERVICES.CDN}/banner`,
+}
+
+export const MODULE_TWOFA = {
+  RESEND_EMAIL: `${SERVICES.TWOFA}/resendVerifEmail`,
+  VERIFY: {
+      EMAIL: `${SERVICES.TWOFA}/verifyEmail`,
+      TWOFA: `${SERVICES.TWOFA}/verifyCode`,
+  },
 }

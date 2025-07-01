@@ -8,5 +8,6 @@ export const redisSub = createClient({
   socket: { host: 'redis', port: 6379 },
 });
 
+
 await redisPub.connect();
 await redisSub.connect();

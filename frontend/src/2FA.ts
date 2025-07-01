@@ -1,63 +1,77 @@
-import { fetchApi } from './api/fetch';
-import { API_SESSION } from './api/routes';
+import { fetchApiWithNoError } from './api/fetch';
+import { MODULE_TWOFA, API_USER } from './api/routes';
 import { renderPrivatePage, renderPublicPage } from './controllers/renderPage';
-import { IUserInfo } from './interfaces/IUser';
 import { alertTemporary } from './components/ui/alert/alertTemporary';
 
 import { headerPage } from './components/ui/headerPage';
 import { primaryButton } from './components/ui/buttons/primaryButton';
+import { socketConnection } from './socket/Socket';
 
-export function change2FA() {
+export async function change2FA() {
 
-/**
- * ! Fetch pour verifier si il a activer le 2Fa pour que le bouton propose soit de 'enable2fa' ou 'disable2fa'(enable2fa et disable2fa ne sont pas les textes affiches mais le cle pour la traduction)
-*/
-// const response = await fetchApi(API_SESSION + `/`, {
-// method: 'GET'})
+	/**
+	 * ! Fetch pour verifier si il a activer le 2Fa pour que le bouton propose soit de 'enable2fa' ou 'disable2fa'(enable2fa et disable2fa ne sont pas les textes affiches mais le cle pour la traduction)
+	*/
+	const response = await fetchApiWithNoError(API_USER.TWOFA, {
+		method: 'GET'
+	})
 
-return `
-<div class="grid sm:grid-cols-2 gap-4 items-center">
+	let id = 'enable2fa';
+	let translate = 'enable-2fa';
 	
-	<div class="title-responsive-size font-title justify-center" translate="2fa-auth">
-
-		2FA Authentication
-
-	</div>
-
-	${primaryButton({id: 'enable2fa', weight: "1/4", text: 'Activate 2FA', translate: 'activate-2fa', type: 'button'})}
-
-</div>
-
-<div class="flex flex-col p-2 max-w-[800px] justify-center items-center w-full text-responsive-size font-title" translate="2fa-warning">
+	if (response.status === 'success') {
+		id = 'disable2fa';
+		translate = 'disable-2fa';
+	}
 	
-	Warning ! <br>
-	No 2FA reduces security
-	(as anyone can access your account)<br> and increases the
-	risk of accidental actions.<br> This is not recommended !
+	let container = `
+	<div class="grid sm:grid-cols-2 gap-4 items-center">
+		
+		<div class="title-responsive-size font-title justify-center" translate="2fa-auth">
 
-</div>`
+			2FA Authentication
+
+		</div>
+
+		${primaryButton({id: id , weight: "1/4", text: 'Activate 2FA', translate: translate, type: 'button'})}
+
+	</div>`
+
+	if (id === 'enable2fa') {
+		container += `
+		<div class="flex flex-col p-2 max-w-[800px] justify-center items-center w-full text-responsive-size font-title" translate="2fa-warning">
+			
+			Warning ! <br>
+			No 2FA reduces security
+			(as anyone can access your account)<br> and increases the
+			risk of accidental actions.<br> This is not recommended !
+
+		</div>`
+	}
+	return container;
 }
 
 /** 
 * ! Quand l'utilisateur clique sur le bouton id = 'enable2fa' 
 */
 export async function enable2FA() {
-	// const response = await fetchApi(API_SESSION.ACTIVATE2FA, {
-		// method: 'PUT'
-	// })
-	// if (response.status === 'error') {
-		// await alertTemporary("error", "Cannot enable 2FA, please reload the page and retry", 'dark')
-	//}
+	const response = await fetchApiWithNoError(API_USER.TWOFA, {
+		method: 'PUT'
+	})
+	if (response.status === 'error') {
+		return await alertTemporary("error", "Cannot enable 2FA, please reload the page and retry", 'dark')
+	}
 	renderPublicPage('2FA')
 }
 
 export async function disable2FA() {
-	// const response = await fetchApi(API_SESSION.ACTIVATE2FA, {
-		// method: 'DELETE'
-	// })
-	// if (response.status === 'error') {
-		// await alertTemporary("error", "Cannot disable 2FA, please reload the page and retry", 'dark')
-	//}
+	const response = await fetchApiWithNoError(API_USER.TWOFA, {
+		method: 'DELETE'
+	})
+	if (response.status === 'error') {
+		return await alertTemporary("error", "Cannot disable 2FA, please reload the page and retry", 'dark')
+	}
+	renderPublicPage('2FA')
 }
 
 export async function submit2FACode() {
@@ -66,22 +80,22 @@ export async function submit2FACode() {
 	const codeInput = document.getElementById('2faCodeInput') as HTMLInputElement;
 	const code = codeInput.value.trim();
 	if (!code) {
-		await alertTemporary("error", "Please enter your 2FA code", 'dark');
-		return;
+		return await alertTemporary("error", "Please enter your 2FA code", 'dark');
 	}
 
-	// const response = await fetchApi(API_SESSION.VERIFY2FA, {
-	// 	method: 'POST',
-	// 	body: JSON.stringify({ code })
-	// });
-	// if (response.status === 'error') {
-	// 	await alertTemporary("error", "Invalid 2FA code, please try again", 'dark');
-	// 	return;
-	// }
+	const response = await fetchApiWithNoError(MODULE_TWOFA.VERIFY.TWOFA, {
+		method: 'POST',
+		body: JSON.stringify({ code })
+	});
+	if (response.status === 'error') {
+		return await alertTemporary("error", "Invalid 2FA code, please try again", 'dark');
+	}
+
 	alertTemporary("success", "2FA code verified successfully", 'dark');
 	setTimeout(() => {
-		renderPrivatePage('dashboard');
-	}, 1000);
+			socketConnection();
+			renderPrivatePage('dashboard');
+		}, 1000);
 }
 
 /**
@@ -89,15 +103,16 @@ export async function submit2FACode() {
  */
 export default async function twoFaPage() {
 return `<div class="flex flex-col w-full h-full rounded-lg justify-center mt-30">
-	
+
 	${headerPage("2 Factor Authentification", "private")}
-	
+
 	<div class="flex flex-col w-full h-full rounded-lg justify-center items-center mt-5 mb-10">
-		
+
 		<div class="flex font-title text-responsive-size justify-center w-1/2 items-center text-tertiary dark:text-dtertiary">
 			<span translate="2fa-description">To secure your account, please enter the 2FA code generated by your authenticator app.</span>
-		
+
 		</div>
+
 	</div>
 	
 	<div class="flex flex-col w-full justify-center items-center mb-80 space-y-10">

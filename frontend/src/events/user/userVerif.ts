@@ -1,17 +1,17 @@
-import { fetchApi } from "../../api/fetch";
-import { API_USER } from "../../api/routes";
+import { fetchApiWithNoError } from "../../api/fetch";
+import { MODULE_TWOFA } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
-import { renderPrivatePage } from "../../controllers/renderPage";
+import { renderPublicPage } from "../../controllers/renderPage";
 
 export async function verifyEmailUser(token: string) {
-	const response = await fetchApi(API_USER.VERIFY.EMAIL + `/${token}`, {
+	const response = await fetchApiWithNoError(MODULE_TWOFA.VERIFY.EMAIL + `/${token}`, {
 		method: "GET",
 	});
 	if (response.status === "error") {
 		alertTemporary("error", "Error with email verification", "dark");
-		return window.location.href = "/login";
+		return window.location.href = "/404";
 	}
+	
 	alertTemporary("success", "Email verified successfully", "dark");
-
-	renderPrivatePage('dashboard');
+	renderPublicPage('login')
 }

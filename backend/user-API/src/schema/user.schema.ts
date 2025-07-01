@@ -5,7 +5,7 @@ import {
   PreferencesPublicResponse,
   PreferencesPrivateResponse,
   PreferencesUpdateBody
-} from "../preferences/preferences.schema.js";
+} from './preferences.schema.js';
 
 // Share Field Utilities
 // To avoid duplication, we define shared fields for user Utilities
@@ -28,24 +28,10 @@ const UserSharedFields = {
 export const UserBase = Type.Object({
   ...UserSharedFields,
   email: Type.String({ format: 'email' }),
-  google_id: Type.Optional(Type.String({ format: 'uuid' })),
   password: passwordField,
-  validated: Type.Boolean({
-    description: 'Indicates if the user has validated their email address.'
-  }),
-  twofa: Type.Boolean({
-    description: 'Indicates if the user has activated or not 2 Factor Authentification.'
-  }),
   preferences: Type.Optional(PreferencesBase)
 });
 export type UserBaseType = Static<typeof UserBase>;
-
-export const UserDBHydrateType = Type.Object({
-  ...UserSharedFields,
-  avatar: Type.Optional(Type.String({ format: 'uri' })),
-  banner: Type.Optional(Type.String({ format: 'uri' })),
-});
-export type UserDBHydrateType = Static<typeof UserDBHydrateType>;
 
 export const UserDBBase = Type.Object({
   ...UserSharedFields,
@@ -70,8 +56,6 @@ export type UserPublicResponseType = Static<typeof UserPublicResponse>;
 export const UserPrivateResponse = Type.Object({
   ...UserSharedFields,
   email: Type.String({ format: 'email' }),
-  validated: Type.Boolean(),
-  twofa: Type.Boolean(),
   preferences: Type.Optional(PreferencesPrivateResponse)
 });
 export type UserPrivateResponseType = Static<typeof UserPrivateResponse>;
@@ -88,23 +72,6 @@ export const UserCreateBody = Type.Object({
   additionalProperties: false
 });
 export type UserCreateBodyType = Static<typeof UserCreateBody>;
-
-export const UserCreateBodyInternal = Type.Object({
-  username: Type.String({ minLength: 2, maxLength: 32 }),
-  email: Type.String({ format: 'email' }),
-  googleId: Type.Optional(Type.String({ format: 'uuid' })),
-  lang: Type.Optional(Type.Union([Type.Literal('en'), Type.Literal('fr'), Type.Literal('es')], {
-    default: 'en',
-    description: 'Language preference for the user.'
-  })),
-}, {
-  additionalProperties: false
-});
-export type UserCreateBodyInternalType = Static<typeof UserCreateBodyInternal>;
-
-export const UserCreateRedis = Type.Object({
-  userID: Type.String({ format: 'uuid' })
-});
 
 export const UserPasswordUpdateBody = Type.Object({
   oldPassword: Type.String(),
@@ -146,39 +113,6 @@ export const UserHeaderAuthentication = Type.Object({
 }, {
   additionalProperties: true
 });
-
-export const UserActivateAccountParams = Type.Object({
-  'email': Type.String({ format: 'email' })
-});
-
-export const UsersQueryGetAll = Type.Object({
-  blocked: Type.Optional(Type.Union([
-    Type.Literal('you'),
-    Type.Literal('another'),
-    Type.Literal('all'),
-    Type.Literal('none')
-  ], {
-    default: 'none',
-    description: 'Filter users based on blocking status. "you" for users who blocked you, "another" for users you blocked, "all" for both, and "none" for no filtering.'
-  })),
-  friends: Type.Optional(Type.Boolean({
-    default: false,
-    description: 'Include friends in the response. If true, only friends will be returned.'
-  })),
-  pending: Type.Optional(Type.Boolean({
-    default: false,
-    description: 'If true, includes pending friend requests in the response.'
-  })),
-  page: Type.Optional(Type.Number({ description: 'Page number for pagination', default: 1, minimum: 1 })),
-  limit: Type.Optional(Type.Number({ description: 'Number of results per page', default: 10 , minimum: 1, maximum: 100 })),
-  hydrate: Type.Optional(Type.Boolean({
-    default: false,
-    description: 'If true, includes additional user data such as avatar and banner.'
-  }))
-}, {
-  additionalProperties: false
-});
-
 export type UserHeaderIdType = Static<typeof UserHeaderAuthentication>;
 
 // Internal User Schema
@@ -190,33 +124,3 @@ export const VerifyCredentials = Type.Object({
   additionalProperties: false
 });
 export type VerifyCredentialsType = Static<typeof VerifyCredentials>;
-
-export const User2faInfos = Type.Object({
-  id: Type.String({ format: 'uuid' }),
-  email: Type.String({ format: 'email' }),
-  validated: Type.Boolean(),
-  twofa: Type.Boolean()
-});
-export type User2faInfosType = Static<typeof User2faInfos>;
-
-export const User2faStatus = Type.Object({
-  twofa: Type.Boolean({
-    description: 'Indicates if the user has activated or not 2 Factor Authentification.'
-  })
-});
-export type User2faStatusType = Static<typeof User2faStatus>;
-
-export const UserRedis = Type.Object({
-  user_obj: Type.Object({
-    username: Type.String({ format: 'uuid' }),
-    password: Type.String(),
-    email: Type.String({ format: 'email' }),
-  }),
-  user_preferences: Type.Object({
-    lang: Type.Union([Type.Literal('en'), Type.Literal('fr'), Type.Literal('es')]),
-    avatar: Type.String(),
-    banner: Type.String(),
-    theme: Type.Union([Type.Literal('dark'), Type.Literal('light')]),
-  })
-})
-export type UserRedisType = Static<typeof UserRedis>

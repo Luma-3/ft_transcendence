@@ -4,9 +4,12 @@ import type { Knex } from "knex";
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable("users", (t) => {
     t.uuid("id").primary();
+    t.uuid("google_id").unique();
     t.string("username", 32).notNullable().unique();
     t.string("email", 255).notNullable().unique();
     t.text("password").notNullable();
+    t.boolean("validated").defaultTo(false);
+    t.boolean("twofa").defaultTo(false);
     t.timestamp("created_at");
   });
 

@@ -8,4 +8,6 @@ export * from './InvalidTypeError.js'
 export * from './UnauthorizedError.js'
 export * from './ValidationError.js'
 export * from './PayloadTooLargeError.js'
-
+export * from './RetryWithError.js'
+export * from './EmailConfirm.js'
+export * from './2faError.js'

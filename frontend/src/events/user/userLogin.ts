@@ -1,4 +1,4 @@
-import { renderErrorPage, renderPrivatePage } from '../../controllers/renderPage'
+import { renderErrorPage, renderPrivatePage, renderPublicPage } from '../../controllers/renderPage'
 
 import { alertPublic } from '../../components/ui/alert/alertPublic';
 
@@ -25,10 +25,18 @@ export async function loginUser() {
   /**
    * Creation de session
    */
-  const response = await fetchApiWithNoError(API_SESSION.CREATE,
-    { method: "POST", body: JSON.stringify(userdata) });
-
-  if (response.status === "error") {
+  const response = await fetchApiWithNoError(API_SESSION.CREATE, {
+    method: "POST", 
+    body: JSON.stringify(userdata)
+  });
+    
+  if (response.code === 460) {
+    renderPublicPage('2FA');
+    return;
+  } else if (response.code === 461) {
+    renderPublicPage('verifyEmail');
+    return;
+  } else if (response.status === "error") {
     renderErrorPage(response.code?.toString() || '500', response.message);
     return;
   }

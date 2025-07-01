@@ -1,10 +1,13 @@
-import { UnauthorizedError } from '@transcenduck/error'
+import { UnauthorizedError, EmailConfirmError, TwoFaError } from '@transcenduck/error'
 import crypto from 'crypto';
 
 import { generateToken } from "../utils/jwt.js";
 import { refreshTokenModelInstance } from "./token.model.js";
 
 import { FamiliesResponseType } from './session.schema.js';
+import { redisPub } from '../utils/redis.js';
+
+import { twoFaService, generateCode } from '../2FA/twofa.service.js';
 
 interface refreshTokenInfo {
   user_id: string;
@@ -39,7 +42,6 @@ async function createAccessToken(id: string, jti: string): Promise<string> {
   if (!secret) {
     throw new Error('JWT secret is not defined');
   }
-  console.log('IDIDDDDDDD:' + id)
   const payload = {
     sub: id,
     iss: 'Transcenduck-ISS-Api',
@@ -51,13 +53,17 @@ async function createAccessToken(id: string, jti: string): Promise<string> {
   return generateToken(payload, secret);
 }
 
-async function verifyCredentials(username: string, password: string): Promise<{ id: string; }> {
+async function verifyCredentials(username: string, password: string): Promise<{ id: string; family_id: string;}> {
   const response = await fetch(`http://${process.env.USER_IP}/users/internal/authentications`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
   })
+
   if (!response.ok) {
+    if (response.status === 461) {
+      throw new EmailConfirmError();
+    }
     throw new UnauthorizedError();
   }
 
@@ -66,19 +72,31 @@ async function verifyCredentials(username: string, password: string): Promise<{ 
   return user_data.data;
 }
 
+export interface userIds {
+  id : string,
+  family_id: string
+}
+
+export interface userInfos {
+  email: string,
+  google_id?: string,
+  password: string,
+  validated: boolean,
+  twofa: boolean,
+  id: string,
+  username: string,
+  created_at: string,
+  preferences?: {
+    theme: 'dark' | 'light',
+    lang: 'en' | 'fr' | 'es',
+    avatar: string,
+    banner: string
+  }
+}
+
 export class SessionService {
-  static async login(username: string, password: string|undefined, clientInfo: clientInfo, o2aut: boolean): Promise<{ accessToken: string; refreshToken: string }> {
-    let user;
 
-    if (!o2aut && password !== undefined) {
-      user = await verifyCredentials(username, password);
-    }else if(o2aut){
-      user = {id: username};
-    } else if(!user){
-      throw new UnauthorizedError('Username and password are required for login');
-    }
-    console.log("USER Data: ", user);
-
+  static async createSession(user: userIds, clientInfo?: clientInfo) {
     const family_id = crypto.randomBytes(16).toString('hex');
 
     const accessToken = await createAccessToken(user.id, family_id);
@@ -86,13 +104,64 @@ export class SessionService {
     const refreshToken = await createRefreshToken({
       user_id: user.id,
       family_id: family_id,
-      device_id: clientInfo.device_id,
-      ip_address: clientInfo.ip_address,
-      user_agent: clientInfo.user_agent,
+      device_id: clientInfo!.device_id,
+      ip_address: clientInfo!.ip_address,
+      user_agent: clientInfo!.user_agent,
     })
 
     return { accessToken, refreshToken };
   }
+
+  static async login(username: string, password?: string, clientInfo?: clientInfo, o2aut: boolean = false) {
+    let user;
+    if (!o2aut && password !== undefined) {
+      user = await verifyCredentials(username, password);
+    }else if(o2aut){
+      //TODO: Faire une requete pour recuperer l'utilisateur par son id 
+      user = {id: username, family_id: 'unkwon'};
+    } else if(!user){
+      throw new UnauthorizedError('Username and password are required for login');
+    }
+      
+    const userInfosRequest = await fetch('http://' + process.env.USER_IP + '/internal/users/' + user.id + '?includePreferences=true', {
+      method: 'GET'
+    })
+
+    const userInfo = (await userInfosRequest.json()).data as userInfos;
+
+    if (userInfo.validated === false) {
+      twoFaService.generateSendToken(userInfo.email, userInfo.preferences?.lang ?? 'en');
+      throw new EmailConfirmError()
+    }
+
+    if (userInfo.twofa === false) {
+      return this.createSession(user, clientInfo);
+    }
+
+    const email = userInfo.email;
+    const lang = userInfo.preferences!.lang;
+    const code = generateCode();
+    
+    await twoFaService.generateSendCode(email, lang, code)
+    
+    redisPub.setEx('users:userIds:' + code + ':userId', 600, user.id)
+    if (user.family_id) {
+      redisPub.setEx('users:userIds:' + code + ':family_id', 600, user.family_id)
+    }
+    throw new TwoFaError();
+  }
+
+  static async login2FA (code: string, clientInfo?: clientInfo) {
+    await twoFaService.verifyCode(code);
+
+    const id = await redisPub.get('users:userIds:' + code + ':userId');
+    const family_id = await redisPub.get('users:userIds:' + code + ':family_id');
+
+    await redisPub.del('users:userIds:' + code + ':userId');
+    await redisPub.del('users:userIds:' + code + ':family_id');
+
+    return await this.createSession({ id, family_id } as userIds, clientInfo)
+  } 
 
   static async refreshToken(tokenId: string) {
 
