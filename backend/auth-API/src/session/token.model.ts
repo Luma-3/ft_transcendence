@@ -44,6 +44,10 @@ class RefreshTokenModel {
     await this.knex('token').where({ family_id }).update(updates);
   }
 
+  async updateAllTokensByFamilyIdActive(family_id: string, updates: Partial<RefreshTokenBaseType>): Promise<void> {
+    await this.knex('token').where({ family_id, is_active: true }).update(updates);
+  }
+
   async deleteTokenById(sessionId: string): Promise<void> {
     await this.knex('token').where({ id: sessionId }).delete();
   }
