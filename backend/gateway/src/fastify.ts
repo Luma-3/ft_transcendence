@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import cors from "@fastify/cors";
 import socket from "./plugins/socket.js";
+import forwardedFor from "./plugins/forwardedFor.js";
 import cookie from "@fastify/cookie";
 import jwt from "./plugins/jwt.js"
 import dotenv from "dotenv";
@@ -48,6 +49,10 @@ server.register(jwt, {
     { method: 'GET', url: '/uploads/banner' }, // Refresh token
     { method: 'GET', url: /^\/[^\/]+\/doc\/json$/ }, // Swagger json
   ]
+});
+
+server.register(forwardedFor, {
+  searcher: true,
 });
 
 export default server;

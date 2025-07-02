@@ -11,8 +11,9 @@ export async function logOutUser() {
 				method: 'DELETE',
 				headers: {
 					"Content-Type": "text/plain",
+					credentials: 'include',
 				},
-				body: JSON.stringify({}),
+				body: "",
 			});
 			if (responseApi.status === "error") {
 				return alert(responseApi.message, "error");

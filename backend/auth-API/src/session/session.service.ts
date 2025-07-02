@@ -188,6 +188,16 @@ export class SessionService {
     return { accessToken, refreshToken };
   }
 
+  static async logout(tokenId: string) {
+    const token = await refreshTokenModelInstance.getTokenById(tokenId);
+    if (!token) throw new UnauthorizedError();
+    if (!token.is_active) throw new UnauthorizedError('Token is not active');
+    return await refreshTokenModelInstance.updateAllTokensByFamilyIdActive(token.family_id, {
+        is_active: false,
+        last_used: Date.now().toString(),
+      })
+  }
+
   static async deleteFamily(familyId: string) {
     return await refreshTokenModelInstance.deleteAllTokensByFamilyId(familyId);
   }
