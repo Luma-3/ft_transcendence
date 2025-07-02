@@ -286,6 +286,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       body: Type.Object({
         username: Type.String(),
         email: Type.String(),
+        avatar: Type.Optional(Type.String({format: 'uri'}))
       }),
       response: {
         201: ResponseSchema(UserPrivateResponse, 'User created from OAuth2'),
@@ -297,7 +298,8 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     if (!find) {
       const user = await UserService.createUserO2Auth({
         username: req.body.username,
-        email: req.body.email
+        email: req.body.email,
+        avatar: req.body.avatar ?? '',
       });
       console.log(user);
       return rep.code(201).send({ message: 'User created from OAuth2', data: user });

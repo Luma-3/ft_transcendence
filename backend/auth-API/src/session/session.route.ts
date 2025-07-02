@@ -55,7 +55,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
       path: '/'
     }
-    );
+    ).redirect(`${process.env.REDIRECT_URI}/dashboard`);
   });
 
   fastify.delete('/session', {

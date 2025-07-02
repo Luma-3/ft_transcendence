@@ -24,7 +24,8 @@ export class Oauth2Controller {
     const parser = new UAParser(userAgent);
     const { accessToken, refreshToken } = await SessionService.login({
       username: dataUser.name!,
-      email: dataUser.email!
+      email: dataUser.email!,
+      avatar: dataUser.picture ?? undefined
     }, {
       ip_address: req.headers['x-forwarded-for'] ?? req.ip,
       user_agent: userAgent,
@@ -36,7 +37,7 @@ export class Oauth2Controller {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
-      path: '/',
+      path: '/'
     }).setCookie(
       "refreshToken", refreshToken, {
       httpOnly: true,

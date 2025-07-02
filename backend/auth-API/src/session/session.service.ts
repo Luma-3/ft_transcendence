@@ -111,7 +111,7 @@ export class SessionService {
     return { accessToken, refreshToken };
   }
 
-  static async login(data: {username?: string, password?: string, email?: string}, clientInfo: clientInfo, o2aut: boolean = false) {
+  static async login(data: {username?: string, password?: string, email?: string, avatar?: string}, clientInfo: clientInfo, o2aut: boolean = false) {
     let userInfo;
     if (!o2aut && data.password !== undefined) {
       userInfo = await verifyCredentials(data.username!, data.password);
@@ -122,6 +122,7 @@ export class SessionService {
         body: JSON.stringify({
           username: data.username,
           email: data.email,
+          avatar: data.avatar
         })
       })).json()).data;
     }

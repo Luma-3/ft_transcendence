@@ -75,7 +75,7 @@ export class UserService {
     return transactionData;
   }
   
-  static async createUserO2Auth(data: { username: string, email: string }) {
+  static async createUserO2Auth(data: { username: string, email: string, avatar?: string }) {
 
     await verifyConflict(data.username, data.email);
 
@@ -88,7 +88,7 @@ export class UserService {
 
     const user_preferences: Omit<PreferencesBaseType, 'user_id'> = {
       lang: 'en',
-      avatar: process.env.REDIRECT_URI +`/api/uploads/avatar/default.png`,
+      avatar: data.avatar ?? (process.env.REDIRECT_URI +`/api/uploads/avatar/default.png`),
       banner: process.env.REDIRECT_URI +`/api/uploads/banner/default.png`,
       theme: 'dark',
     }
