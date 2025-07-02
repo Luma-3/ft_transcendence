@@ -47,7 +47,7 @@ export const API_SESSION = {
   DELETE: `${SERVICES.SESSION}`,
   VERIFY_ACCESS: `${SERVICES.SESSION}/accessToken`,
   VERIFY_REFRESH: `${SERVICES.SESSION}/verify/refreshToken`,
-
+  TWOFA_SESSION:  `${SERVICES.SESSION}/2fa`,
   REFRESH: `${SERVICES.SESSION}/refresh`,
 }
 

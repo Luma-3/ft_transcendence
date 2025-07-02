@@ -115,7 +115,7 @@ export class SessionService {
     let userInfo;
     if (!o2aut && data.password !== undefined) {
       userInfo = await verifyCredentials(data.username!, data.password);
-    }else if(o2aut){
+    } else if (o2aut) {
       userInfo = (await (await fetch(`http://${process.env.USER_IP}/users/internal/oauth2`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -124,31 +124,33 @@ export class SessionService {
           email: data.email,
         })
       })).json()).data;
-    console.log(userInfo);
-    } else if(!userInfo){
+    } else if (!userInfo){
       throw new UnauthorizedError('Username and password are required for login');
     }
-      
-    const preferences = (await (await fetch(`http://${process.env.USER_IP}/users/${userInfo.id}/preferences`)).json());
-    console.log(preferences);
+    
+    const preferences = (await (await fetch(`http://${process.env.USER_IP}/users/${userInfo.id}/preferences`, {
+      method: 'GET'
+    })).json());
+
     if (userInfo.validated === false) {
-      twoFaService.generateSendToken(userInfo.email, preferences!.data.lang ?? 'en');
+      twoFaService.generateSendToken(userInfo.email, preferences!.lang);
       throw new EmailConfirmError()
     }
 
     if (userInfo.twofa === false) {
       return this.createSession(userInfo, clientInfo);
     }
+
     const family_id = crypto.randomBytes(16).toString('hex');
 
     const email = userInfo.email;
-    const lang = preferences!.data.lang;
+    const lang = preferences?.lang;
     const code = generateCode();
     
     await twoFaService.generateSendCode(email, lang, code)
     
-    redisPub.setEx('users:userIds:' + code + ':userId', 600, userInfo.id)
-    redisPub.setEx('users:userIds:' + code + ':family_id', 600, family_id)
+    redisPub.setEx('users:userIds:' + code + ':userId', 600, userInfo.id);
+    redisPub.setEx('users:userIds:' + code + ':family_id', 600, family_id);
     throw new TwoFaError();
   }
 
@@ -161,8 +163,10 @@ export class SessionService {
     await redisPub.del('users:userIds:' + code + ':userId');
     await redisPub.del('users:userIds:' + code + ':family_id');
 
-    return await this.createSession({ id, family_id } as userIds, clientInfo)
-  } 
+    const userInfo: userIds = { id: id!, family_id: family_id! };
+
+    return await this.createSession(userInfo, clientInfo)
+  }
 
   static async refreshToken(tokenId: string) {
 

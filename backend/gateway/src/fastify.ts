@@ -42,6 +42,7 @@ server.register(jwt, {
     { method: 'GET', url: '/auth/2fa/verifyEmail' }, // verify Email
     { method: 'GET', url: '/user/users/register' }, // Confirm user registration
     { method: 'POST', url: '/auth/session' }, // Create session
+    { method: 'POST', url: '/auth/session/2fa' }, // Create session after 2FA verification
     { method: 'PUT', url: '/auth/session' }, // Refresh token
     { method: 'GET', url: '/auth/oauth2/google' }, // Get Google OAuth2 authorization URL
     { method: 'GET', url: '/uploads/avatar' }, // Refresh token

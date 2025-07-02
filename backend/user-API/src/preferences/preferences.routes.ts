@@ -76,7 +76,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
   }, updateBannerPreferences );  
 
 
-  fastify.get('/users/:userID/preferences', {
+  fastify.get('/users/:user_id/preferences', {
     schema: {
       summary: 'Get user preferences',
       description: 'Endpoint to retrieve user preferences',

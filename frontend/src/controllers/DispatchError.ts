@@ -23,10 +23,6 @@ export function dispatchError(code: string, messageServer: string) {
 			return notFoundPage();
 		case '401':
 			return window.location.href = '/login';
-		case '461':
-			return renderPublicPage('verifyEmail', true);
-		case '460':
-			return window.location.href = '2FA';
 		default:
 			return errorPage(code, knownErrors.get(code) || "Unknown error", messageServer);
 	}
