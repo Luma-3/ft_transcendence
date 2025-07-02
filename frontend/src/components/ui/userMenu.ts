@@ -8,17 +8,17 @@ import { IOtherUser } from '../../interfaces/IUser';
  * Partie du menu situe en haut avec le nom de l'utilisateur et la photo de profil
  */
 export function headerUserMenu(user: IUserInfo) {
-	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.preferences!.banner}')">
+	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${user.preferences!.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
-					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.preferences!.avatar}" alt="User profile picture">
+					<img class="w-full h-full rounded-full" src="${user.preferences!.avatar}" alt="User profile picture">
 				</div>
 				</div>`;
 }
 
 export function headerOtherUserMenu(user: IOtherUser) {
-	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.banner}')">
+	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${user.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
-					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.avatar}" alt="User profile picture">
+					<img class="w-full h-full rounded-full" src="${user.avatar}" alt="User profile picture">
 				</div>
 				</div>`;
 }

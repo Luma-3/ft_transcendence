@@ -35,8 +35,8 @@ export class UserService {
 
     const user_preferences = {
       lang: data.preferences?.lang ?? 'en',
-      avatar: `default.png`,
-      banner: `default.png`,
+      avatar: process.env.REDIRECT_URI +`/api/uploads/avatar/default.png`,
+      banner: process.env.REDIRECT_URI +`/api/uploads/banner/default.png`,
       theme: data.preferences?.theme ?? 'dark',
     }
 
@@ -88,8 +88,8 @@ export class UserService {
 
     const user_preferences: Omit<PreferencesBaseType, 'user_id'> = {
       lang: 'en',
-      avatar: `default.png`,
-      banner: `default.png`,
+      avatar: process.env.REDIRECT_URI +`/api/uploads/avatar/default.png`,
+      banner: process.env.REDIRECT_URI +`/api/uploads/banner/default.png`,
       theme: 'dark',
     }
 
@@ -161,8 +161,9 @@ export class UserService {
 
     const user_preferences = { // TODO: preferences rework for simplify system
       lang: data.lang || 'en',
-      avatar: `default.png`,
-      banner: `default.png`,
+
+      avatar: process.env.REDIRECT_URI +`/api/uploads/avatar/default.png`,
+      banner: process.env.REDIRECT_URI +`/api/uploads/banner/default.png`,
       theme: 'dark' as 'dark'
     }
     const user_obj = {

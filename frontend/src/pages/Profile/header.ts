@@ -12,7 +12,7 @@ return `
 			<label for="banner-upload">
 			<input id="banner-upload" type="" accept="image/*" class="hidden " data-type="banner" />
 
-			<img src="${API_CDN.BANNER}/${userPref.banner ?? 'default.webp'}" alt="Banner" 
+			<img src="${userPref.banner ?? `${API_CDN.BANNER}/default.png`}" alt="Banner" 
 				class=" w-full h-full object-cover rounded-lg shadow-lg group-hover:blur-sm" />
 
 			<div class="absolute inset-0 flex items-center justify-center">
@@ -39,9 +39,9 @@ return `
 					<input id="file-upload" type="" accept="image/*" class="hidden editor-select" data-type="avatar" />
 
 					<div id="img-div" class="relative w-32 h-32 group text-primary dark:text-dprimary">
-					
-						<img src=${API_CDN.AVATAR}/${userPref.avatar} class="w-full h-full rounded-full border-6 opacity-100 group-hover:opacity-0 transition-opacity duration-300 ease-in-out" alt="Profile picture">
-					
+
+						<img src="${userPref.avatar}" class="w-full h-full rounded-full border-6 opacity-100 group-hover:opacity-0 transition-opacity duration-300 ease-in-out" alt="Profile picture">
+
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out">
 
 						<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />

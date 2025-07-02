@@ -28,7 +28,7 @@ export function navbar(user: IUserInfo) {
 				 text-tertiary dark:text-dtertiary">
 				${user.username}
 				</span>
-				<img class="w-12 h-12 rounded-full pointer-events-none" src=${API_CDN.AVATAR}/${user.preferences.avatar} alt="User profile picture">
+				<img class="w-12 h-12 rounded-full pointer-events-none" src=${user.preferences.avatar} alt="User profile picture">
 			</button>
 	</nav>
 	${userMenu(user)}`;	

@@ -82,7 +82,8 @@ export default async function game(roomId: string, user: IUserInfo) {
 		: {
 			data: {
 				preferences: {
-					avatar: 'default.png'
+					avatar: `${API_CDN.AVATAR}/default.png`,
+					banner: `${API_CDN.AVATAR}/default.png`
 				},
 				player_name: randomNameGenerator(),
 			}
@@ -150,7 +151,7 @@ export default async function game(roomId: string, user: IUserInfo) {
 				${roomInfos.data!.players[0].player_name}
 				</div>
 				<div id="player1Avatar" class="w-16 h-16 rounded-full border-2 border-white bg-purple-300">
-				<img src=${API_CDN.AVATAR}/${leftOpponentInfos?.data?.preferences?.avatar} alt="avatar" class="w-full h-full rounded-full">
+				<img src=${leftOpponentInfos?.data?.preferences?.avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player1Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
 					<div>Score: <span class="relative bottom-0 text-8xl" id="p1Score">0</span></div>
@@ -168,7 +169,7 @@ export default async function game(roomId: string, user: IUserInfo) {
 					${(roomInfos.data!.players[1] ? roomInfos.data!.players[1].player_name : 'Waiting for opponent')}
 				</div>
 				<div id="player2Avatar" class="w-16 h-16 rounded-full border-2 border-white bg-orange-300">
-					<img src=${API_CDN.AVATAR}/${rightOpponentInfos?.data?.preferences?.avatar} alt="avatar" class="w-full h-full rounded-full">
+					<img src=${rightOpponentInfos?.data?.preferences?.avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player2Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
 					<div>Score: <span class="relative bottom-0 text-8xl" id="p2Score">0</span></div>
