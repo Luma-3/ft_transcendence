@@ -106,7 +106,7 @@ export const UserCreateRedis = Type.Object({
 });
 
 export const UserPasswordUpdateBody = Type.Object({
-  oldPassword: Type.String(),
+  oldPassword: Type.Optional(passwordField),
   password: passwordField
 });
 export type UserPasswordUpdateBodyType = Static<typeof UserPasswordUpdateBody>;

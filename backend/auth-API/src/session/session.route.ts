@@ -1,6 +1,6 @@
 // import { UAParser } from "ua-parser-js";
 import { UnauthorizedError } from '@transcenduck/error'
-import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+import { FastifyPluginAsyncTypebox, Type } from "@fastify/type-provider-typebox";
 
 import { SessionPostBody, UserHeaderAuthentication, FamilyId, FamiliesResponse, twoFaBody } from "./session.schema.js";
 
@@ -16,9 +16,9 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       description: 'This endpoint allows users to create a new session by providing their credentials.',
       tags: ['Sessions'],
       body: SessionPostBody,
-      // headers: Type.Object({
-      //   "User-Agent:": Type.String()
-      // }),
+      headers: Type.Object({
+        "x-forwarded-for": Type.String()
+      }),
       response: {
         201: ResponseSchema(undefined, 'Session created successfully')
       }
@@ -30,10 +30,10 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     // const parser = new UAParser(userAgent);
 
     const { accessToken, refreshToken } = await SessionService.login({username, password}, {
-      ip_address: req.ip,
+      ip_address: req.headers['x-forwarded-for'] ?? req.ip,
       // user_agent: parser.getBrowser().toString(),
       // device_id: parser.getDevice().toString(),
-      user_agent: req.headers['user-agent'] || 'unknown',
+      user_agent: req.headers['user-agent'] ?? 'unknown',
       device_id: 'unknown',
 
     }, false);

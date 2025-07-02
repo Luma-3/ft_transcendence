@@ -259,15 +259,17 @@ export class UserService {
 
   static async updateUserPassword(
     id: string,
-    oldPassword: string,
+    oldPassword: string | undefined,
     newPassword: string,
   ): Promise<UserBaseType> {
     {
       const user = await userModelInstance.findByID(id, ['password'])
       if (!user) throw new NotFoundError("User");
-
-      const isValid = await comparePassword(oldPassword, user.password!);
-      if (!isValid) throw new UnauthorizedError("Invalid old password");
+      if (user.password) {
+        if (!oldPassword) throw new UnauthorizedError("Old password is required");
+        const isValid = await comparePassword(oldPassword, user.password!);
+        if (!isValid) throw new UnauthorizedError("Invalid old password");
+      }
     }
 
     const hash_pass = await hashPassword(newPassword);
