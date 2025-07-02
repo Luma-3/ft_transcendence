@@ -72,7 +72,7 @@ ${backButton()}
 					</div>
 				</div>
 			</div>
-			${searchBar()}
+			${searchBar("search-friends", "Search for a friend")}
 			<div id="all-users-div" class="p-6">
 				${await allUsersList()}
 			</div>
@@ -80,7 +80,7 @@ ${backButton()}
 
 
 
-	<!-- Section Block List (pleine largeur) -->
+	<!-- Section Blocked List User -->
 		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl">
 			<div class="bg-gradient-to-r from-dprimary to-dsecondary p-6 text-white">
 				<div class="flex items-center justify-center space-x-3">

@@ -1,5 +1,3 @@
-import { navbar } from "../components/ui/navbar";
-
 import { onKeyDown, onKeyUp } from "../events/game/gameUpdate";
 import { resizeCanvas } from "../events/game/resizeCanvas";
 
@@ -10,20 +8,23 @@ import { getRoomInfos } from "../api/getterGame"
 import { IPlayer, IRoomInfos } from "../interfaces/IGame";
 import { API_CDN } from "../api/routes";
 
-// import { getPlayerInfo, getPlayerOpponentsInfos } from "../api/getterGame";
 import { socket } from "../socket/Socket";
 import { randomNameGenerator } from "../components/utils/randomNameGenerator";
 
 async function showPlayer(playerGameInfos: IPlayer, playerInfo: IUserInfo, color: 'blue' | 'red') {
 
-	return `<div id=${playerGameInfos.user_id} class="flex flex-col p-4 justify-center items-center
-	transition-transform duration-800 ease-in-out">
+return `
+<div id=${playerGameInfos.user_id} class="flex flex-col p-4 justify-center items-center transition-transform duration-800 ease-in-out">
+
 	<div class="flex flex-col justify-center items-center">
+
 		<img src=${API_CDN.AVATAR}/${playerInfo.preferences?.avatar} alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
 		${color === 'blue' ? 'border-blue-500' : 'border-red-500'}" />
 		${playerGameInfos.player_name}
-		</div>
-		</div>`;
+
+	</div>
+
+</div>`;
 }
 
 const readyEventListener = (playerId: string) => {
@@ -105,14 +106,7 @@ export default async function game(roomId: string, user: IUserInfo) {
 			</div>`;
 	}
 
-
-
-
-	/**
-	 * Contenu HTML de la page
-	 */
-	// ${navbar(user)}
-	return `
+return `
 <div class="flex flex-col justify-center items-center text-tertiary dark:text-dtertiary">
 	
 	<div id="startGameInfos" class="flex flex-col justify-center items-center pt-10 animate-transition opacity-100 duration-500 ease-in-out">
