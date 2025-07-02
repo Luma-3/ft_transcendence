@@ -8,6 +8,8 @@ export class Paddle extends GameObject implements Rectangle {
   public scale: Vector2 = new Vector2(10, 100); // Width and height of the paddle
   public velocity: Vector2 = new Vector2(0, 0); // Velocity of the paddle movement
 
+  // public readonly speed: number = 10;
+
   private id: string = '';
 
   private readonly speed: number = 300;

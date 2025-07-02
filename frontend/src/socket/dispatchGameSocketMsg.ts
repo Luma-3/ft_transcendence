@@ -10,64 +10,68 @@ import { showGame } from "../events/game/gameShow";
 import { socket } from "../socket/Socket";
 import { drawExplosion } from "../events/game/gameBallAnimation";
 import { changeScore } from "../events/game/gameUpdate";
+import { startShapeSparkle } from "../components/game/trailBall";
 
 export type GameSnapshot = {
-	serverTime: number;
-	GameData: IGameObject[];
+  serverTime: number;
+  GameData: IGameObject[];
 }
 
 export let clockoffset = 0;
 export let gameSnapshots: GameSnapshot[] = [];
 
 function changeStatusPlayer(roomData: IRoomData) {
-	for (const player of roomData.players) {
-		if (player) {
-			const ready = player.ready ? "ready" : "not-ready";
-			if (ready === "ready") {
-				const playerElement = document.getElementById(player.player_name);
-				playerElement?.classList.add("animate-bounce");
-			}
-		}
-	}
+  for (const player of roomData.players) {
+    if (player) {
+      const ready = player.ready ? "ready" : "not-ready";
+      if (ready === "ready") {
+        const playerElement = document.getElementById(player.player_name);
+        playerElement?.classList.add("animate-bounce");
+      }
+    }
+  }
 }
 
 function launchGame(roomId: string) {
-	console.log("Launching game for room:", roomId);
-	//TODO: Animate 3,2,1....Go
-	socket?.send(JSON.stringify({
-		action: "game",
-		payload: {
-			type: 'startGame',
-			data: {
-				roomId: roomId,
-			}
-		}
-	}));
+  console.log("Launching game for room:", roomId);
+  //TODO: Animate 3,2,1....Go
+  socket?.send(JSON.stringify({
+    action: "game",
+    payload: {
+      type: 'startGame',
+      data: {
+        roomId: roomId,
+      }
+    }
+  }));
 }
 
 export async function dispatchGameSocketMsg(payload: any) {
-	switch (payload.action) {
-		case 'roomReady':
-			renderGame(payload.data);
-			break;
-		case 'playerReady':
-			changeStatusPlayer(payload.data);
-			break;
-		case 'Starting':
-			showGame();
-			break;
-		case 'score':
-			console.log("dispatchGameSocketMsg", payload);
-			drawExplosion(payload.data.ball.position.x, payload.data.ball.position.y);
-			changeScore(payload.data.player);
-			break;
-		case 'snapshot':
-			drawGame(payload.data);
-			break;
-		case 'end':
-			DisplayGameWinLose(payload.data.player);
-			break;
-		default:
-			break;
-	}
+  switch (payload.action) {
+    case 'roomReady':
+      renderGame(payload.data);
+      break;
+    case 'playerReady':
+      changeStatusPlayer(payload.data);
+      break;
+    case 'Starting':
+      showGame();
+      const canvas = document.getElementById("gamePong") as HTMLCanvasElement;
+      const ctx = canvas.getContext("2d");
+      startShapeSparkle(ctx!, canvas);
+      break;
+    case 'score':
+      console.log("dispatchGameSocketMsg", payload);
+      drawExplosion(payload.data.ball.position.x, payload.data.ball.position.y);
+      changeScore(payload.data.player);
+      break;
+    case 'snapshot':
+      drawGame(payload.data);
+      break;
+    case 'end':
+      DisplayGameWinLose(payload.data.player);
+      break;
+    default:
+      break;
+  }
 }

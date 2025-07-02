@@ -7,11 +7,14 @@ import { IOInterface } from "../utils/IOInterface.js";
 
 export class Pong extends GameObject {
   private ball: Ball | null = null;
+  private paddle1: Paddle | null = null;
+  private paddle2: Paddle | null = null;
 
-
-  constructor(ball: Ball) {
+  constructor(ball: Ball, paddle1: Paddle, paddle2: Paddle) {
     super();
     this.ball = ball;
+    this.paddle1 = paddle1;
+    this.paddle2 = paddle2;
   }
 
   update() {
@@ -47,9 +50,9 @@ export class Pong extends GameObject {
     if (!goal) return; // No goal detected
     this.ball.enabled = false;
     if (goal === 'left') {
-      SceneContext.get().players[0].addScore();
-    } else if (goal === 'right') {
       SceneContext.get().players[1].addScore();
+    } else if (goal === 'right') {
+      SceneContext.get().players[0].addScore();
     }
     const payload = {
       action: 'score',
@@ -65,7 +68,7 @@ export class Pong extends GameObject {
       return;
     }
 
-    this.ball.startPosition(new Vector2(400, 300));
+    this.ball.resetBall(goal === 'left' ? this.paddle1 : this.paddle2);
     this.ball.enabled = true;
   }
 }
@@ -74,14 +77,17 @@ export const game = () => {
   console.log("Game started");
 
   const ball = GameObject.instantiate(Ball);
-  GameObject.instantiate(Pong, ball); // Instantiate the Pong game object
-  GameObject.instantiate(Paddle, SceneContext.get().players[0].user_id, new Vector2(50, 250)); // Left paddle
+
+  const paddle1 = GameObject.instantiate(Paddle, SceneContext.get().players[0].user_id, new Vector2(50, 250)); // Left paddle
+  let paddle2: Paddle;
   if (SceneContext.get().gameType === "local" || SceneContext.get().gameType === "ai") {
-    GameObject.instantiate(Paddle, 'other', new Vector2(750, 250)); // Right paddle for local game
+    paddle2 = GameObject.instantiate(Paddle, 'other', new Vector2(750, 250)); // Right paddle for local game
   }
   else {
-    GameObject.instantiate(Paddle, SceneContext.get().players[1].user_id, new Vector2(750, 250)); // Right paddle for online game
+    paddle2 = GameObject.instantiate(Paddle, SceneContext.get().players[1].user_id, new Vector2(750, 250)); // Right paddle for online game
   }
+  GameObject.instantiate(Pong, ball, paddle1, paddle2); // Instantiate the Pong game object
+
   SceneContext.get().inputManager.start(); // Start the input manager
   SceneContext.get().loopManager.start(); // Start the game loop
 }

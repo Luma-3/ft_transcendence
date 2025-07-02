@@ -7,15 +7,12 @@ import { Paddle } from "./Paddle.js";
 export class Ball extends GameObject implements Circle {
   private velocity: Vector2 = new Vector2(-1, 1);
 
-  public position: Vector2 = new Vector2(0, 0);
+  public position: Vector2 = new Vector2(400, 300);
   public readonly radius: number = 10;
 
-  private readonly minSpeed: number = 100;
-  private readonly maxSpeed: number = 500;
+  private readonly minSpeed: number = 150;
+  private readonly maxSpeed: number = 400;
 
-  onInstantiate(): void {
-    this.startPosition(new Vector2(400, 300));
-  }
 
   update() {
     this.move();
@@ -29,9 +26,9 @@ export class Ball extends GameObject implements Circle {
     };
   }
 
-  onCollision(other: GameObject): void {
+  onCollision(other: GameObject, closestPoint: Vector2): void {
     if (other instanceof Paddle) {
-      this.rebound(other.velocity);
+      this.rebound(other.velocity, closestPoint);
     }
   }
 
@@ -59,23 +56,26 @@ export class Ball extends GameObject implements Circle {
     this.velocity = direction.scale(clampedSpeed);
   }
 
-  startPosition(pos: Vector2) {
-    this.position = pos;
+  resetBall(Loser: Paddle) {
+    this.position = new Vector2(400, 300);
+    const dir = Loser.position.sub(this.position).normalize();
+    this.velocity = dir;
   }
 
-
-  rebound(paddle_vec: Vector2) {
-    this.velocity = this.velocity.multiply(new Vector2(-1, 1));
-
+  rebound(paddle_vec: Vector2, closestPoint: Vector2) {
+    const collisionNormal = this.position.sub(closestPoint).normalize();
+    console.log("Rebound with paddle, collision normal:", collisionNormal);
+    this.velocity = this.velocity.sub(collisionNormal.scale(this.velocity.dot(collisionNormal) * 2));
+    this.position = closestPoint.add(collisionNormal.scale(this.radius + 1)); // Move the ball out of the paddle
     // Ensure the ball has no stick to the paddle
     const paddleDirection = paddle_vec.normalize();
     const paddleSpeed = paddle_vec.magnitude();
 
 
-    const dir = this.velocity.normalize().add(paddleDirection).normalize();
+    const dir = this.velocity.normalize().add(paddleDirection.scale(0.2)).normalize();
     const currentSpeed = this.velocity.magnitude();
 
-    const newSpeed = Math.max(this.minSpeed, Math.min(currentSpeed + (paddleSpeed * 0.2), this.maxSpeed));
+    const newSpeed = Math.max(this.minSpeed, Math.min(currentSpeed + (paddleSpeed * 0.1), this.maxSpeed));
 
     const newVelocity = dir.scale(newSpeed);
 
@@ -90,8 +90,6 @@ export class Ball extends GameObject implements Circle {
       postDirection.y = postDirection.y >= 0 ? remaining : -remaining;
     }
     this.velocity = postDirection.scale(postSpeed);
-
-    this.position = this.position.add(this.velocity.normalize().scale(this.radius * 0.2)); // Move the ball away from the paddle to prevent sticking
   }
 
   snapshot() {

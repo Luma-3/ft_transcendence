@@ -17,9 +17,10 @@ export class CollisionSystem {
         const colliderB = objB.collider();
 
         if (!colliderA || !colliderB) continue; // Skip if either object has no collider
-        if (this.checkCollision(colliderA, colliderB)) {
-          objA.onCollision(objB);
-          objB.onCollision(objA);
+        const vec = this.checkCollision(colliderA, colliderB);
+        if (vec) {
+          objA.onCollision(objB, vec);
+          objB.onCollision(objA, vec);
         }
       }
     }
@@ -33,16 +34,16 @@ export class CollisionSystem {
     return "scale" in collider && "position" in collider;
   }
 
-  public static checkCollision(colliderA: Circle | Rectangle, colliderB: Circle | Rectangle): boolean {
+  public static checkCollision(colliderA: Circle | Rectangle, colliderB: Circle | Rectangle): Vector2 | null {
     if (this.isCircle(colliderA) && this.isRectangle(colliderB)) {
       return this.circleIntersectRect(colliderA, colliderB);
     } else if (this.isRectangle(colliderA) && this.isCircle(colliderB)) {
       return this.circleIntersectRect(colliderB, colliderA);
     }
-    return false;
+    return null;
   }
 
-  public static circleIntersectRect(circle: Circle, rect: Rectangle): boolean {
+  public static circleIntersectRect(circle: Circle, rect: Rectangle): Vector2 | null {
     const closest = new Vector2(
       Math.max(rect.position.x - rect.scale.x / 2, Math.min(circle.position.x, rect.position.x + rect.scale.x / 2)),
       Math.max(rect.position.y - rect.scale.y / 2, Math.min(circle.position.y, rect.position.y + rect.scale.y / 2))
@@ -53,6 +54,6 @@ export class CollisionSystem {
       circle.position.y - closest.y
     );
 
-    return distance.dot(distance) < (circle.radius * circle.radius);
+    return ((distance.dot(distance) <= (circle.radius * circle.radius)) ? closest : null);
   }
 }

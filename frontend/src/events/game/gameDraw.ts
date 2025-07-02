@@ -1,3 +1,4 @@
+import { updatePointerCoordinates } from "../../components/game/trailBall";
 import { IBall, IPaddle, IGameObject, Vector2 } from "../../interfaces/IGame";
 // import { drawExplosion } from "./gameBallAnimation";
 // import { socket } from "../socket/Socket";
@@ -53,28 +54,64 @@ export const FRAME = 30;
 // };
 
 export function drawGame(gameData: IGameObject[]) {
-	
-	const game = document.getElementById("gamePong") as HTMLCanvasElement;
-	if (!game) return;
-	const ctx = game.getContext("2d");
-	if (!ctx) return;
 
-	ctx.clearRect(0, 0, game.width, game.height);
-	gameData.forEach((gameObject) => {
-		switch (gameObject.type) {
-			case 'ball': ;
-				// console.log("Ball Velocity:", (<IBall>gameObject).velocity);
-				drawBall(ctx, (<IBall>gameObject).position, (<IBall>gameObject).radius);
-				break;
-			case 'paddle':
-				drawPaddle(ctx, (<IPaddle>gameObject).position, (<IPaddle>gameObject).scale, 'red'); // TODO : color
-				break;
-			default:
-				console.warn("Unknown game object type:", gameObject.type);
-		}
-	});
+  const game = document.getElementById("gamePong") as HTMLCanvasElement;
+  if (!game) return;
+  const ctx = game.getContext("2d");
+  if (!ctx) return;
 
-	ctx.save();
+  ctx.clearRect(0, 0, game.width, game.height);
+
+  ctx.fillStyle = "rgba(178, 157, 210, 0.4)";
+  ctx.fillRect(0, 0, game.width, game.height);
+
+  ctx.beginPath();
+  ctx.setLineDash([10, 15]);
+  ctx.strokeStyle = 'white';
+  ctx.lineWidth = 5;
+  ctx.moveTo(game.width / 2, 0);
+  ctx.lineTo(game.width / 2, game.height);
+  ctx.stroke();
+  ctx.closePath();
+  ctx.setLineDash([]);
+
+  ctx.beginPath();
+  ctx.strokeStyle = 'white';
+  ctx.lineWidth = 1;
+  ctx.moveTo(50, 0);
+  ctx.lineTo(50, game.height);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.strokeStyle = 'white';
+  ctx.lineWidth = 1;
+  ctx.moveTo(750, 0);
+  ctx.lineTo(750, game.height);
+  ctx.stroke();
+
+
+
+  gameData.forEach((gameObject) => {
+    switch (gameObject.type) {
+      case 'ball': ;
+        // console.log("Ball Velocity:", (<IBall>gameObject).velocity);
+        drawBall(ctx, (<IBall>gameObject).position, (<IBall>gameObject).radius);
+        break;
+      case 'paddle':
+        ctx.fillStyle = "white";
+        const pos: Vector2 = {
+          x: (<IPaddle>gameObject).position.x - (<IPaddle>gameObject).scale.x / 2,
+          y: (<IPaddle>gameObject).position.y - (<IPaddle>gameObject).scale.y / 2
+        };
+        drawRoundedRect(ctx, pos, (<IPaddle>gameObject).scale, (<IPaddle>gameObject).scale.x / 2);
+        // drawPaddle(ctx, (<IPaddle>gameObject).position, (<IPaddle>gameObject).scale, 'red'); // TODO : color
+        break;
+      default:
+        console.warn("Unknown game object type:", gameObject.type);
+    }
+  });
+
+  ctx.save();
 
 }
 
@@ -106,17 +143,34 @@ export function drawGame(gameData: IGameObject[]) {
 // }
 
 function drawBall(ctx: CanvasRenderingContext2D, pos: Vector2, radius: number) {
-	ctx.beginPath();
-	ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
-	ctx.fillStyle = "yellow";
-	ctx.fill();
-	ctx.closePath();
+  ctx.beginPath();
+  ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+  ctx.fillStyle = "yellow";
+  ctx.fill();
+  ctx.closePath();
+  updatePointerCoordinates(pos.x, pos.y);
 }
 
-function drawPaddle(ctx: CanvasRenderingContext2D, pos: Vector2, scale: Vector2, color: string) {
-	ctx.beginPath();
-	ctx.rect(pos.x - scale.x / 2, pos.y - scale.y / 2, scale.x, scale.y);
-	ctx.fillStyle = color;
-	ctx.fill();
-	ctx.closePath();
+// function drawPaddle(ctx: CanvasRenderingContext2D, pos: Vector2, scale: Vector2, color: string) {
+//   ctx.beginPath();
+//   ctx.rect(pos.x - scale.x / 2, pos.y - scale.y / 2, scale.x, scale.y);
+//   ctx.fillStyle = color;
+//   ctx.fill();
+//   ctx.closePath();
+// }
+
+
+function drawRoundedRect(ctx: CanvasRenderingContext2D, pos: Vector2, scale: Vector2, radius: number) {
+  ctx.beginPath();
+  ctx.moveTo(pos.x + radius, pos.y);
+  ctx.lineTo(pos.x + scale.x - radius, pos.y);
+  ctx.quadraticCurveTo(pos.x + scale.x, pos.y, pos.x + scale.x, pos.y + radius);
+  ctx.lineTo(pos.x + scale.x, pos.y + scale.y - radius);
+  ctx.quadraticCurveTo(pos.x + scale.x, pos.y + scale.y, pos.x + scale.x - radius, pos.y + scale.y);
+  ctx.lineTo(pos.x + radius, pos.y + scale.y);
+  ctx.quadraticCurveTo(pos.x, pos.y + scale.y, pos.x, pos.y + scale.y - radius);
+  ctx.lineTo(pos.x, pos.y + radius);
+  ctx.quadraticCurveTo(pos.x, pos.y, pos.x + radius, pos.y);
+  ctx.closePath();
+  ctx.fill();
 }

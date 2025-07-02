@@ -1,5 +1,6 @@
 import { SceneContext } from './runtime/SceneContext.js';
 import { Circle, Rectangle } from './physics/Shapes.js';
+import { Vector2 } from './physics/Vector.js';
 
 
 export abstract class GameObject {
@@ -24,7 +25,7 @@ export abstract class GameObject {
   update(): void { };
   onInstantiate(): void { }
   snapshot(): any { return {}; }
-  onCollision(other: GameObject): void { other; }
+  onCollision(other: GameObject, closestPoint: Vector2): void { other; closestPoint; }
 
   // abstract destroy(): void;
 };
