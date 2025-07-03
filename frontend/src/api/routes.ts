@@ -67,7 +67,7 @@ export const API_CDN = {
 export const MODULE_TWOFA = {
   RESEND_EMAIL: `${SERVICES.TWOFA}/resendVerifEmail`,
   VERIFY: {
-      EMAIL: `${SERVICES.TWOFA}/verifyEmail`,
-      TWOFA: `${SERVICES.TWOFA}/verifyCode`,
+      EMAIL: `${SERVICES.TWOFA}/email`,
+      TWOFA: `${SERVICES.TWOFA}/code`,
   },
 }

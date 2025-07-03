@@ -1,4 +1,4 @@
-export default twoFaEmail = (trad, code) => {
+export default function verifyEmail(trad: any, url: string, data: string) {
 	return `
 		<body 
 			style="
@@ -43,7 +43,7 @@ export default twoFaEmail = (trad, code) => {
 						text-align: center;
 					"
 				>
-					${trad['verificationIntro']} <strong>${trad['verificationCode']}</strong> :
+					${trad['verificationIntro']} <strong>${trad['verificationLink']}</strong> :
 				</p>
 
 				<div
@@ -52,7 +52,8 @@ export default twoFaEmail = (trad, code) => {
 						text-align: center;
 					"
 				>
-					<span
+					<a
+						href="${url}/verifyEmail?value=${data}"
 						style="
 							display: inline-block;
 							padding: 20px 40px;
@@ -65,8 +66,8 @@ export default twoFaEmail = (trad, code) => {
 							box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 						"
 					>
-						${code}
-					</span>
+						${trad['verifyButton']}
+					</a>
 				</div>
 
 				<p
@@ -76,7 +77,7 @@ export default twoFaEmail = (trad, code) => {
 						text-align: center;
 					"
 				>
-					${trad['codeValadity']}
+					${trad['linkValidity']}
 				</p>
 
 				<p
