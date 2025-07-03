@@ -74,17 +74,15 @@ export class Pong extends GameObject {
 }
 
 export const game = () => {
-  console.log("Game started");
-
   const ball = GameObject.instantiate(Ball);
 
-  const paddle1 = GameObject.instantiate(Paddle, SceneContext.get().players[0].user_id, new Vector2(50, 250)); // Left paddle
+  const paddle1 = GameObject.instantiate(Paddle, SceneContext.get().players[1].user_id, new Vector2(50, 250)); // Left paddle
   let paddle2: Paddle;
   if (SceneContext.get().gameType === "local" || SceneContext.get().gameType === "ai") {
     paddle2 = GameObject.instantiate(Paddle, 'other', new Vector2(750, 250)); // Right paddle for local game
   }
   else {
-    paddle2 = GameObject.instantiate(Paddle, SceneContext.get().players[1].user_id, new Vector2(750, 250)); // Right paddle for online game
+    paddle2 = GameObject.instantiate(Paddle, SceneContext.get().players[0].user_id, new Vector2(750, 250)); // Right paddle for online game
   }
   GameObject.instantiate(Pong, ball, paddle1, paddle2); // Instantiate the Pong game object
 

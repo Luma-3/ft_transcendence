@@ -1,5 +1,5 @@
 export interface IRoomInfos {
-  room_id: string,
+  id: string,
   game_type: string,
   players: IPlayer[],
   status: string,

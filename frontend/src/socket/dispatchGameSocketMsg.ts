@@ -4,13 +4,9 @@ import { IGameObject, IRoomData } from "../interfaces/IGame";
 import { DisplayGameWinLose } from "../events/game/gameWin";
 import { showGame } from "../events/game/gameShow";
 
-// import { FRAME } from "../game/gameDraw";
-// import { alertGameReady } from "../components/ui/alert/alertGameReady";
 
-import { socket } from "../socket/Socket";
 import { drawExplosion } from "../events/game/gameBallAnimation";
 import { changeScore } from "../events/game/gameUpdate";
-import { startShapeSparkle } from "../components/game/trailBall";
 
 export type GameSnapshot = {
   serverTime: number;
@@ -56,11 +52,8 @@ export async function dispatchGameSocketMsg(payload: any) {
     case 'playerReady':
       changeStatusPlayer(payload.data);
       break;
-    case 'Starting':
+    case 'starting':
       showGame();
-      const canvas = document.getElementById("gamePong") as HTMLCanvasElement;
-      const ctx = canvas.getContext("2d");
-      startShapeSparkle(ctx!, canvas);
       game = new Game("gamePong");
       break;
     case 'score':

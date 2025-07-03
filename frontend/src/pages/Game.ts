@@ -16,7 +16,7 @@ import { randomNameGenerator } from "../components/utils/randomNameGenerator";
 
 async function showPlayer(playerGameInfos: IPlayer, playerInfo: IUserInfo, color: 'blue' | 'red') {
 
-	return `<div id=${playerGameInfos.user_id} class="flex flex-col p-4 justify-center items-center
+  return `<div id=${playerGameInfos.user_id} class="flex flex-col p-4 justify-center items-center
 	transition-transform duration-800 ease-in-out">
 	<div class="flex flex-col justify-center items-center">
 		<img src=${API_CDN.AVATAR}/${playerInfo.preferences?.avatar} alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
@@ -27,16 +27,16 @@ async function showPlayer(playerGameInfos: IPlayer, playerInfo: IUserInfo, color
 }
 
 const readyEventListener = (playerId: string) => {
-	const payload = {
-		service: 'game',
-		scope: 'room',
-		target: playerId,
-		payload: {
-			action: 'ready',
-			data: {}
-		}
-	}
-	socket!.send(JSON.stringify(payload));
+  const payload = {
+    service: 'game',
+    scope: 'room',
+    target: playerId,
+    payload: {
+      action: 'ready',
+      data: {}
+    }
+  }
+  socket!.send(JSON.stringify(payload));
 }
 
 export default async function game(roomId: string, user: IUserInfo) {
@@ -48,54 +48,54 @@ export default async function game(roomId: string, user: IUserInfo) {
    */
   window.addEventListener('resize', resizeCanvas)
 
-	onkeyup = (event) => {
-		onKeyUp(event, user.id);
-	}
+  onkeyup = (event) => {
+    onKeyUp(event, user.id);
+  }
 
-	/**
-	 * ! Evenement clavier lors de l'affichage du VS (Room page)
-	 */
-	onkeydown = (event) => {
-		const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
-		/**
-		 * Pour le premier evenement clavier, je ping le serveur pour 
-		 * lui signifier que le joueur a bien rejoint la Room
-		*/
+  /**
+   * ! Evenement clavier lors de l'affichage du VS (Room page)
+   */
+  onkeydown = (event) => {
+    const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
+    /**
+     * Pour le premier evenement clavier, je ping le serveur pour 
+     * lui signifier que le joueur a bien rejoint la Room
+    */
 
-		if (divGame.classList.contains("opacity-0")) {
-			readyEventListener(roomId);
-		}
+    if (divGame.classList.contains("opacity-0")) {
+      readyEventListener(roomId);
+    }
 
-		onKeyDown(event, user.id);
-	}
-
-
-	/**
-	 * Recuperation des tous les joueurs present dans le Room pour afficher
-	 * tout les adversaires du joueur (tournois)
-	 */
-	const roomInfos = await getRoomInfos(roomId);
-
-	const leftOpponentInfos = await getOtherUserInfo(roomInfos.data!.players[0].user_id);
-	const rightOpponentInfos = (roomInfos.data!.players.length > 1 && roomInfos.data!.players[1].user_id !== "other")
-		? await getOtherUserInfo(roomInfos.data!.players[1].user_id)
-		: {
-			data: {
-				preferences: {
-					avatar: 'default.png'
-				},
-				player_name: randomNameGenerator(),
-			}
-		};
+    onKeyDown(event, user.id);
+  }
 
 
-	let rightOpponentDiv = '';
+  /**
+   * Recuperation des tous les joueurs present dans le Room pour afficher
+   * tout les adversaires du joueur (tournois)
+   */
+  const roomInfos = await getRoomInfos(roomId);
 
-	const leftOpponentDiv = await showPlayer(roomInfos.data!.players[0], leftOpponentInfos?.data, 'blue');
-	if (roomInfos.data!.players.length > 1) {
-		rightOpponentDiv = await showPlayer(roomInfos.data!.players[1], rightOpponentInfos?.data, 'red');
-	} else {
-		rightOpponentDiv = `<div id="otherPlayerDiv" class="flex flex-col p-4 justify-center items-center
+  const rightOpponentInfos = await getOtherUserInfo(roomInfos.data!.players[1].user_id);
+  const leftOpponentInfos = (roomInfos.data!.players.length > 1 && roomInfos.data!.players[0].user_id !== "other")
+    ? await getOtherUserInfo(roomInfos.data!.players[0].user_id)
+    : {
+      data: {
+        preferences: {
+          avatar: 'default.png'
+        },
+        player_name: randomNameGenerator(),
+      }
+    };
+
+
+  let rightOpponentDiv = '';
+
+  const leftOpponentDiv = await showPlayer(roomInfos.data!.players[0], leftOpponentInfos?.data, 'blue');
+  if (roomInfos.data!.players.length > 1) {
+    rightOpponentDiv = await showPlayer(roomInfos.data!.players[1], rightOpponentInfos?.data, 'red');
+  } else {
+    rightOpponentDiv = `<div id="otherPlayerDiv" class="flex flex-col p-4 justify-center items-center
 		transition-transform duration-800 ease-in-out">
 		<div class="flex flex-col justify-center items-center">
 			<img src=${API_CDN.AVATAR}/default.png alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
@@ -103,16 +103,16 @@ export default async function game(roomId: string, user: IUserInfo) {
 			${randomNameGenerator()}
 			</div>
 			</div>`;
-	}
+  }
 
 
 
 
-	/**
-	 * Contenu HTML de la page
-	 */
-	// ${navbar(user)}
-	return `
+  /**
+   * Contenu HTML de la page
+   */
+  // ${navbar(user)}
+  return `
 <div class="flex flex-col justify-center items-center text-tertiary dark:text-dtertiary">
 	
 	<div id="startGameInfos" class="flex flex-col justify-center items-center pt-10 animate-transition opacity-100 duration-500 ease-in-out">
@@ -187,23 +187,23 @@ export default async function game(roomId: string, user: IUserInfo) {
 
 // <!-- Score principal -->
 // <div class="flex flex-col text-2xl p-4 justify-between items-center" >
-	
+
 // 	Score
-	
+
 // </div>
 // <div class="flex flex-row h-full w-full title-responsive-size justify-center items-center" >
-	
+
 // 	<div id="user1Score" class="mx-2" >
-		
+
 // 		0
-	
+
 // 	</div>
 // 	-
-	
+
 // 	<div id="user2Score" class="mx-2" >
-	
+
 // 		0
-	
+
 // 	</div>
 
 // </div>

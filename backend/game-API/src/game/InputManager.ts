@@ -10,9 +10,9 @@ export class InputManager {
     console.log("InputManager: onInstantiate", players);
     if (SceneContext.get().gameType === "local") {
 
-      this.playersInput.set(players[0].user_id, Vector2.zero());
+      this.playersInput.set(players[1].user_id, Vector2.zero());
       this.playersInput.set("other", Vector2.zero());
-      IOInterface.subscribe(`ws:game:player:${players[0].user_id}`, handleInput.bind(SceneContext.get()));
+      IOInterface.subscribe(`ws:game:player:${players[1].user_id}`, handleInput.bind(SceneContext.get()));
       return;
     }
     players.forEach(player => {
@@ -29,14 +29,18 @@ export class InputManager {
 function handleInput(message: string, channel: string): void {
   const payload = JSON.parse(message);
   const [, playerId] = channel.split(':').slice(-2);
+
   if (playerId !== payload.user_id) {
     console.warn(`InputManager: Player ID mismatch. Expected ${playerId}, got ${payload.user_id}`);
     return; // TODO : stop game
   }
   if (payload.action !== 'input') return;
+
   let movement = payload.data.movement;
   const inputManager = (this as SceneContext).inputManager;
+
   inputManager.get(playerId).y = +movement.up - +movement.down;
+
   if (this.gameType === "local") {
     movement = payload.data.otherMovement;
     inputManager.get("other").y = +movement.up - +movement.down;

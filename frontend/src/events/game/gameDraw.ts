@@ -117,6 +117,7 @@ export class Game {
 
   width: number;
   height: number;
+  private lastTime: number = performance.now();
 
   constructor(canvasId: string) {
     this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
@@ -183,6 +184,16 @@ export class Game {
       }
     });
   }
+
+
+  // TODO : // Work  for continuous animation (interpolation)
+  // loop() {
+  //   const currentTime = performance.now();
+  //   const deltaTime = (currentTime - this.lastTime) / 1000;
+  //   this.lastTime = currentTime;
+  //   this.clear();
+  //   requestAnimationFrame(() => this.loop());
+  // }
 
 }
 
