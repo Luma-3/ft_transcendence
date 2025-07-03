@@ -10,7 +10,7 @@
 	"get-started": "Commencer !",
 	
 	"lang-choice": "Choisissez votre langue: ",
-	
+	"warning-language-default": "Cette langue sera définie comme langue par défaut pour la navigation et votre première connexion",
 	"username": "Nom d'utilisateur",
 	"password": "Mot de passe",
 	"email": "Email",

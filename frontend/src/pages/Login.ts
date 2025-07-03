@@ -2,6 +2,7 @@ import { loginForm } from "../components/ui/form/loginForm";
 import { messageWithLink } from "../components/ui/messageWithLink";
 import { primaryButton } from "../components/ui/buttons/primaryButton";
 import { headerPage } from "../components/ui/headerPage";
+import { animateButton } from "../components/ui/buttons/animateButton";
 
 export function renderLoginPage() {
 return `
@@ -10,13 +11,7 @@ return `
 	${headerPage("login", "public")}
 	${loginForm()}
 	
-	<span>
-	 or 
-	</span>
-	
-	<div class="flex flex-row items-center justify-center mt-4">
-			${primaryButton({ id: "google", text: "Google", weight: "1/2", translate: "google-login", type: "button" })}
-	</div>
+
 	
 	${messageWithLink("no-account", "register", "loadregister")}
 

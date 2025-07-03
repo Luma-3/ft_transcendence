@@ -28,6 +28,12 @@ export function loginForm() {
 			translate: "login",
 			type: "submit",
 		},
+		button2: {
+			id: "google",
+			text: "google-login",
+			translate: "google-login",
+			type: "button",
+		},
 	})}
 	</div>`;
 }

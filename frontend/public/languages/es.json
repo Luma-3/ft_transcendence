@@ -9,6 +9,7 @@
 	"save": "Guardar",
 	"get-started": "¡Comienza!",
 	
+	"warning-language-default": "Este idioma se establecerá como predeterminado para la navegación y tu primer inicio de sesión",
 	"lang-choice": "Elige tu idioma: ",
 	
 	"username": "Nombre de usuario",

@@ -2,7 +2,7 @@ import { fetchApiWithNoError } from "./fetch";
 import { API_SESSION } from "./routes";
 
 export async function fetchToken() {
-
+	console.log("fetchToken called");
 	let response;
 	 response = await fetchApiWithNoError(API_SESSION.VERIFY_ACCESS, { method: 'GET' });
 	if (response.status === "success") {

@@ -21,7 +21,7 @@ return `
 
 		${animateButton("sendEmail", "Too late ? Not receive ?", "Resend-Email")}
 		
-		${primaryButton({id: "loaddashboard",weight: "1/2", text:"Fuck verify, let's go to dashboard" })}
+		${primaryButton({id: "loadlogin",weight: "1/2", text:"Fuck verify, let's go to dashboard" })}
 	
 	</div>
 </div>`

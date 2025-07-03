@@ -1,5 +1,4 @@
 import { IUserInfo } from '../../interfaces/IUser';
-import { API_CDN } from '../../api/routes';
 import { IOtherUser } from '../../interfaces/IUser';
 
 // let userNotification: boolean = false;
@@ -33,11 +32,11 @@ function UserMenuOptions() {
 	const listOption = [
 		{ value: "profile", icon: `duckProfileCrop.png` },
 		{ value: "friends", icon: `duckSocialCrop.png` },
-		{ value: "settings", icon: `duckSettingsCrop2.png` },
+		{ value: "settings", icon: `duckSettingsCrop.png` },
 	];
 	const allOptions = listOption.map(element => {
 		return `<li>
-					<button id="load${element.value}" class="flex flex-row w-full mt-0.5 h-12 items-center overflow-hidden  transition-all duration-300 ease-in-out
+					<button id="load${element.value}" class="flex flex-row w-full mt-0.5 h-15 items-center overflow-hidden  transition-all duration-300 ease-in-out
 					 hover:bg-primary dark:hover:bg-myblack hover:shadow-lg transform hover:scale-[1.02]
 					 bg-gradient-to-r from-transparent via-transparent to-gray-100 dark:to-gray-800">
 
