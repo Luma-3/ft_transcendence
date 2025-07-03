@@ -6,11 +6,13 @@ import { UserCreateBodyType, UserBaseType, UserCreateBodyInternalType, User2faSt
 import { PreferencesBaseType } from "../preferences/preferences.schema.js";
 import { knexInstance, Knex } from "../utils/knex.js";
 import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS, userModelInstance } from "./user.model.js"
-import { preferencesModelInstance } from "../preferences/preferences.model.js";
+import { PREFERENCES_PRIVATE_COLUMNS, preferencesModelInstance } from "../preferences/preferences.model.js";
 
 import fetch from "node-fetch";
 import https from "https"
 import { redisPub, redisCache } from "../utils/redis.js";
+
+const httpsAgent = new https.Agent({ rejectUnauthorized: false })
 
 async function verifyConflict(username: string, email: string) {
   const [existingUsername, existingEmail] = await Promise.all([
@@ -46,11 +48,13 @@ export class UserService {
     });
 
     const userID = uuidV4();
-    redisPub.setEx(`users:pendingUser:${userID}`, 660, user);
-    redisPub.setEx(`users:pendingUser:${user_obj.username}`, 660, userID);
 
     // Backdor for development purposes
-    if (process.env.NODE_ENV !== 'development') {
+    // if (process.env.NODE_ENV !== 'development') {
+
+      redisPub.setEx(`users:pendingUser:${userID}`, 660, user);
+      redisPub.setEx(`users:pendingUser:${user_obj.username}`, 660, userID);
+
       await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendVerifEmail`, {
         method: 'POST',
         headers: {
@@ -58,20 +62,21 @@ export class UserService {
           'accept': 'application/json'
         },
         body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang, token: userID }),
-        agent: new https.Agent({ rejectUnauthorized: false })
+        agent: httpsAgent
       }).catch(console.error)
       
       return;
-    }
+    // }
 
+    // this part is called on developpement environnement only
     const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
-      const userID = uuidV4();
       const [user] = await userModelInstance.create(trx, userID, user_obj);
 
       const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
 
       return { ...user, preferences }
     });
+    await userModelInstance.update(userID, { validated: true }, USER_PRIVATE_COLUMNS);
     return transactionData;
   }
   
@@ -121,11 +126,10 @@ export class UserService {
   }
 
   static async enable2FA(userId: string) {
-    const user = await userModelInstance.findByID(userId);
+    const user = await this.getUserByID(userId, true, USER_PRIVATE_COLUMNS, PREFERENCES_PRIVATE_COLUMNS);
     if (!user) {
       throw new NotFoundError('User');
     }
-    await userModelInstance.update(userId, { twofa: true }, USER_PRIVATE_COLUMNS);
 
     await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendCode`, {
       method: 'POST',
@@ -134,16 +138,17 @@ export class UserService {
         'accept': 'application/json'
       },
       body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
-      agent: new https.Agent({ rejectUnauthorized: false })
+      agent: httpsAgent
     }).catch(console.error)
+
+    redisPub.setEx("users:2fa:update:" + user.email , 600, userId);
   }
 
   static async disable2FA(userId: string) {
-    const user = await userModelInstance.findByID(userId);
+    const user = await this.getUserByID(userId, true, USER_PRIVATE_COLUMNS, PREFERENCES_PRIVATE_COLUMNS);
     if (!user) {
       throw new NotFoundError('User');
     }
-    await userModelInstance.update(userId, { twofa: false }, USER_PRIVATE_COLUMNS);
 
     await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendCode`, {
       method: 'POST',
@@ -152,8 +157,20 @@ export class UserService {
         'accept': 'application/json'
       },
       body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
-      agent: new https.Agent({ rejectUnauthorized: false })
+      agent: httpsAgent
     }).catch(console.error)
+
+    redisPub.setEx("users:2fa:update:" + user.email, 600, userId);
+  }
+
+  static async update2FA(userId: string) {
+    const user = await userModelInstance.findByID(userId, USER_PRIVATE_COLUMNS);
+    const twofa = user!.twofa;
+    await userModelInstance.update(userId, { twofa: !twofa }, USER_PRIVATE_COLUMNS);
+    if ((!twofa) === true) {
+      return "2FA successfully enabled !";
+    }
+    return "2FA successfully disabled !"
   }
 
   static async createUserInternal(data: UserCreateBodyInternalType) {
@@ -188,8 +205,8 @@ export class UserService {
   static async deleteUser(id: string) {
     await userModelInstance.delete(id);
     const multi = redisPub.multi();
-    multi.DEL(`users:data:${id}`);
-    multi.DEL(`users:data:${id}:hydrate`);
+    multi.del(`users:data:${id}`);
+    multi.del(`users:data:${id}:hydrate`);
     multi.exec().catch(console.error);
   }
 

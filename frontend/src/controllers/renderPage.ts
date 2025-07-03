@@ -8,7 +8,7 @@ import friends from '../pages/Friends/Friends'
 import game from '../pages/Game'
 import documentation from '../pages/Documentation'
 import verifyEmail from '../pages/VerifyEmail'
-import twoFaPage from '../2FA'
+import twoFaPage, { loginTwoFaPage } from '../2FA'
 
 
 // import welcomeYouPage from '../pages/WelcomeYou';
@@ -27,12 +27,13 @@ import { fetchToken } from '../api/fetchToken'
 
 /**
  * Associe les pages publics aux fonctions de rendu
- */
+*/
 const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
 	'home': home,
 	'login': login,
 	'register': register,
 	'2FA': twoFaPage,
+	'2FALogin': loginTwoFaPage,
 	'documentation': documentation,
 	'verifyEmail': verifyEmail,
 };
@@ -80,7 +81,6 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
 	'settings': settings,
 	'profile': profile,
 	'friends': friends,
-	'2FA': twoFaPage,
 	'documentation': documentation,
 }
 

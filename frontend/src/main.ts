@@ -25,14 +25,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	const page = window.location.pathname.substring(1) || 'home'
 
+	console.log(page);
+		
 	switch (page) {
-
+		
 		case 'error':
 			return renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
-
+			
 		case 'verifyEmail':
 			return verifyEmailUser(new URLSearchParams(window.location.search).get('value') || '');
-
+			
 		default: 
 			const user = await fetchToken();
 			if (user.status === "success") {
@@ -42,7 +44,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 				return renderPrivatePage(page);
 			}
 			return renderPublicPage(page);
-}});
+	}
+});
 
 // * Au changement de page lors de l'utilisation du bouton back/forward
 window.addEventListener('popstate', (event) => {

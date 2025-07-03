@@ -29,7 +29,7 @@ import { blockUser } from '../events/social/blockUser'
 import { cancelFriendInvitation } from '../events/social/cancelInvitation'
 import { refuseFriendInvitation } from '../events/social/refusedInvitation'
 import { unfriendUser } from '../events/social/removeFriend'
-import { disable2FA, enable2FA, submit2FACode } from '../2FA'
+import { disable2FA, enable2FA, submit2FACode, submit2FACodeLogin } from '../2FA'
 import { showNotificationDiv } from '../events/notifications/notificationsDiv'
 import { sendEmail } from '../components/utils/sendEmail'
 
@@ -87,7 +87,6 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	// * -------------- Settings  -------------- */
 	'enable2fa': () => enable2FA(),
 	'disable2fa': () => disable2FA(),
-
 	// * -------------- Chat  -------------- */
 	'send-chat': () => addNewMessage(),
 
@@ -120,7 +119,8 @@ const changeEvent: { [key: string]: () => void } = {
 const submitEvent: { [key: string]: () => void } = {
 	'loginForm': loginUser,
 	'registerForm': registerUser,
-	'2faCodeForm': submit2FACode
+	'2faCodeForm': submit2FACode,
+	'2faCodeLoginForm': submit2FACodeLogin   
 };
 
 /**

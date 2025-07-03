@@ -32,12 +32,12 @@ export class BlockedController {
         const { blockedId } = req.params;
         await BlockedService.blockUser(userId, blockedId);
         const multi = redisCache.multi();
-        multi.DEL(`users:data:${userId}:blocked`);
-        multi.DEL(`users:data:${blockedId}:blocked`);
-        multi.DEL(`users:data:${userId}:blocked:hydrate`);
-        multi.DEL(`users:data:${blockedId}:blocked:hydrate`);
-        multi.DEL(`users:data:${userId}:friends`);
-        multi.DEL(`users:data:${blockedId}:friends`);
+        multi.del(`users:data:${userId}:blocked`);
+        multi.del(`users:data:${blockedId}:blocked`);
+        multi.del(`users:data:${userId}:blocked:hydrate`);
+        multi.del(`users:data:${blockedId}:blocked:hydrate`);
+        multi.del(`users:data:${userId}:friends`);
+        multi.del(`users:data:${blockedId}:friends`);
         multi.exec().catch(console.error);
         return rep.status(201).send({ message: 'Blocked user added successfully' });
     }
@@ -50,12 +50,12 @@ export class BlockedController {
         const { blockedId } = req.params;
         await BlockedService.unBlockUser(userId, blockedId);
         const multi = redisCache.multi();
-        multi.DEL(`users:data:${userId}:blocked`);
-        multi.DEL(`users:data:${blockedId}:blocked`);
-        multi.DEL(`users:data:${userId}:blocked:hydrate`);
-        multi.DEL(`users:data:${blockedId}:blocked:hydrate`);
-        multi.DEL(`users:data:${userId}:friends`);
-        multi.DEL(`users:data:${blockedId}:friends`);
+        multi.del(`users:data:${userId}:blocked`);
+        multi.del(`users:data:${blockedId}:blocked`);
+        multi.del(`users:data:${userId}:blocked:hydrate`);
+        multi.del(`users:data:${blockedId}:blocked:hydrate`);
+        multi.del(`users:data:${userId}:friends`);
+        multi.del(`users:data:${blockedId}:friends`);
         multi.exec().catch(console.error);
         return rep.status(200).send({ message: 'Blocked user removed successfully' });
     }

@@ -36,8 +36,8 @@ export class FriendsController {
 
         await FriendsService.removeBidirectionalFriend(userId, friendId);
         const multi = redisCache.multi();
-        multi.DEL(`users:data:${userId}:friends`);
-        multi.DEL(`users:data:${friendId}:friends`);
+        multi.del(`users:data:${userId}:friends`);
+        multi.del(`users:data:${friendId}:friends`);
         multi.exec().catch(console.error);
         redisPub.publish(`user:gateway:out:${friendId}`, JSON.stringify({
             type: 'friend',
