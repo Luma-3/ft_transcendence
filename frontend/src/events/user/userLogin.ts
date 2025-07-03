@@ -29,16 +29,13 @@ export async function loginUser() {
     method: "POST", 
     body: JSON.stringify(userdata)
   });
-    
+  
   if (response.code === 460) {
-    renderPublicPage('2FA');
-    return;
+    return renderPublicPage('2FALogin');
   } else if (response.code === 461) {
-    renderPublicPage('verifyEmail');
-    return;
+    return renderPublicPage('verifyEmail');
   } else if (response.status === "error") {
-    renderErrorPage(response.code?.toString() || '500', response.message);
-    return;
+    return renderErrorPage(response.code?.toString() || '500', response.message);
   }
 
   /**

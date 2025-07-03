@@ -28,9 +28,9 @@ export class PreferencesService {
   ): Promise<PreferencesBaseType> {
     const [updatePreferences] = await preferencesModelInstance.update(userID, data, columns);
     const multi = redisPub.multi();
-    multi.DEL(`preferences:data:${userID}`);
-    multi.DEL(`preferences:data:${userID}:private`);
-    multi.DEL(`users:data:${userID}:hydrate`);
+    multi.del(`preferences:data:${userID}`);
+    multi.del(`preferences:data:${userID}:private`);
+    multi.del(`users:data:${userID}:hydrate`);
     multi.exec().catch(console.error);
     return updatePreferences;
   }

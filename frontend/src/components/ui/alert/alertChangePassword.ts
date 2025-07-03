@@ -47,7 +47,7 @@ export async function alertChangePassword() {
 			const oldPassword = (document.getElementById('oldPassword') as HTMLInputElement).value;
 			const newPassword = (document.getElementById('newPassword') as HTMLInputElement).value;
 			const repeatNewPassword = (document.getElementById('confirmPassword') as HTMLInputElement).value;
-			if (!oldPassword || !newPassword || !repeatNewPassword) {
+			if (!newPassword || !repeatNewPassword) {
 				messageError = trad['please-enter-all-fields'];
 				Swal.showValidationMessage(messageError);
 			} else if (newPassword !== repeatNewPassword) {
@@ -64,7 +64,7 @@ export async function alertChangePassword() {
 			const response = await fetchApi(API_USER.UPDATE.PASSWORD, {
 				method: "PATCH",
 				body: JSON.stringify({
-					oldPassword: result.value?.oldPassword,
+					oldPassword: result.value?.oldPassword.length > 0 ? result.value?.oldPassword : undefined,
 					password: result.value?.newPassword,
 				}),
 			});

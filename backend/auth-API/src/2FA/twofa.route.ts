@@ -17,6 +17,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 		}
 	}, async(req, rep) => {
 		const { email, lang } = req.body;
+		console.log(`Requete recu, email : ${email}, lang : ${lang};`)
 		await twoFaService.generateSendCode(email, lang);
 		rep.code(200).send({ message: 'OK' });
 	});
@@ -53,7 +54,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 		rep.code(200).send({ message: 'OK' });
 	})
 
-	fastify.get('/2fa/verifyEmail/:token', {
+	fastify.get('/2fa/email/:token', {
     schema: {
       summary: 'Verfiy e-mail user',
       description: 'Endpoint to verify a user email',
@@ -68,7 +69,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     return rep.code(200).send({ message: 'Email verified successfully' });
   });
 
-	fastify.post('/2fa/verifyCode', {
+	fastify.post('/2fa/code', {
 		schema: {
       summary: 'Verfiy code 2fa',
       description: 'Endpoint to verify code send on e-mail for 2fa',
@@ -79,8 +80,8 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       }
     }
 	}, async (req, rep) => {
-		await twoFaService.verifyCode(req.body.code);
-		return rep.code(200).send({ message: 'Code verified successfully' })
+		const message = await twoFaService.verifyCode(req.body.code);
+		return rep.code(200).send({ message: message })
 	})
 }
 

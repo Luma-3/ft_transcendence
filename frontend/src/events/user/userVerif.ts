@@ -1,7 +1,6 @@
 import { fetchApiWithNoError } from "../../api/fetch";
 import { MODULE_TWOFA } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
-import { renderPublicPage } from "../../controllers/renderPage";
 
 export async function verifyEmailUser(token: string) {
 	const response = await fetchApiWithNoError(MODULE_TWOFA.VERIFY.EMAIL + `/${token}`, {
@@ -13,5 +12,5 @@ export async function verifyEmailUser(token: string) {
 	}
 	
 	alertTemporary("success", "Email verified successfully", "dark");
-	renderPublicPage('login')
+	return window.location.href = "/login";
 }

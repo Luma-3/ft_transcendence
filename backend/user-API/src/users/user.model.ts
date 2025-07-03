@@ -42,11 +42,15 @@ export class UserModel {
       query.whereNull('friends.id');
     }
     if(!pending) {
-      // Pending
-      query.leftJoin('pending', function () {
-        this.on('users.id', '=', 'pending.pending_id').andOn('pending.user_id', '=', knexInstance.raw('?', [userId]));
+      query.leftJoin('pending as pending_by', function () {
+        this.on('users.id', '=', 'pending_by.user_id').andOn('pending_by.pending_id', '=', knexInstance.raw('?', [userId]));
       });
-      query.whereNull('pending.id');
+      query.whereNull('pending_by.id');
+
+      query.leftJoin('pending as pending_to', function () {
+        this.on('users.id', '=', 'pending_to.pending_id').andOn('pending_to.user_id', '=', knexInstance.raw('?', [userId]));
+      });
+      query.whereNull('pending_to.id');
     }
     query
       .limit(limit)

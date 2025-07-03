@@ -111,17 +111,18 @@ export class SessionService {
     return { accessToken, refreshToken };
   }
 
-  static async login(data: {username?: string, password?: string, email?: string}, clientInfo: clientInfo, o2aut: boolean = false) {
+  static async login(data: {username?: string, password?: string, email?: string, avatar?: string}, clientInfo: clientInfo, o2aut: boolean = false) {
     let userInfo;
     if (!o2aut && data.password !== undefined) {
       userInfo = await verifyCredentials(data.username!, data.password);
-    }else if(o2aut){
+    } else if (o2aut) {
       userInfo = (await (await fetch(`http://${process.env.USER_IP}/users/internal/oauth2`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: data.username,
           email: data.email,
+          avatar: data.avatar
         })
       })).json()).data;
     }
@@ -131,23 +132,24 @@ export class SessionService {
     const preferences = (await (await fetch(`http://${process.env.USER_IP}/users/${userInfo.id}/preferences`)).json());
     console.log(preferences);
     if (userInfo.validated === false) {
-      twoFaService.generateSendToken(userInfo.email, preferences!.data.lang ?? 'en');
+      twoFaService.generateSendToken(userInfo.email, preferences!.lang);
       throw new EmailConfirmError()
     }
 
     if (userInfo.twofa === false) {
       return this.createSession(userInfo, clientInfo);
     }
+
     const family_id = crypto.randomBytes(16).toString('hex');
 
     const email = userInfo.email;
-    const lang = preferences!.data.lang;
+    const lang = preferences?.lang;
     const code = generateCode();
     
     await twoFaService.generateSendCode(email, lang, code)
     
-    redisPub.setEx('users:userIds:' + code + ':userId', 600, userInfo.id)
-    redisPub.setEx('users:userIds:' + code + ':family_id', 600, family_id)
+    redisPub.setEx('users:userIds:' + code + ':userId', 600, userInfo.id);
+    redisPub.setEx('users:userIds:' + code + ':family_id', 600, family_id);
     throw new TwoFaError();
   }
 
@@ -186,6 +188,16 @@ export class SessionService {
     });
 
     return { accessToken, refreshToken };
+  }
+
+  static async logout(tokenId: string) {
+    const token = await refreshTokenModelInstance.getTokenById(tokenId);
+    if (!token) throw new UnauthorizedError();
+    if (!token.is_active) throw new UnauthorizedError('Token is not active');
+    return await refreshTokenModelInstance.updateAllTokensByFamilyIdActive(token.family_id, {
+        is_active: false,
+        last_used: Date.now().toString(),
+      })
   }
 
   static async deleteFamily(familyId: string) {

@@ -29,8 +29,8 @@ const plugin: FastifyPluginCallback<JWTOptions> = (fastify, opts, done) => {
     });
     if (isPublic) return;
 
-    const authHeader = req.headers['authorization'] || '';
-    const bearerToken = authHeader.split(' ')[1];
+    const authHeader = req.headers['authorization'];
+    const bearerToken = authHeader?.split(' ')[1];
     const token = req.cookies.accessToken || bearerToken;
 
     if (!token) {

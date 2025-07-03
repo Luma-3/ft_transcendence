@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import cors from "@fastify/cors";
 import socket from "./plugins/socket.js";
+import forwardedFor from "./plugins/forwardedFor.js";
 import cookie from "@fastify/cookie";
 import jwt from "./plugins/jwt.js"
 import dotenv from "dotenv";
@@ -39,15 +40,20 @@ server.register(jwt, {
   secret: process.env.JWT_SECRET!,
   publicRoutes: [
     { method: 'POST', url: '/user/users' }, // Create user
-    { method: 'GET', url: '/auth/2fa/verifyEmail' }, // verify Email
+    { method: 'GET', url: '/auth/2fa/email' }, // verify Email
     { method: 'GET', url: '/user/users/register' }, // Confirm user registration
     { method: 'POST', url: '/auth/session' }, // Create session
+    { method: 'POST', url: '/auth/session/2fa' }, // Create session after 2FA verification
     { method: 'PUT', url: '/auth/session' }, // Refresh token
     { method: 'GET', url: '/auth/oauth2/google' }, // Get Google OAuth2 authorization URL
     { method: 'GET', url: '/uploads/avatar' }, // Refresh token
     { method: 'GET', url: '/uploads/banner' }, // Refresh token
     { method: 'GET', url: /^\/[^\/]+\/doc\/json$/ }, // Swagger json
   ]
+});
+
+server.register(forwardedFor, {
+  searcher: true,
 });
 
 export default server;

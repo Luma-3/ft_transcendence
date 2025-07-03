@@ -1,8 +1,7 @@
 {
-	"subject_2FA": "Code de connexion : ",
+	"subject_2FA": "Coin coin ! Voici ton code d'accès: ",
 	"subject_valid_email": "Validez votre adresse e-mail",
 
-	"greeting": "Bonjour",
 	"verificationIntro": "Voici votre",
 	"verificationCode": "code de vérification",
 	"verificationLink": "lien de validation de l'e-mail",

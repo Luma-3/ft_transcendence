@@ -58,7 +58,8 @@ export class UploadService {
     const filename = `${randomUUID()}.${extension}`;
     const outputPath = path.join(this._uploadPath, typePath, filename);
     await pipeline(data.file, fs.createWriteStream(outputPath));
-    return filename;
+    const urlCDN =  `${process.env.URL}/api/uploads/${typePath}/${filename}`;
+    return urlCDN;
   }
 
   /**
