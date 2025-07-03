@@ -13,6 +13,9 @@ export class Ball extends GameObject implements Circle {
   private readonly minSpeed: number = 150;
   private readonly maxSpeed: number = 400;
 
+  private readonly paddleDirectionModifier: number = 0.25;
+  private readonly paddleSpeedModifier: number = 0.15;
+
 
   update() {
     this.move();
@@ -64,7 +67,6 @@ export class Ball extends GameObject implements Circle {
 
   rebound(paddle_vec: Vector2, closestPoint: Vector2) {
     const collisionNormal = this.position.sub(closestPoint).normalize();
-    console.log("Rebound with paddle, collision normal:", collisionNormal);
     this.velocity = this.velocity.sub(collisionNormal.scale(this.velocity.dot(collisionNormal) * 2));
     this.position = closestPoint.add(collisionNormal.scale(this.radius + 1)); // Move the ball out of the paddle
     // Ensure the ball has no stick to the paddle
@@ -72,10 +74,10 @@ export class Ball extends GameObject implements Circle {
     const paddleSpeed = paddle_vec.magnitude();
 
 
-    const dir = this.velocity.normalize().add(paddleDirection.scale(0.2)).normalize();
+    const dir = this.velocity.normalize().add(paddleDirection.scale(this.paddleDirectionModifier)).normalize();
     const currentSpeed = this.velocity.magnitude();
 
-    const newSpeed = Math.max(this.minSpeed, Math.min(currentSpeed + (paddleSpeed * 0.1), this.maxSpeed));
+    const newSpeed = Math.max(this.minSpeed, Math.min(currentSpeed + (paddleSpeed * this.paddleSpeedModifier), this.maxSpeed));
 
     const newVelocity = dir.scale(newSpeed);
 

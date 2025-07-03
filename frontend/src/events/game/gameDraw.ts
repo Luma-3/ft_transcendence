@@ -8,7 +8,7 @@ import { IBall, IPaddle, IGameObject, Vector2 } from "../../interfaces/IGame";
 // const duckImage = new Image();
 // duckImage.src = "/images/pp.jpg";
 
-export const FRAME = 30;
+// export const FRAME = 30;
 // let interpolateDelay = 1000 / FRAME;
 
 // function findSnapshots(targetTime: number): [GameSnapshot, GameSnapshot] | null {
@@ -53,124 +53,178 @@ export const FRAME = 30;
 //   requestAnimationFrame(animate);
 // };
 
-export function drawGame(gameData: IGameObject[]) {
-
-  const game = document.getElementById("gamePong") as HTMLCanvasElement;
-  if (!game) return;
-  const ctx = game.getContext("2d");
-  if (!ctx) return;
-
-  ctx.clearRect(0, 0, game.width, game.height);
-
-  ctx.fillStyle = "rgba(178, 157, 210, 0.4)";
-  ctx.fillRect(0, 0, game.width, game.height);
-
-  ctx.beginPath();
-  ctx.setLineDash([10, 15]);
-  ctx.strokeStyle = 'white';
-  ctx.lineWidth = 5;
-  ctx.moveTo(game.width / 2, 0);
-  ctx.lineTo(game.width / 2, game.height);
-  ctx.stroke();
-  ctx.closePath();
-  ctx.setLineDash([]);
-
-  ctx.beginPath();
-  ctx.strokeStyle = 'white';
-  ctx.lineWidth = 1;
-  ctx.moveTo(50, 0);
-  ctx.lineTo(50, game.height);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.strokeStyle = 'white';
-  ctx.lineWidth = 1;
-  ctx.moveTo(750, 0);
-  ctx.lineTo(750, game.height);
-  ctx.stroke();
-
-
-
-  gameData.forEach((gameObject) => {
-    switch (gameObject.type) {
-      case 'ball': ;
-        // console.log("Ball Velocity:", (<IBall>gameObject).velocity);
-        drawBall(ctx, (<IBall>gameObject).position, (<IBall>gameObject).radius);
-        break;
-      case 'paddle':
-        ctx.fillStyle = "white";
-        const pos: Vector2 = {
-          x: (<IPaddle>gameObject).position.x - (<IPaddle>gameObject).scale.x / 2,
-          y: (<IPaddle>gameObject).position.y - (<IPaddle>gameObject).scale.y / 2
-        };
-        drawRoundedRect(ctx, pos, (<IPaddle>gameObject).scale, (<IPaddle>gameObject).scale.x / 2);
-        // drawPaddle(ctx, (<IPaddle>gameObject).position, (<IPaddle>gameObject).scale, 'red'); // TODO : color
-        break;
-      default:
-        console.warn("Unknown game object type:", gameObject.type);
-    }
-  });
-
-  ctx.save();
-
-}
-
-// function Score(ctx: CanvasRenderingContext2D, pos: Vector2, score: number) {
-//   drawExplosion(ctx, pos, {
-//     count: 250,
-//     colors: ['#744FAC', '#FF8904', '#F8E9E9', '#ffffff'],
-//     maxSpeed: 6,
-//     maxRadius: 5,
-//     duration: 1000
-//   });
-//   // setTimeout(() => {
-//   // 	socket?.send(JSON.stringify({
-//   // 		type: "game",
-//   // 		payload: {
-//   // 			type: 'resume',
-//   // 			data: {
-//   // 				roomId: gameFrontInfo.gameId,
-//   // 			}
-//   // 		}
-//   // 	}));
-//   ctx.clearRect(0, 0, game.width, game.height);
-//   ctx.restore();
-//   const player1Score = document.getElementById("user1Score");
-//   player1Score!.innerHTML = gameData.paddle1.score.toString();
+// export function drawGame(gameData: IGameObject[]) {
 //
-//   const player2Score = document.getElementById("user2Score");
-//   player2Score!.innerHTML = gameData.paddle2.score.toString();
+//   const game = document.getElementById("gamePong") as HTMLCanvasElement;
+//   if (!game) return;
+//   const ctx = game.getContext("2d");
+//   if (!ctx) return;
+//
+//   ctx.clearRect(0, 0, game.width, game.height);
+//
+//   ctx.fillStyle = "rgba(178, 157, 210, 0.4)";
+//   ctx.fillRect(0, 0, game.width, game.height);
+//
+//
+//   gameData.forEach((gameObject) => {
+//     switch (gameObject.type) {
+//       case 'ball': ;
+//         drawBall(ctx, (<IBall>gameObject).position, (<IBall>gameObject).radius);
+//         break;
+//       case 'paddle':
+//         ctx.fillStyle = "white";
+//         const paddle = <IPaddle>gameObject;
+//
+//         break;
+//       default:
+//         console.warn("Unknown game object type:", gameObject.type);
+//     }
+//   });
+//
+//   ctx.save();
 // }
 
-function drawBall(ctx: CanvasRenderingContext2D, pos: Vector2, radius: number) {
-  ctx.beginPath();
-  ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
-  ctx.fillStyle = "yellow";
-  ctx.fill();
-  ctx.closePath();
-  updatePointerCoordinates(pos.x, pos.y);
-}
 
-// function drawPaddle(ctx: CanvasRenderingContext2D, pos: Vector2, scale: Vector2, color: string) {
+// function drawBall(ctx: CanvasRenderingContext2D, pos: Vector2, radius: number) {
 //   ctx.beginPath();
-//   ctx.rect(pos.x - scale.x / 2, pos.y - scale.y / 2, scale.x, scale.y);
-//   ctx.fillStyle = color;
+//   ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+//   ctx.fillStyle = "yellow";
 //   ctx.fill();
 //   ctx.closePath();
+//   updatePointerCoordinates(pos.x, pos.y);
 // }
 
 
-function drawRoundedRect(ctx: CanvasRenderingContext2D, pos: Vector2, scale: Vector2, radius: number) {
-  ctx.beginPath();
-  ctx.moveTo(pos.x + radius, pos.y);
-  ctx.lineTo(pos.x + scale.x - radius, pos.y);
-  ctx.quadraticCurveTo(pos.x + scale.x, pos.y, pos.x + scale.x, pos.y + radius);
-  ctx.lineTo(pos.x + scale.x, pos.y + scale.y - radius);
-  ctx.quadraticCurveTo(pos.x + scale.x, pos.y + scale.y, pos.x + scale.x - radius, pos.y + scale.y);
-  ctx.lineTo(pos.x + radius, pos.y + scale.y);
-  ctx.quadraticCurveTo(pos.x, pos.y + scale.y, pos.x, pos.y + scale.y - radius);
-  ctx.lineTo(pos.x, pos.y + radius);
-  ctx.quadraticCurveTo(pos.x, pos.y, pos.x + radius, pos.y);
-  ctx.closePath();
-  ctx.fill();
+// function drawRoundedRect(ctx: CanvasRenderingContext2D, pos: Vector2, scale: Vector2, radius: number) {
+//   ctx.beginPath();
+//   ctx.moveTo(pos.x + radius, pos.y);
+//   ctx.lineTo(pos.x + scale.x - radius, pos.y);
+//   ctx.quadraticCurveTo(pos.x + scale.x, pos.y, pos.x + scale.x, pos.y + radius);
+//   ctx.lineTo(pos.x + scale.x, pos.y + scale.y - radius);
+//   ctx.quadraticCurveTo(pos.x + scale.x, pos.y + scale.y, pos.x + scale.x - radius, pos.y + scale.y);
+//   ctx.lineTo(pos.x + radius, pos.y + scale.y);
+//   ctx.quadraticCurveTo(pos.x, pos.y + scale.y, pos.x, pos.y + scale.y - radius);
+//   ctx.lineTo(pos.x, pos.y + radius);
+//   ctx.quadraticCurveTo(pos.x, pos.y, pos.x + radius, pos.y);
+//   ctx.closePath();
+//   ctx.fill();
+// }
+
+
+export class Game {
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+
+  width: number;
+  height: number;
+
+  constructor(canvasId: string) {
+    this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    if (!this.canvas) {
+      throw new Error(`Canvas with id ${canvasId} not found`);
+    }
+    const ctx = this.canvas.getContext("2d");
+    if (!ctx) {
+      throw new Error("Failed to get canvas context");
+    }
+    this.ctx = ctx;
+
+    this.width = this.canvas.width;
+    this.height = this.canvas.height;
+  }
+
+  clear() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  private drawLine(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    color: string,
+    width: number,
+    dash: number[] = []
+  ) {
+    const { ctx } = this;
+    ctx.beginPath();
+    ctx.setLineDash(dash);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  drawBackground() {
+    this.ctx.fillStyle = "rgba(178, 157, 210, 0.4)";
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.drawLine(this.width / 2, 0, this.width / 2, this.height, 'white', 5, [10, 15]);
+    this.drawLine(50, 0, 50, this.height, 'white', 1);
+    this.drawLine(750, 0, 750, this.height, 'white', 1);
+  }
+
+  draw(objects: IGameObject[]) {
+    this.clear();
+    this.drawBackground();
+
+    objects.forEach((object) => {
+      switch (object.type) {
+        case 'ball':
+          new Ball(object as IBall).draw(this.ctx);
+          break;
+        case 'paddle':
+          new Paddle(object as IPaddle).draw(this.ctx);
+          break;
+        default:
+          console.warn("Unknown game object type:", object.type);
+      }
+    });
+  }
+
+}
+
+
+class Ball {
+  position: Vector2;
+  radius: number;
+
+  constructor(object: IBall) {
+    this.position = object.position;
+    this.radius = object.radius;
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.beginPath();
+    ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = "yellow";
+    ctx.fill();
+    ctx.closePath();
+  }
+}
+
+
+class Paddle {
+  position: Vector2;
+  scale: Vector2;
+  radius: number;
+
+  constructor(object: IPaddle) {
+    this.position = object.position;
+    this.scale = object.scale;
+    this.radius = object.scale.x / 2;
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = "white";
+    const pos: Vector2 = {
+      x: this.position.x - this.scale.x / 2,
+      y: this.position.y - this.scale.y / 2
+    };
+    ctx.beginPath();
+    ctx.roundRect(pos.x, pos.y, this.scale.x, this.scale.y, this.radius);
+    ctx.fill();
+  }
 }

@@ -1,5 +1,5 @@
 import { renderGame } from "../controllers/renderPage";
-import { drawGame } from "../events/game/gameDraw";
+import { Game } from "../events/game/gameDraw";
 import { IGameObject, IRoomData } from "../interfaces/IGame";
 import { DisplayGameWinLose } from "../events/game/gameWin";
 import { showGame } from "../events/game/gameShow";
@@ -32,19 +32,21 @@ function changeStatusPlayer(roomData: IRoomData) {
   }
 }
 
-function launchGame(roomId: string) {
-  console.log("Launching game for room:", roomId);
-  //TODO: Animate 3,2,1....Go
-  socket?.send(JSON.stringify({
-    action: "game",
-    payload: {
-      type: 'startGame',
-      data: {
-        roomId: roomId,
-      }
-    }
-  }));
-}
+// function launchGame(roomId: string) {
+//   console.log("Launching game for room:", roomId);
+//   //TODO: Animate 3,2,1....Go
+//   socket?.send(JSON.stringify({
+//     action: "game",
+//     payload: {
+//       type: 'startGame',
+//       data: {
+//         roomId: roomId,
+//       }
+//     }
+//   }));
+// }
+
+let game: Game;
 
 export async function dispatchGameSocketMsg(payload: any) {
   switch (payload.action) {
@@ -59,6 +61,7 @@ export async function dispatchGameSocketMsg(payload: any) {
       const canvas = document.getElementById("gamePong") as HTMLCanvasElement;
       const ctx = canvas.getContext("2d");
       startShapeSparkle(ctx!, canvas);
+      game = new Game("gamePong");
       break;
     case 'score':
       console.log("dispatchGameSocketMsg", payload);
@@ -66,7 +69,7 @@ export async function dispatchGameSocketMsg(payload: any) {
       changeScore(payload.data.player);
       break;
     case 'snapshot':
-      drawGame(payload.data);
+      game.draw(payload.data);
       break;
     case 'end':
       DisplayGameWinLose(payload.data.player);

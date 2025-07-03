@@ -31,4 +31,8 @@ export class Vector2 {
     let mag = this.magnitude();
     return mag === 0 ? new Vector2(0, 0) : this.scale(1 / mag);
   }
+
+  static zero(): Vector2 {
+    return new Vector2(0, 0);
+  }
 }

@@ -1,35 +1,27 @@
+import { Vector2 } from "../core/physics/Vector.js";
 import { SceneContext } from "../core/runtime/SceneContext.js";
 import { IOInterface } from "../utils/IOInterface.js";
 
-interface PlayerInput {
-  up: boolean;
-  down: boolean;
-}
-
 export class InputManager {
-  public playersInput: Map<string, PlayerInput> = new Map();
-
-  public constructor() {
-
-  }
+  public playersInput: Map<string, Vector2> = new Map();
 
   public start() {
     const players = SceneContext.get().players;
     console.log("InputManager: onInstantiate", players);
     if (SceneContext.get().gameType === "local") {
-      this.playersInput.set(players[0].user_id, { up: false, down: false });
-      this.playersInput.set("other", { up: false, down: false });
+
+      this.playersInput.set(players[0].user_id, Vector2.zero());
+      this.playersInput.set("other", Vector2.zero());
       IOInterface.subscribe(`ws:game:player:${players[0].user_id}`, handleInput.bind(SceneContext.get()));
       return;
     }
     players.forEach(player => {
-      this.playersInput.set(player.user_id, { up: false, down: false });
+      this.playersInput.set(player.user_id, Vector2.zero());
       IOInterface.subscribe(`ws:game:player:${player.user_id}`, handleInput.bind(SceneContext.get()));
     })
   }
 
-
-  get(playerId: string): PlayerInput {
+  get(playerId: string): Vector2 {
     return this.playersInput.get(playerId);
   }
 }
@@ -41,15 +33,12 @@ function handleInput(message: string, channel: string): void {
     console.warn(`InputManager: Player ID mismatch. Expected ${playerId}, got ${payload.user_id}`);
     return; // TODO : stop game
   }
-
   if (payload.action !== 'input') return;
-
+  let movement = payload.data.movement;
   const inputManager = (this as SceneContext).inputManager;
-  inputManager.get(playerId).up = payload.data.movement.up;
-  inputManager.get(playerId).down = payload.data.movement.down;
-
+  inputManager.get(playerId).y = +movement.up - +movement.down;
   if (this.gameType === "local") {
-    inputManager.get("other").up = payload.data.otherMovement.up;
-    inputManager.get("other").down = payload.data.otherMovement.down;
+    movement = payload.data.otherMovement;
+    inputManager.get("other").y = +movement.up - +movement.down;
   }
 }
