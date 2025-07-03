@@ -21,7 +21,7 @@ import { showEditorPicture } from '../components/utils/imageEditor'
 import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 
-import { createGame } from '../events/game/gameCreation'
+import { initGame } from '../events/game/gameInit'
 import { addNewMessage } from '../chat/newMessage'
 import { renderOtherProfilePage } from '../controllers/renderPage'
 import { friendRequest } from '../events/social/acceptInvitation'
@@ -95,7 +95,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'loadBackPage': () => renderBackPage(),
 	'showGameStat': () => toggleGameStat(),
 	'showChat': () => toggleChat(),
-	'createGame': () => createGame(),
+	'initGame': () => initGame(),
 
 	// * -------------- Documentation  -------------- */
 	'showUserDoc': () => renderDocPages('/api/user/doc/json', "user"),

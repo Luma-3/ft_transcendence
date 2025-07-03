@@ -5,7 +5,6 @@ import dashboard from '../pages/Dashboard/Dashboard'
 import settings from '../pages/Settings'
 import profile from '../pages/Profile/Profile'
 import friends from '../pages/Friends/Friends'
-import game from '../pages/Game'
 import documentation from '../pages/Documentation'
 import verifyEmail from '../pages/VerifyEmail'
 import twoFaPage, { loginTwoFaPage } from '../2FA'
@@ -132,38 +131,6 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 	}, 250);
 }
 
-export async function renderGame(data: any) {
-
-	let lang = 'en';
-	let theme = 'dark';
-
-	const user = await getUserInfo();
-	if (user.status === "error" || !user.data) {
-		return renderErrorPage('401');
-	}
-
-	lang = user.data.preferences!.lang;
-	theme = user.data.preferences!.theme;
-
-	fadeOut();
-	
-	setTimeout(async () => {
-		const main_container = document.querySelector<HTMLDivElement>('#app')!
-		const newContainer = await game(data.roomId, user.data!);
-		if (!newContainer) {
-			return;
-		}
-
-		main_container.innerHTML = newContainer;
-		setupColorTheme(theme);
-
-		translatePage(lang);
-
-		removeLoadingScreen();
-
-		fadeIn();
-	}, 250);
-}
 
 import { renderOtherProfile } from '../pages/OtherProfile'
 import { redocInit } from '../components/utils/redocInit'

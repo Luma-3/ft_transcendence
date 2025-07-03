@@ -1,108 +1,121 @@
-import { alert } from "../../components/ui/alert/alert";
+import { getRoomInfos } from "../../api/getterGame";
+import { getOtherUserInfo, getUserInfo } from "../../api/getterUser(s)";
+import { API_CDN } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
+import { fadeIn, fadeOut } from "../../components/utils/fade";
+import { randomNameGenerator } from "../../components/utils/randomNameGenerator";
+import { removeLoadingScreen } from "../../components/utils/removeLoadingScreen";
+import { setupColorTheme } from "../../components/utils/setColorTheme";
+import { translatePage } from "../../controllers/Translate";
+import { IUserInfo } from "../../interfaces/IUser";
+import gameHtml from "../../pages/Game";
+import { socket } from "../../socket/Socket";
+import { onKeyDown, onKeyUp } from "./gameInput";
+import { resizeCanvas } from "./utils/resizeCanvas";
 
-import { fetchToken } from "../../api/fetchToken";
-import { getUserPreferences } from "../../api/getterUser(s)";
-import { fetchApi } from "../../api/fetch";
-import { API_GAME } from "../../api/routes";
-import { renderErrorPage } from "../../controllers/renderPage";
-
-export let gameFrontInfo: { gameId: string, gameType: string };
-
-type GameFormInfo = {
-	gameId: string;
-	gameName: string;
-	typeGame: string;
-	gameNameOpponent?: string;
+const readyEventListener = (playerId: string) => {
+	const payload = {
+		service: 'game',
+		scope: 'room',
+		target: playerId,
+		payload: {
+			action: 'ready',
+			data: {}
+		}
+	}
+	socket!.send(JSON.stringify(payload));
 }
 
-async function sendDataToServer(gameFormInfo: GameFormInfo, userTheme: string) {
-
-	const response = await fetchApi<{ id: string }>(API_GAME.CREATE, {
-		method: 'POST',
-		body: JSON.stringify({
-			player_name: gameFormInfo.gameName,
-			game_name: "Ok Coral !",
-			game_type: gameFormInfo.typeGame,
-		}),
-	});
-	if (!response || response.status === "error" || !response.data) {
-		return alertTemporary("error", "game-creation-failed", userTheme, true);
-	}
-
-	gameFormInfo.gameId = response.data.id;
-	gameFormInfo.typeGame = gameFormInfo.typeGame;
+export default async function createGameHtml(roomId: string, user: IUserInfo) {
 
 	/**
-	 * Petit alert de success qui s'affiche a droite sur l'ecran
+	 * Mise en place du listener sur la fenetre pour redimensionner le canvas si
+	 * la fenetre est redimensionnee
 	 */
-	await alertTemporary("success", "game-created-successfully", userTheme, true);
-}
+	window.addEventListener('resize', resizeCanvas)
 
-
-/**
- * Recuperation des infos necessaires dans le dashboard
- * pour le lancement de la partie
- */
-export async function createGame() {
-
-	/**
-	 * Verification de la session utilisateur
-	 */
-	const token = await fetchToken();
-	if (token.status === "error") {
-		return renderErrorPage('401')
+	onkeyup = (event) => {
+		onKeyUp(event, user.id);
 	}
 
 	/**
-	 * Recuperation et verification de la selection du type de jeu et des donnees utiles au jeu
+	 * ! Evenement clavier lors de l'affichage du VS (Room page)
 	 */
-	const gameType = document.querySelector('input[name="game-type"]:checked') as HTMLInputElement;
-	if (!gameType) {
-		return alert("no-gametype-selected", "error");
+	onkeydown = (event) => {
+		const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
+		
+		/**
+		 * Pour le premier evenement clavier, je ping le serveur pour 
+		 * lui signifier que le joueur a bien rejoint la Room
+		*/
+		if (divGame.classList.contains("opacity-0")) {
+			readyEventListener(roomId);
+		}
+		/**
+		 * Si le joueur a deja rejoint la Room, on envoie les evenements
+		 * de deplacement au serveur
+		 */
+		onKeyDown(event, user.id);
 	}
 
-	const player1 = (document.getElementById('player1-name') as HTMLInputElement).value;
-	if (!player1) {
-		return alert("enter-both-players-names", "error");
-	}
 
-	let player2;
+	/**
+	 * Recuperation des tous les joueurs present dans le Room pour afficher
+	 * tout les adversaires du joueur (tournois)
+	 */
+	const roomInfos = await getRoomInfos(roomId);
 
-	switch (gameType.id) {
-
-		case "localpvp":
-			player2 = (document.getElementById('player2-name') as HTMLInputElement).value;
-			if (!player2) {
-				return alert("enter-name-player2", "error");
+	const leftOpponentInfos = await getOtherUserInfo(roomInfos.data!.players[0].user_id);
+	const rightOpponentInfos = (roomInfos.data!.players.length > 1 && roomInfos.data!.players[1].user_id !== "other")
+		? await getOtherUserInfo(roomInfos.data!.players[1].user_id)
+		: {
+			data: {
+				preferences: {
+					avatar: `${API_CDN.AVATAR}/default.png`,
+					banner: `${API_CDN.AVATAR}/default.png`
+				},
+				player_name: randomNameGenerator(),
 			}
-			break;
-		case "localpve":
-			//TODO: tableau de nom de bot a choisir aleatoirement
-			player2 = "MichMich the crazy duck";
-			break;
-		default:
-			break;
+		};
+
+		if (!leftOpponentInfos || !rightOpponentInfos) {
+		
+			return alertTemporary("error", "error-while-fetching-opponent-infos", user.preferences!.theme);
+		}
+
+		return gameHtml(roomInfos.data!, leftOpponentInfos.data as IUserInfo, rightOpponentInfos.data as IUserInfo);
+}
+
+
+export async function createGame(data: any) {
+
+	let lang = 'en';
+	let theme = 'dark';
+
+	const user = await getUserInfo();
+	if (user.status === "error" || !user.data) {
+		return alertTemporary("error", "error-while-creating-game", "dark");
 	}
 
+	lang = user.data.preferences!.lang;
+	theme = user.data.preferences!.theme;
 
-	/**
-	 * Creation d'un objet contenant les donnees de la partie
-	 * pour pouvoir stocker facilement toutes les donnees utiles au front
-	 * et l'envoi de la requete pour creer la partie
-	 */
-	const gameFormInfo = {
-		gameId: "",
-		gameName: player1,
-		typeGame: gameType.id,
-		gameNameOpponent: (player2) ? player2 : "",
-	}
-
-	const userPref = await getUserPreferences()
-	await sendDataToServer(gameFormInfo, userPref.data?.theme || 'dark');
+	fadeOut();
 	
-	gameFrontInfo = {
-		gameId: gameFormInfo.gameId,
-		gameType: gameFormInfo.typeGame
-	}
+	setTimeout(async () => {
+		const main_container = document.querySelector<HTMLDivElement>('#app')!
+		const newContainer = await createGameHtml(data.roomId, user.data!);
+		if (!newContainer) {
+			return;
+		}
+
+		main_container.innerHTML = newContainer;
+		setupColorTheme(theme);
+
+		translatePage(lang);
+
+		removeLoadingScreen();
+
+		fadeIn();
+	}, 250);
 }

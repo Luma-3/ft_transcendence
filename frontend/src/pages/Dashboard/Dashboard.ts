@@ -43,7 +43,7 @@ ${navbar(user)}
 
 				<div class="flex w-full justify-center items-center mb-10">
 				
-					${primaryButton({ id: 'createGame', weight: "1/2", text: "Play", translate: "play", type: "button" })}
+					${primaryButton({ id: 'initGame', weight: "1/2", text: "Play", translate: "play", type: "button" })}
 				
 				</div>
 			

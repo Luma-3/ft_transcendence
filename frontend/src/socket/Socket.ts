@@ -18,7 +18,6 @@ export function socketConnection() {
 	});
 
 	socket.addEventListener("message", (e) => {
-		// console.log("WebSocket message received:", e.data);
 		const data = JSON.parse(e.data);
 
 		const from = JSON.parse(e.data).from;

@@ -8,9 +8,14 @@ export class Paddle extends GameObject implements Rectangle {
   public scale: Vector2 = new Vector2(10, 100); // Width and height of the paddle
   public velocity: Vector2 = new Vector2(0, 0); // Velocity of the paddle movement
 
-  private id: string = '';
+  private readonly velocityModifer: number = 400;
+  private readonly frictionFroce: number = 3;
+  private readonly acceleration: number = 4;
 
-  private readonly speed: number = 300;
+  // private readonly maxVelocity: number = 10;
+  private id: string = '';
+  // private inMove = false;
+
   constructor(id: string, pos: Vector2) {
     super();
 
@@ -23,39 +28,39 @@ export class Paddle extends GameObject implements Rectangle {
   }
 
   update() {
-    this.calcutateInput();
     this.move();
+    this.calculateFriction();
+    this.position = this.position.add(this.velocity.scale(SceneContext.get().loopManager.deltaTime)); // Update position based on velocity and delta time
+    this.clampPosition(600 - 10, 0 + 10); // Clamp the paddle position to stay within the game area
   }
 
 
   // -- END REQUIREMENTS FUNCTION --
 
-  calcutateInput() {
-    const playerInput = SceneContext.get().inputManager.get(this.id);
-    if (playerInput) {
-      if (playerInput.up) {
-        this.velocity.y = -1; // Move up
-      } else if (playerInput.down) {
-        this.velocity.y = 1; // Move down
-      } else {
-        this.velocity.y = 0; // Stop moving
-      }
-    }
-  }
-
   clampPosition(max: number, min: number) {
     // Clamp the paddle position to stay within the game area
     if (this.position.y < min + this.scale.y / 2) {
       this.position.y = min + this.scale.y / 2;
+      this.velocity.y = 0;
     } else if (this.position.y > max - this.scale.y / 2) {
       this.position.y = max - this.scale.y / 2;
+      this.velocity.y = 0;
     }
   }
 
+  calculateFriction() {
+    let vel = this.velocity;
+    const friction = vel.scale(SceneContext.get().loopManager.deltaTime * this.frictionFroce);
+    vel = vel.sub(friction);
+    this.velocity = vel;
+  }
+
   move() {
-    this.velocity = this.velocity.normalize().scale(this.speed);
-    this.position = this.position.add(this.velocity.scale(SceneContext.get().loopManager.deltaTime)); // Update position based on velocity and delta time
-    this.clampPosition(600 - 10, 0 + 10); // Clamp the paddle position to stay within the game area
+    const playerInput = SceneContext.get().inputManager.get(this.id);
+    if (!playerInput) return;
+
+    const speed = playerInput.y * this.acceleration;
+    this.velocity = this.velocity.add(new Vector2(0, -speed * SceneContext.get().loopManager.deltaTime * this.velocityModifer));
   }
 
   collider(): Rectangle {

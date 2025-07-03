@@ -4,15 +4,8 @@ import { alertPublic } from '../../components/ui/alert/alertPublic';
 import { verifRegexPassword } from '../../components/utils/regex';
 import { loadTranslation } from '../../controllers/Translate';
 
-import { API_USER, API_SESSION } from '../../api/routes';
+import { API_USER } from '../../api/routes';
 import { fetchApiWithNoError as fetchApiWithNoCriticError } from '../../api/fetch';
-
-import { socketConnection } from '../../socket/Socket';
-
-function error(message: string) {
-	alertPublic(message, "error");
-	return;
-}
 
 function verifValueForm(userData: Record<string, string>) {
 	/**
@@ -26,7 +19,7 @@ function verifValueForm(userData: Record<string, string>) {
 	 * Verification si les mots de passe sont identiques
 	 */
 	if (userData.password !== userData.passwordVerif) {
-		return error("passwords-dont-match"), false;
+		return alertPublic("passwords-dont-match", "error"), false;
 	}
 	return true;
 }
@@ -84,7 +77,7 @@ export async function registerUser() {
 	});
 	if (response.status !== "success") {
 		const errorMessage = trad[response.message] || response.message;
-		return error(errorMessage)
+		return alertPublic(errorMessage, "error");
 	}
 
 	renderPublicPage('verifyEmail');
