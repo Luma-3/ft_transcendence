@@ -58,8 +58,6 @@ export async function getProxyFile(req: FastifyRequest<{
     throw new BadRequestError('Invalid URL provided for proxying');
   }
   const buffer = await uploadServices.getProxyFile(url);
-  console.debug(`Proxying file from URL: ${url}`);
-  console.debug(`Content-Type: ${buffer.contentType}`);
   rep.code(200).header('Content-Type', buffer.contentType).send(buffer.buffer);
 }
 
