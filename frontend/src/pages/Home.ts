@@ -13,7 +13,6 @@ return `
 function divHomePage() {
 return `
 <div class='flex flex-col items-center justify-center mt-40 space-y-8'>
-	//TODO: Mettre nouveau logo
 	${logo()}
 	${languageSelectorHome()}
 	${animateButton("loadlogin", "get-started", `<img src='/images/duckHappy.png' class='w-20 h-20 mr-2 pointer-events-none' alt='Duck happy icon'>`)}

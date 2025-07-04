@@ -5,12 +5,20 @@ import { getUserPreferences } from "../../api/getterUser(s)";
 import { fetchApiWithNoError } from "../../api/fetch";
 import { API_GAME } from "../../api/routes";
 
-export let gameFrontInfo: { gameId: string, gameType: string };
+export let gameFrontInfo: gameFrontInfoType = {
+	gameId: "",
+	gameType: "",
+};
+
+type gameFrontInfoType = {
+	gameId: string;
+	gameType: string;
+}
 
 type GameFormInfo = {
 	gameId: string;
 	gameName: string;
-	typeGame: string;
+	gameType: string;
 	gameNameOpponent?: string;
 }
 
@@ -21,7 +29,7 @@ async function sendDataToServer(gameFormInfo: GameFormInfo, userTheme: string) {
 		body: JSON.stringify({
 			player_name: gameFormInfo.gameName,
 			game_name: "Ok Coral !",
-			game_type: gameFormInfo.typeGame,
+			game_type: gameFormInfo.gameType,
 		}),
 	});
 	if (!response || response.status === "error" || !response.data) {
@@ -29,7 +37,7 @@ async function sendDataToServer(gameFormInfo: GameFormInfo, userTheme: string) {
 	}
 
 	gameFrontInfo.gameId = response.data.id;
-	gameFrontInfo.gameType = gameFormInfo.typeGame;
+	gameFrontInfo.gameType = gameFormInfo.gameType;
 
 	/**
 	 * Petit alert de success qui s'affiche a droite sur l'ecran
@@ -80,7 +88,7 @@ export async function initGame() {
 	const gameFormInfo = {
 		gameId: "",
 		gameName: player1,
-		typeGame: gameType.id,
+		gameType: gameType.id,
 		gameNameOpponent: (player2) ? player2 : "",
 	}
 
