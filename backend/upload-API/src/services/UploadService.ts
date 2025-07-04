@@ -114,6 +114,19 @@ export class UploadService {
     return this.cacheFile(hashKey, bufferFile);
 }
 
+public async getProxyFile(url: string) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new NotFoundError("File not found");
+  }
+  const bufferFile = await response.blob();
+  const buffer = Buffer.from(await bufferFile.arrayBuffer());
+  return {
+    buffer: buffer,
+    contentType: response.headers.get("content-type") || "application/octet-stream"
+  };
+}
+
   cacheFile(hashKey: string, buffer: Buffer) {
     compress(buffer).then((buffer: Buffer) => {
       redisCache.set(hashKey, buffer.toString('base64'), {
