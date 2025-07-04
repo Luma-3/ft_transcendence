@@ -26,8 +26,8 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async (req, rep) => {
     const { username, password } = req.body;
-    const userAgent = req.headers["user-agent"] ?? "unknown";
-    if(userAgent === "unknown")
+    const userAgent = req.headers["user-agent"] ?? undefined;
+    if(userAgent === undefined)
       throw new UnauthorizedError('User-Agent header is required');
 
     const parser = new UAParser(userAgent);
@@ -54,8 +54,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
       path: '/'
-    }
-    ).redirect(`${process.env.REDIRECT_URI}/dashboard`);
+    });
   });
 
   fastify.delete('/session', {

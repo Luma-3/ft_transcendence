@@ -26,6 +26,7 @@ export class UserService {
   static async createUser(data: UserCreateBodyType) {
 
     await verifyConflict(data.username, data.email);
+    console.table(data);
 
     const hash_pass = await hashPassword(data.password);
     const user_obj = {
@@ -338,7 +339,8 @@ export class UserService {
   static async verifyCredentials(username: string, password: string): Promise<UserBaseType> {
     const user = await userModelInstance.findByUsername(username, undefined, ['password', 'validated', ...USER_PRIVATE_COLUMNS]);
     if (!user) throw new UnauthorizedError("Invalid credentials");
-    if(!user.password) throw new UnauthorizedError("Only OAuth users can login with password");
+    if(user.password === null) throw new UnauthorizedError("Only OAuth users can login with password");
+    console.table({"passwordSSend": password, ...user} );
     const isValid = await comparePassword(password, user.password);
     if (!isValid) throw new UnauthorizedError("Invalid credentials");
 
