@@ -18,7 +18,7 @@
 	"register": "S'inscrire",
 	"no-account": "Pas de compte ?",
 	"create-account": "Créer un compte",
-	"you-have-to-verify-email": "Merci ! Nous vous avons envoyé un e-mail. Il vous suffit de cliquer sur le lien pour vérifier votre adresse. Ce lien est valable pendant 10 minutes.",
+	"you-have-to-verify-email": "Merci ! Nous vous avons envoyé un e-mail. Il vous suffit de cliquer sur le lien pour vérifier votre adresse. Ce lien est valable pendant 10 minutes. Si vous ne le trouvez pas, vérifiez votre dossier spam ou attendez 10 minutes et essayez à nouveau.",
 	"verify-email": "Vérifier l'email",
 	"login": "Connexion",
 	"google-login": "Connexion avec Google",

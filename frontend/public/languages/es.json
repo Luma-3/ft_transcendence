@@ -20,7 +20,7 @@
 	"no-account": "¿No tienes una cuenta?",
 	"create-account": "Crear una cuenta",
 	"you-have-to-verify-email": "¡Gracias! Te hemos enviado un correo electrónico. Solo tienes que hacer clic en el enlace para verificar tu dirección.",
-	"verify-email": "¡Gracias! Te hemos enviado un correo electrónico. Solo tienes que hacer clic en el enlace para verificar tu dirección. El enlace estará activo durante 10 minutos.",
+	"verify-email": "¡Gracias! Te hemos enviado un correo electrónico. Solo tienes que hacer clic en el enlace para verificar tu dirección. El enlace estará activo durante 10 minutos. Si no lo encuentras, revisa tu carpeta de spam o espera 10 minutos y vuelve a intentarlo.",
 	"login": "Iniciar sesión",
 	"google-login": "Iniciar sesión con Google",
 	"username-already-in-use": "Nombre de usuario ya utilizado",

@@ -2,6 +2,10 @@ import { fetchApiWithNoError } from "./fetch";
 import { API_SESSION } from "./routes";
 
 export async function fetchToken() {
+
+	if (!localStorage.getItem("refresh_token")) {
+		return { status: "error", message: "No refresh token found" };
+	}
 	console.log("fetchToken called");
 	let response;
 	 response = await fetchApiWithNoError(API_SESSION.VERIFY_ACCESS, { method: 'GET' });
