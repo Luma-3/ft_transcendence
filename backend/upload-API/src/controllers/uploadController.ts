@@ -2,8 +2,9 @@ import path from 'path';
 import * as mine from 'mime-types';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { TypeUpload, uploadServices } from '../services/UploadService.js';
-import { CdnQueryType, UploadFileParamsType } from '../schema/upload.schema.js';
+import { CdnQueryType, ProxyCDNType, UploadFileParamsType } from '../schema/upload.schema.js';
 import { Readable } from 'stream';
+import { BadRequestError } from '../../packages/error/dist/BadRequestError.js';
 
 
 
@@ -42,6 +43,22 @@ export async function getFile(req: FastifyRequest<{
   rep.code(200).header('Content-Type', mine.contentType(path.extname(url)));
 
   rep.compress(buffer);
+}
+
+/**
+ * Recuperation du URI de la requete, separation des infos (typePath, url, query)
+ * verification du content-type et si la demande et le fichier ne correspondent pas
+ * ERROR 403
+ */
+export async function getProxyFile(req: FastifyRequest<{
+  Querystring: ProxyCDNType
+}>, rep: FastifyReply) {
+  const { url } = req.query;
+  if (!url || !url.includes('googleusercontent.com/')) {
+    throw new BadRequestError('Invalid URL provided for proxying');
+  }
+  const buffer = await uploadServices.getProxyFile(url);
+  rep.code(200).header('Content-Type', buffer.contentType).send(buffer.buffer);
 }
 
 export async function deleteFile(req: FastifyRequest<

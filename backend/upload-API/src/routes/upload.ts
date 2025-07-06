@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import * as Controller from '../controllers/uploadController.js'
 import { ResponseSchema } from '../utils/schema.js';
-import { CdnQuery, UploadFileParams, UploadFileValidation } from '../schema/upload.schema.js';
+import { CdnQuery, proxyCDN, UploadFileParams, UploadFileValidation } from '../schema/upload.schema.js';
 import { ConflictResponse , ForbiddenResponse, InvalidTypeResponse, NotFoundResponse, PayloadTooLargeResponse } from '@transcenduck/error';
 import { Type } from '@sinclair/typebox';
 /**
@@ -29,6 +29,16 @@ export default async function uploadRoute(fastify: FastifyInstance) {
     }
   }, Controller.uploadFile);
 
+  fastify.get('/proxy', {
+    schema: {
+      summary: 'Proxy file from CDN',
+      description: 'Endpoint to proxy file from CDN',
+      tags: ['Upload'],
+      querystring: proxyCDN
+  },
+  }, Controller.getProxyFile
+  )
+
   fastify.get('/:typePath/*', {
     schema: {
       summary: 'get file uploaded',
@@ -49,6 +59,7 @@ export default async function uploadRoute(fastify: FastifyInstance) {
       }
     }
   }, Controller.getFile);
+
 
   fastify.delete("/internal/:typePath/*", {
     schema: {

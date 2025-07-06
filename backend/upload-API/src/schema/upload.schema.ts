@@ -63,9 +63,17 @@ export const CdnQuery = Type.Object({
     minimum: -360,
     maximum: 360
   })),
-})
+});
+
+export const proxyCDN = Type.Object({
+  url: Type.String({
+    description: "The URL of the file to be proxied from the CDN. This should be a valid URL pointing to the file you want to retrieve.",
+    format: "uri"
+  })
+});
 
 
 export type UploadFileParamsType = Static<typeof UploadFileParams>;
 export type UploadFileValidationType = Static<typeof UploadFileValidation>;
 export type CdnQueryType = Static<typeof CdnQuery>;
+export type ProxyCDNType = Static<typeof proxyCDN>;

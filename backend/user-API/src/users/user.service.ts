@@ -92,6 +92,9 @@ export class UserService {
       validated: true
     }
 
+    if( data.avatar && data.avatar.indexOf('googleusercontent.com/') !== -1) {
+      data.avatar = process.env.REDIRECT_URI +`/api/uploads/proxy?url=` + encodeURIComponent(data.avatar.substring(0, data.avatar.lastIndexOf('=')));
+    }
     const user_preferences: Omit<PreferencesBaseType, 'user_id'> = {
       lang: 'en',
       avatar: data.avatar ?? (process.env.REDIRECT_URI +`/api/uploads/avatar/default.png`),
