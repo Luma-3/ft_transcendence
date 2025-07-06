@@ -209,6 +209,14 @@ export class UserService {
     multi.del(`users:data:${id}`);
     multi.del(`users:data:${id}:hydrate`);
     multi.exec().catch(console.error);
+
+    fetch(`https://${process.env.AUTH_IP}/internal/session/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'accept': 'application/json'
+      },
+      agent: new https.Agent({ rejectUnauthorized: false })
+    }).then(() => console.log("hsdkjfhsdfkj")).catch(console.error);
   }
 
   static async createUserRedis(userId: string) {
