@@ -9,6 +9,9 @@ import { fetchApiWithNoError as fetchApiWithNoCriticError } from '../../api/fetc
 
 import { socketConnection } from '../../socket/Socket';
 
+export let userEmail: string;
+export let userLang: string;
+
 function error(message: string) {
 	alertPublic(message, "error");
 	return;
@@ -40,7 +43,7 @@ export async function registerUser() {
 	 * Recuperation de la langue precedemment seleREGISTERctionne par l'utilisateur
 	 * et suppression de la valeur dans le sessionStorage
 	 */
-	const lang = sessionStorage.getItem('lang') || 'en';
+	const lang = sessionStorage.getItem('lang') ?? 'en';
 	sessionStorage.removeItem('lang');
 
 
@@ -74,6 +77,9 @@ export async function registerUser() {
 			lang: lang,
 		}
 	}
+
+	userEmail = formEntry.email;
+	userLang = lang;
 
 	/**
 	 * Creation de l'utilisateur

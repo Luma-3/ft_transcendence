@@ -14,6 +14,8 @@ import twoFaEmail from './public/html/twoFaEmail.js';
 
 const path_public = 'src/2FA/public';
 
+const TIMEOUT_MAIL = 60; // in seconds
+
 async function loadLang(language: string){
   const trad = JSON.parse(fs.readFileSync(`./${path_public}/languages/${language}.json`, 'utf8'));
 	return trad;
@@ -25,6 +27,13 @@ export function generateCode(): string {
 }
 
 async function sendVerificationEmail(email: string, data: string, language: string) {
+
+	const userCooldown = await redisCache.ttl(`users:email_cooldown:${email}`);
+
+	if (userCooldown > 0) {
+		throw new UnauthorizedError(`${userCooldown}`);
+	}
+
 	const trad = await loadLang(language);
 	const mailOptions: SendMailOptions = {
 		from: 'Transcenduck <transcenduck@gmail.com>',
@@ -125,13 +134,14 @@ async function verifyUpdateUserEmail( email: string, token: string ) {
 	})
 }
 
-export class twoFaService {
+export class twoFaService {	
 	static async generateSendToken(email: string, lang: string, token?: string) {
 		if (!token)
 			token = randomUUID();
 		sendVerificationEmail(email, token, lang);
 		await redisCache.setEx("users:check:token:" + token, 600, email);
 		await redisCache.setEx("users:check:email:" + email, 600, token);
+		await redisCache.setEx(`users:email_cooldown:${email}`, TIMEOUT_MAIL, "1");
 	}
 
 	static async generateSendCode(email: string, lang: string, code?: string) {
