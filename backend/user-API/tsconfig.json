@@ -24,8 +24,8 @@
 	  "noFallthroughCasesInSwitch": true,
 	  "noUncheckedSideEffectImports": true,
     "paths": {
-      "@transcenduck/error": ["./packages/error"],
-      "@transcenduck/formatter": ["./packages/formatter"]
+      "@transcenduck/error": ["../packages/error"],
+      "@transcenduck/formatter": ["../packages/formatter"]
     },  
 	},
   "include": ["src/**/*"],
