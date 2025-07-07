@@ -42,7 +42,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 
     const roomId = RoomService.joinOrCreateRoom(player, game_name, game_type);
     if (!roomId) {
-      return rep.code(201).send({
+      return rep.code(403).send({
         message: "Player already locked a Room",
         data: { game_id: '' }
       });
