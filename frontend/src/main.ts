@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	const page = window.location.pathname.substring(1) || 'home'
 
+	console.log(page);
+
 	switch (page) {
 
 		case 'error':
@@ -35,14 +37,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		default: 
 			const user = await fetchToken();
+			console.log("response fetchToken: ", user);
 			if (user.status === "success") {
 				if (publicPages.includes(page)) {
 					return renderPrivatePage('dashboard', true);
 				}
 				return renderPrivatePage(page);
 			}
+			console.log(`User not authenticated, rendering public page: ${page}`);
 			return renderPublicPage(page);
-}});
+	}
+});
 
 // * Au changement de page lors de l'utilisation du bouton back/forward
 window.addEventListener('popstate', (event) => {

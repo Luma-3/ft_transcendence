@@ -1,0 +1,15 @@
+{
+	"subject_2FA": "¡Cuac cuac! Aquí tienes tu código de acceso: ",
+	"subject_valid_email": "Valida tu dirección de correo electrónico",
+
+	"verificationIntro": "Aquí está tu",
+	"verificationCode": "código de verificación",
+	"verificationLink": "enlace de validación de correo electrónico",
+	"verifyButton": "Haz clic aquí para verificar tu correo electrónico",
+	"codeValadity": "Este código es válido por 10 minutos.",
+	"linkValidity": "Este enlace es válido por 10 minutos.",
+	"automaticMessage": "Este es un mensaje automático, ",
+	"dontRespond": "no respondas a este correo electrónico.",
+	"ignoreWarning": "Si no realizaste esta solicitud, por favor ignora este mensaje.",
+	"signature": "El equipo de Transcenduck"
+}

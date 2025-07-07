@@ -4,7 +4,8 @@ import { API_SESSION } from "./routes";
 export async function fetchToken() {
 
 	let response;
-	 response = await fetchApiWithNoError(API_SESSION.VERIFY_ACCESS, { method: 'GET' });
+
+	response = await fetchApiWithNoError(API_SESSION.VERIFY_ACCESS, { method: 'GET' });
 	if (response.status === "success") {
 		return { status: "success", data: response.data };
 	}

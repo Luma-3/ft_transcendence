@@ -10,14 +10,14 @@ export class InputManager {
     console.log("InputManager: onInstantiate", players);
     if (SceneContext.get().gameType === "local") {
 
-      this.playersInput.set(players[1].user_id, Vector2.zero());
+      this.playersInput.set(players[1].id, Vector2.zero());
       this.playersInput.set("other", Vector2.zero());
-      IOInterface.subscribe(`ws:game:player:${players[1].user_id}`, handleInput.bind(SceneContext.get()));
+      IOInterface.subscribe(`ws:game:player:${players[1].id}`, handleInput.bind(SceneContext.get()));
       return;
     }
     players.forEach(player => {
-      this.playersInput.set(player.user_id, Vector2.zero());
-      IOInterface.subscribe(`ws:game:player:${player.user_id}`, handleInput.bind(SceneContext.get()));
+      this.playersInput.set(player.id, Vector2.zero());
+      IOInterface.subscribe(`ws:game:player:${player.id}`, handleInput.bind(SceneContext.get()));
     })
   }
 

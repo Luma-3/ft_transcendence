@@ -5,10 +5,9 @@ import dashboard from '../pages/Dashboard/Dashboard'
 import settings from '../pages/Settings'
 import profile from '../pages/Profile/Profile'
 import friends from '../pages/Friends/Friends'
-import game from '../pages/Game'
 import documentation from '../pages/Documentation'
 import verifyEmail from '../pages/VerifyEmail'
-import twoFaPage from '../2FA'
+import twoFaPage, { loginTwoFaPage } from '../2FA'
 
 
 // import welcomeYouPage from '../pages/WelcomeYou';
@@ -27,12 +26,13 @@ import { fetchToken } from '../api/fetchToken'
 
 /**
  * Associe les pages publics aux fonctions de rendu
- */
+*/
 const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
   'home': home,
   'login': login,
   'register': register,
   '2FA': twoFaPage,
+  '2FALogin': loginTwoFaPage,
   'documentation': documentation,
   'verifyEmail': verifyEmail,
 };
@@ -80,7 +80,6 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
   'settings': settings,
   'profile': profile,
   'friends': friends,
-  '2FA': twoFaPage,
   'documentation': documentation,
 }
 
@@ -90,6 +89,7 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
  */
 export async function renderPrivatePage(page: string, updateHistory: boolean = true) {
 
+  console.log(`Rendering private page: ${page}`);
   let lang = 'en';
   let theme = 'dark';
 
@@ -129,39 +129,6 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
     // if (page === 'WelcomeYou') {
     //   handleWelcomeYouPage();
     // }
-  }, 250);
-}
-
-export async function renderGame(data: any) {
-
-  let lang = 'en';
-  let theme = 'dark';
-
-  const user = await getUserInfo();
-  if (user.status === "error" || !user.data) {
-    return renderErrorPage('401');
-  }
-
-  lang = user.data.preferences!.lang;
-  theme = user.data.preferences!.theme;
-
-  fadeOut();
-
-  setTimeout(async () => {
-    const main_container = document.querySelector<HTMLDivElement>('#app')!
-    const newContainer = await game(data.id, user.data!);
-    if (!newContainer) {
-      return;
-    }
-
-    main_container.innerHTML = newContainer;
-    setupColorTheme(theme);
-
-    translatePage(lang);
-
-    removeLoadingScreen();
-
-    fadeIn();
   }, 250);
 }
 

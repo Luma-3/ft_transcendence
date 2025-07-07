@@ -41,7 +41,7 @@ export class Pong extends GameObject {
         player: SceneContext.get().players.map(player => player.toJSON())
       }
     }
-    IOInterface.broadcast(JSON.stringify(payload), SceneContext.get().players.map(player => player.user_id))
+    IOInterface.broadcast(JSON.stringify(payload), SceneContext.get().players.map(player => player.id))
   }
 
   checkBallGaol() {
@@ -62,7 +62,7 @@ export class Pong extends GameObject {
         player: SceneContext.get().players.map(player => player.toJSON())
       }
     }
-    IOInterface.broadcast(JSON.stringify(payload), SceneContext.get().players.map(player => player.user_id));
+    IOInterface.broadcast(JSON.stringify(payload), SceneContext.get().players.map(player => player.id));
     if (this.checkWin() === true) {
       this.stopGame();
       return;
@@ -71,20 +71,22 @@ export class Pong extends GameObject {
     this.ball.resetBall(goal === 'left' ? this.paddle1 : this.paddle2);
     this.ball.enabled = true;
   }
+
 }
 
 export const game = () => {
   const ball = GameObject.instantiate(Ball);
 
-  const paddle1 = GameObject.instantiate(Paddle, SceneContext.get().players[1].user_id, new Vector2(50, 250)); // Left paddle
+  const paddle1 = GameObject.instantiate(Paddle, SceneContext.get().players[1].id, new Vector2(50, 250)); // Left paddle
   let paddle2: Paddle;
   if (SceneContext.get().gameType === "local" || SceneContext.get().gameType === "ai") {
     paddle2 = GameObject.instantiate(Paddle, 'other', new Vector2(750, 250)); // Right paddle for local game
   }
   else {
-    paddle2 = GameObject.instantiate(Paddle, SceneContext.get().players[0].user_id, new Vector2(750, 250)); // Right paddle for online game
+    paddle2 = GameObject.instantiate(Paddle, SceneContext.get().players[0].id, new Vector2(750, 250)); // Right paddle for online game
   }
-  GameObject.instantiate(Pong, ball, paddle1, paddle2); // Instantiate the Pong game object
+  const pong = GameObject.instantiate(Pong, ball, paddle1, paddle2); // Instantiate the Pong game object
+  pong.snapshotEnabled = false; // Disable snapshot for the Pong game object
 
   SceneContext.get().inputManager.start(); // Start the input manager
   SceneContext.get().loopManager.start(); // Start the game loop

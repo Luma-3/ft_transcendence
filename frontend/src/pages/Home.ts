@@ -5,7 +5,7 @@ function logo() {
 return `
 <div class="flex w-3/4 justify-center items-center animate-fade-in-down">
 
-	<img class="" src='/images/logo-dark-optimized.webp' alt='Transcenduck Logo'/>
+	<img class="w-full" src='/images/logo-dark-optimized.svg' alt='Transcenduck Logo'/>
 
 </div>`;
 }
@@ -13,7 +13,6 @@ return `
 function divHomePage() {
 return `
 <div class='flex flex-col items-center justify-center mt-40 space-y-8'>
-	
 	${logo()}
 	${languageSelectorHome()}
 	${animateButton("loadlogin", "get-started", `<img src='/images/duckHappy.png' class='w-20 h-20 mr-2 pointer-events-none' alt='Duck happy icon'>`)}

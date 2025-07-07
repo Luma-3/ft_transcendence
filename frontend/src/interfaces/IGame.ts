@@ -50,7 +50,7 @@ export interface IRoomData {
 }
 
 export interface IPlayer {
-  user_id: string;
+  id: string;
   player_name: string;
   ready: boolean;
   score: number;

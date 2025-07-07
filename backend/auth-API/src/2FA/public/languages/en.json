@@ -1,0 +1,15 @@
+{
+	"subject_2FA": "Quack quack! Here's your access code: ",
+	"subject_valid_email": "Validate your email address",
+
+	"verificationIntro": "Here is your",
+	"verificationCode": "verification code",
+	"verificationLink": "email validation link",
+	"verifyButton": "Click here to verify your email",
+	"codeValadity": "This code is valid for 10 minutes.",
+	"linkValidity": "This link is valid for 10 minutes.",
+	"automaticMessage": "This is an automatic message, ",
+	"dontRespond": "don't respond to this email.",
+	"ignoreWarning": "If you didn't make this request, please ignore this message.",
+	"signature": "The Transcenduck's Team"
+}

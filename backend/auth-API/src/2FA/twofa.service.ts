@@ -9,8 +9,13 @@ import fetch from 'node-fetch'
 
 import { NotFoundError, UnauthorizedError, ConflictError } from '@transcenduck/error';
 
+import verifyEmail from './public/html/verifyEmail.js';
+import twoFaEmail from './public/html/twoFaEmail.js';
+
+const path_public = 'src/2FA/public';
+
 async function loadLang(language: string){
-  const trad = JSON.parse(fs.readFileSync(`./src/2FA/languages/${language}.json`, 'utf8'));
+  const trad = JSON.parse(fs.readFileSync(`./${path_public}/languages/${language}.json`, 'utf8'));
 	return trad;
 }
 
@@ -25,35 +30,24 @@ async function sendVerificationEmail(email: string, data: string, language: stri
 		from: 'Transcenduck <transcenduck@gmail.com>',
 		to: email,
 		subject: `${trad['subject_valid_email']}`,
-		html: `
-			<div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: auto; padding: 40px 30px; border-radius: 12px; background: url('YOUR_BACKGROUND_IMAGE_URL') no-repeat center / cover; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.6);">
-				<div style="text-align: center; margin-bottom: 30px;">
-					<img src="https://via.placeholder.com/150x100?text=Logo" alt="Logo" style="max-width: 100px;">
-				</div>
-
-				<p style="font-size: 20px; margin-bottom: 15px;">${trad['greeting']},</p>
-
-				<p style="font-size: 16px; margin-bottom: 20px;">
-					${trad['verificationIntro']} <strong>${trad['verificationLink']}</strong> :
-				</p>
-
-				<div style="margin: 30px 0; text-align: center;">
-					<a href="${process.env.URL}/verifyEmail?value=${data}"
-						style="display: inline-block; padding: 14px 28px; background-color: #9333ea; border-radius: 8px; color: white; text-decoration: none; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-						${trad['verifyButton']}
-					</a>
-				</div>
-
-				<p style="font-size: 14px; margin-bottom: 10px;">${trad['linkValidity']}</p>
-				<p style="font-size: 14px; margin-bottom: 30px;">${trad['ignoreWarning']}</p>
-
-				<p style="font-size: 14px;">${trad['signature']}</p>
-
-				<div style="text-align: center; margin-top: 30px;">
-					<img src="https://via.placeholder.com/300x100?text=Merci+!" alt="${trad['footerImageAlt'] ?? 'Footer'}" style="max-width: 100%;">
-				</div>
-			</div>
-		`
+		attachments: [
+			{
+				filename: 'fond.webp',
+				path: path_public + '/imgs/fond.webp',
+				cid: 'backgroundImg'
+			},
+			{
+				filename: 'logo.webp',
+				path: path_public + '/imgs/logo.webp',
+				cid: 'logo'
+			},
+			{
+				filename: 'duckHappy.png',
+				path: path_public + '/imgs/duckHappy.png',
+				cid: 'duckHappy'
+			}
+		],
+		html: verifyEmail(trad, process.env.URL!, data)
 	}
 	await transporter.sendMail(mailOptions);
 }
@@ -63,35 +57,25 @@ async function send2FACode(email: string, code: string, language?: string) {
 	const mailOptions: SendMailOptions = {
 		from: 'Transcenduck <transcenduck@gmail.com>',
 		to: email,
-		subject: `${trad['subject_2FA']}`,
-		html: `
-			<div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: auto; padding: 40px 30px; border-radius: 12px; background: url('YOUR_BACKGROUND_IMAGE_URL') no-repeat center / cover; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.6);">
-				<div style="text-align: center; margin-bottom: 30px;">
-					<img src="https://via.placeholder.com/150x100?text=Logo" alt="Logo" style="max-width: 100px;">
-				</div>
-
-				<p style="font-size: 20px; margin-bottom: 15px;">${trad['greeting']},</p>
-
-				<p style="font-size: 16px; margin-bottom: 20px;">
-					${trad['verificationIntro']} <strong>${trad['verificationCode']}</strong> :
-				</p>
-
-				<div style="margin: 30px 0; text-align: center;">
-					<span style="display: inline-block; padding: 20px 40px; background-color: #22c55e; border-radius: 12px; font-size: 28px; font-weight: bold; letter-spacing: 4px; color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-						${code}
-					</span>
-				</div>
-
-				<p style="font-size: 14px; margin-bottom: 10px;">${trad['codeValadity']}</p>
-				<p style="font-size: 14px; margin-bottom: 30px;">${trad['ignoreWarning']}</p>
-
-				<p style="font-size: 14px;">${trad['signature']}</p>
-
-				<div style="text-align: center; margin-top: 30px;">
-					<img src="https://via.placeholder.com/300x100?text=Merci+!" alt="${trad['footerImageAlt'] ?? 'Footer'}" style="max-width: 100%;">
-				</div>
-			</div>
-		`
+		subject: `${trad['subject_2FA']} ${code}`,
+		attachments: [
+			{
+				filename: 'fond.webp',
+				path: path_public + '/imgs/fond.webp',
+				cid: 'backgroundImg'
+			},
+			{
+				filename: 'logo.webp',
+				path: path_public + '/imgs/logo.webp',
+				cid: 'logo'
+			},
+			{
+				filename: 'duckHappy.png',
+				path: path_public + '/imgs/duckHappy.png',
+				cid: 'duckHappy'
+			}
+		],
+		html: twoFaEmail(trad, code)
 	}
 	await transporter.sendMail(mailOptions);
 }
@@ -108,9 +92,13 @@ export class twoFaService {
 	static async generateSendCode(email: string, lang: string, code?: string) {
 		if (!code)
 			code = generateCode();
-		await send2FACode(email, code, lang);
-		await redisPub.setEx("users:check:code:" + code, 600, email);
-		await redisPub.setEx("users:check:email:" + email, 600, code);
+
+		const multi = redisPub.multi();
+		send2FACode(email, code, lang).catch(console.error);
+		multi.setEx("users:check:code:" + code, 600, email);
+		multi.setEx("users:check:email:" + email, 600, code);
+
+		multi.exec().catch(console.error);
 	}
 
 	static async resendEmail(email: string, lang: string) {
@@ -159,5 +147,24 @@ export class twoFaService {
 		}
 		await redisPub.del("users:check:code:" + code);
 		await redisPub.del("users:check:email:" + email);
+
+		const redis2faUpdate = await redisPub.get("users:2fa:update:" + email);
+		redisPub.del("users:2fa:update:" + email);
+
+		if (!redis2faUpdate) {
+			return 'Code verified successfully';
+		}
+
+		const response = await fetch(`http://${process.env.USER_IP}/internal/users/2fa/activate`, {
+			method: 'PATCH',
+			headers: {
+				'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+			body: JSON.stringify({ userID: redis2faUpdate })
+		})
+
+		const reponseData = await response.json() as { message: string, status: string};
+		return reponseData.message;
 	}
 }

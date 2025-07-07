@@ -3,7 +3,7 @@ import { Static, Type } from "@sinclair/typebox";
 export const sendEmailBody = Type.Object({
 	email: Type.String({ format: 'email' }),
 	lang: Type.String(),
-	token: Type.Optional(Type.String({ format: 'uuid' }))
+	token: Type.Optional(Type.String({ format: 'uuid' })),
 });
 export type sendEmailBodyType = Static<typeof sendEmailBody>;
 
@@ -44,7 +44,7 @@ export const ValidationEmailQueryGet = Type.Object({
 export type ValidationEmailQueryGetType = Static<typeof ValidationEmailQueryGet>;
 
 export const CodeValidationBody = Type.Object({
-  code: Type.String({format: 'uuid', description: 'code for user identification'}),
+  code: Type.String({ description: 'code for user identification' }),
 });
 
 export type CodeValidationBodyType = Static<typeof CodeValidationBody>;

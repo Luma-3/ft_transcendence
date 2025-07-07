@@ -1,5 +1,6 @@
-import { updatePointerCoordinates } from "../../components/game/trailBall";
-import { IBall, IPaddle, IGameObject, Vector2 } from "../../interfaces/IGame";
+import { updatePointerCoordinates } from "./utils/trailBall";
+import { IBall, IPaddle, IGameObject } from "../../interfaces/IGame";
+import { Vector2 } from "./utils/Vector";
 // import { drawExplosion } from "./gameBallAnimation";
 // import { socket } from "../socket/Socket";
 // import { gameFrontInfo } from "./gameCreation";
@@ -119,7 +120,10 @@ export class Game {
   height: number;
   private lastTime: number = performance.now();
 
-  constructor(canvasId: string) {
+  private players: Map<string, Paddle> = new Map();
+  private ball: Ball;
+
+  constructor(canvasId: string, paddles: IPaddle[]) {
     this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
     if (!this.canvas) {
       throw new Error(`Canvas with id ${canvasId} not found`);
@@ -132,6 +136,15 @@ export class Game {
 
     this.width = this.canvas.width;
     this.height = this.canvas.height;
+
+    this.ball = new Ball();
+    console.log("Paddles:", paddles);
+    paddles.forEach((paddle) => {
+      console.log("Creating paddle with ID:", paddle.id);
+      const player = new Paddle(paddle.id);
+      this.players.set(paddle.id, player);
+    });
+    this.loop()
   }
 
   clear() {
@@ -167,17 +180,25 @@ export class Game {
     this.drawLine(750, 0, 750, this.height, 'white', 1);
   }
 
-  draw(objects: IGameObject[]) {
+  draw() {
     this.clear();
     this.drawBackground();
+
+    this.ball.draw(this.ctx);
+    this.players.forEach((player) => {
+      player.draw(this.ctx);
+    });
+  }
+
+  update(objects: IGameObject[]) {
 
     objects.forEach((object) => {
       switch (object.type) {
         case 'ball':
-          new Ball(object as IBall).draw(this.ctx);
+          this.ball.update(object as IBall);
           break;
         case 'paddle':
-          new Paddle(object as IPaddle).draw(this.ctx);
+          this.players.get((object as IPaddle).id)?.update(object as IPaddle);
           break;
         default:
           console.warn("Unknown game object type:", object.type);
@@ -185,15 +206,14 @@ export class Game {
     });
   }
 
-
-  // TODO : // Work  for continuous animation (interpolation)
-  // loop() {
-  //   const currentTime = performance.now();
-  //   const deltaTime = (currentTime - this.lastTime) / 1000;
-  //   this.lastTime = currentTime;
-  //   this.clear();
-  //   requestAnimationFrame(() => this.loop());
-  // }
+  loop() {
+    const currentTime = performance.now();
+    let deltaTime = (currentTime - this.lastTime) / 1000;
+    deltaTime = deltaTime // TODO : a utiliser
+    this.lastTime = currentTime;
+    this.draw();
+    requestAnimationFrame(this.loop.bind(this));
+  }
 
 }
 
@@ -202,8 +222,13 @@ class Ball {
   position: Vector2;
   radius: number;
 
-  constructor(object: IBall) {
-    this.position = object.position;
+  constructor() {
+    this.position = Vector2.zero();
+    this.radius = 10; // Default radius, can be updated later
+  }
+
+  update(object: IBall) {
+    this.position = Vector2.fromObj(object.position);
     this.radius = object.radius;
   }
 
@@ -218,24 +243,29 @@ class Ball {
 
 
 class Paddle {
-  position: Vector2;
-  scale: Vector2;
-  radius: number;
+  id: string;
+  position: Vector2 = Vector2.zero();
+  scale: Vector2 = Vector2.zero();
+  radius: number = 10;
 
-  constructor(object: IPaddle) {
-    this.position = object.position;
-    this.scale = object.scale;
-    this.radius = object.scale.x / 2;
+  constructor(id: string) {
+    this.id = id;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = "white";
-    const pos: Vector2 = {
-      x: this.position.x - this.scale.x / 2,
-      y: this.position.y - this.scale.y / 2
-    };
+    const pos: Vector2 = new Vector2(
+      this.position.x - this.scale.x / 2,
+      this.position.y - this.scale.y / 2
+    );
     ctx.beginPath();
     ctx.roundRect(pos.x, pos.y, this.scale.x, this.scale.y, this.radius);
     ctx.fill();
+  }
+
+  update(object: IPaddle) {
+    this.position = Vector2.fromObj(object.position);
+    this.scale = Vector2.fromObj(object.scale);
+    this.radius = object.position.x / 2;
   }
 }

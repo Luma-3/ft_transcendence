@@ -1,0 +1,13 @@
+{
+	"subject_2FA": "Coin coin ! Voici ton code d'accès: ",
+	"subject_valid_email": "Validez votre adresse e-mail",
+
+	"verificationIntro": "Voici votre",
+	"verificationCode": "code de vérification",
+	"verificationLink": "lien de validation de l'e-mail",
+	"verifyButton": "Cliquez ici pour valider votre e-mail",
+	"codeValadity": "Ce code est valable pendant 10 minutes.",
+	"linkValidity": "Ce lien est valable pendant 10 minutes.",
+	"ignoreWarning": "Si vous n'êtes pas à l'origine de cette demande, veuillez ignorer ce message.",
+	"signature": "L'équipe Transcenduck"
+}

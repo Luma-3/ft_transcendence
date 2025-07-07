@@ -35,21 +35,14 @@ type FormOptions = {
 };
 
 export function form({ name, inputs, button, button2 }: FormOptions): string {
-	const inputFields = inputs
-		.map(
-			(input) => `
-		<label for="${input.name}" class="${input.labelClass || 'sr-only'}" translate="${input.translate || ''}">${input.placeholder}</label>
-		<input id="${input.name}" name="${input.name}" type="${input.type}" autocomplete="${input.autocomplete || ''}" 
-			class="font-title p-2 border rounded w-full
-			text-tertiary dark:text-dtertiary
-			border-primary dark:border-dprimary
-			bg-zinc-200 dark:bg-transparent
-			focus:ring-1  ring-primary dark:ring-dprimary focus:outline-none" translate="${input.translate || ''}"
-			placeholder="${input.placeholder}" ${input.required ? 'required' : ''} 
-			value="${input.value || ''}"
-			/>`
-		)
-		.join('');
+	const inputFields = inputs.map((input) => `
+
+<label for="${input.name}" class="${input.labelClass || 'sr-only'}" translate="${input.translate || ''}">${input.placeholder}</label>
+<input id="${input.name}" name="${input.name}" type="${input.type}" autocomplete="${input.autocomplete || ''}" 
+class="font-title p-2 border rounded w-full text-tertiary dark:text-dtertiary border-primary dark:border-dprimary bg-zinc-200 dark:bg-transparent focus:ring-1  ring-primary dark:ring-dprimary focus:outline-none" translate="${input.translate || ''}"
+placeholder="${input.placeholder}" ${input.required ? 'required' : ''} 
+value="${input.value || ''}"
+/>`).join('');
 
 	return `
 	<form id="${name}" name="${name}" class="flex flex-col justify-left text-responsive-size items-left space-y-4 w-3/4 sm:w-1/2 p-4 h-lg">

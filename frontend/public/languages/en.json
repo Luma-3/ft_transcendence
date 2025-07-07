@@ -10,7 +10,8 @@
 	"get-started": "Get started !",
 	
 	"lang-choice": "Choose your language: ",
-	
+	"warning-language-default": "This language will be set as the default for navigation and your first login",
+
 	"username": "Username",
 	"password": "Password",
 	"email": "Email",
@@ -18,7 +19,7 @@
 	"register": "Register",
 	"no-account": "Don't have an account yet?",
 	"create-account": "Create an account",
-	"you-have-to-verify-email": "Thank you! We've sent you an email. Just click the link inside to verify your address. The link will be active for 10 minutes.",
+	"you-have-to-verify-email": "Thank you! We've sent you an email. Just click the link inside to verify your address. The link will be active for 10 minutes. If you can't find it, check your spam folder or wait 10 minutes and try again.",
 	"verify-email": "Verify email",
 	"login": "Login",
 	"google-login": "Login with Google",

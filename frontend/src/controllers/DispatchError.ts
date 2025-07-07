@@ -3,17 +3,17 @@ import errorPage from "../pages/5xx";
 import { renderPublicPage } from "./renderPage";
 
 const knownErrors = new Map<string, string>([
-	['400', 'bad-request'],
-	['401', 'unauthorized'],
-	['402', 'payment-required'],
-	['403', 'forbidden'],
-	['404', 'not-found'],
-	['405', 'method-not-allowed'],
+	['400', 'Bad Request'],
+	['401', 'Unauthorized'],
+	['402', 'Payment Required'],
+	['403', 'Forbidden'],
+	['404', 'Not Found'],
+	['405', 'Method Not Allowed'],
 	['409', 'Conflict'],
-	['410', 'gone'],
-	['413', 'payload-too-large'],
-	['415', 'unsupported-media-type'],
-	['500', 'internal-server-error'],
+	['410', 'Gone'],
+	['413', 'Payload Too Large'],
+	['415', 'Unsupported Media Type'],
+	['500', 'Internal Server Error'],
 ]);
 
 
@@ -21,12 +21,8 @@ export function dispatchError(code: string, messageServer: string) {
 	switch (code) {
 		case '404':
 			return notFoundPage();
-		case '401':
-			return window.location.href = '/login';
-		case '461':
-			return renderPublicPage('verifyEmail', true);
-		case '460':
-			return window.location.href = '2FA';
+		// case '401':
+		// 	return window.location.href = '/login';
 		default:
 			return errorPage(code, knownErrors.get(code) || "Unknown error", messageServer);
 	}

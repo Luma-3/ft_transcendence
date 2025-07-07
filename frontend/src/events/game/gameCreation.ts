@@ -1,108 +1,121 @@
-import { alert } from "../../components/ui/alert/alert";
+import { getRoomInfos } from "../../api/getterGame";
+import { getOtherUserInfo, getUserInfo } from "../../api/getterUser(s)";
+import { API_CDN } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
+import { fadeIn, fadeOut } from "../../components/utils/fade";
+import { randomNameGenerator } from "../../components/utils/randomNameGenerator";
+import { removeLoadingScreen } from "../../components/utils/removeLoadingScreen";
+import { setupColorTheme } from "../../components/utils/setColorTheme";
+import { translatePage } from "../../controllers/Translate";
+import { IUserInfo } from "../../interfaces/IUser";
+import gameHtml from "../../pages/Game";
+import { socket } from "../../socket/Socket";
+import { onKeyDown, onKeyUp } from "./gameInput";
+import { resizeCanvas } from "./utils/resizeCanvas";
 
-import { fetchToken } from "../../api/fetchToken";
-import { getUserPreferences } from "../../api/getterUser(s)";
-import { fetchApi } from "../../api/fetch";
-import { API_GAME } from "../../api/routes";
-import { renderErrorPage } from "../../controllers/renderPage";
-
-export let gameFrontInfo: { gameId: string, gameType: string };
-
-type GameFormInfo = {
-	gameId: string;
-	gameName: string;
-	typeGame: string;
-	gameNameOpponent?: string;
+const readyEventListener = (playerId: string) => {
+  const payload = {
+    service: 'game',
+    scope: 'room',
+    target: playerId,
+    payload: {
+      action: 'ready',
+      data: {}
+    }
+  }
+  socket!.send(JSON.stringify(payload));
 }
 
-async function sendDataToServer(gameFormInfo: GameFormInfo, userTheme: string) {
+export default async function createGameHtml(roomId: string, user: IUserInfo) {
 
-	const response = await fetchApi<{ id: string }>(API_GAME.CREATE, {
-		method: 'POST',
-		body: JSON.stringify({
-			player_name: gameFormInfo.gameName,
-			game_name: "Ok Coral !",
-			game_type: gameFormInfo.typeGame,
-		}),
-	});
-	if (!response || response.status === "error" || !response.data) {
-		return alertTemporary("error", "game-creation-failed", userTheme, true);
-	}
+  /**
+   * Mise en place du listener sur la fenetre pour redimensionner le canvas si
+   * la fenetre est redimensionnee
+   */
+  window.addEventListener('resize', resizeCanvas)
 
-	gameFormInfo.gameId = response.data.id;
-	gameFormInfo.typeGame = gameFormInfo.typeGame;
+  onkeyup = (event) => {
+    onKeyUp(event, user.id);
+  }
 
-	/**
-	 * Petit alert de success qui s'affiche a droite sur l'ecran
-	 */
-	await alertTemporary("success", "game-created-successfully", userTheme, true);
+  /**
+   * ! Evenement clavier lors de l'affichage du VS (Room page)
+   */
+  onkeydown = (event) => {
+    const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
+
+    /**
+     * Pour le premier evenement clavier, je ping le serveur pour 
+     * lui signifier que le joueur a bien rejoint la Room
+    */
+    if (divGame.classList.contains("opacity-0")) {
+      readyEventListener(roomId);
+    }
+    /**
+     * Si le joueur a deja rejoint la Room, on envoie les evenements
+     * de deplacement au serveur
+     */
+    onKeyDown(event, user.id);
+  }
+
+
+  /**
+   * Recuperation des tous les joueurs present dans le Room pour afficher
+   * tout les adversaires du joueur (tournois)
+   */
+  const roomInfos = await getRoomInfos(roomId);
+  const leftOpponentInfos = await getOtherUserInfo(roomInfos.data!.players[1].id);
+  const rightOpponentInfos = (roomInfos.data!.players.length > 1 && roomInfos.data!.players[0].id !== "other")
+    ? await getOtherUserInfo(roomInfos.data!.players[0].id)
+    : {
+      data: {
+        preferences: {
+          avatar: `${API_CDN.AVATAR}/default.png`,
+          banner: `${API_CDN.AVATAR}/default.png`
+        },
+        player_name: randomNameGenerator(),
+      }
+    };
+
+  if (!leftOpponentInfos || !rightOpponentInfos) {
+
+    return alertTemporary("error", "error-while-fetching-opponent-infos", user.preferences!.theme);
+  }
+
+  return gameHtml(roomInfos.data!, leftOpponentInfos.data as IUserInfo, rightOpponentInfos.data as IUserInfo);
 }
 
 
-/**
- * Recuperation des infos necessaires dans le dashboard
- * pour le lancement de la partie
- */
-export async function createGame() {
+export async function createGame(data: any) {
 
-	/**
-	 * Verification de la session utilisateur
-	 */
-	const token = await fetchToken();
-	if (token.status === "error") {
-		return renderErrorPage('401')
-	}
+  console.log(data)
+  let lang = 'en';
+  let theme = 'dark';
 
-	/**
-	 * Recuperation et verification de la selection du type de jeu et des donnees utiles au jeu
-	 */
-	const gameType = document.querySelector('input[name="game-type"]:checked') as HTMLInputElement;
-	if (!gameType) {
-		return alert("no-gametype-selected", "error");
-	}
+  const user = await getUserInfo();
+  if (user.status === "error" || !user.data) {
+    return alertTemporary("error", "error-while-creating-game", "dark");
+  }
 
-	const player1 = (document.getElementById('player1-name') as HTMLInputElement).value;
-	if (!player1) {
-		return alert("enter-both-players-names", "error");
-	}
+  lang = user.data.preferences!.lang;
+  theme = user.data.preferences!.theme;
 
-	let player2;
+  fadeOut();
 
-	switch (gameType.id) {
+  setTimeout(async () => {
+    const main_container = document.querySelector<HTMLDivElement>('#app')!
+    const newContainer = await createGameHtml(data.id, user.data!);
+    if (!newContainer) {
+      return;
+    }
 
-		case "localpvp":
-			player2 = (document.getElementById('player2-name') as HTMLInputElement).value;
-			if (!player2) {
-				return alert("enter-name-player2", "error");
-			}
-			break;
-		case "localpve":
-			//TODO: tableau de nom de bot a choisir aleatoirement
-			player2 = "MichMich the crazy duck";
-			break;
-		default:
-			break;
-	}
+    main_container.innerHTML = newContainer;
+    setupColorTheme(theme);
 
+    translatePage(lang);
 
-	/**
-	 * Creation d'un objet contenant les donnees de la partie
-	 * pour pouvoir stocker facilement toutes les donnees utiles au front
-	 * et l'envoi de la requete pour creer la partie
-	 */
-	const gameFormInfo = {
-		gameId: "",
-		gameName: player1,
-		typeGame: gameType.id,
-		gameNameOpponent: (player2) ? player2 : "",
-	}
+    removeLoadingScreen();
 
-	const userPref = await getUserPreferences()
-	await sendDataToServer(gameFormInfo, userPref.data?.theme || 'dark');
-	
-	gameFrontInfo = {
-		gameId: gameFormInfo.gameId,
-		gameType: gameFormInfo.typeGame
-	}
+    fadeIn();
+  }, 250);
 }

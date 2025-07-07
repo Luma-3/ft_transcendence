@@ -17,7 +17,7 @@ return `
 		<!-- ! BANNER  -->
 		<div class="relative w-full h-full group" >
 			
-			<img src="${API_CDN.BANNER}/${userPref.banner ?? 'default.webp'}" alt="Banner" 
+			<img src="${userPref.banner ?? 'default.webp'}" alt="Banner" 
 			class="w-full h-full object-cover rounded-lg shadow-lg" />
 
 		</div>
@@ -28,7 +28,7 @@ return `
 			<div class="absolute left-0 flex-col items-center space-y-2 ml-15 mr-15 pt-4 justify-center">
 				
 				<div id="img-div" class="relative w-32 h-32 group text-primary dark:text-dprimary">
-					<img src=${API_CDN.AVATAR}/${userPref.avatar} class="w-full h-full rounded-full border-6"
+					<img src=${userPref.avatar} class="w-full h-full rounded-full border-6"
 					alt="Profile picture">
 				</div>
 			

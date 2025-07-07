@@ -1,5 +1,4 @@
 import { IUserInfo } from '../../interfaces/IUser';
-import { API_CDN } from '../../api/routes';
 import { IOtherUser } from '../../interfaces/IUser';
 
 // let userNotification: boolean = false;
@@ -8,17 +7,17 @@ import { IOtherUser } from '../../interfaces/IUser';
  * Partie du menu situe en haut avec le nom de l'utilisateur et la photo de profil
  */
 export function headerUserMenu(user: IUserInfo) {
-	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.preferences!.banner}')">
+	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${user.preferences!.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
-					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.preferences!.avatar}" alt="User profile picture">
+					<img class="w-full h-full rounded-full" src="${user.preferences!.avatar}" alt="User profile picture">
 				</div>
 				</div>`;
 }
 
 export function headerOtherUserMenu(user: IOtherUser) {
-	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${API_CDN.BANNER}/${user.banner}')">
+	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${user.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
-					<img class="w-full h-full rounded-full" src="${API_CDN.AVATAR}/${user.avatar}" alt="User profile picture">
+					<img class="w-full h-full rounded-full" src="${user.avatar}" alt="User profile picture">
 				</div>
 				</div>`;
 }
@@ -33,11 +32,11 @@ function UserMenuOptions() {
 	const listOption = [
 		{ value: "profile", icon: `duckProfileCrop.png` },
 		{ value: "friends", icon: `duckSocialCrop.png` },
-		{ value: "settings", icon: `duckSettingsCrop2.png` },
+		{ value: "settings", icon: `duckSettingsCrop.png` },
 	];
 	const allOptions = listOption.map(element => {
 		return `<li>
-					<button id="load${element.value}" class="flex flex-row w-full mt-0.5 h-12 items-center overflow-hidden  transition-all duration-300 ease-in-out
+					<button id="load${element.value}" class="flex flex-row w-full mt-0.5 h-15 items-center overflow-hidden  transition-all duration-300 ease-in-out
 					 hover:bg-primary dark:hover:bg-myblack hover:shadow-lg transform hover:scale-[1.02]
 					 bg-gradient-to-r from-transparent via-transparent to-gray-100 dark:to-gray-800">
 

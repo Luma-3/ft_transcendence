@@ -23,7 +23,7 @@ class RoomManager {
       if (!room) {
         throw new NotFoundError('room');
       }
-      console.log(`Player ${player.user_id} joining room ${id}`);
+      console.log(`Player ${player.id} joining room ${id}`);
       room.addPlayer(player);
       return room.id;
     }
@@ -41,11 +41,11 @@ class RoomManager {
     // const room = this.rooms.get(room_id);
     room_id = room_id;
     // TODO :  room.removePlayer()
-    this.playersInRooms.delete(player.user_id);
+    this.playersInRooms.delete(player.id);
   }
 
   public findCurrentRoom(player: Player) {
-    return this.playersInRooms.get(player.user_id);
+    return this.playersInRooms.get(player.id);
   }
 
   public getRoomById(room_id: string) {

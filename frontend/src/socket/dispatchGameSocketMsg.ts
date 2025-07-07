@@ -1,12 +1,14 @@
-import { renderGame } from "../controllers/renderPage";
 import { Game } from "../events/game/gameDraw";
-import { IGameObject, IRoomData } from "../interfaces/IGame";
-import { DisplayGameWinLose } from "../events/game/gameWin";
-import { showGame } from "../events/game/gameShow";
+import { IGameObject } from "../interfaces/IGame";
+import { DisplayGameWinLose } from "../events/game/gameEnd";
+import { showGame } from "../events/game/utils/gameFadeOut";
 
 
-import { drawExplosion } from "../events/game/gameBallAnimation";
-import { changeScore } from "../events/game/gameUpdate";
+import { drawExplosion } from "../events/game/utils/gameBallExplosion";
+import { changeScore } from "../events/game/gameInput";
+import { startShapeSparkle } from "../events/game/utils/trailBall";
+import { bouncePlayer } from "../events/game/utils/bouncePlayer";
+import { createGame } from "../events/game/gameCreation";
 
 export type GameSnapshot = {
   serverTime: number;
@@ -16,53 +18,33 @@ export type GameSnapshot = {
 export let clockoffset = 0;
 export let gameSnapshots: GameSnapshot[] = [];
 
-function changeStatusPlayer(roomData: IRoomData) {
-  for (const player of roomData.players) {
-    if (player) {
-      const ready = player.ready ? "ready" : "not-ready";
-      if (ready === "ready") {
-        const playerElement = document.getElementById(player.player_name);
-        playerElement?.classList.add("animate-bounce");
-      }
-    }
-  }
-}
-
-// function launchGame(roomId: string) {
-//   console.log("Launching game for room:", roomId);
-//   //TODO: Animate 3,2,1....Go
-//   socket?.send(JSON.stringify({
-//     action: "game",
-//     payload: {
-//       type: 'startGame',
-//       data: {
-//         roomId: roomId,
-//       }
-//     }
-//   }));
-// }
-
 let game: Game;
 
 export async function dispatchGameSocketMsg(payload: any) {
+  console.log("dispatchGameSocketMsg", payload);
   switch (payload.action) {
+
     case 'roomReady':
-      renderGame(payload.data);
+      createGame(payload.data);
       break;
+
     case 'playerReady':
-      changeStatusPlayer(payload.data);
+      bouncePlayer(payload.data);
       break;
     case 'starting':
       showGame();
-      game = new Game("gamePong");
+      const canvas = document.getElementById("gamePong") as HTMLCanvasElement;
+      const ctx = canvas.getContext("2d");
+      startShapeSparkle(ctx!, canvas);
+      game = new Game("gamePong", payload.data.players);
+
       break;
     case 'score':
-      console.log("dispatchGameSocketMsg", payload);
       drawExplosion(payload.data.ball.position.x, payload.data.ball.position.y);
       changeScore(payload.data.player);
       break;
     case 'snapshot':
-      game.draw(payload.data);
+      game.update(payload.data);
       break;
     case 'end':
       DisplayGameWinLose(payload.data.player);

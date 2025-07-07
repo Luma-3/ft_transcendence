@@ -56,12 +56,12 @@ export class Room {
 
     IOInterface.send(
       JSON.stringify({ action: 'joined', data: this.toJSON() }),
-      player.user_id
+      player.id
     ); // Notify the player who joined
 
     IOInterface.broadcast(
       JSON.stringify({ action: 'playerJoined', data: this.toJSON() }),
-      this.players.map(p => p.user_id)
+      this.players.map(p => p.id)
     ); // Notify all players in the room
 
     this.tryRoomReady();
@@ -75,20 +75,20 @@ export class Room {
     IOInterface.subscribe(`ws:game:room:${this.id}`, this.callbackPlayerReady);
     IOInterface.broadcast(
       JSON.stringify({ action: 'roomReady', data: this.toJSON() }),
-      this.players.map(p => p.user_id)
+      this.players.map(p => p.id)
     );
   }
 
   callbackPlayerReady = (message: string) => {
     const { user_id, action } = JSON.parse(message);
-    const player = this.players.find(p => p.user_id === user_id);
+    const player = this.players.find(p => p.id === user_id);
 
     if (action !== 'ready' || !player) return;
     player.ready = true;
 
     IOInterface.broadcast(
       JSON.stringify({ action: 'playerReady', data: this.toJSON() }),
-      this.players.map(p => p.user_id)
+      this.players.map(p => p.id)
     );
 
     this.tryStart();
@@ -106,7 +106,7 @@ export class Room {
 
     IOInterface.broadcast(
       JSON.stringify({ action: 'starting', data: this.toJSON() }),
-      this.players.map(player => player.user_id)
+      this.players.map(player => player.id)
     );
 
     const ctx = new SceneContext(this.id, this.gameType, this.players, this.loopManager, this.inputManager);

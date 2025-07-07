@@ -18,11 +18,11 @@ ${navbar(user)}
 
 			<div class="relative w-full">
 				
-				<img src="${API_CDN.BANNER}/${user.preferences?.banner ?? 'default.webp'}" alt="Banner" class="flex w-[1000px] h-[300px] object-cover rounded-lg shadow-lg group-hover:blur-sm" />
+				<img src="${user.preferences?.banner ?? 'default.webp'}" alt="Banner" class="flex w-[1000px] h-[300px] object-cover rounded-lg shadow-lg group-hover:blur-sm" />
 						
 				<div id="dashboardScreen" class="absolute w-full flex inset-0 items-center justify-center">
 				
-					<img src="${API_CDN.AVATAR}/${user.preferences?.avatar ?? 'default.webp'}" alt="Bienvenue" class="rounded-full w-50" />
+					<img src="${user.preferences?.avatar ?? 'default.webp'}" alt="Bienvenue" class="rounded-full w-50" />
 				</div>
 			</div>
 		<div class="flex flex-col w-full justify-center items-center space-y-4 text-primary dark:text-dtertiary mb-10 ">
@@ -43,7 +43,7 @@ ${navbar(user)}
 
 				<div class="flex w-full justify-center items-center mb-10">
 				
-					${primaryButton({ id: 'createGame', weight: "1/2", text: "Play", translate: "play", type: "button" })}
+					${primaryButton({ id: 'initGame', weight: "1/2", text: "Play", translate: "play", type: "button" })}
 				
 				</div>
 			

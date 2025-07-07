@@ -1,5 +1,4 @@
 import { animateButton } from "../components/ui/buttons/animateButton"
-import { primaryButton } from "../components/ui/buttons/primaryButton"
 import { headerPage } from "../components/ui/headerPage"
 
 export default async function verifyEmail() {
@@ -21,10 +20,7 @@ return `
 
 		${animateButton("sendEmail", "Too late ? Not receive ?", "Resend-Email")}
 		
-		${primaryButton({id: "loaddashboard",weight: "1/2", text:"Fuck verify, let's go to dashboard" })}
-	
-	</div>
-</div>`
+		
+		</div>
+		</div>`
 }
-
-//449
