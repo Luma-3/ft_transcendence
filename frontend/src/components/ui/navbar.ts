@@ -1,5 +1,4 @@
 import { IUserInfo } from "../../interfaces/IUser";
-import { API_CDN } from "../../api/routes";
 import { renderUserMenu } from "./userMenu";
 
 function navbarLogo() {
@@ -17,7 +16,7 @@ export function userMenu(user: IUserInfo) {
 	 text-tertiary rounded dark:text-dtertiary
 	 bg-gradient-to-r dark:from-dprimary dark:to-gray-800 dark:to-grey-700 from-primary/80 to-primary">
 			${renderUserMenu(user)}
-			</div>`
+	</div>`
 }
 
 export function navbar(user: IUserInfo) {
@@ -29,7 +28,7 @@ export function navbar(user: IUserInfo) {
 				 text-tertiary dark:text-dtertiary">
 				${user.username}
 				</span>
-				<img class="w-12 h-12 rounded-full pointer-events-none" src=${user.preferences!.avatar} alt="User profile picture">
+				<img class="w-12 h-12 rounded-full pointer-events-none" src=${user.preferences.avatar} alt="User profile picture">
 			</button>
 	</nav>
 	${userMenu(user)}`;	

@@ -4,8 +4,6 @@
  */
 export function fadeIn() {
 	const main_container = document.querySelector<HTMLDivElement>('#app')!;
-	// const footer = document.querySelector('footer')!;
-	// footer.classList.remove('hidden')
 	main_container.classList.remove('opacity-0', 'scale-95')
 	main_container.classList.add('opacity-100', 'scale-100')
 }
@@ -16,8 +14,6 @@ export function fadeIn() {
  */
 export function fadeOut() {
 	const main_container = document.querySelector<HTMLDivElement>('#app')!;
-	// const footer = document.querySelector('footer')!;
-	// footer.classList.add('hidden')
 	main_container.classList.remove('opacity-100', 'scale-100')
 	main_container.classList.add('opacity-0', 'scale-95')
 }

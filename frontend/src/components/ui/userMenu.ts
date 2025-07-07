@@ -21,8 +21,6 @@ export function headerOtherUserMenu(user: IOtherUser) {
 				</div>
 				</div>`;
 }
-// <span class="p-1 block bg-primary dark:bg-dprimary shadow-md rounded-lg text-responsive-size font-title overflow-hidden truncate
-//  text-tertiary dark:text-dsecondary">${user.username}</span>
 
 /**
  * Partie du menu qui contient les options Profile, Stats, Settings
@@ -61,10 +59,6 @@ function UserMenuOptions() {
 			</ul>`;
 		
 }
-// <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-// 	class="size-6 mr-2">
-// 		${element.icon}
-// 	</svg>
 
 
 /**

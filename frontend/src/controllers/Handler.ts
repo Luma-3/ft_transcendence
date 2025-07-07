@@ -1,5 +1,5 @@
-import { registerUser } from '../events/user/userRegister'
-import { loginUser } from '../events/user/userLogin'
+import { registerUser } from '../pages/Register'
+import { loginUser } from '../pages/Login'
 import { logOutUser } from '../events/user/userLogout'
 import { deleteUser } from '../events/user/userDelete'
 import { changeLanguage, changeLanguageSettings, saveDefaultLanguage } from './Translate'
@@ -15,8 +15,8 @@ import { toggleChat } from '../components/utils/toggleChat'
 import { toggleGameSettings } from '../components/utils/toggleGameSettings'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 
-import { changeUserNameEmail } from '../events/user/userChange'
-import { changeUserPassword } from '../events/user/userChange'
+import { changeUserNameEmail } from '../pages/Profile/Profile'
+import { changeUserPassword } from '../pages/Profile/Profile'
 import { showEditorPicture } from '../components/utils/imageEditor'
 import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
@@ -32,6 +32,9 @@ import { unfriendUser } from '../events/social/removeFriend'
 import { disable2FA, enable2FA, submit2FACode, submit2FACodeLogin } from '../2FA'
 import { showNotificationDiv } from '../events/notifications/notificationsDiv'
 import { sendEmail } from '../components/utils/sendEmail'
+
+
+import { FetchInterface } from '../api/FetchInterface'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
@@ -52,7 +55,6 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 
 	// * -------------- Profile Page  -------------- */
 	'loadprofile': () => renderPrivatePage('profile'),
-	'changeUserInfo': () => changeUserNameEmail(),
 	'change-password': () => changeUserPassword(),
 	
 	'add-friend': (event) => friendRequest(event.target as HTMLElement, "send"),
@@ -75,7 +77,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	// * -------------- Settings Page  -------------- */
 	'loadsettings': () => renderPrivatePage('settings'),
 	'saveLang': () => saveDefaultLanguage(),
-	'deleteAccount': () => deleteUser(),
+	'deleteAccount': () => FetchInterface.deleteUser(),
 	'logout': () => logOutUser(),
 
 	// * -------------- Friends Page   -------------- */
@@ -120,7 +122,8 @@ const submitEvent: { [key: string]: () => void } = {
 	'loginForm': loginUser,
 	'registerForm': registerUser,
 	'2faCodeForm': submit2FACode,
-	'2faCodeLoginForm': submit2FACodeLogin   
+	'2faCodeLoginForm': submit2FACodeLogin,
+	'updateInfosUserForm': changeUserNameEmail
 };
 
 /**

@@ -1,10 +1,9 @@
 import Swal from "sweetalert2";
-import { fetchApi } from "../../../api/fetch";
-import { API_USER } from "../../../api/routes";
 import { alertTemporary } from "./alertTemporary";
 import { getCustomAlertTheme } from "./alertTheme";
 import { loadTranslation } from "../../../controllers/Translate";
 import { verifRegexNewPassword } from "../../utils/regex";
+import { FetchInterface } from "../../../api/FetchInterface";
 
 export async function alertChangePassword() {
 	
@@ -61,18 +60,7 @@ export async function alertChangePassword() {
 		}
 	}).then(async (result) => {
 		if (result.isConfirmed) {
-			const response = await fetchApi(API_USER.UPDATE.PASSWORD, {
-				method: "PATCH",
-				body: JSON.stringify({
-					oldPassword: result.value?.oldPassword.length > 0 ? result.value?.oldPassword : undefined,
-					password: result.value?.newPassword,
-				}),
-			});
-			if (response.status === "success") {
-				alertTemporary("success", trad['password-changed'], customTheme.theme);
-			} else {
-				alertTemporary("error", trad['error-while-changing-password'], customTheme.theme);
-			}
+			FetchInterface.updatePassword(result.value.oldPassword, result.value.newPassword, trad, customTheme)
 		}
 	});
 }

@@ -26,10 +26,10 @@ export async function getBlockedUsers(): Promise<IApiResponse<IOtherUser[]>> {
 	return response;
 }
 
-export async function getOtherUserInfo(id: string): Promise<IApiResponse<IUserInfo>> {
-	const response = await fetchApi<IUserInfo>(API_USER.BASIC.BASIC + `/${id}?includePreferences=true`);
-	return response;
-}
+// export async function getOtherUserInfo(id: string): Promise<IApiResponse<IUserInfo>> {
+// 	const response = await fetchApi<IUserInfo>(API_USER.BASIC.BASIC + `/${id}?includePreferences=true`);
+// 	return response;
+// }
 
 export async function getAllUsers(blocked: ("you" | "another" | "all" | "none") = "none", friends: boolean = false, pending: boolean = false, page: number = 1, limit: number = 10, hydrate: boolean = true) {
 	const response = await fetchApi<UserSearchResult>(API_USER.BASIC.BASIC + `?blocked=${blocked}&friends=${friends}&pending=${pending}&limit=${limit}&page=${page}&hydrate=${hydrate}`);

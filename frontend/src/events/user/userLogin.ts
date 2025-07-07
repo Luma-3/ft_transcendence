@@ -6,7 +6,7 @@ import { API_SESSION } from '../../api/routes';
 import { socketConnection } from '../../socket/Socket';
 import { fetchApiWithNoError } from '../../api/fetch';
 
-export async function loginUser() {
+async function loginUser() {
 
 	/**
 	 * Validation du formulaire de connexion

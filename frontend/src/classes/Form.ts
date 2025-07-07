@@ -18,11 +18,12 @@ export class Form {
 
 
 	public getValues(id: string) {
-		const form = document.forms.namedItem("registerForm") as HTMLFormElement;
+		const form = document.forms.namedItem(id) as HTMLFormElement;
 		if (!form) { return; }
 
 		const formData = new FormData(form);
 		const formEntry = Object.fromEntries(formData) as Record<string, string>;
+		return formEntry;
 	}
 }
 

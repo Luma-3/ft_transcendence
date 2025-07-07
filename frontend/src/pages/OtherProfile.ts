@@ -7,8 +7,10 @@ import { backButton } from "../components/ui/buttons/backButton";
 import { getFriends, getOtherUserInfo } from "../api/getterUser(s)";
 import { API_CDN } from "../api/routes";
 import { IUserInfo } from "../interfaces/IUser";
+import { renderErrorPage } from "../controllers/renderPage";
+import { FetchInterface } from "../api/FetchInterface";
 
-function avatarBanner(userPref: {avatar: string, banner: string}) {
+function avatarBanner(userPref: any) {
 return `
 <div class="flex flex-col mb-20 items-center justify-center space-y-2 pt-4">
 	
@@ -101,23 +103,25 @@ async function friends(user:User) {
 	return container;
 }
 
-export async function renderOtherProfile(container: HTMLElement) {
+export async function renderOtherProfile(container: HTMLElement, myUser: IUserInfo) {
 
-	console.log("Rendering other profile page...");
 	const userId = container.dataset.id;
-	const response = await getOtherUserInfo(userId!);
-	if (response.status === "success" && response.data) {
-		const user = response.data;
+	if (!userId) {
+		return renderErrorPage('404');
+	}
 
-		return `
-			${navbar(user)}
-			${backButton()}
-			<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
-			${avatarBanner(user.preferences)}
-			${userInfo(user)}
-			</div>`
-		}
-		return notfound();
+	const user = await FetchInterface.getOtherUserInfo(userId);
+	if (user === undefined) {
+		return renderErrorPage('404');
+	}
+
+	return `
+		${navbar(myUser)}
+		${backButton()}
+		<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
+		${avatarBanner(user.preferences)}
+		${userInfo(user)}
+		</div>`
 }
 
 

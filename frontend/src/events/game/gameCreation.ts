@@ -63,25 +63,25 @@ export default async function createGameHtml(roomId: string, user: IUserInfo) {
 	 * Recuperation des tous les joueurs present dans le Room pour afficher
 	 * tout les adversaires du joueur (tournois)
 	 */
-	const roomInfos = await getRoomInfos(roomId);
+	// const roomInfos = await getRoomInfos(roomId);
 
-	const leftOpponentInfos = await getOtherUserInfo(roomInfos.data!.players[0].user_id);
-	const rightOpponentInfos = (roomInfos.data!.players.length > 1 && roomInfos.data!.players[1].user_id !== "other")
-		? await getOtherUserInfo(roomInfos.data!.players[1].user_id)
-		: {
-			data: {
-				preferences: {
-					avatar: `${API_CDN.AVATAR}/default.png`,
-					banner: `${API_CDN.AVATAR}/default.png`
-				},
-				player_name: randomNameGenerator(),
-			}
-		};
+	// const leftOpponentInfos = await getOtherUserInfo(roomInfos.data!.players[0].user_id);
+	// const rightOpponentInfos = (roomInfos.data!.players.length > 1 && roomInfos.data!.players[1].user_id !== "other")
+	// 	? await getOtherUserInfo(roomInfos.data!.players[1].user_id)
+	// 	: {
+	// 		data: {
+	// 			preferences: {
+	// 				avatar: `${API_CDN.AVATAR}/default.png`,
+	// 				banner: `${API_CDN.AVATAR}/default.png`
+	// 			},
+	// 			player_name: randomNameGenerator(),
+	// 		}
+	// 	};
 
-		if (!leftOpponentInfos || !rightOpponentInfos) {
+	// 	if (!leftOpponentInfos || !rightOpponentInfos) {
 		
-			return alertTemporary("error", "error-while-fetching-opponent-infos", user.preferences!.theme);
-		}
+	// 		return alertTemporary("error", "error-while-fetching-opponent-infos", user.preferences!.theme);
+	// 	}
 
 		return gameHtml(roomInfos.data!, leftOpponentInfos.data as IUserInfo, rightOpponentInfos.data as IUserInfo);
 }

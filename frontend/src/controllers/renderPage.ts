@@ -1,3 +1,7 @@
+/**
+ * ! PAGES
+ */
+
 import home from '../pages/Home'
 import login from '../pages/Login'
 import register from '../pages/Register'
@@ -9,20 +13,22 @@ import documentation from '../pages/Documentation'
 import verifyEmail from '../pages/VerifyEmail'
 import twoFaPage, { loginTwoFaPage } from '../2FA'
 
-
-// import welcomeYouPage from '../pages/WelcomeYou';
-// import { handleWelcomeYouPage } from '../pages/WelcomeYou';
-
+/**
+ * ! UTILS
+ */
 import { addToHistory } from '../main'
 import { setupColorTheme } from '../components/utils/setColorTheme'
 import { translatePage } from './Translate'
 import { fadeIn, fadeOut } from '../components/utils/fade'
 import { removeLoadingScreen } from '../components/utils/removeLoadingScreen'
 
+/**
+ * ! API
+ */
 import { IUserInfo } from '../interfaces/IUser'
 import { getUserInfo, getUserPreferences } from '../api/getterUser(s)'
-
 import { fetchToken } from '../api/fetchToken'
+
 
 /**
  * Associe les pages publics aux fonctions de rendu
@@ -68,14 +74,13 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 
 		document.querySelector("footer")?.classList.add("hidden");
 	}
-	, 250);
+	, 200);
 }
 
 /**
  * Associe les pages privees aux fonctions de rendu
  */
 const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promise<string> } = {
-	// 'WelcomeYou': welcomeYouPage,
 	'dashboard': dashboard,
 	'settings': settings,
 	'profile': profile,
@@ -89,24 +94,16 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
  */
 export async function renderPrivatePage(page: string, updateHistory: boolean = true) {
 
-	console.log(`Rendering private page: ${page}`);
-	let lang = 'en';
-	let theme = 'dark';
-
-	const user = await getUserInfo();
-	if (user.status === "error") {
-		return renderErrorPage('401');
+	const user = await FetchInterface.getUserInfo();
+	if (user === undefined) {
+		return;
 	}
 
 	if (!socket) {
 		socketConnection();
 	}
 
-	lang = user.data!.preferences!.lang;
-	theme = user.data!.preferences!.theme;
-
 	fadeOut();
-
 	setTimeout(async () => {
 
 		const main_container = document.querySelector<HTMLDivElement>('#app')!
@@ -114,22 +111,20 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		if (!rendererFunction) {
 			return renderErrorPage('404');
 		}
-		const page_content = await Promise.resolve(rendererFunction(user.data!));
+		
+		const page_content = await Promise.resolve(rendererFunction(user));
 
 		main_container.innerHTML = page_content;
-		setupColorTheme(theme);
+		setupColorTheme(user.preferences.theme);
 
-		translatePage(lang);
+		translatePage(user.preferences.lang);
 		addToHistory(page, updateHistory);
 
 		removeLoadingScreen();
 
 		fadeIn();
 
-		// if (page === 'WelcomeYou') {
-		//   handleWelcomeYouPage();
-		// }
-	}, 250);
+	}, 200);
 }
 
 
@@ -137,23 +132,13 @@ import { renderOtherProfile } from '../pages/OtherProfile'
 import { redocInit } from '../components/utils/redocInit'
 import { dispatchError } from './DispatchError'
 import { socket, socketConnection } from '../socket/Socket'
+import { FetchInterface } from '../api/FetchInterface'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 
-
-	let lang = 'en';
-	let theme = 'dark';
-	let response;
-	try {
-		[, response] = await Promise.all([
-			fetchToken(),
-			getUserInfo()
-		])
-		lang = response.data!.preferences!.lang;
-		theme = response.data!.preferences!.theme;
-
-	} catch (error) {
-		return renderErrorPage('401');
+	const user = await FetchInterface.getUserInfo();
+	if (user === undefined) {
+		return;
 	}
 
 	fadeOut();
@@ -162,21 +147,21 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 
 		const main_container = document.querySelector<HTMLDivElement>('#app')!
 
-		const newContainer = await renderOtherProfile(target);
+		const newContainer = await renderOtherProfile(target, user);
 		if (!newContainer) {
 			return;
 		}
 
 		main_container.innerHTML = newContainer;
-		setupColorTheme(theme);
+		setupColorTheme(user.preferences.theme);
 
-		translatePage(lang);
+		translatePage(user.preferences.lang);
 
 		removeLoadingScreen();
 
 		fadeIn();
 	}
-		, 250);
+		, 200);
 }
 
 /**
@@ -211,7 +196,7 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 
 		fadeIn();
 	}
-		, 250);
+		, 200);
 }
 
 const logoDoc: { [key: string]: string } = {

@@ -29,7 +29,7 @@
 	"password-must-include": "Le mot de passe doit inclure au moins : 8 caractères, 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
 	"no-changes-detected": "Aucun changement détecté",
 	"user-info-updated": "Informations mises à jour",
-
+	
 	"profil": "Profil",
 	"stats": "Statistiques de jeux",
 	"logout": "Se déconnecter",
@@ -39,6 +39,7 @@
 	"settings": "Paramètres",
 	"change-default-language": "Changer la langue par défaut",
 	"language-update": "Langue mise à jour",
+	"change-image": "Changer l'image",
 	
 	"activate-2fa": "Activer 2FA",
 	"disable-2fa": "Désactiver 2FA",

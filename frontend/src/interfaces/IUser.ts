@@ -3,8 +3,8 @@ export interface IUserInfo {
 	id: string;
 	username: string;
 	created_at?: string;
-	email?: string;
-	preferences?: IUserPreferences;
+	email: string;
+	preferences: IUserPreferences;
 }
 
 export interface IUserPreferences {

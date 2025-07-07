@@ -8,7 +8,6 @@ export async function notifications() {
 		getNotifications("receiver")
 	]);
 	
-	// let content: string = `<div class="flex flex-col font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">`;
 	
 	let content = '';
 	const invitationSend = results[0].data!;
@@ -69,13 +68,3 @@ export async function notifications() {
 			</div>
 			</div>`
 }
-
-	// <div id="block-user" data-username=${friend.username} data-id=${friend.id} class="group/item relative hover:cursor-pointer">
-	// 				<span class="tooltip absolute z-10 left-1/2  top-full mb-1 hidden group-hover/item:block bg-primary text-tertiary dark:bg-dprimary 
-	// 			dark:text-dtertiary text-xs rounded py-1 px-2">
-	// 				Block This MotherDucker
-	// 				</span>
-	// 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none">
-	// 				<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-	// 				</svg>
-	// 			</div>
