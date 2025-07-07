@@ -29,14 +29,6 @@ export async function registerUser() {
 	const form = document.forms.namedItem("registerForm") as HTMLFormElement;
 	if (!form) { return; }
 
-	/**
-	 * Recuperation de la langue precedemment seleREGISTERctionne par l'utilisateur
-	 * et suppression de la valeur dans le sessionStorage
-	 */
-	const lang = sessionStorage.getItem('lang') || 'en';
-	sessionStorage.removeItem('lang');
-
-
 	const formData = new FormData(form);
 	const formEntry = Object.fromEntries(formData) as Record<string, string>;
 
@@ -46,6 +38,13 @@ export async function registerUser() {
 	if (verifValueForm(formEntry) === false || verifRegexPassword(formEntry.password) === false) {
 		return;
 	}
+	
+	/**
+	 * Recuperation de la langue precedemment selectionne par l'utilisateur
+	 * et suppression de la valeur dans le sessionStorage
+	 */
+	const lang = sessionStorage.getItem('lang') ?? 'en';
+	sessionStorage.removeItem('lang');
 
 	/**
 	 * Chargement des traductions dans la langue selectionne

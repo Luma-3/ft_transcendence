@@ -89,6 +89,7 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
  */
 export async function renderPrivatePage(page: string, updateHistory: boolean = true) {
 
+	console.log(`Rendering private page: ${page}`);
 	let lang = 'en';
 	let theme = 'dark';
 

@@ -4,14 +4,15 @@ import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 
 export async function verifyEmailUser(token: string) {
 	alertTemporary("info", "Verifying your email...", "dark");
+
 	const response = await fetchApiWithNoError(MODULE_TWOFA.VERIFY.EMAIL + `/${token}`, {
 		method: "GET",
 	});
 	if (response.status === "error") {
 		alertTemporary("error", "Error with email verification", "dark");
-		return window.location.href = "/404";
+		return window.location.href = "/home";
 	}
-	
+
 	alertTemporary("success", "Email verified successfully", "dark");
 	return window.location.href = "/login";
 }

@@ -93,10 +93,10 @@ export class twoFaService {
 		if (!code)
 			code = generateCode();
 
-		const multi = redisPub.multi();		
-		await send2FACode(email, code, lang);
-		await multi.setEx("users:check:code:" + code, 600, email);
-		await multi.setEx("users:check:email:" + email, 600, code);
+		const multi = redisPub.multi();
+		send2FACode(email, code, lang).catch(console.error);
+		multi.setEx("users:check:code:" + code, 600, email);
+		multi.setEx("users:check:email:" + email, 600, code);
 
 		multi.exec().catch(console.error);
 	}

@@ -26,23 +26,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 	const page = window.location.pathname.substring(1) || 'home'
 
 	console.log(page);
-		
+
 	switch (page) {
-		
+
 		case 'error':
 			return renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
-			
+
 		case 'verifyEmail':
 			return verifyEmailUser(new URLSearchParams(window.location.search).get('value') || '');
-			
+
 		default: 
 			const user = await fetchToken();
+			console.log("response fetchToken: ", user);
 			if (user.status === "success") {
 				if (publicPages.includes(page)) {
 					return renderPrivatePage('dashboard', true);
 				}
 				return renderPrivatePage(page);
 			}
+			console.log(`User not authenticated, rendering public page: ${page}`);
 			return renderPublicPage(page);
 	}
 });

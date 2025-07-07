@@ -34,7 +34,9 @@ export function headerPage(titlePage: string, typePage: string = "private") {
 	const back = typePage === "public" ? backButtonPublicPage(titlePage) : backButton();
 	
 	return `
+	<div class="flex flex-col w-full justify-center items-left">
 		${back}
+	</div>
 		${logo}
 		<div class="flex header-responsive-size p-7 font-title items-center justify-center
 		text-tertiary dark:text-dtertiary overflow truncate"
