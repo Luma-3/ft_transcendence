@@ -6,6 +6,7 @@ import { SceneContext } from './SceneContext.js';
 import { Player, IGameInfos } from './Interface.js';
 import { game } from '../../game/Pong.js';
 import { InputManager } from '../../game/InputManager.js';
+import { randomNameGenerator } from './randomName.js';
 
 type StatusType = 'waiting' | 'roomReady' | 'playing' | 'finished';
 
@@ -37,15 +38,18 @@ export class Room {
 
     if (this.gameType === 'ai') {
       // Create a room with AI player
-      // TODO : handle random AI player name : utils folder
-      this.players.set('ai', new Player('ai', 'AI Player'));
-      this.players.get('ai').ready = true; // AI is always ready
+      const name = randomNameGenerator();
+      this.players.set('ai', new Player('ai', name));
+      const player = this.players.get('ai');
+      player!.avatar = `https://${process.env.AUTHORIZED_IP}/api/uploads/avatar/default.png`;
+      player!.ready = true;
     }
     else if (this.gameType === 'local') {
       // TODO : gerer le nom du joueur local
       this.players.set('local', new Player('local', 'Local Player'));
-      // TODO : modif this for ready of local palyer
-      this.players.get('local').ready = true; // Local player is always ready
+      const player = this.players.get('local');
+      player!.avatar = `https://${process.env.AUTHORIZED_IP}/api/uploads/avatar/default.png`;
+      player!.ready = true;
     }
   }
 
@@ -119,7 +123,6 @@ export class Room {
 
     IOInterface.unsubscribe(`ws:game:room:${this.id}`);
     this.start();
-
   }
 
   start() {

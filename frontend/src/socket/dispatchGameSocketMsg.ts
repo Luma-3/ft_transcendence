@@ -44,7 +44,8 @@ export async function dispatchGameSocketMsg(payload: any) {
       changeScore(payload.data.player);
       break;
     case 'snapshot':
-      game.update(payload.data);
+      // console.log("dispatchGameSocketMsg snapshot", payload);
+      game.update(payload.data, payload.time);
       break;
     case 'end':
       DisplayGameWinLose(payload.data.player);

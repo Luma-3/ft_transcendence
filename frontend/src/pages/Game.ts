@@ -1,9 +1,4 @@
-import { IUserInfo } from "../interfaces/IUser";
 import { IPlayer, IRoomInfos } from "../interfaces/IGame";
-
-import { API_CDN } from "../api/routes";
-
-import { randomNameGenerator } from "../components/utils/randomNameGenerator";
 
 async function showPlayer(playerGameInfos: IPlayer, color: 'blue' | 'red') {
 
@@ -71,7 +66,7 @@ export default async function gameHtml(roomInfos: IRoomInfos) {
 		</div>
 		
 		<!-- Canvas de jeu -->
-		<canvas id="gamePong" width="800" height="600" class="flex w-[800px] h-[600px] border-4 border-myblack bg-transparent rounded-lg mt-10" > </canvas>
+		<canvas id="gamePong" width="800" height="600" class="flex w-[800px] h-[600px] border-4 border-myblack bg-transparent rounded-lg mt-10 box-content" > </canvas>
 		
 		<!-- Bannière droite -->
 		<div id="rightBanner" class="flex flex-col justify-center items-center w-32 h-[400px] bg-gradient-to-b from-orange-500 to-orange-700 rounded-lg border-2 border-orange-400 shadow-lg">

@@ -22,7 +22,7 @@ export class NetworkLoop extends ALoop {
 
   private sendBatch(snapshot: any[]): void {
     const payload = {
-
+      time: performance.now() - this.startTime,
       action: "snapshot",
       data: snapshot,
     }
