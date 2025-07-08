@@ -1,7 +1,7 @@
 import { API_USER } from "../api/routes";
 import { fetchApi } from "../api/fetch";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
-import { getUserInfo } from "../api/getterUser(s)";
+import { FetchInterface } from "../api/FetchInterface";
 
 const autorizedLangs = ['en', 'fr', 'es']
 
@@ -79,11 +79,11 @@ export async function saveLanguage(lang_select: string) {
 		alertTemporary("error",'Language not autorized', 'dark');
 	}
 	
-	const user = await getUserInfo();
-	if (user.status !== "success" || !user.data) {
-		alertTemporary("error", 'Error while getting user info', 'dark');
-		return;
+	const user = await FetchInterface.getUserInfo();
+	if (!user) {
+		return await alertTemporary("error", 'Error while getting user info', 'dark');
 	}
+	
 	const response = await fetchApi(API_USER.UPDATE.PREF.ALL, {
 		method: "PATCH",
 		body: JSON.stringify({
@@ -91,11 +91,10 @@ export async function saveLanguage(lang_select: string) {
 		})
 	});
 	if (response.status === "error") {
-		alertTemporary("error",'Error while updating language' + response.message, 'dark');
-		return;
+		return await alertTemporary("error",'Error while updating language' + response.message, 'dark');
 	}
 	const trad = await loadTranslation(lang_select);
-	alertTemporary("success", trad['language-update'], user.data.preferences.theme);
+	alertTemporary("success", trad['language-update'], user.preferences.theme);
 }
 
 

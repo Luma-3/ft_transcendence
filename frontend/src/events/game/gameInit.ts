@@ -4,6 +4,7 @@ import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { getUserPreferences } from "../../api/getterUser(s)";
 import { fetchApiWithNoError } from "../../api/fetch";
 import { API_GAME } from "../../api/routes";
+import { FetchInterface } from "../../api/FetchInterface";
 
 export let gameFrontInfo: gameFrontInfoType = {
 	gameId: "",
@@ -92,6 +93,9 @@ export async function initGame() {
 		gameNameOpponent: (player2) ? player2 : "",
 	}
 
-	const userPref = await getUserPreferences()
-	await sendDataToServer(gameFormInfo, userPref.data?.theme || 'dark');
+	const userPref = await FetchInterface.getUserPrefs();
+	if (!userPref) {
+		return await alertTemporary("error", "Error while getting user theme", 'dark');
+	}
+	await sendDataToServer(gameFormInfo, userPref.theme ?? 'dark');
 }

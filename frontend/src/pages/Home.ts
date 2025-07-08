@@ -1,4 +1,4 @@
-import { languageSelectorHome } from '../components/ui/languageSelector.ts';
+import { languageSelectorHome } from '../components/ui/languageSelectors.ts';
 import { animateButton } from '../components/ui/buttons/animateButton.ts';
 
 function divHomePage() {

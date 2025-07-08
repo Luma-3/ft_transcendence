@@ -1,11 +1,15 @@
-import { getUserInfo } from "../../api/getterUser(s)";
+import { FetchInterface } from "../../api/FetchInterface";
+import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { secondaryButton } from "../../components/ui/buttons/secondaryButton";
 import { IPlayer } from "../../interfaces/IGame";
 
 export async function DisplayGameWinLose(players: IPlayer[]) {
 
-	const response = await getUserInfo();
-	const myId = response.data?.id;
+	const user = await FetchInterface.getUserInfo();
+	if (!user) {
+		return await alertTemporary("error", "error-while-fetching-user-info", "dark");
+	}
+	const myId = user.id;
 	let isWin = false;
 	for (const player of players) {
 		if (player.user_id === myId && player.win === true) {

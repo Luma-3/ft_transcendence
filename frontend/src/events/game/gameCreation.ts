@@ -1,6 +1,5 @@
+import { FetchInterface } from "../../api/FetchInterface";
 import { getRoomInfos } from "../../api/getterGame";
-import { getOtherUserInfo, getUserInfo } from "../../api/getterUser(s)";
-import { API_CDN } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { fadeIn, fadeOut } from "../../components/utils/fade";
 import { randomNameGenerator } from "../../components/utils/randomNameGenerator";
@@ -92,13 +91,13 @@ export async function createGame(data: any) {
 	let lang = 'en';
 	let theme = 'dark';
 
-	const user = await getUserInfo();
-	if (user.status === "error" || !user.data) {
-		return alertTemporary("error", "error-while-creating-game", "dark");
+	const user = await FetchInterface.getUserInfo();
+	if (!user) {
+		return await alertTemporary("error", "error-while-creating-game", "dark");
 	}
 
-	lang = user.data.preferences!.lang;
-	theme = user.data.preferences!.theme;
+	lang = user.preferences!.lang;
+	theme = user.preferences!.theme;
 
 	fadeOut();
 	

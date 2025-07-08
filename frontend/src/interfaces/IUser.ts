@@ -11,14 +11,14 @@ export interface IUserPreferences {
 	theme: string;
 	lang: string;
 	avatar: string;
-	banner?: string;
+	banner: string;
 }
 
 export interface IOtherUser { 
 	id: string;
-	username?: string;
-	avatar?: string;
-	banner?: string;
+	username: string;
+	avatar: string;
+	banner: string;
 }
 
 export interface UserSearchResult {

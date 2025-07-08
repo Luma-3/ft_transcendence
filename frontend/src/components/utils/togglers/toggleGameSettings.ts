@@ -21,8 +21,7 @@ export function toggleGameSettings(inputValue: DOMStringMap) {
 			
 			setTimeout(() => {
 				onlineSettings?.classList.add('hidden');
-				localPVPSettings?.classList.remove('opacity-0');
-				localPVPSettings?.classList.add('opacity-100');
+				localPVPSettings?.classList.replace('opacity-0', 'opacity-100');
 			}, 200);
 			break;
 
@@ -41,8 +40,7 @@ export function toggleGameSettings(inputValue: DOMStringMap) {
 			onlineSettings?.classList.remove('hidden');
 			
 			setTimeout(() => {
-				onlineSettings?.classList.remove('opacity-0');
-				onlineSettings?.classList.add('opacity-100');
+				onlineSettings?.classList.replace('opacity-0', 'opacity-100');
 			}, 200);
 			break;
 	}

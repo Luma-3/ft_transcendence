@@ -7,8 +7,7 @@ import { alertTemporary } from "./alertTemporary";
 export async function alert(reason: string, level: string) {
 	const customTheme = await getCustomAlertTheme();
 	if (!customTheme) {
-		await alertTemporary("error", "Error while getting user theme", 'dark');
-		return;
+		return await alertTemporary("error", "Error while getting user theme", 'dark');
 	}
 	const trad = await loadTranslation(customTheme.lang);
 	const trad_message = trad[reason] || reason;
@@ -44,9 +43,3 @@ export async function alert(reason: string, level: string) {
 	}
 	return result.isConfirmed;
 }
-
-// Export the alertNotifications function
-export { alertNotifications } from "./alertNotifications";
-
-
-

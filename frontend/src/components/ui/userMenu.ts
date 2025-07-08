@@ -1,8 +1,6 @@
 import { IUserInfo } from '../../interfaces/IUser';
 import { IOtherUser } from '../../interfaces/IUser';
 
-// let userNotification: boolean = false;
-
 /**
  * Partie du menu situe en haut avec le nom de l'utilisateur et la photo de profil
  */
@@ -59,7 +57,6 @@ function UserMenuOptions() {
 			</ul>`;
 		
 }
-
 
 /**
  * Fonction qui prent en charge le cursor sur le dark mode et le positionne a droite ou a gauche si le theme est dark ou light

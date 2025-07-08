@@ -1,12 +1,13 @@
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import { getCustomAlertTheme } from "./alertTheme";
 import { loadTranslation } from "../../../controllers/Translate";
+import { alertTemporary } from "./alertTemporary";
+import { showNotificationDiv } from "./notificationsAlert";
 
 export async function alertNotifications(level: string, message: string, theme: string, trad = false, duration = 4000) {
 	const customTheme = await getCustomAlertTheme(true, theme);
 	if (!customTheme) {
-		alertNotifications("error", "Error while getting user alert theme", 'dark');
-		return;
+		return await alertTemporary("error", "Error while getting user alert theme", 'dark');
 	}
 	const allowedIcons = ['success', 'error', 'warning', 'info', 'question'];
 	if (!allowedIcons.includes(level)) {
@@ -27,7 +28,7 @@ export async function alertNotifications(level: string, message: string, theme: 
 		color: customTheme.text,
 		title: message,
 		showConfirmButton: true,
-		confirmButtonText: '📋 Voir notifications',
+		confirmButtonText: 'Voir notifications',
 		confirmButtonColor: customTheme.confirmButtonColor || '#3085d6',
 		timer: duration,
 		timerProgressBar: true,
@@ -40,8 +41,17 @@ export async function alertNotifications(level: string, message: string, theme: 
 		didRender: () => {
 			const confirmButton = document.querySelector('.notification-button') as HTMLElement;
 			if (confirmButton) {
-				confirmButton.id = 'show-notifications-btn';
+				confirmButton.id = 'notifications';
 			}
-		}
+		},
+			didOpen: () => {
+				document.querySelectorAll('#notifications').forEach(button => {
+				button.addEventListener('click', async (e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					showNotificationDiv();
+				});
+			});
+			},
 	});
 }

@@ -31,13 +31,6 @@ ${navbar(user)}
 			</div>
 		</div>
 
-			
-
-			<label for="player1-name" class="text-xl font-title dark:text-dtertiary mb-4" translate="">Choose your name for the next game
-			</label>
-				
-			<input type="text" id="player1-name" class="w-1/2 p-2 font-title  dark:text-dtertiary border-2 border-zinc-300 rounded-lg" translate="username" placeholder="username" value=${user.username} />
-
 				${gameTypes()}
 
 				<div class="flex w-full justify-center items-center mb-10">

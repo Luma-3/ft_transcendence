@@ -1,15 +1,18 @@
 import { navbar } from "../components/ui/navbar";
 
 import { animateButton } from "../components/ui/buttons/animateButton";
-import { primaryButton } from "../components/ui/buttons/primaryButton";
 
-import { languageSelectorSettings } from "../components/ui/languageSelector";
+import { languageSelectorSettings } from "../components/ui/languageSelectors";
 import { change2FA } from "../2FA";
 import { headerPage } from "../components/ui/headerPage";
 import { IUserInfo } from "../interfaces/IUser";
+import { Button } from "../classes/Button";
 
 async function renderSettingsPage(user: IUserInfo) {
-return `
+
+	const deleteAccount = new Button("deleteAccount", "1/3", "Delete account", "delete-account", "primary", "button");
+
+	return `
 ${navbar(user)}
 ${headerPage("settings")}
 
@@ -25,7 +28,7 @@ ${headerPage("settings")}
 		<span class="title-responsive-size" translate="dangerous-action"> Dangerous Actions 
 		</span>
 		
-		${primaryButton({id: 'deleteAccount', weight: "1/3", text: 'Delete account', translate: 'delete-account', type: 'button'})}
+		${deleteAccount.primaryButton()}
 	
 	</div>
 	

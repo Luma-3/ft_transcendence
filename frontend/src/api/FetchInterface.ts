@@ -5,8 +5,7 @@ import { alertPublic } from "../components/ui/alert/alertPublic";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
 import { renderPublicPage } from "../controllers/renderPage";
 import { loadTranslation } from "../controllers/Translate";
-import { IUserInfo } from "../interfaces/IUser";
-import { IApiResponse } from "../interfaces/IApi";
+import { IOtherUser, IUserInfo, IUserPreferences, UserSearchResult } from "../interfaces/IUser";
 
 export class FetchInterface {
 	private constructor() {}
@@ -44,7 +43,7 @@ export class FetchInterface {
 					renderPublicPage('2FALogin');
 					return false;
 
-				case 461: 
+				case 461:
 					renderPublicPage('verifyEmail');
 					return false;
 
@@ -64,23 +63,17 @@ export class FetchInterface {
 			if (response.status === "success") {
 				return true;
 			}
-			const refresh = this.refreshSession();
-			if (!refresh) {
-				return false;
-			}
-			return true;
+			return this.refreshSession();
+			
 		}
 
-		public static async refreshSession() {
-				const response = await fetchApiWithNoError(API.API_SESSION.CREATE, { method: 'PUT',
-					headers: {
-						"Content-Type": "text/plain",
-					}
-				})
-				if (response.status === "error") {
-					return false;
+	public static async refreshSession() {
+			const response = await fetchApiWithNoError(API.API_SESSION.CREATE, { method: 'PUT',
+				headers: {
+					"Content-Type": "text/plain",
 				}
-				return true;
+			})
+			return (response.status !== "error");
 	}
 	/**
 	 * ! Verification de session + Recuperation des informations du user
@@ -99,12 +92,31 @@ export class FetchInterface {
 		return response.data ?? undefined;
 	}
 
+	public static async getUserPrefs() {
+		const response = await fetchApiWithNoError<IUserPreferences>(API.API_USER.BASIC.ONLY_PREFERENCES, {
+			method: "GET",
+		});
+		return response.data ?? undefined;
+	}
 
+	/**
+	 * ! Get public infos of a user
+	 */
 	public static async getOtherUserInfo(id: string): Promise<IUserInfo| undefined> {
 		const response = await fetchApi<IUserInfo>(API.API_USER.BASIC.BASIC + `/${id}?includePreferences=true`);
 		if (response.status === "error") {
 			return undefined;
 		}
+		return response.data ?? undefined;
+	}
+
+	/**
+	 * ! Get All Users 
+	 */
+	public static async getAllUser(blocked: ("you" | "another" | "all" | "none") = "none", friends: boolean = false, pending: boolean = false, page: number = 1, limit: number = 10, hydrate: boolean = true) {
+
+		const response = await fetchApi<UserSearchResult>(API.API_USER.BASIC.BASIC + `?blocked=${blocked}&friends=${friends}&pending=${pending}&limit=${limit}&page=${page}&hydrate=${hydrate}`);
+
 		return response.data ?? undefined;
 	}
 
@@ -120,11 +132,7 @@ export class FetchInterface {
 		})
 		});
 
-		if (response.status === "error") {
-			return false;
-		}
-
-		return true;
+		return response.status !== "error";
 	}
 
 	/**
@@ -139,16 +147,12 @@ export class FetchInterface {
 		})
 		});
 
-		if (response.status === "error") {
-			return false;
-		}
-
-		return true;
+		return response.status !== "error"; 
 	}
 	/**
 	 * ! Delete User
 	 */
-	static async deleteUser() {
+	public static async deleteUser() {
 
 		const confirmResponse = await alert("are-you-sure", "warning");
 		
@@ -166,8 +170,10 @@ export class FetchInterface {
 			window.location.href = '/';
 		}
 	}
-
-	static async updatePassword(oldPassword: string, newPassword: string, trad: any, customTheme: any) {
+	/**
+	 * ! Change / Update Password
+	 */
+	public static async updatePassword(oldPassword: string, newPassword: string, trad: any, customTheme: any) {
 		const response = await fetchApiWithNoError(API.API_USER.UPDATE.PASSWORD, {
 						method: "PATCH",
 						body: JSON.stringify({
@@ -176,10 +182,139 @@ export class FetchInterface {
 						}),
 					});
 					if (response.status === "success") {
-						alertTemporary("success", trad['password-changed'], customTheme.theme);
-						return;
-					} 
-				
-					alertTemporary("error", trad['error-while-changing-password'], customTheme.theme);
+						return await alertTemporary("success", trad['password-changed'], customTheme.theme);
+						;
+					}
+
+					return await alertTemporary("error", trad['error-while-changing-password'], customTheme.theme);
 		}
+	/**
+	 * ! Update Preferences
+	 */
+	public static async updatePreferences(ElementToUpdate: string, newValue: string) {
+			const response = await fetchApi(API.API_USER.UPDATE.PREF.ALL, {
+					method: 'PATCH',
+					body: JSON.stringify({
+						[ElementToUpdate]: newValue,
+					}),
+				});
+				if (response.status === "error") {
+					return alertTemporary("error", "Error while changing " + ElementToUpdate, "error");
+				}
+		}
+
+	/**
+	 * ! Get all of my friends
+	 */
+	//TODO: Verifier si response.data est toujours present, pour mieux gerer les erreurs serveur
+	public static async getFriends() {
+		const response = await fetchApi<IOtherUser[]>(API.API_USER.SOCIAL.FRIENDS);
+		return response.data ?? undefined;
+	}
+
+	/**
+	 * ! Accept Friend Request
+	 */
+	public static async acceptFriendRequest(user: IUserInfo, friendId: string, action: "send" | "accept") {
+		const response = await fetchApiWithNoError(API.API_USER.SOCIAL.NOTIFICATIONS + `${(action == "send" ? "" : "/accept")}/${friendId}`, {
+				method: "POST",
+				body: JSON.stringify({
+					friendId: friendId,
+				})
+			});
+			
+			if (response.status === "error") {
+				(action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true)
+																		: alertTemporary("error", "issues-with-friend-acceptance", user.preferences!.theme, true);
+				return false;
+			}
+
+			if (action === "send") {
+				alertTemporary("success", "friend-invitation-sent", user.preferences!.theme, true);
+				return false
+			}
+
+			return true;
+	}
+
+	/**
+	 * ! Refuse Friend Request
+	 */
+	public static async cancelFriendRequest(user: IUserInfo, friendId: string) {
+		
+		const response = await fetchApiWithNoError(API.API_USER.SOCIAL.NOTIFICATIONS + `/${friendId}`, {
+		method: "DELETE",
+		body: JSON.stringify({})
+	});
+	if (response.status === "error") {
+		await alertTemporary("error", "issues-with-invitation-cancelled", user.preferences.theme, true);
+		return false;
+	}
+	return true;
+	}
+
+	/**
+	 * ! Cancel Friend Request
+	 */
+	public static async removeFriendRequest(user: IUserInfo, friendId: string) {
+
+		const response = await fetchApiWithNoError(API.API_USER.SOCIAL.NOTIFICATIONS + `/refuse/${friendId}`, {
+			method: "DELETE",
+			body: JSON.stringify({})
+		});
+		if (response.status === "error") {
+			 await alertTemporary("error", "issues-with-invitation-refused", user.preferences!.theme, true);
+			 return false;
+		}
+		return true;
+	}
+
+	/**
+	 * ! Remove Friend
+	 */
+	public static async removeFriend(user: IUserInfo, friendId: string) {
+
+		const response = await fetchApiWithNoError(API.API_USER.SOCIAL.FRIENDS + `/${friendId}`, {
+			method: "DELETE",
+			body: JSON.stringify({})
+		});
+		if (response.status === "error") {
+			return alertTemporary("error", "issues-with-friend-removal", user.preferences.theme, true);
+		}
+		
+		alertTemporary("success", "friend-removed", user.preferences!.theme, true);
+	}
+
+	/**
+	 * ! Block User
+	 */
+	public static async blockUser(user: IUserInfo, blockId: string, isBlocking: boolean) {
+		
+		const response = await fetchApiWithNoError(API.API_USER.SOCIAL.BLOCKED + `/${blockId}`, {
+			method: isBlocking ? "DELETE" : "POST",
+			body: JSON.stringify({})
+		});
+		if (response.status === "error") {
+			await alertTemporary("error", "issues-with-blocking-user", user.preferences.theme, true);
+			return false;
+		}
+		await alertTemporary("success", isBlocking ? "user-unblocked" : "user-blocked", user.preferences.theme, true);
+		return true;
+	}
+
+	/**
+	 * ! Get users blocked by myself 
+	 */
+	public static async getBlockedUser() {
+			const response = await fetchApi<IOtherUser[]>(API.API_USER.SOCIAL.BLOCKED + "?hydrate=true");
+			return response.data ?? undefined;
+	}
+
+	/**
+	 * ! Get Notifications
+	 */
+	public static async getNotifications(params: "sender" | "receiver" = "sender") {
+		const response = await fetchApi<IOtherUser[]>(API.API_USER.SOCIAL.NOTIFICATIONS + `?action=${params}`);
+		return response.data ?? undefined;
+	}
 }

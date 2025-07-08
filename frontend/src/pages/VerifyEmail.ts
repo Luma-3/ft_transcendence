@@ -15,12 +15,11 @@ return `
 		
 		</div>
 	</div>
-	
+
 	<div class="flex flex-col w-full justify-center items-center mb-80 space-y-10">
 
 		${animateButton("sendEmail", "Too late ? Not receive ?", "Resend-Email")}
-		
-		
-		</div>
-		</div>`
+
+	</div>
+</div>`
 }

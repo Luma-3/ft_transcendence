@@ -1,4 +1,4 @@
-import { getCustomAlertTheme } from "../alert/alertTheme";
+import { getCustomAlertTheme } from "./alertTheme";
 import { alertTemporary } from "../alert/alertTemporary";
 import Swal from 'sweetalert2';
 
@@ -7,8 +7,7 @@ import { loadTranslation } from "../../../controllers/Translate";
 export async function alertGameReady() {
 	const customTheme = await getCustomAlertTheme(true);
 	if (!customTheme) {
-		alertTemporary("error", "Error while getting user alert theme", 'dark');
-		return;
+		return await alertTemporary("error", "Error while getting user alert theme", 'dark');
 	}
 
 	const trad = await loadTranslation(customTheme.lang);
@@ -49,7 +48,7 @@ export async function alertWithTimer(title: string, message: string, timer: numb
 
 	const customTheme = await getCustomAlertTheme(true);
 	if (!customTheme) {
-		return alertTemporary("error", "Error while getting user alert theme", 'dark');
+		return await alertTemporary("error", "Error while getting user alert theme", 'dark');
 	}
 
 	const trad = await loadTranslation(customTheme.lang);

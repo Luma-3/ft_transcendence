@@ -1,26 +1,26 @@
-import { fetchApi } from "../../api/fetch";
-import { getUserInfo } from "../../api/getterUser(s)";
-import { API_USER } from "../../api/routes";
-import { alertTemporary } from "../../components/ui/alert/alertTemporary";
+import { FetchInterface } from "../../api/FetchInterface";
+import { renderErrorPage } from "../../controllers/renderPage";
 import { allUsersList } from "../../pages/Friends/Lists/allUsersList";
 
-export async function refuseFriendInvitation(target: HTMLElement) {
+export async function refuseFriendInvitation(target: HTMLElement, type: "alert" | "page" = "page") {
 	
-	const user = await getUserInfo();
-	if (!user || user.status === "error") {
-		return window.location.href = "/login";
+	const user = await FetchInterface.getUserInfo();
+	if (!user) {
+		return renderErrorPage('401');
+	}
+	const friendId = target.dataset.id;
+	if (!friendId) {
+		return;
 	}
 
-	const targetId = target.dataset.id;
-	const response = await fetchApi(API_USER.SOCIAL.NOTIFICATIONS + `/refuse/${targetId}`, {
-		method: "DELETE",
-		body: JSON.stringify({})
-	});
-	if (response.status === "error") {
-		return alertTemporary("error", "issues-with-invitation-refused", user.data!.preferences!.theme, true);
+	const success = FetchInterface.removeFriendRequest(user, friendId)
+	if (!success) {
+		return;
 	}
 	
-	alertTemporary("success", "friend-invitation-refused", user.data!.preferences!.theme, true);
-	target.parentElement?.parentElement?.remove();
-	document.getElementById("all-users-div")!.innerHTML = `${await allUsersList()}`;
+	if (type === "page") {
+		await allUsersList();
+	} else {
+		target.parentElement?.parentElement?.parentElement?.remove();
+	}
 }

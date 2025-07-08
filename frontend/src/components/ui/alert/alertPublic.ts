@@ -6,8 +6,7 @@ import { alertTemporary } from "./alertTemporary";
 export async function alertPublic(reason: string, level: string) {
 	const customTheme = await getCustomAlertTheme(false, 'dark');
 	if (!customTheme) {
-		await alertTemporary("error", "Error while getting user theme", 'dark');
-		return;
+		return await alertTemporary("error", "Error while getting user theme", 'dark');
 	}
 	const trad = await loadTranslation(customTheme.lang);
 	const trad_message = trad[reason] || reason;

@@ -31,6 +31,12 @@
 	"no-changes-detected": "No changes detected",
 	"user-info-updated": "Informations updated",
 
+	"api-doc-transcenduck-services": "API Documentation",
+	"auth-doc": "Authentication service",
+	"user-doc": "User service",
+	"upload-doc": "File upload service",
+	"game-doc": "Game service",
+
 	"profil": "Profile",
 	"stats": "Games stats",
 	"logout": "Logout",
@@ -86,7 +92,9 @@
 	"password-changed": "Password changed",
 	"user-infos-updated": "Informations updated",
 	"user-infos-not-updated": "Informations not updated",
+	
 	"friend-invitation-sent": "Friend invitation sent",
+	"friend-invitation-cancelled": "Friend invitation cancelled",
 	"issues-with-friend-invitation": "Issues with friend invitation",
 	"friend-invitation-refused": "Friend invitation refused",
 	"issues-with-invitation-refused": "Issues with invitation refused",
@@ -103,6 +111,8 @@
 	"you-sent-invitation": "You sent a friend request to ",
 	"notifications": "Notifications",
 	"cancel-invitation": "Cancel invitation",
+	"accept-invitation": "Accept this invitation",
+	"refuse-invitation": "Refuse this invitation",
 	"friend-removed": "Friend removed",
 	"block-motherducker": "Block this motherducker",
 	"unfriend-user": "Unfriend",

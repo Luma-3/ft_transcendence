@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+
 import { alertTemporary } from "./alertTemporary";
 import { getCustomAlertTheme } from "./alertTheme";
 import { loadTranslation } from "../../../controllers/Translate";
@@ -9,9 +10,9 @@ export async function alertChangePassword() {
 	
 	const customTheme = await getCustomAlertTheme();
 	if (!customTheme) {
-		alertTemporary("error", "Error while getting user theme", 'dark');
-		return;
+		return await alertTemporary("error", "Error while getting user theme", 'dark');
 	}
+
 	const trad = await loadTranslation(customTheme.lang);
 	let messageError = "";
 	Swal.fire({
@@ -60,7 +61,7 @@ export async function alertChangePassword() {
 		}
 	}).then(async (result) => {
 		if (result.isConfirmed) {
-			FetchInterface.updatePassword(result.value.oldPassword, result.value.newPassword, trad, customTheme)
+			await FetchInterface.updatePassword(result.value.oldPassword, result.value.newPassword, trad, customTheme)
 		}
 	});
 }

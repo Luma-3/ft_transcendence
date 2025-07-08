@@ -3,10 +3,10 @@ import { getCustomAlertTheme } from "./alertTheme";
 import { loadTranslation } from "../../../controllers/Translate";
 
 export async function alertTemporary(level: string, message: string, theme: string, trad = false) {
+	
 	const customTheme = await getCustomAlertTheme(true, theme);
 	if (!customTheme) {
-		alertTemporary("error", "Error while getting user alert theme", 'dark');
-		return;
+		return await alertTemporary("error", "Error while getting user alert theme", 'dark');
 	}
 	const allowedIcons = ['success', 'error', 'warning', 'info', 'question'];
 	if (!allowedIcons.includes(level)) {

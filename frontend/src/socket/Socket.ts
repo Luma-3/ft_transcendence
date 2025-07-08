@@ -36,15 +36,14 @@ export function socketConnection() {
 
 	socket.addEventListener('error', () => {
 		alertPublic("WebSocket connection error. Trying to reconnect... Try " + reconnectTentative + " of " + MAX_RECONNECT_TENTATIVE, "error");
-
 		socket.close();
+
 		if (reconnectTentative < MAX_RECONNECT_TENTATIVE) {
 			reconnectTentative++;
 			socketConnection();
 		} else {
 			alertPublic("WebSocket connection failed. Please log in again.", "error");
 			reconnectTentative = 0;
-
 			setTimeout(() => { window.location.href = "/login"; }, 1000);
 		}
 	});

@@ -30,6 +30,13 @@
 	"no-changes-detected": "Aucun changement détecté",
 	"user-info-updated": "Informations mises à jour",
 	
+	"api-doc-transcenduck-services": "Documentation de l'API",
+	"auth-doc": "Service d'authentification",
+	"user-doc": "Service utilisateur",
+	"upload-doc": "Service de téléchargement de fichiers",
+	"game-doc": "Service de jeu",
+
+
 	"profil": "Profil",
 	"stats": "Statistiques de jeux",
 	"logout": "Se déconnecter",
@@ -85,6 +92,7 @@
 	"user-infos-updated": "Informations mises à jour",
 	"user-infos-not-updated": "Informations non mises à jour",
 	"friend-invitation-sent": "Demande d'ami envoyée",
+	"friend-invitation-cancelled": "Invitation d'ami annulée",
 	"issues-with-friend-invitation": "Problèmes avec l'invitation d'ami",
 	"friend-invitation-refused": "Invitation d'ami refusée",
 	"issues-with-invitation-refused": "Erreur avec le refus de l'invitation",
@@ -102,6 +110,9 @@
 	"you-sent-invitation": "Vous avez envoyé une invitation d'ami à ",
 	"notifications": "Notifications",
 	"cancel-invitation": "Annuler l'invitation",
+	"accept-invitation": "Accepter cette invitation",
+	"refuse-invitation": "Refuser cette invitation",
+
 	"block-motherducker": "Bloquer ce fils de canard",
 	"unfriend-user": "Enlever des amies",
 	"add-friend": "Ajouter en ami",

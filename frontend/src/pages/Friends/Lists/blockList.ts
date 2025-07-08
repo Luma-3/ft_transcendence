@@ -1,4 +1,4 @@
-import { getBlockedUsers } from '../../../api/getterUser(s)';
+import { FetchInterface } from '../../../api/FetchInterface';
 import { headerOtherUserMenu } from '../../../components/ui/userMenu';
 
 
@@ -10,13 +10,13 @@ let container = `
 
 		<div class="flex flex-col w-full justify-center items-center gap-4 p-4">`;
 
-		const blockedUsers = await getBlockedUsers();
+		const blockedUsers = await FetchInterface.getBlockedUser();
 
-		if (blockedUsers.status === "error" || blockedUsers.data?.length == 0) {
+		if (!blockedUsers) {
 			return `${container}</div></div></div>`;
 		}
 		
-		for(const user of blockedUsers.data!) {
+		for(const user of blockedUsers) {
 			container += `
 				<div id="user-${user.id}" class="flex flex-col justify-between w-full font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary
 			bg-myblack from-primary to-secondary">

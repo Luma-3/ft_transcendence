@@ -1,11 +1,9 @@
-import notfound from "./4xx";
 
 import { navbar } from "../components/ui/navbar";
-
 import { backButton } from "../components/ui/buttons/backButton";
 
-import { getFriends, getOtherUserInfo } from "../api/getterUser(s)";
-import { API_CDN } from "../api/routes";
+
+import { getFriends } from "../api/getterUser(s)";
 import { IUserInfo } from "../interfaces/IUser";
 import { renderErrorPage } from "../controllers/renderPage";
 import { FetchInterface } from "../api/FetchInterface";
@@ -64,11 +62,11 @@ async function friends(user:User) {
 				<span traslate="friends" >Friends</span>
 			<div class="flex flex-col w-full max-h-[400px] overflow-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
 			`;
-	const friendsList = await getFriends();
-	if (friendsList.status === "error" || !friendsList.data) {
+	const friendsList = await FetchInterface.getFriends();
+	if (!friendsList) {
 		return `${container}<span class="text-secondary dark:text-dtertiary" translate="no-friends">No friends found</span></div>`;
 	}
-	for(const friend of friendsList.data) {
+	for(const friend of friendsList) {
 		console.log("Friend:", friend);
 		container += `
 		<div class="flex flex-row justify-between w-1/2 font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
@@ -116,12 +114,12 @@ export async function renderOtherProfile(container: HTMLElement, myUser: IUserIn
 	}
 
 	return `
-		${navbar(myUser)}
-		${backButton()}
-		<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
-		${avatarBanner(user.preferences)}
-		${userInfo(user)}
-		</div>`
+${navbar(myUser)}
+${backButton()}
+<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
+	${avatarBanner(user.preferences)}
+	${userInfo(user)}
+</div>`
 }
 
 

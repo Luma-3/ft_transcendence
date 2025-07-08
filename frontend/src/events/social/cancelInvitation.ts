@@ -1,29 +1,30 @@
-import { fetchApi } from "../../api/fetch";
-import { getUserInfo } from "../../api/getterUser(s)";
-import { API_USER } from "../../api/routes";
-import { alertTemporary } from "../../components/ui/alert/alertTemporary";
-import { renderErrorPage } from "../../controllers/renderPage";
-import { allUsersList } from "../../pages/Friends/Lists/allUsersList";
+import { FetchInterface } from "../../api/FetchInterface";
 
-export async function cancelFriendInvitation(target: HTMLElement) {
+import { renderErrorPage } from "../../controllers/renderPage";
+import { updateAllUserLists, updateNotificationAlert, updateNotificationsList } from "../../pages/Friends/Lists/updatersList";
+
+export async function cancelFriendInvitation(target: HTMLElement, type: "alert" | "page" = "page") {
 	
-	const user = await getUserInfo();
-	if (!user || user.status === "error") {
+	console.log("cancelFriendInvitation called with target:", target, type);
+	const user = await FetchInterface.getUserInfo();
+	if (!user) {
 		return renderErrorPage('401');
 	}
+	const friendId = target.dataset.id;
+	if (!friendId) {
+		return;
+	}
 
-	const response = await fetchApi(API_USER.SOCIAL.NOTIFICATIONS + `/${target.dataset.id}`, {
-		method: "DELETE",
-		body: JSON.stringify({})
-	});
-	if (response.status === "error") {
-		return alertTemporary("error", "issues-with-invitation-cancelled", user.data!.preferences!.theme, true);
+	const success = FetchInterface.cancelFriendRequest(user, friendId)
+	if (!success) {
+		return;
 	}
-	alertTemporary("success", "friend-invitation-cancelled", user.data!.preferences!.theme, true);
-	target.parentElement?.parentElement?.parentElement?.remove();
-	const targetDiv = document.getElementById("all-users-div");
-	if (targetDiv) {
-		targetDiv.innerHTML = "";
-		targetDiv.innerHTML = await allUsersList();
+	if (type === "page") {
+		await updateNotificationAlert();
+		await updateNotificationsList();
+		await updateAllUserLists();
+	} else {
+		target.parentElement?.parentElement?.parentElement?.remove();
 	}
+
 }

@@ -26,8 +26,6 @@ import { removeLoadingScreen } from '../components/utils/removeLoadingScreen'
  * ! API
  */
 import { IUserInfo } from '../interfaces/IUser'
-import { getUserInfo, getUserPreferences } from '../api/getterUser(s)'
-import { fetchToken } from '../api/fetchToken'
 
 
 /**
@@ -174,10 +172,10 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 	let lang = 'en';
 	let theme = 'dark';
 
-	const userPreferences = await getUserPreferences();
-	if (userPreferences.status === "success") {
-		lang = userPreferences.data!.lang;
-		theme = userPreferences.data!.theme;
+	const userPreferences = await FetchInterface.getUserPrefs();
+	if (userPreferences !== undefined) {
+		lang = userPreferences.lang;
+		theme = userPreferences.theme;
 	}
 
 	setupColorTheme(theme);
@@ -185,7 +183,6 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 
 	setTimeout(async () => {
 		const page_content = dispatchError(code, messageServer || '');
-		// const page_content = rendererFunction(code, message);
 
 		main_container.innerHTML = page_content;
 		translatePage(lang);
@@ -230,9 +227,5 @@ export async function renderDocPages(page: string, index_logo: string) {
  * @returns Renders the previous page in the history stack
  */
 export function renderBackPage() {
-	const page = window.history.state?.page || 'home';
-	if (page === 'dashboard') {
-		return;
-	}
-	renderPrivatePage(page, false);
+	window.history.go(-1);
 }

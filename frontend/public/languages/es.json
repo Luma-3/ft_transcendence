@@ -33,6 +33,13 @@
 	"no-changes-detected": "No se detectaron cambios",
 	"user-info-updated": "Información actualizada",
 
+	"api-doc-transcenduck-services": "Documentación de la API",
+	"auth-doc": "Servicio de autenticación",
+	"user-doc": "Servicio de usuario",
+	"upload-doc": "Servicio de carga de archivos",
+	"game-doc": "Servicio de juego",
+
+
 	"profil": "Perfil",
 	"stats": "Estadísticas de juegos",
 	"logout": "Cerrar sesión",
@@ -89,6 +96,7 @@
 	"user-infos-updated": "Información actualizada",
 	"user-infos-not-updated": "Información no actualizada",
 	"friend-invitation-sent": "Invitación de amigo enviada",
+	"friend-invitation-cancelled": "Invitación de amigo cancelada",
 	"issues-with-friend-invitation": "Problemas con la invitación de amigo",
 	"friend-invitation-refused": "Invitación de amigo rechazada",
 	"issues-with-invitation-refused": "Problemas con el rechazo de la invitación",
@@ -106,6 +114,8 @@
 	"you-sent-invitation": "Has enviado una invitación de amigo a ",
 	"notifications": "Notificaciones",
 	"cancel-invitation": "Cancelar invitación",
+		"accept-invitation": "Aceptar esta invitación",
+	"refuse-invitation": "Rechazar esta invitación",
 	"block-motherducker": "Bloquear a este hijo de ducka",
 	"unfriend-user": "Desamigar",
 	"add-friend": "Agregar amigo",
