@@ -2,6 +2,13 @@ import { updatePointerCoordinates } from "./utils/trailBall";
 import { IGameObject } from "../../interfaces/IGame";
 import { Ball, IBall } from "./draw/Ball";
 import { Paddle, IPaddle } from "./draw/Paddle";
+import { alpha } from "./draw/lerping";
+
+
+interface ISnapshot {
+  time: number;
+  object: IGameObject[];
+}
 
 export class Game {
   canvas: HTMLCanvasElement;
@@ -9,9 +16,12 @@ export class Game {
 
   width: number;
   height: number;
+
   private startTime: number | null = null;
   private players: Map<string, Paddle> = new Map();
   private ball: Ball;
+
+  snapshots: ISnapshot[] = [];
 
   constructor(canvasId: string, paddles: IPaddle[]) {
     this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
@@ -81,38 +91,60 @@ export class Game {
   }
 
   interpolate(renderTime: number) {
-    this.ball.interpolate(renderTime);
-    this.players.forEach((player) => {
-      player.interpolate(renderTime);
-    });
+    if (this.snapshots.length < 2) return;
+
+    let snapshotsA, snapshotsB;
+    for (let i = 0; i < this.snapshots.length - 1; i++) {
+      if (this.snapshots[i].time <= renderTime && this.snapshots[i + 1].time > renderTime) {
+        snapshotsA = this.snapshots[i];
+        snapshotsB = this.snapshots[i + 1];
+        break;
+      }
+    }
+
+    if (!snapshotsA || !snapshotsB) {
+      console.warn("No suitable snapshots found for interpolation");
+      return;
+    }
+
+    const t = alpha(snapshotsA.time, snapshotsB.time, renderTime);
+
   }
 
-  update(objects: IGameObject[], timerServer: number) {
+  addSnapshot(objects: IGameObject[], timerServer: number) {
     if (!this.startTime) {
       this.startTime = performance.now() - timerServer;
     }
 
+    this.snapshots.push({ time: timerServer, object: objects });
 
-    objects.forEach((object) => {
-      switch (object.type) {
-        case 'ball':
-          this.ball.addSnapshot(object as IBall, timerServer);
-          break;
-        case 'paddle':
-          this.players.get((object as IPaddle).id)?.addSnapshot(object as IPaddle, timerServer);
-          break;
-        case 'pong':
-          break;
-        default:
-          console.warn("Unknown game object type:", object.type);
-      }
-    });
+    if (this.snapshots.length > 10) {
+      this.snapshots.shift();
+    }
+
+    // objects.forEach((object) => {
+    //   switch (object.type) {
+    //     case 'ball':
+    //       this.ball.addSnapshot(object as IBall, timerServer);
+    //       break;
+    //     case 'paddle':
+    //       this.players.get((object as IPaddle).id)?.addSnapshot(object as IPaddle, timerServer);
+    //       break;
+    //     case 'pong':
+    //       break;
+    //     default:
+    //       console.warn("Unknown game object type:", object.type);
+    //   }
+    // });
   }
 
   loop() {
-    this.interpolate(performance.now() - this.startTime! - 1000 / 20);
+    this.interpolate(performance.now() - this.startTime! - 200);
     this.draw();
     requestAnimationFrame(this.loop.bind(this));
   }
 }
+
+
+
 
