@@ -12,9 +12,7 @@ export class Paddle extends GameObject implements Rectangle {
   private readonly frictionFroce: number = 3;
   private readonly acceleration: number = 4;
 
-  // private readonly maxVelocity: number = 10;
-  private id: string = '';
-  // private inMove = false;
+  public id: string = '';
 
   constructor(id: string, pos: Vector2) {
     super();

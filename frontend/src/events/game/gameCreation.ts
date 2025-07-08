@@ -26,7 +26,7 @@ const readyEventListener = (playerId: string) => {
   socket!.send(JSON.stringify(payload));
 }
 
-export default async function createGameHtml(roomId: string, user: IUserInfo) {
+export default async function createGameHtml(data: any, user: IUserInfo) {
 
   /**
    * Mise en place du listener sur la fenetre pour redimensionner le canvas si
@@ -49,7 +49,7 @@ export default async function createGameHtml(roomId: string, user: IUserInfo) {
      * lui signifier que le joueur a bien rejoint la Room
     */
     if (divGame.classList.contains("opacity-0")) {
-      readyEventListener(roomId);
+      readyEventListener(data.id);
     }
     /**
      * Si le joueur a deja rejoint la Room, on envoie les evenements
@@ -63,32 +63,34 @@ export default async function createGameHtml(roomId: string, user: IUserInfo) {
    * Recuperation des tous les joueurs present dans le Room pour afficher
    * tout les adversaires du joueur (tournois)
    */
-  const roomInfos = await getRoomInfos(roomId);
-  const leftOpponentInfos = await getOtherUserInfo(roomInfos.data!.players[1].id);
-  const rightOpponentInfos = (roomInfos.data!.players.length > 1 && roomInfos.data!.players[0].id !== "other")
-    ? await getOtherUserInfo(roomInfos.data!.players[0].id)
-    : {
-      data: {
-        preferences: {
-          avatar: `${API_CDN.AVATAR}/default.png`,
-          banner: `${API_CDN.AVATAR}/default.png`
-        },
-        player_name: randomNameGenerator(),
-      }
-    };
+  // const roomInfos = await getRoomInfos(roomId);
+  // console.log(roomInfos);
+  // return
+  // const leftOpponentInfos = await getOtherUserInfo(roomInfos.data!.players[1].id);
+  // const rightOpponentInfos = (roomInfos.data!.players.length > 1 && roomInfos.data!.players[0].id !== "local")
+  //   ? await getOtherUserInfo(roomInfos.data!.players[0].id)
+  //   : {
+  //     data: {
+  //       preferences: {
+  //         avatar: `${API_CDN.AVATAR}/default.png`,
+  //         banner: `${API_CDN.AVATAR}/default.png`
+  //       },
+  //       player_name: randomNameGenerator(),
+  //     }
+  //   };
+  //
+  // if (!leftOpponentInfos || !rightOpponentInfos) {
+  //
+  //   return alertTemporary("error", "error-while-fetching-opponent-infos", user.preferences!.theme);
+  // }
 
-  if (!leftOpponentInfos || !rightOpponentInfos) {
-
-    return alertTemporary("error", "error-while-fetching-opponent-infos", user.preferences!.theme);
-  }
-
-  return gameHtml(roomInfos.data!, leftOpponentInfos.data as IUserInfo, rightOpponentInfos.data as IUserInfo);
+  return gameHtml(data);
 }
 
 
 export async function createGame(data: any) {
 
-  console.log(data)
+  console.log("createGame:", data)
   let lang = 'en';
   let theme = 'dark';
 
@@ -104,12 +106,12 @@ export async function createGame(data: any) {
 
   setTimeout(async () => {
     const main_container = document.querySelector<HTMLDivElement>('#app')!
-    const newContainer = await createGameHtml(data.id, user.data!);
+    const newContainer = await createGameHtml(data, user.data!);
     if (!newContainer) {
       return;
     }
 
-    main_container.innerHTML = newContainer;
+    main_container.innerHTML = newContainer; // TODO Post event listener
     setupColorTheme(theme);
 
     translatePage(lang);

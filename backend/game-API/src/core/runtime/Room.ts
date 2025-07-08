@@ -16,7 +16,8 @@ export class Room {
   // private readonly name: string;
   private readonly gameType: gameType;
 
-  public players: Player[] = [];
+  public players: Map<string, Player> = new Map();
+  // public players: Player[] = [];
   private status: StatusType = 'waiting';
 
   public loopManager: LoopManager = new LoopManager();
@@ -37,22 +38,37 @@ export class Room {
     if (this.gameType === 'ai') {
       // Create a room with AI player
       // TODO : handle random AI player name : utils folder
-      this.players.push(new Player('ai', 'AI Player'));
-      this.players[0].ready = true;
+      this.players.set('ai', new Player('ai', 'AI Player'));
+      this.players.get('ai').ready = true; // AI is always ready
     }
     else if (this.gameType === 'local') {
       // TODO : gerer le nom du joueur local
-      this.players.push(new Player('other', 'Other Player'));
+      this.players.set('local', new Player('local', 'Local Player'));
       // TODO : modif this for ready of local palyer
-      this.players[0].ready = true;
+      this.players.get('local').ready = true; // Local player is always ready
     }
   }
 
   isJoinable(): boolean { return (this.status === 'waiting' && this.nbPlayers() < MAX_PLAYER); }
-  nbPlayers() { return this.players.length; }
+  nbPlayers() { return this.players.size; }
 
-  addPlayer(player: Player) {
-    this.players.push(player);
+  async addPlayer(player: Player) {
+    this.players.set(player.id, player);
+
+    const response = await fetch(`http://${process.env.USER_IP}/users/${player.id}?includePreferences=true`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (!response.ok) {
+      console.error(`Failed to fetch player info for ${player.id}`);
+      return;
+    }
+
+    const playerInfo = await response.json();
+
+    player.avatar = playerInfo.data.preferences.avatar;
+    player.player_name = playerInfo.data.username;
 
     IOInterface.send(
       JSON.stringify({ action: 'joined', data: this.toJSON() }),
@@ -61,7 +77,7 @@ export class Room {
 
     IOInterface.broadcast(
       JSON.stringify({ action: 'playerJoined', data: this.toJSON() }),
-      this.players.map(p => p.id)
+      [...this.players.keys()]
     ); // Notify all players in the room
 
     this.tryRoomReady();
@@ -75,30 +91,35 @@ export class Room {
     IOInterface.subscribe(`ws:game:room:${this.id}`, this.callbackPlayerReady);
     IOInterface.broadcast(
       JSON.stringify({ action: 'roomReady', data: this.toJSON() }),
-      this.players.map(p => p.id)
+      [...this.players.keys()]
     );
   }
 
   callbackPlayerReady = (message: string) => {
     const { user_id, action } = JSON.parse(message);
-    const player = this.players.find(p => p.id === user_id);
+    const player = this.players.get(user_id);
 
     if (action !== 'ready' || !player) return;
     player.ready = true;
 
     IOInterface.broadcast(
       JSON.stringify({ action: 'playerReady', data: this.toJSON() }),
-      this.players.map(p => p.id)
+      [...this.players.keys()]
     );
 
     this.tryStart();
   }
 
   tryStart() {
-    if (this.players.every(player => player.ready)) {
-      IOInterface.unsubscribe(`ws:game:room:${this.id}`);
-      this.start();
+    for (const player of this.players.values()) {
+      if (!player.ready) {
+        return;
+      }
     }
+
+    IOInterface.unsubscribe(`ws:game:room:${this.id}`);
+    this.start();
+
   }
 
   start() {
@@ -106,7 +127,7 @@ export class Room {
 
     IOInterface.broadcast(
       JSON.stringify({ action: 'starting', data: this.toJSON() }),
-      this.players.map(player => player.id)
+      [...this.players.keys()]
     );
 
     const ctx = new SceneContext(this.id, this.gameType, this.players, this.loopManager, this.inputManager);
@@ -121,7 +142,7 @@ export class Room {
     return {
       id: this.id,
       game_type: this.gameType,
-      players: this.players.map(player => player.toJSON()),
+      players: Array.from(this.players.values()).map(player => player.toJSON()),
       status: this.status,
     };
   }

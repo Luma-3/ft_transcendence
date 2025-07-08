@@ -5,13 +5,13 @@ import { API_CDN } from "../api/routes";
 
 import { randomNameGenerator } from "../components/utils/randomNameGenerator";
 
-async function showPlayer(playerGameInfos: IPlayer, playerInfo: IUserInfo, color: 'blue' | 'red') {
+async function showPlayer(playerGameInfos: IPlayer, color: 'blue' | 'red') {
 
   return `
-<div id=${playerGameInfos.user_id} class="flex flex-col p-4 justify-center items-center transition-transform duration-800 ease-in-out">
+<div id=${playerGameInfos.id} class="flex flex-col p-4 justify-center items-center transition-transform duration-800 ease-in-out">
 	<div class="flex flex-col justify-center items-center">
 
-		<img src=${API_CDN.AVATAR}/${playerInfo.preferences?.avatar} alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
+		<img src=${playerGameInfos.avatar} alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
 		${color === 'blue' ? 'border-blue-500' : 'border-red-500'}" />
 		${playerGameInfos.player_name}
 
@@ -19,23 +19,10 @@ async function showPlayer(playerGameInfos: IPlayer, playerInfo: IUserInfo, color
 
 </div>`;
 }
-export default async function gameHtml(roomInfos: IRoomInfos, leftOpponentInfos: IUserInfo, rightOpponentInfos: IUserInfo) {
+export default async function gameHtml(roomInfos: IRoomInfos) {
+  const leftOpponentDiv = await showPlayer(roomInfos.players[0], 'blue');
+  const rightOpponentDiv = await showPlayer(roomInfos.players[1], 'red');
 
-  let rightOpponentDiv = '';
-
-  const leftOpponentDiv = await showPlayer(roomInfos.players[0], leftOpponentInfos, 'blue');
-  if (roomInfos.players.length > 1) {
-    rightOpponentDiv = await showPlayer(roomInfos.players[1], rightOpponentInfos, 'red');
-  } else {
-    rightOpponentDiv = `<div id="otherPlayerDiv" class="flex flex-col p-4 justify-center items-center
-		transition-transform duration-800 ease-in-out">
-		<div class="flex flex-col justify-center items-center">
-			<img src=${API_CDN.AVATAR}/default.png alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
-			border-red-500" />
-			${randomNameGenerator()}
-			</div>
-			</div>`;
-  }
 
   return `
 <div class="flex flex-col justify-center items-center text-tertiary dark:text-dtertiary">
@@ -75,7 +62,7 @@ export default async function gameHtml(roomInfos: IRoomInfos, leftOpponentInfos:
 				${roomInfos.players[0].player_name}
 				</div>
 				<div id="player1Avatar" class="w-16 h-16 rounded-full border-2 border-white bg-purple-300">
-				<img src=${leftOpponentInfos?.preferences?.avatar} alt="avatar" class="w-full h-full rounded-full">
+				<img src=${roomInfos.players[0].avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player1Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
 					<div>Score: <div id="playerLeftScore" class="relative bottom-0 text-8xl">0</div></div>
@@ -93,7 +80,7 @@ export default async function gameHtml(roomInfos: IRoomInfos, leftOpponentInfos:
 					${(roomInfos.players[1] ? roomInfos.players[1].player_name : 'Waiting for opponent')}
 				</div>
 				<div id="player2Avatar" class="w-16 h-16 rounded-full border-2 border-white bg-orange-300">
-					<img src=${rightOpponentInfos.preferences?.avatar} alt="avatar" class="w-full h-full rounded-full">
+					<img src=${roomInfos.players[1].avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player2Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
 					<div>Score: <div id="playerRightScore" class="relative bottom-0 text-8xl">0</div></div>

@@ -53,6 +53,7 @@ export interface IPlayer {
   id: string;
   player_name: string;
   ready: boolean;
+  avatar: string;
   score: number;
   win: boolean;
 }

@@ -6,18 +6,18 @@ export class InputManager {
   public playersInput: Map<string, Vector2> = new Map();
 
   public start() {
-    const players = SceneContext.get().players;
-    console.log("InputManager: onInstantiate", players);
+    const playersId = [...SceneContext.get().players.keys()];
+    console.log("InputManager: onInstantiate", playersId);
     if (SceneContext.get().gameType === "local") {
 
-      this.playersInput.set(players[1].id, Vector2.zero());
-      this.playersInput.set("other", Vector2.zero());
-      IOInterface.subscribe(`ws:game:player:${players[1].id}`, handleInput.bind(SceneContext.get()));
+      this.playersInput.set(playersId[1], Vector2.zero());
+      this.playersInput.set("local", Vector2.zero());
+      IOInterface.subscribe(`ws:game:player:${playersId[1]}`, handleInput.bind(SceneContext.get()));
       return;
     }
-    players.forEach(player => {
-      this.playersInput.set(player.id, Vector2.zero());
-      IOInterface.subscribe(`ws:game:player:${player.id}`, handleInput.bind(SceneContext.get()));
+    playersId.forEach(player => {
+      this.playersInput.set(player, Vector2.zero());
+      IOInterface.subscribe(`ws:game:player:${player}`, handleInput.bind(SceneContext.get()));
     })
   }
 
@@ -43,6 +43,6 @@ function handleInput(message: string, channel: string): void {
 
   if (this.gameType === "local") {
     movement = payload.data.otherMovement;
-    inputManager.get("other").y = +movement.up - +movement.down;
+    inputManager.get("local").y = +movement.up - +movement.down;
   }
 }

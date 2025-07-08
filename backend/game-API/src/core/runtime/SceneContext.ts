@@ -8,7 +8,7 @@ export class SceneContext {
   private static storage = new AsyncLocalStorage<SceneContext>();
 
   public readonly loopManager: LoopManager;
-  public readonly players: Player[] = [];
+  public readonly players: Map<string, Player>;
   public inputManager: InputManager = null;
   public id: string = null;
   public gameType: gameType;
@@ -16,7 +16,7 @@ export class SceneContext {
   constructor(
     id: string,
     gameType: gameType,
-    players: Player[],
+    players: Map<string, Player>,
     loopManager: LoopManager,
     inputManager: InputManager
   ) {
