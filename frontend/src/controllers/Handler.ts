@@ -29,6 +29,7 @@ import { unfriendUser } from '../events/social/removeFriend'
 import { disable2FA, enable2FA, submit2FACode, submit2FACodeLogin } from '../2FA'
 import { showNotificationDiv } from '../components/ui/alert/notificationsAlert'
 import { sendEmail } from '../components/utils/sendEmail'
+import { initializeVerifyEmailTimers } from '../events/email/verifyEmailTimers'
 
 
 import { FetchInterface } from '../api/FetchInterface'
@@ -111,7 +112,8 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	// ═══════════════════════════════════════════════════════════════
 	// 📧 EMAIL
 	// ═══════════════════════════════════════════════════════════════
-	'sendEmail': () => sendEmail(),
+	'send-email': () => sendEmail(),
+	'initVerifyEmailTimers': () => initializeVerifyEmailTimers(),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 📚 DOCUMENTATION

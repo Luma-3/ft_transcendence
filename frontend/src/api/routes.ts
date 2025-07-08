@@ -4,6 +4,7 @@ const SERVICES = {
   USER: `${API_URL}/user/users`,
   USER_ROOT: `${API_URL}/user`,
   SESSION: `${API_URL}/auth/session`,
+  AUTH: `${API_URL}/auth`,
   CDN: `/api/uploads`,
   GAME: `${API_URL}/game`,
   PEOPLE: `${API_URL}/people`,
@@ -65,9 +66,9 @@ export const API_CDN = {
 }
 
 export const MODULE_TWOFA = {
-  RESEND_EMAIL: `${SERVICES.TWOFA}/resendVerifEmail`,
+  RESEND_EMAIL: `${SERVICES.AUTH}/email-verification/resend`,
   VERIFY: {
-      EMAIL: `${SERVICES.TWOFA}/email`,
-      TWOFA: `${SERVICES.TWOFA}/code`,
+      EMAIL: `${SERVICES.AUTH}/email-verification`,
+      TWOFA: `${SERVICES.TWOFA}/code/verify`,
   },
 }

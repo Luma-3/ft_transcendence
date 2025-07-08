@@ -1,4 +1,4 @@
-import { FastifyPluginAsyncTypebox, Type } from '@fastify/type-provider-typebox';
+import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 
 import { UserService } from './user.service.js';
 
@@ -33,6 +33,7 @@ import {
   UserCreateRedis
 } from './user.schema.js';
 import { SearchResponseSchema } from '../search/search.schema.js';
+import { Type } from '@sinclair/typebox';
 
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
@@ -45,13 +46,13 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       body: UserCreateBody,
       querystring: UserQueryGet,
       response: {
-        200: ResponseSchema(UserPublicResponse, 'User created successfully, verification email sent successfully'),
+        200: ResponseSchema(),
         409: ConflictResponse,
       }
     }
   }, async (req, rep) => {
-    const user = await UserService.createUser(req.body);
-    return rep.code(200).send({ message: 'User Created, verification email sent', data: user });
+    await UserService.createUser(req.body);
+    return rep.code(200).send({ message: 'User created successfully, verification email sent' });
   });
 
   fastify.post('/internal/users', {
@@ -70,7 +71,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     return rep.code(201).send({ message: 'User Created', data: user });
   });
 
-  fastify.post('/internal/createUser', {
+  fastify.post('/internal/user', {
     schema: {
       summary: 'Create a user (Internal)',
       description: 'Endpoint to create a user ressources and retrieve public informations for internal use only (used by auth service for module 2fa)',
@@ -87,6 +88,22 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     return rep.code(201).send({ message: 'User Created', data: user });
   });
 
+  fastify.patch('/internal/email', {
+    schema: {
+      summary: 'Update current user email (Internal)',
+      description: 'Endpoint to create a user ressources and retrieve public informations for internal use only (used by auth service for module 2fa)',
+      tags: ['Users'],
+      body: UserCreateRedis,
+      response: {
+        201: ResponseSchema(UserPublicResponse, 'User created successfully'),
+        409: ConflictResponse,
+      }
+    }
+  }, async (req, rep) => {
+    const userID = req.body.userID;
+    const user = await UserService.updateUserEmailRedis(userID);
+    return rep.code(201).send({ message: 'User Created', data: user });
+  });
 
   fastify.get('/users', {
     schema: {
@@ -223,7 +240,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       headers: UserHeaderAuthentication,
       body: UserEmailUpdateBody,
       response: {
-        200: ResponseSchema(UserPublicResponse, 'Email updated successfully'),
+        200: ResponseSchema(),
         404: NotFoundResponse,
         409: ConflictResponse,
         401: UnauthorizedResponse
@@ -233,9 +250,9 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const id = req.headers['x-user-id'];
     const { email } = req.body;
 
-    const user = await UserService.updateUserEmail(id, email);
+    await UserService.updateUserEmail(id, email);
 
-    return rep.code(200).send({ message: 'Email updated successfully', data: user });
+    return rep.code(200).send({ message: 'Email verification sent' });
   });
 
   fastify.patch('/users/me/username', {

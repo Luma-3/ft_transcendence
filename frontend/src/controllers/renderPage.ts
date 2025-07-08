@@ -21,6 +21,7 @@ import { setupColorTheme } from '../components/utils/setColorTheme'
 import { translatePage } from './Translate'
 import { fadeIn, fadeOut } from '../components/utils/fade'
 import { removeLoadingScreen } from '../components/utils/removeLoadingScreen'
+import { initializeVerifyEmailTimers } from '../events/email/verifyEmailTimers'
 
 /**
  * ! API
@@ -64,6 +65,12 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 		translatePage(lang);
 		if (updateHistory) {
 			addToHistory(page, updateHistory);
+		}
+		
+		if (page === 'verifyEmail') {
+			setTimeout(() => {
+				initializeVerifyEmailTimers();
+			}, 100);
 		}
 		
 		removeLoadingScreen();

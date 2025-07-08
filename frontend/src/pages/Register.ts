@@ -71,6 +71,8 @@ export default function registerPage() {
 	return renderRegisterPage()
 }
 
+export let userRegisterInfo: { email: string, lang: string } | null = null;
+
 
 export async function registerUser() {
 
@@ -105,6 +107,10 @@ export async function registerUser() {
 	 */
 	const success = await FetchInterface.registerUser(userData);
 	if (success) {
+		userRegisterInfo = {
+			email: userData.email,
+			lang: userData.preferences.lang,
+		};
 		renderPublicPage('verifyEmail');
 	}
 
