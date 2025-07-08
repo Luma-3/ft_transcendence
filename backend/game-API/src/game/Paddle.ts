@@ -15,13 +15,17 @@ export class Paddle extends GameObject implements Rectangle {
   // private readonly maxVelocity: number = 10;
   private id: string = '';
   // private inMove = false;
-
+  
+  get Paddleid() {
+    return this.id;
+  }
   constructor(id: string, pos: Vector2) {
     super();
 
     this.id = id;
     this.startPosition(pos);
   }
+
 
   startPosition(pos: Vector2) {
     this.position = pos;

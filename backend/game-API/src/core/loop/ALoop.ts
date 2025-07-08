@@ -53,6 +53,11 @@ export abstract class ALoop {
     console.log(`Object removed from loop: ${obj.constructor.name}`);
   }
 
+  public get objectsPublic() {
+  return this.objects;
+  }
+
+
   protected abstract update(): void;
 
   private loopTick() {

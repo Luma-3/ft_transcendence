@@ -4,6 +4,7 @@ import { SceneContext } from "../core/runtime/SceneContext.js";
 import { Paddle } from "./Paddle.js";
 import { Vector2 } from "../core/physics/Vector.js";
 import { IOInterface } from "../utils/IOInterface.js";
+import { AIController } from "./AIController.js"
 
 export class Pong extends GameObject {
   private ball: Ball | null = null;
@@ -90,4 +91,14 @@ export const game = () => {
 
   SceneContext.get().inputManager.start(); // Start the input manager
   SceneContext.get().loopManager.start(); // Start the game loop
+
+  if (SceneContext.get().gameType === "ai") {
+    const ctx = SceneContext.get();
+    const aiController = new AIController(paddle2, ball);
+    ctx.loopManager.addIAObject(aiController);
+  }
 }
+
+
+// J'ai rajoute l'intantiation de mon AIcontroller qui prend le paddle2 et la ball pour fonctionner. 
+// ensuite j'ajoute ce controller Ia a la loop Ia qui est lance dans loopManager. 

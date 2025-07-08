@@ -24,6 +24,10 @@ export class InputManager {
   get(playerId: string): Vector2 {
     return this.playersInput.get(playerId);
   }
+
+  set(playerId: string, input: Vector2) {
+    this.playersInput.set(playerId, input);
+  }
 }
 
 function handleInput(message: string, channel: string): void {

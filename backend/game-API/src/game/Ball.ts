@@ -17,10 +17,16 @@ export class Ball extends GameObject implements Circle {
   private readonly paddleSpeedModifier: number = 0.15;
 
 
+  public get Ballvelocity(): Vector2 {
+    return this.velocity;
+  }
+  
   update() {
     this.move();
     this.checkTopBottomCollision();
   }
+
+
 
   collider(): Circle {
     return {
