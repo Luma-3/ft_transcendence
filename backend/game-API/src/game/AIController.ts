@@ -3,6 +3,11 @@ import { Ball } from "./Ball.js";
 import { SceneContext } from "../core/runtime/SceneContext.js";
 import { Vector2 } from "../core/physics/Vector.js";
 
+type BallSnapshot = {
+    position: Vector2;
+    velocity: Vector2;
+    radius: number;
+};
 // ---------- L’IA Controller ----------
 export class AIController {
     private paddle: Paddle;
@@ -28,9 +33,10 @@ export class AIController {
             },
             this.paddle.position.x, // X du paddle IA
             this.fieldHeight,
-            this.dt
+            this.dt,
         );
-
+        console.log('ImpactY:', impactY); 
+    
         // TODO
         // 2. Prise de décision (haut/bas/neutre)
         const decision = this.computePaddleMovement(impactY, framesToImpact);
@@ -45,19 +51,10 @@ export class AIController {
 
         if (predictedY < currentY - threshold) return 1;    // Monter
         if (predictedY > currentY + threshold) return -1;   // Descendre
+        void framesToImpact;
         return 0;                                           // Rester
     }
 }
-
-
-// ---------- Algo de prédiction d’impact ----------
-
-type BallSnapshot = {
-    position: Vector2;
-    velocity: Vector2;
-    radius: number;
-};
-
 /**
  * Simule la trajectoire de la balle frame par frame jusqu’au X d’un paddle.
  * Retourne la position Y de l’impact et le nombre de frames.

@@ -91,8 +91,8 @@ export const game = () => {
 
   SceneContext.get().inputManager.start(); // Start the input manager
   SceneContext.get().loopManager.start(); // Start the game loop
-
   if (SceneContext.get().gameType === "ai") {
+    console.log('XXXXXXXXXX'); 
     const ctx = SceneContext.get();
     const aiController = new AIController(paddle2, ball);
     ctx.loopManager.addIAObject(aiController);
