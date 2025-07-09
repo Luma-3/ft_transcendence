@@ -2,9 +2,8 @@ import { IUserInfo } from "../../interfaces/IUser";
 import { renderUserMenu } from "./userMenu";
 
 function navbarLogo() {
-	return `<div class="flex navbar-responsive-size justify-start items-center">
-				<a href="/dashboard" class="ml-2 flex items-center font-title text-tertiary dark:text-dprimary">
-				<h1 class="text-tertiary dark:text-dtertiary">Transcenduck</h1></a>
+	return `<div id="loaddashboard" class="flex font-title navbar-responsive-size justify-start items-center hover:cursor-pointer">
+				<h1 class="text-tertiary dark:text-dtertiary pointer-events-none">Transcenduck</h1>
 			</div>`
 }
 

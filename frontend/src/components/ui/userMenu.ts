@@ -84,14 +84,14 @@ function darkMode(theme: string) {
 function logout() {
 	return `<button id="logout" translate="logout" 
 	class="flex py-2 px-4 text-responsive-size w-full justify-left items-left
-	dark:text-dsecondary dark:hover:text-white hover:curosr-pointer">
+	dark:text-dsecondary dark:hover:text-white hover:text-dtertiary hover:cursor-pointer">
 	Sign out
 	</button>`
 }
 
 function notifications() {
 	return `<button id="notifications" class="flex py-2 pl-4 text-responsive-size w-full justify-left items-left
-	dark:text-dsecondary dark:hover:text-white hover:cursor-pointer">
+	dark:text-dsecondary dark:hover:text-white hover:text-dtertiary hover:cursor-pointer">
 	Notifications
 	</button>`;
 }

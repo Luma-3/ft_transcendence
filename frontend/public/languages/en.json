@@ -92,6 +92,8 @@
 	"please-enter-all-fields": "Please enter all fields",
 	"new-password-and-confirm-password-are-different": "New password and confirm password are different",
 	"password-changed": "Password changed",
+	"new-password-must-be-different-from-old-password": "New password must be different from old password",
+	
 	"user-infos-updated": "Informations updated",
 	"user-infos-not-updated": "Informations not updated",
 	

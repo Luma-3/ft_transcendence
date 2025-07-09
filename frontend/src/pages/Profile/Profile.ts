@@ -32,7 +32,8 @@ async function renderProfilePage(user: IUserInfo) {
 				"off",
 				true,
 				"email",
-				user.email
+				user.email,
+				true
 			)
 		]
 	

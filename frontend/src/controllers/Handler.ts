@@ -29,7 +29,6 @@ import { unfriendUser } from '../events/social/removeFriend'
 import { disable2FA, enable2FA, submit2FACode, submit2FACodeLogin } from '../pages/2FA'
 import { showNotificationDiv } from '../components/ui/alert/notificationsAlert'
 import { sendEmail } from '../components/utils/sendEmail'
-import { initializeVerifyEmailTimers } from '../events/email/verifyEmailTimers'
 
 
 import { FetchInterface } from '../api/FetchInterface'
@@ -61,6 +60,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'loadprofile': () => renderPrivatePage('profile'),
 	'loadsettings': () => renderPrivatePage('settings'),
 	'loadfriends': () => renderPrivatePage('friends'),
+	'loadrgpd': () => renderPrivatePage('rgpd'),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 👤 GESTION UTILISATEUR

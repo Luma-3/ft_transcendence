@@ -73,7 +73,7 @@ export async function change2FA() {
 		container += `
 		<div class="flex flex-col p-2 max-w-[800px] justify-center items-center w-full text-responsive-size font-title" translate="2fa-warning">
 			
-			Warning ! <br>
+			Warning !
 			No 2FA reduces security
 			(as anyone can access your account)<br> and increases the
 			risk of accidental actions.<br> This is not recommended !

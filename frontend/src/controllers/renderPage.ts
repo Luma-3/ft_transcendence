@@ -11,6 +11,7 @@ import profile from '../pages/Profile/Profile'
 import friends from '../pages/Friends/Friends'
 import documentation from '../pages/Documentation'
 import verifyEmail from '../pages/VerifyEmail'
+import RGPD from '../pages/RGPD'
 import twoFaPage, { loginTwoFaPage, init2FAPage, initLogin2FAPage } from '../pages/2FA'
 
 /**
@@ -21,7 +22,6 @@ import { setupColorTheme } from '../components/utils/setColorTheme'
 import { translatePage } from './Translate'
 import { fadeIn, fadeOut } from '../components/utils/fade'
 import { removeLoadingScreen } from '../components/utils/removeLoadingScreen'
-import { initializeVerifyEmailTimers } from '../events/email/verifyEmailTimers'
 
 /**
  * ! API
@@ -97,6 +97,7 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
 	'profile': profile,
 	'friends': friends,
 	'documentation': documentation,
+	'rgpd': RGPD,
 }
 
 /**

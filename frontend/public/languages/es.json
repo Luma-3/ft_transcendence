@@ -95,6 +95,8 @@
 	"please-enter-all-fields": "Por favor, completa todos los campos",
 	"new-password-and-confirm-password-are-different": "La nueva contraseña y la confirmación de la contraseña son diferentes",
 	"password-changed": "Contraseña cambiada",
+	"new-password-must-be-different-from-old-password": "La nueva contraseña debe ser diferente de la antigua",
+
 	"user-infos-updated": "Información actualizada",
 	"user-infos-not-updated": "Información no actualizada",
 	"friend-invitation-sent": "Invitación de amigo enviada",

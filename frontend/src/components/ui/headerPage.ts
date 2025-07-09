@@ -11,6 +11,9 @@ const emailIcon: string = `
 const twoFaIcon: string = `
 <img src="/images/duck2FA.png" alt="twoFaIcon" class="flex h-70 w-70 icon-responsive-size" />`;
 
+const rgpdIcon: string = `
+<img src="/images/duckRGPD.png" alt="rgpdIcon" class="flex h-70 w-70 icon-responsive-size" />`;
+
 export function headerPage(titlePage: string, typePage: string = "private") {
 	
 	let logoSvg: string = "";
@@ -25,6 +28,9 @@ export function headerPage(titlePage: string, typePage: string = "private") {
 			break;
 		case "2fa-auth":
 			logoSvg = twoFaIcon;
+			break;
+		case 'rgpd':
+			logoSvg = rgpdIcon;
 			break;
 		default:
 			logoSvg = "";
