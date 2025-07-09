@@ -10,11 +10,11 @@ export async function verifyEmailUser(token: string) {
 		method: "GET",
 	});
 	if (response.status === "error") {
-		alertTemporary("error", "Error with email verification", "dark");
-		renderPublicPage('register');
+		await alertTemporary("error", "Error with email verification", "dark");
+		// renderPublicPage('register');
 		return;
 	}
 
-	alertTemporary("success", "Email verified successfully", "dark");
+	await alertTemporary("success", "Email verified successfully", "dark");
 	// window.location.href = "/login";
 }

@@ -113,7 +113,6 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	// 📧 EMAIL
 	// ═══════════════════════════════════════════════════════════════
 	'send-email': () => sendEmail(),
-	// 'initVerifyEmailTimers': () => initializeVerifyEmailTimers(),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 📚 DOCUMENTATION

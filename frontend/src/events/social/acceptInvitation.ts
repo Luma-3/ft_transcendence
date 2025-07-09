@@ -23,6 +23,8 @@ export async function friendRequest(target: HTMLElement, action: "send" | "accep
 		await updateNotificationsList();
 		await updateFriendsList();
 		await updateAllLists();
+		target.parentElement?.parentElement?.parentElement?.remove();
+
 	} else {
 		target.parentElement?.parentElement?.parentElement?.remove();
 	}

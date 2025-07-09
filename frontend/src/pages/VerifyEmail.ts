@@ -27,7 +27,7 @@ return `
 
 	<div class="flex flex-col w-full justify-center items-center mb-80 space-y-10">
 	
-		<button id="send-email" class="hidden font-title w-1/2 md:w-1/3 lg:w-1/4 h-[50px] md:h-[70px] lg:h-[80px] 
+		<button id="send-email" type="button" class="hidden font-title w-1/2 md:w-1/3 lg:w-1/4 h-[50px] md:h-[70px] lg:h-[80px] 
 		bg-primary dark:bg-myblack text-secondary dark:text-dsecondary 
 		hover:bg-secondary hover:text-primary dark:hover:bg-dsecondary dark:hover:text-dprimary 
 		disabled:opacity-0 disabled:cursor-not-allowed disabled:hover:bg-primary disabled:hover:text-secondary

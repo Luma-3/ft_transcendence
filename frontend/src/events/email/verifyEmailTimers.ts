@@ -27,7 +27,7 @@ export function initializeVerifyEmailTimers() {
 	updateMainTimer(); // Affichage initial
 	
 	// Petit compteur de 1 minute pour le bouton
-	let resendTimeLeft = 10; // 1 minute
+	let resendTimeLeft = 60; // 1 minute
 	const resendTimerElement = document.getElementById('resend-timer-container');
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;
 	

@@ -1,5 +1,5 @@
 import { FetchInterface } from "../../../api/FetchInterface";
-import { alertTemporary } from "../alert/alertTemporary";
+import { alertPublic } from "./alertPublic";
 
 export async function getCustomAlertTheme(
 	needUser: boolean = true,
@@ -18,7 +18,7 @@ export async function getCustomAlertTheme(
 	if (needUser) {
 		const user = await FetchInterface.getUserInfo()
 		if (user === undefined) {
-			return alertTemporary("error", "Error while fetching user info", 'dark');
+			return alertPublic("error", "Error while fetching user info");
 		}
 		lang = user.preferences.lang ?? 'en';
 		theme = user.preferences.theme ?? 'dark';

@@ -60,7 +60,7 @@ container += `
 return container;
 }
 
-function addFriendButton(user: IOtherUser) {
+export function addFriendButton(user: IOtherUser) {
 return `
 <div id="add-friend" data-username=${user.username} data-id=${user.id} class="group/item relative hover:cursor-pointer">
 	

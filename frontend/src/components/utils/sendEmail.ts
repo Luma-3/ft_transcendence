@@ -4,6 +4,7 @@ import { MODULE_TWOFA } from "../../api/routes";
 import { renderPublicPage } from "../../controllers/renderPage";
 
 import { userRegisterInfo } from "../../pages/Register";
+import { alertPublic } from "../ui/alert/alertPublic";
 import { alertTemporary } from "../ui/alert/alertTemporary";
 
 // Objet pour gérer le cooldown (référence partagée)
@@ -21,22 +22,17 @@ export function setEmailCooldownState(value: boolean) {
 
 export async function sendEmail() {
 	
-	if (emailState.isEmailCooldownActive) {
-		alertTemporary("warning", "Please wait before sending another email", "dark");
-		return;
-	}
+	
 	if (!userRegisterInfo || !userRegisterInfo.email || !userRegisterInfo.lang) {
-		alertTemporary("error", "Email or language not set. Please redo the registration form.", "dark");
+		alertPublic("error", "Email or language not set. Please redo the registration form.");
 		return;
 	}
 	const success = await FetchInterface.resendVerificationEmail(userRegisterInfo.email, userRegisterInfo.lang);
 	if (!success) {
-		renderPublicPage('verifyEmail');
-		return;
+		return alertPublic("error", "email-already-sent");
 	}
 	// Déclencher le cooldown après envoi réussi
 	startEmailCooldown();
-	renderPublicPage('verifyEmail');
 }
 
 export function startEmailCooldown() {
@@ -46,8 +42,9 @@ export function startEmailCooldown() {
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;
 	
 	if (sendEmailButton) {
+		console.log("Disabling send email button...");
 		sendEmailButton.disabled = true;
-		sendEmailButton.classList.add('opacity-50', 'cursor-not-allowed');
+		sendEmailButton.classList.add('opacity-0','hidden','cursor-not-allowed');
 	}
 	
 	// Réactiver après 1 minute (60000ms)

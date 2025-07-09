@@ -27,14 +27,6 @@ export function generateCode(): string {
 }
 
 async function sendVerificationEmail(email: string, data: string, language: string) {
-
-	const userCooldown = await redisCache.ttl(`users:email_cooldown:${email}`);
-
-	if (userCooldown > 0) {
-		console.table("SQUALALALALA")
-		throw new UnauthorizedError(`${userCooldown}`);
-	}
-
 	const trad = await loadLang(language);
 	const mailOptions: SendMailOptions = {
 		from: 'Transcenduck <transcenduck@gmail.com>',
@@ -139,6 +131,11 @@ export class twoFaService {
 	static async generateSendToken(email: string, lang: string, token?: string) {
 		if (!token)
 			token = randomUUID();
+		
+		const userCooldown = await redisCache.ttl(`users:email_cooldown:${email}`);
+		if (userCooldown > 0) {
+			throw new UnauthorizedError(`${userCooldown.toString()}`);
+		}
 		sendVerificationEmail(email, token, lang);
 		await redisCache.setEx("users:check:token:" + token, 600, email);
 		await redisCache.setEx("users:check:email:" + email, 600, token);
@@ -162,7 +159,7 @@ export class twoFaService {
 		if (token) {
 			throw new ConflictError('Email already sent and not expired');
 		}
-		this.generateSendToken(email, lang);
+		await this.generateSendToken(email, lang);
 	}
 
 	static async verifyEmail(token: string) {

@@ -20,8 +20,7 @@ export function addToHistory(page: string, updateHistory: boolean = true) {
 
 addAllEventListenOnPage(main_container);
 
-const publicPages = ['home', 'login', 'register'];
-
+const publicPages = ['home', 'login', 'register', 'verifyEmail']
 // * Au chargement initial ou refresh de la page
 // * On verfie si l'utilisateur a une session active
 // * On affiche la page prive si l'utilisateur est connecté

@@ -231,7 +231,7 @@ export class FetchInterface {
 
 			if (action === "send") {
 				alertTemporary("success", "friend-invitation-sent", user.preferences!.theme, true);
-				return false
+				return true
 			}
 
 			return true;
@@ -295,10 +295,10 @@ export class FetchInterface {
 			body: JSON.stringify({})
 		});
 		if (response.status === "error") {
-			await alertTemporary("error", "issues-with-blocking-user", user.preferences.theme, true);
+			alertTemporary("error", "issues-with-blocking-user", user.preferences.theme, true);
 			return false;
 		}
-		await alertTemporary("success", isBlocking ? "user-unblocked" : "user-blocked", user.preferences.theme, true);
+		alertTemporary("success", isBlocking ? "user-unblocked" : "user-blocked", user.preferences.theme, true);
 		return true;
 	}
 
@@ -330,11 +330,10 @@ export class FetchInterface {
 		});
 		console.log("Response from resendVerificationEmail:", response);
 		if (response.status === "error") {
-			await alertTemporary("error", "email-already-sent", "dark");
+			alertPublic("error", "email-already-sent");
 			return false;
 		}
-
-		await alertTemporary("success", "email-sent-successfully", "dark");
+		alertPublic("success", "email-sent-successfully");
 		return true;
 	}
 }

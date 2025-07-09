@@ -18,7 +18,7 @@ export async function blockUser(target: HTMLElement, isBlocking: boolean) {
 	if (!success) {
 		return;
 	}
-
+	target.parentElement?.parentElement?.remove();
 	await updateAllUserLists();
 	await updateFriendsList();
 	await updateBlockList();
