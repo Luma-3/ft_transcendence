@@ -65,9 +65,9 @@ export async function deleteFile(req: FastifyRequest<
   {
   Params: UploadFileParamsType
 }>, rep: FastifyReply) {
-  const path = req.url;
+  let path = req.url;
   const { typePath } = req.params;
-
+  path = path.substring("internal/".length); // remove "internal/" and typePath from the path
   await uploadServices.deleteFile(typePath, path);
 
   return rep.code(200).send({ message: 'file deleted successfully' })

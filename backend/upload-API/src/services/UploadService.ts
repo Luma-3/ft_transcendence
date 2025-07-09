@@ -18,14 +18,18 @@ export enum TypeUpload {
 
 export class UploadService {
   _uploadPath: string;
-  
-  
+  private static defaultAvatar = "default.png";
+  private static defaultBanner = "default.png";
+
+
   constructor(rootUpload: string) {
     this._uploadPath = path.resolve(rootUpload, "uploads");
     
     Object.keys(TypeUpload).forEach(element => {
       fs.mkdir(path.join(this._uploadPath, element), {recursive: true}, console.debug);
     });
+    UploadService.defaultAvatar = path.join(this._uploadPath, TypeUpload.avatar, UploadService.defaultAvatar);
+    UploadService.defaultBanner = path.join(this._uploadPath, TypeUpload.banner, UploadService.defaultBanner);
   }
 
   async uploadFile(typePath: string, data?: MultipartFile) {
@@ -66,14 +70,9 @@ export class UploadService {
    * Verification de l'existence du fichier
    */
   async checkFile(path: string) {
-    try {
-      const stats = fs.statSync(path);
-      if (!stats.isFile()) {
-        throw new NotFoundError();
-      }
-    } catch (err) {
-      if(err instanceof Error)
-        throw new NotFoundError(err.message.replace(this._uploadPath, ""));
+    const stats = fs.statSync(path);
+    if (!stats.isFile()) {
+      throw new NotFoundError();
     }
   }
 
@@ -83,12 +82,17 @@ export class UploadService {
    * et renvoie le fichier
    */
   async getFile(typePath: string, realPath: string, options: CdnQueryType) {
-    const pathJoin = path.join(this._uploadPath, realPath);
+    let pathJoin = path.join(this._uploadPath, realPath);
 		console.log(pathJoin, path.join(this._uploadPath, typePath));
     if (!pathJoin.startsWith(path.join(this._uploadPath, typePath))) {
       throw new ForbiddenError();
     }
-    await this.checkFile(pathJoin);
+    try {
+      await this.checkFile(pathJoin);
+    } catch (err) {
+      pathJoin = (typePath === TypeUpload.avatar ? UploadService.defaultAvatar : UploadService.defaultBanner);
+      realPath = pathJoin.substring(this._uploadPath.length);
+    }
     const hashKey = 'upload:' + hash("md5", JSON.stringify({ typePath, realPath, options: {
         size: options.size,
         scale: options.scale,
@@ -145,7 +149,11 @@ public async getProxyFile(url: string) {
   }
 
   async deleteFile(typePath: string, realPath: string) {
+    if (realPath.startsWith("googleusercontent.com/")) {
+      throw new ForbiddenError("Cannot delete file from Google Cloud Storage");
+    }
     const pathJoin = path.join(this._uploadPath, realPath);
+    console.log(pathJoin, path.join(this._uploadPath, typePath));
     if (!pathJoin.startsWith(path.join(this._uploadPath, typePath))) {
       throw new ForbiddenError();
     }
