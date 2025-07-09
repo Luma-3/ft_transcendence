@@ -1,6 +1,8 @@
 import { headerPage } from "../components/ui/headerPage"
+import { startEmailCooldown } from "../components/utils/sendEmail"
 export default async function verifyEmail() {
 
+	startEmailCooldown();
 return `
 <div class="flex flex-col w-full h-full rounded-lg justify-center mt-30">
 	
@@ -36,16 +38,15 @@ return `
 			<span class="pointer-events-none" translate="send-email">Renvoyer l'e-mail</span>
 		</button>
 
-		<!-- Petit compteur de 1 minute pour bloquer le bouton -->
-		<div id="resend-timer-container" class="flex flex-col items-center" style="display: none;">
-			<div class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-				<span translate="wait-before-resend">Attendez avant de renvoyer :</span>
-			</div>
-			<div id="resend-timer" class="text-2xl font-semibold text-secondary dark:text-dsecondary">
-				1:00
-			</div>
+		
 		</div>
-
-	</div>
-</div>`
-}
+		</div>`
+	}
+	// <div id="resend-timer-container" class="flex flex-col items-center" style="display: none;">
+	// 	<div class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+	// 		<span translate="wait-before-resend">Attendez avant de renvoyer :</span>
+	// 	</div>
+	// 	<div id="resend-timer" class="text-2xl font-semibold text-secondary dark:text-dsecondary">
+	// 		1:00
+	// 	</div>
+	// </div>

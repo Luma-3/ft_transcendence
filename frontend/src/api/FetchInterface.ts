@@ -6,6 +6,7 @@ import { alertTemporary } from "../components/ui/alert/alertTemporary";
 import { renderPublicPage } from "../controllers/renderPage";
 import { loadTranslation } from "../controllers/Translate";
 import { IOtherUser, IUserInfo, IUserPreferences, UserSearchResult } from "../interfaces/IUser";
+import { IApiResponse } from "../interfaces/IApi";
 
 export class FetchInterface {
 	private constructor() {}
@@ -213,6 +214,14 @@ export class FetchInterface {
 	}
 
 	/**
+	 * ! Search Users in all users
+	 */
+	public static async getSearchUsers(q: string, page: number = 1, limit: number = 10, hydrate: boolean = true): Promise<IApiResponse<UserSearchResult>> {
+		const response = await fetchApi<UserSearchResult>(API.API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}`);
+		return response;
+	}
+
+	/**
 	 * ! Accept Friend Request
 	 */
 	public static async acceptFriendRequest(user: IUserInfo, friendId: string, action: "send" | "accept") {
@@ -330,10 +339,71 @@ export class FetchInterface {
 		});
 		console.log("Response from resendVerificationEmail:", response);
 		if (response.status === "error") {
-			alertPublic("error", "email-already-sent");
+			await alertPublic("error", "email-already-sent");
 			return false;
 		}
-		alertPublic("success", "email-sent-successfully");
+		await alertPublic("success", "email-sent-successfully");
+		return true;
+	}
+
+	/**
+	 * ! 2FA Verification
+	 */
+	public static async verify2FA(): Promise<boolean> {
+		const response = await fetchApiWithNoError<{ twofa: boolean }>(API.API_USER.TWOFA, {
+			method: 'GET',
+		});
+		if (response.status === "error" || !response.data) {
+			return false;
+		}
+		return response.data.twofa;
+	}
+
+	/**
+	 * ! Activate 2FA
+	 */
+	public static async activate2FA(): Promise<boolean> {
+		const response = await fetchApiWithNoError(API.API_USER.TWOFA, {
+			method: 'PUT',
+			headers: { "Content-Type": "text/plain" }
+		});
+		if (response.status === "error") {
+			await alertTemporary("error", "cannot-activate-2fa", "dark");
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * ! Deactivate 2FA
+	 */
+	public static async desactivate2FA(): Promise<boolean> {
+		const response = await fetchApiWithNoError(API.API_USER.TWOFA, {
+			method: 'DELETE',
+			headers: { "Content-Type": "text/plain" }
+		});
+		if (response.status === "error") {
+			await alertTemporary("error", "cannot-desactivate-2fa", "dark");
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * ! Send TwoFA Code
+	 */
+
+	public static async submit2FACode(code: string): Promise<boolean> {
+		const response = await fetchApiWithNoError(API.MODULE_TWOFA.VERIFY.TWOFA, {
+			method: 'POST',
+			body: JSON.stringify({ code })
+		});
+		console.log("Response from submit2FACode:", response);
+		if (response.status === "error") {
+			await alertTemporary("error", "invalid-2fa-code", "dark", true, true);
+			return false;
+		}
+		await alertTemporary("success", "2fa-code-verified", "dark", true, true);
 		return true;
 	}
 }

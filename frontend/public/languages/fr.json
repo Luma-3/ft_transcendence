@@ -53,6 +53,8 @@
 	
 	"2fa-auth": "Authentification à deux facteurs",
 	"2fa-warning": "Avertissement ! <br> Pas de 2FA réduit la sécurité (car n'importe qui peut accéder à votre compte) et augmente le risque d'actions accidentelles.<br> Ce n'est pas recommandé !",
+	"2fa-description": "L'authentification à deux facteurs (2FA) ajoute une couche de sécurité supplémentaire à votre compte. En plus de votre mot de passe, vous devrez fournir un code de vérification recu par email.",
+	"2fa-code": "Entrez votre code de vérification 2FA",
 	
 	"are-you-sure": "Êtes-vous sûr ?",
 	"dangerous-action": "Actions dangereuses",

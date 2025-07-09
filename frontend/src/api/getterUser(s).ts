@@ -50,10 +50,10 @@ import { API_USER } from './routes';
 // 	return response;
 // }
 
-export async function getSearchUsers(q: string, page: number = 1, limit: number = 10, hydrate: boolean = true): Promise<IApiResponse<UserSearchResult>> {
-	const response = await fetchApi<UserSearchResult>(API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}`);
-	return response;
-}
+// export async function getSearchUsers(q: string, page: number = 1, limit: number = 10, hydrate: boolean = true): Promise<IApiResponse<UserSearchResult>> {
+// 	const response = await fetchApi<UserSearchResult>(API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}`);
+// 	return response;
+// }
 
 // export async function getUserPreferences(): Promise<IApiResponse<IUserPreferences>> {
 // 	const response = await fetchApiWithNoError<IUserPreferences>(API_USER.BASIC.ONLY_PREFERENCES, {

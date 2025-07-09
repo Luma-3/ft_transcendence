@@ -3,11 +3,13 @@ import { backButton, backButtonPublicPage } from "./buttons/backButton";
 // ! Icons for the header page
 
 const settingsIcon: string = `
-<img src="/images/duckSettings.png" alt="settingsIcon" class="flex h-50 w-50 icon-responsive-size" />`;
+<img src="/images/duckSettings.png" alt="settingsIcon" class="flex h-70 w-70 icon-responsive-size" />`;
 
 const emailIcon: string = `
-<img src="/images/duckEmail.png" alt="settingsIcon" class="flex h-50 w-50 icon-responsive-size" />`;
+<img src="/images/duckEmail.png" alt="settingsIcon" class="flex h-70 w-70 icon-responsive-size" />`;
 
+const twoFaIcon: string = `
+<img src="/images/duck2FA.png" alt="twoFaIcon" class="flex h-70 w-70 icon-responsive-size" />`;
 
 export function headerPage(titlePage: string, typePage: string = "private") {
 	
@@ -20,6 +22,9 @@ export function headerPage(titlePage: string, typePage: string = "private") {
 			break;
 		case "verify-email":
 			logoSvg = emailIcon;
+			break;
+		case "2fa-auth":
+			logoSvg = twoFaIcon;
 			break;
 		default:
 			logoSvg = "";

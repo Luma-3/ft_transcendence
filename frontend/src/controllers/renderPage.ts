@@ -11,7 +11,7 @@ import profile from '../pages/Profile/Profile'
 import friends from '../pages/Friends/Friends'
 import documentation from '../pages/Documentation'
 import verifyEmail from '../pages/VerifyEmail'
-import twoFaPage, { loginTwoFaPage } from '../2FA'
+import twoFaPage, { loginTwoFaPage, init2FAPage, initLogin2FAPage } from '../pages/2FA'
 
 /**
  * ! UTILS
@@ -68,9 +68,15 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 		}
 		
 		if (page === 'verifyEmail') {
-			setTimeout(() => {
-				initializeVerifyEmailTimers();
-			}, 100);
+		
+		}
+		
+		if (page === '2FA') {
+			init2FAPage();
+		}
+		
+		if (page === '2FALogin') {
+			initLogin2FAPage();
 		}
 		
 		removeLoadingScreen();
@@ -128,6 +134,8 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		removeLoadingScreen();
 
 		fadeIn();
+		document.querySelector("footer")?.classList.remove("hidden");
+
 
 	}, 200);
 }

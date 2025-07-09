@@ -1,4 +1,4 @@
-import { getSearchUsers } from "../../api/getterUser(s)";
+import { FetchInterface } from "../../api/FetchInterface";
 import { addFriendButton } from "../../pages/Friends/Lists/allUsersList";
 
 export async function handleSearchUserGame(value: string) {
@@ -11,7 +11,7 @@ export async function handleSearchUserGame(value: string) {
 		return;
 	}
 
-	const searchData = await getSearchUsers(value);
+	const searchData = await FetchInterface.getSearchUsers(value);
 	if (!searchData || searchData.data!.total === 0) {
 		container!.innerHTML = `<li class="font-title">No users found</li>`;
 		return;
@@ -47,7 +47,3 @@ export async function handleSearchUserGame(value: string) {
 	</div>`;
 	}
 }
-	//
-	// <div name="otherProfile" data-id="${user.id}" class="flex p-4 items-center h-[30px] font-title rounded-lg pl-2 hover:bg-tertiary hover:text-primary hover:dark:bg-dtertiary hover:dark:text-dprimary hover:cursor-pointer">
-		// See Profile
-		// </div>

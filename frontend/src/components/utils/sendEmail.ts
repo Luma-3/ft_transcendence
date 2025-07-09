@@ -2,6 +2,7 @@ import { fetchApiWithNoError } from "../../api/fetch";
 import { FetchInterface } from "../../api/FetchInterface";
 import { MODULE_TWOFA } from "../../api/routes";
 import { renderPublicPage } from "../../controllers/renderPage";
+import { initializeVerifyEmailTimers } from "../../events/email/verifyEmailTimers";
 
 import { userRegisterInfo } from "../../pages/Register";
 import { alertPublic } from "../ui/alert/alertPublic";
@@ -22,16 +23,15 @@ export function setEmailCooldownState(value: boolean) {
 
 export async function sendEmail() {
 	
-	
 	if (!userRegisterInfo || !userRegisterInfo.email || !userRegisterInfo.lang) {
 		alertPublic("error", "Email or language not set. Please redo the registration form.");
 		return;
 	}
 	const success = await FetchInterface.resendVerificationEmail(userRegisterInfo.email, userRegisterInfo.lang);
+	console.log("Email sent successfully:", success);
 	if (!success) {
 		return alertPublic("error", "email-already-sent");
 	}
-	// Déclencher le cooldown après envoi réussi
 	startEmailCooldown();
 }
 
@@ -46,14 +46,17 @@ export function startEmailCooldown() {
 		sendEmailButton.disabled = true;
 		sendEmailButton.classList.add('opacity-0','hidden','cursor-not-allowed');
 	}
-	
-	// Réactiver après 1 minute (60000ms)
+	setTimeout(() => {
+		initializeVerifyEmailTimers();
+	}, 100);
+
 	setTimeout(() => {
 		endEmailCooldown();
 	}, 60000);
 }
 
 export function endEmailCooldown() {
+	console.log("Ending email cooldown...");
 	emailState.isEmailCooldownActive = false;
 	
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;

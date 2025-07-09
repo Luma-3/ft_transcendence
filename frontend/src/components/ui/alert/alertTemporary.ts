@@ -2,11 +2,12 @@ import Swal, { SweetAlertIcon } from "sweetalert2";
 import { getCustomAlertTheme } from "./alertTheme";
 import { loadTranslation } from "../../../controllers/Translate";
 
-export async function alertTemporary(level: string, message: string, theme: string, trad = false) {
-	
+export async function alertTemporary(level: string, message: string, theme: string, needUser = true, trad = false) {
+
 	const customTheme = await getCustomAlertTheme(true, theme);
 	if (!customTheme) {
-		return await alertTemporary("error", "Error while getting user alert theme", 'dark');
+		await alertTemporary(level, message, "dark", false, true);
+		return;
 	}
 	const allowedIcons = ['success', 'error', 'warning', 'info', 'question'];
 	if (!allowedIcons.includes(level)) {
