@@ -1,11 +1,10 @@
-import { updatePointerCoordinates } from "./utils/trailBall";
 import { IGameObject } from "../../interfaces/IGame";
 import { Ball, IBall } from "./draw/Ball";
 import { Paddle, IPaddle } from "./draw/Paddle";
 import { alpha } from "./draw/lerping";
 
 
-interface ISnapshot {
+export interface ISnapshot {
   time: number;
   object: IGameObject[];
 }
@@ -22,6 +21,8 @@ export class Game {
   private ball: Ball;
 
   snapshots: ISnapshot[] = [];
+
+  alphaGraph: AlphaGraph = new AlphaGraph("alphaGraph");
 
   constructor(canvasId: string, paddles: IPaddle[]) {
     this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
@@ -109,6 +110,22 @@ export class Game {
 
     const t = alpha(snapshotsA.time, snapshotsB.time, renderTime);
 
+    this.alphaGraph.add(t);
+    this.alphaGraph.draw();
+
+    for (let i = 0; i < snapshotsA.object.length; i++) {
+      switch (snapshotsA.object[i].type) {
+        case "ball":
+          this.ball.interpolate(snapshotsA.object[i] as IBall, snapshotsB.object[i] as IBall, t);
+          break;
+        case "paddle":
+          this.players.get((snapshotsA.object[i] as IPaddle).id)?.interpolate(snapshotsA.object[i] as IPaddle, snapshotsB.object[i] as IPaddle, t);
+          break;
+        default:
+          console.warn(`Unknown object type: ${snapshotsA.object[i].type}`);
+          break;
+      }
+    }
   }
 
   addSnapshot(objects: IGameObject[], timerServer: number) {
@@ -122,29 +139,76 @@ export class Game {
       this.snapshots.shift();
     }
 
-    // objects.forEach((object) => {
-    //   switch (object.type) {
-    //     case 'ball':
-    //       this.ball.addSnapshot(object as IBall, timerServer);
-    //       break;
-    //     case 'paddle':
-    //       this.players.get((object as IPaddle).id)?.addSnapshot(object as IPaddle, timerServer);
-    //       break;
-    //     case 'pong':
-    //       break;
-    //     default:
-    //       console.warn("Unknown game object type:", object.type);
-    //   }
-    // });
   }
 
   loop() {
-    this.interpolate(performance.now() - this.startTime! - 200);
+    this.interpolate(performance.now() - this.startTime! - 33.333);
     this.draw();
     requestAnimationFrame(this.loop.bind(this));
   }
 }
 
+class AlphaGraph {
+  private canvas: HTMLCanvasElement;
+  private ctx: CanvasRenderingContext2D;
+  private values: number[] = [];
+  private maxPoints = 100;
+  private scale = 1;
+
+  constructor(canvasId: string) {
+    this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    this.ctx = this.canvas.getContext("2d")!;
+  }
+
+  add(alpha: number) {
+    this.values.push(alpha);
+    if (this.values.length > this.maxPoints) {
+      this.values.shift();
+    }
+  }
+
+  draw() {
+    const { ctx, canvas } = this;
+    const height = canvas.height;
+    const width = canvas.width;
+
+    ctx.clearRect(0, 0, width, height);
+
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0, 0, width, height);
+
+    const referenceLines = [0.2, 0.5, 0.8];
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 1;
+
+    for (const ref of referenceLines) {
+      const y = height - ref * height * this.scale;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+
+      ctx.fillStyle = "red";
+      ctx.font = "10px monospace";
+      ctx.fillText(ref.toFixed(1), 2, y - 2);
+    }
+
+    ctx.beginPath();
+    ctx.strokeStyle = "lime";
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i < this.values.length; i++) {
+      const x = i * (width / this.maxPoints);
+      const alpha = this.values[i];
+      const y = height - alpha * height * this.scale;
+
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+
+    ctx.stroke();
+  }
+}
 
 
 

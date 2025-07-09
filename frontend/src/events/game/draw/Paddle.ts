@@ -1,5 +1,5 @@
 import { Vector2 } from "../utils/Vector";
-import { lerpVector2, alpha } from "./lerping";
+import { lerpVector2 } from "./lerping";
 
 export interface IPaddle {
   type: string;
@@ -37,26 +37,8 @@ export class Paddle {
     if (this.snapshots.length > 10) this.snapshots.shift();
   }
 
+  interpolate(snapshotsA: IPaddle, snapshotsB: IPaddle, alpha: number) {
 
-  interpolate(renderTime: number) {
-    if (this.snapshots.length < 2) return;
-
-    let snapshotsA, snapshotsB;
-    for (let i = 0; i < this.snapshots.length - 1; i++) {
-      const current = this.snapshots[i];
-      const next = this.snapshots[i + 1];
-
-      if (current.time <= renderTime && renderTime <= next.time) {
-        snapshotsA = current;
-        snapshotsB = next;
-        break;
-      }
-    }
-
-    if (!snapshotsA || !snapshotsB) return;
-
-    const t = alpha(snapshotsA.time, snapshotsB.time, renderTime);
-
-    this.position = lerpVector2(snapshotsA.object.position, snapshotsB.object.position, t);
+    this.position = lerpVector2(snapshotsA.position, snapshotsB.position, alpha);
   }
 }
