@@ -144,7 +144,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
   }, async (req, rep) => {
     const userId = req.headers['x-user-id'];
     const delId = await UserService.deleteUser(userId);
-    return rep.code(200).send({ message: `user ${delId} has been deleted` });
+    return rep.code(200).send({ message: `user ${delId} has been deleted` }).clearCookie('accessToken').clearCookie('refreshToken');
   });
 
   fastify.get('/users/:id', {
