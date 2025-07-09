@@ -40,6 +40,7 @@ server.register(jwt, {
   secret: process.env.JWT_SECRET!,
   publicRoutes: [
     { method: 'POST', url: '/user/users' }, // Create user
+    { method: 'POST', url: '/auth/email-verification/resend' }, // resend Email verification
     { method: 'GET', url: '/auth/email-verification' }, // verify Email
     { method: 'GET', url: '/user/users/register' }, // Confirm user registration
     { method: 'POST', url: '/auth/session' }, // Create session

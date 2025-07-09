@@ -16,5 +16,5 @@ export async function verifyEmailUser(token: string) {
 	}
 
 	alertTemporary("success", "Email verified successfully", "dark");
-	window.location.href = "/login";
+	// window.location.href = "/login";
 }

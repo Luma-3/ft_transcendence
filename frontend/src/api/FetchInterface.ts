@@ -317,4 +317,24 @@ export class FetchInterface {
 		const response = await fetchApi<IOtherUser[]>(API.API_USER.SOCIAL.NOTIFICATIONS + `?action=${params}`);
 		return response.data ?? undefined;
 	}
+
+
+	/**
+	 * ! Resend Verification Email
+	 */
+	public static async resendVerificationEmail(email: string, lang: string) {
+		
+		const response = await fetchApiWithNoError(API.MODULE_TWOFA.RESEND_EMAIL, {
+			method: 'POST',
+			body: JSON.stringify({ email, lang })
+		});
+		console.log("Response from resendVerificationEmail:", response);
+		if (response.status === "error") {
+			await alertTemporary("error", "email-already-sent", "dark");
+			return false;
+		}
+
+		await alertTemporary("success", "email-sent-successfully", "dark");
+		return true;
+	}
 }

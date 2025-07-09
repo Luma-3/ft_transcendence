@@ -1,5 +1,7 @@
 import { fetchApiWithNoError } from "../../api/fetch";
+import { FetchInterface } from "../../api/FetchInterface";
 import { MODULE_TWOFA } from "../../api/routes";
+import { renderPublicPage } from "../../controllers/renderPage";
 
 import { userRegisterInfo } from "../../pages/Register";
 import { alertTemporary } from "../ui/alert/alertTemporary";
@@ -18,28 +20,23 @@ export function setEmailCooldownState(value: boolean) {
 }
 
 export async function sendEmail() {
-	console.log("Cooldown state:", emailState.isEmailCooldownActive);
 	
 	if (emailState.isEmailCooldownActive) {
 		alertTemporary("warning", "Please wait before sending another email", "dark");
 		return;
 	}
-
-	const response = await fetchApiWithNoError(MODULE_TWOFA.RESEND_EMAIL, {
-		method: 'POST',
-		body: JSON.stringify({ email: userRegisterInfo?.email, lang: userRegisterInfo?.lang ?? 'en' })
-	})
-
-	if (response.status === "error") {
-		alertTemporary("error", "Email already sent", "dark");
-		console.log(response.details);
+	if (!userRegisterInfo || !userRegisterInfo.email || !userRegisterInfo.lang) {
+		alertTemporary("error", "Email or language not set. Please redo the registration form.", "dark");
 		return;
 	}
-
-	alertTemporary("success", "Email sent succefully", "dark");
-	
+	const success = await FetchInterface.resendVerificationEmail(userRegisterInfo.email, userRegisterInfo.lang);
+	if (!success) {
+		renderPublicPage('verifyEmail');
+		return;
+	}
 	// Déclencher le cooldown après envoi réussi
 	startEmailCooldown();
+	renderPublicPage('verifyEmail');
 }
 
 export function startEmailCooldown() {
@@ -51,7 +48,6 @@ export function startEmailCooldown() {
 	if (sendEmailButton) {
 		sendEmailButton.disabled = true;
 		sendEmailButton.classList.add('opacity-50', 'cursor-not-allowed');
-		console.log("Button disabled");
 	}
 	
 	// Réactiver après 1 minute (60000ms)
@@ -61,14 +57,14 @@ export function startEmailCooldown() {
 }
 
 export function endEmailCooldown() {
-	console.log("Ending email cooldown...");
 	emailState.isEmailCooldownActive = false;
 	
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;
 	
 	if (sendEmailButton) {
 		sendEmailButton.disabled = false;
-		sendEmailButton.classList.remove('opacity-50', 'cursor-not-allowed');
-		console.log("Button re-enabled");
+		sendEmailButton.classList.remove('opacity-0', 'cursor-not-allowed', 'hidden');
+		sendEmailButton.classList.add('opacity-100');
+		sendEmailButton.classList.replace('dark:bg-myblack', 'dark:bg-dprimary');
 	}
 }

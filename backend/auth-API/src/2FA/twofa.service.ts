@@ -31,6 +31,7 @@ async function sendVerificationEmail(email: string, data: string, language: stri
 	const userCooldown = await redisCache.ttl(`users:email_cooldown:${email}`);
 
 	if (userCooldown > 0) {
+		console.table("SQUALALALALA")
 		throw new UnauthorizedError(`${userCooldown}`);
 	}
 

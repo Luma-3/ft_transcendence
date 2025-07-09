@@ -27,9 +27,8 @@ export function initializeVerifyEmailTimers() {
 	updateMainTimer(); // Affichage initial
 	
 	// Petit compteur de 1 minute pour le bouton
-	let resendTimeLeft = 0;
-	let resendInterval: number | null = null;
-	const resendTimerElement = document.getElementById('resend-timer');
+	let resendTimeLeft = 10; // 1 minute
+	const resendTimerElement = document.getElementById('resend-timer-container');
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;
 	
 	function updateResendTimer() {
@@ -39,32 +38,24 @@ export function initializeVerifyEmailTimers() {
 		resendTimerElement.textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 		
 		if (resendTimeLeft <= 0) {
+			resendTimerElement.textContent = '0:00';
 			// Réactiver le bouton
 			endEmailCooldown();
-			if (resendInterval) {
-				clearInterval(resendInterval);
-				resendInterval = null;
-			}
 			return;
 		}
 		
 		resendTimeLeft--;
 	}
 	
-	function startResendCooldown() {
-		resendTimeLeft = 60; // 1 minute
-		resendInterval = setInterval(updateResendTimer, 1000) as unknown as number;
-		updateResendTimer(); // Affichage initial
-	}
+	// Démarrer le compteur de resend dès le rendu de la page
+	const resendInterval = setInterval(updateResendTimer, 1000);
+	updateResendTimer(); // Affichage initial
 	
-	// Écouter l'événement de démarrage du cooldown
-	window.addEventListener('startResendCooldown', startResendCooldown);
-	
-	// Ajouter aussi un listener direct sur le bouton pour s'assurer qu'il fonctionne
+	// Ajouter un listener sur le bouton pour ne permettre l'action que si le timer est à 0
 	if (sendEmailButton) {
 		sendEmailButton.addEventListener('click', function(e) {
-			// Vérifier si le bouton est déjà désactivé pour éviter les double-clics
-			if (sendEmailButton.disabled) {
+			// Vérifier si le cooldown est encore actif
+			if (resendTimeLeft > 0) {
 				e.preventDefault();
 				e.stopPropagation();
 				return false;
@@ -75,9 +66,6 @@ export function initializeVerifyEmailTimers() {
 	// Nettoyage quand on quitte la page
 	window.addEventListener('beforeunload', function() {
 		clearInterval(mainInterval);
-		if (resendInterval) {
-			clearInterval(resendInterval);
-		}
-		window.removeEventListener('startResendCooldown', startResendCooldown);
+		clearInterval(resendInterval);
 	});
 }

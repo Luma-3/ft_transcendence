@@ -1,9 +1,6 @@
-import { animateButton } from "../components/ui/buttons/animateButton"
 import { headerPage } from "../components/ui/headerPage"
-import { activateEmailCooldown } from "../components/utils/sendEmail"
 export default async function verifyEmail() {
 
-	startResendCooldown();
 return `
 <div class="flex flex-col w-full h-full rounded-lg justify-center mt-30">
 	
@@ -30,13 +27,13 @@ return `
 
 	<div class="flex flex-col w-full justify-center items-center mb-80 space-y-10">
 	
-		<button id="send-email" class="font-title w-1/2 md:w-1/3 lg:w-1/4 h-[50px] md:h-[70px] lg:h-[80px] 
-		bg-primary dark:bg-dprimary text-secondary dark:text-dsecondary 
+		<button id="send-email" class="hidden font-title w-1/2 md:w-1/3 lg:w-1/4 h-[50px] md:h-[70px] lg:h-[80px] 
+		bg-primary dark:bg-myblack text-secondary dark:text-dsecondary 
 		hover:bg-secondary hover:text-primary dark:hover:bg-dsecondary dark:hover:text-dprimary 
-		disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary disabled:hover:text-secondary
+		disabled:opacity-0 disabled:cursor-not-allowed disabled:hover:bg-primary disabled:hover:text-secondary
 		dark:disabled:hover:bg-dprimary dark:disabled:hover:text-dsecondary
 		rounded-lg transition-all duration-300 shadow-lg">
-			<span translate="send-email">Renvoyer l'e-mail</span>
+			<span class="pointer-events-none" translate="send-email">Renvoyer l'e-mail</span>
 		</button>
 
 		<!-- Petit compteur de 1 minute pour bloquer le bouton -->
