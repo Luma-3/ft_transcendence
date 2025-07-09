@@ -5,8 +5,6 @@ export interface IRoomInfos {
   status: string,
 }
 
-// START - Jb - Part
-
 export interface Vector2 {
   x: number;
   y: number;
@@ -16,22 +14,6 @@ export interface IGameObject {
   type: string;
 }
 
-export interface IBall {
-  type: string;
-  position: Vector2;
-  velocity: Vector2;
-  radius: number;
-}
-
-export interface IPaddle {
-  type: string;
-  id: string;
-  position: Vector2;
-  scale: Vector2;
-}
-
-
-// END - Jb - Part
 
 export interface FrontGameInfo {
   typeGame: string;
@@ -53,6 +35,7 @@ export interface IPlayer {
   id: string;
   player_name: string;
   ready: boolean;
+  avatar: string;
   score: number;
   win: boolean;
 }

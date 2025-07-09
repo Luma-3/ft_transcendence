@@ -7,7 +7,7 @@ import { Paddle } from "./Paddle.js";
 export class Ball extends GameObject implements Circle {
   private velocity: Vector2 = new Vector2(-1, 1);
 
-  public position: Vector2 = new Vector2(400, 300);
+  public position: Vector2 = new Vector2(0, 0);
   public readonly radius: number = 10;
 
   private readonly minSpeed: number = 150;
@@ -16,6 +16,13 @@ export class Ball extends GameObject implements Circle {
   private readonly paddleDirectionModifier: number = 0.25;
   private readonly paddleSpeedModifier: number = 0.15;
 
+  private readonly clampedPositionY: number;
+
+  constructor(size: Vector2) {
+    super();
+    this.clampedPositionY = size.y;
+    this.enabled = false;
+  }
 
   public get Ballvelocity(): Vector2 {
     return this.velocity;
@@ -42,16 +49,16 @@ export class Ball extends GameObject implements Circle {
   }
 
   checkTopBottomCollision() {
-    if (this.position.y - this.radius < 0 || this.position.y + this.radius > 600) {
+    if (this.position.y - this.radius <= 0 || this.position.y + this.radius >= this.clampedPositionY) {
       this.velocity = this.velocity.mult(new Vector2(1, -1));
       // Ensure the ball is not stuck in the wall
-      this.position.y = Math.max(this.radius, Math.min(this.position.y, 600 - this.radius));
+      this.position.y = Math.max(this.radius, Math.min(this.position.y, this.clampedPositionY - this.radius));
     }
   }
 
-  checkGoal() {
+  checkGoal(sizeX: number) {
     if (this.position.x < 0) return 'left';
-    if (this.position.x > 800) return 'right';
+    if (this.position.x > sizeX) return 'right';
     return null;
   }
 
@@ -65,9 +72,11 @@ export class Ball extends GameObject implements Circle {
     this.velocity = direction.scale(clampedSpeed);
   }
 
-  resetBall(Loser: Paddle) {
-    this.position = new Vector2(400, 300);
-    const dir = Loser.position.sub(this.position).normalize();
+  resetBall(size: Vector2, loser?: Paddle) {
+    this.position = new Vector2(size.x / 2, size.y / 2);
+
+    if (!loser) return;
+    const dir = loser.position.sub(this.position).normalize();
     this.velocity = dir;
   }
 

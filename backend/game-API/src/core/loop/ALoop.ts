@@ -3,6 +3,8 @@ import { GameObject } from "../GameObject.js";
 export abstract class ALoop {
   protected objects: GameObject[] = [];
 
+  public startTime: number;
+
   protected readonly tickRate: number;
   protected readonly tickInterval: number;
   public readonly deltaTime: number;
@@ -24,6 +26,7 @@ export abstract class ALoop {
     this.lastTick = Date.now();
     this.accumulator = 0;
     this.isRunning = true;
+    this.startTime = performance.now();
     this.loopTick();
   }
 

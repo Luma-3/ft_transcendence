@@ -21,10 +21,10 @@ export let gameSnapshots: GameSnapshot[] = [];
 let game: Game;
 
 export async function dispatchGameSocketMsg(payload: any) {
-  console.log("dispatchGameSocketMsg", payload);
   switch (payload.action) {
 
     case 'roomReady':
+      console.log("dispatchGameSocketMsg", payload);
       createGame(payload.data);
       break;
 
@@ -44,7 +44,8 @@ export async function dispatchGameSocketMsg(payload: any) {
       changeScore(payload.data.player);
       break;
     case 'snapshot':
-      game.update(payload.data);
+      // console.log("dispatchGameSocketMsg snapshot", payload);
+      game.addSnapshot(payload.data, payload.time)
       break;
     case 'end':
       DisplayGameWinLose(payload.data.player);

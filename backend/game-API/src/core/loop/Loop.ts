@@ -22,14 +22,15 @@ export class NetworkLoop extends ALoop {
 
   private sendBatch(snapshot: any[]): void {
     const payload = {
-
+      time: performance.now() - this.startTime,
       action: "snapshot",
       data: snapshot,
     }
     const player = SceneContext.get().players;
-    IOInterface.broadcast(JSON.stringify(payload), player.flatMap(p =>
-      p.id !== "other" ? [p.id] : []
-    ));
+    IOInterface.broadcast(
+      JSON.stringify(payload),
+      [...player.keys()]
+    );
   }
 }
 

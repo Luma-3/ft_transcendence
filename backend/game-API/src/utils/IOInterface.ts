@@ -16,7 +16,6 @@ export class IOInterface {
   public static subscribe(channel: string, callback: (message: string, channel?: string) => void): void {
     redisSub.subscribe(channel, callback);
   }
-
   public static unsubscribe(channel: string): void {
     redisSub.unsubscribe(channel);
   }

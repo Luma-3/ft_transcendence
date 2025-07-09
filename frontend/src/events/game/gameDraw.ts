@@ -1,116 +1,13 @@
-import { updatePointerCoordinates } from "./utils/trailBall";
-import { IBall, IPaddle, IGameObject } from "../../interfaces/IGame";
-import { Vector2 } from "./utils/Vector";
-// import { drawExplosion } from "./gameBallAnimation";
-// import { socket } from "../socket/Socket";
-// import { gameFrontInfo } from "./gameCreation";
-// import { clockoffset, GameSnapshot, gameSnapshots } from "../../socket/dispatchGameSocketMsg";
-
-// const duckImage = new Image();
-// duckImage.src = "/images/pp.jpg";
-
-// export const FRAME = 30;
-// let interpolateDelay = 1000 / FRAME;
-
-// function findSnapshots(targetTime: number): [GameSnapshot, GameSnapshot] | null {
-//   for (let i = gameSnapshots.length - 2; i >= 0; i--) {
-//     if (gameSnapshots[i].serverTime <= targetTime && gameSnapshots[i + 1].serverTime >= targetTime) {
-//       return [gameSnapshots[i], gameSnapshots[i + 1]];
-//     }
-//   }
-//   return null;
-// }
-
-// function interpolate(a: number, b: number, t: number): number {
-//   return a * (1 - t) + b * t;
-// }
-
-// export function animate() {
-//   const now = performance.now();
-//   const syncTime = now + clockoffset - interpolateDelay;
-
-//   const pair = findSnapshots(syncTime);
-//   if (pair) {
-//     const [prev, next] = pair;
-//     const range = next.serverTime - prev.serverTime;
-//     const t = range > 0 ? (syncTime - prev.serverTime) / range : 0;
-//     const interpolateGameData: GameData = {
-//       ball: {
-//         x: interpolate(prev.GameData.ball.x, next.GameData.ball.x, t),
-//         y: interpolate(prev.GameData.ball.y, next.GameData.ball.y, t),
-//       },
-//       paddle1: {
-//         y: interpolate(prev.GameData.paddle1.y, next.GameData.paddle1.y, t),
-//         score: next.GameData.paddle1.score,
-//       },
-//       paddle2: {
-//         y: interpolate(prev.GameData.paddle2.y, next.GameData.paddle2.y, t),
-//         score: next.GameData.paddle2.score,
-//       }
-//     };
-//     drawGame(interpolateGameData);
-//   }
-
-//   requestAnimationFrame(animate);
-// };
-
-// export function drawGame(gameData: IGameObject[]) {
-//
-//   const game = document.getElementById("gamePong") as HTMLCanvasElement;
-//   if (!game) return;
-//   const ctx = game.getContext("2d");
-//   if (!ctx) return;
-//
-//   ctx.clearRect(0, 0, game.width, game.height);
-//
-//   ctx.fillStyle = "rgba(178, 157, 210, 0.4)";
-//   ctx.fillRect(0, 0, game.width, game.height);
-//
-//
-//   gameData.forEach((gameObject) => {
-//     switch (gameObject.type) {
-//       case 'ball': ;
-//         drawBall(ctx, (<IBall>gameObject).position, (<IBall>gameObject).radius);
-//         break;
-//       case 'paddle':
-//         ctx.fillStyle = "white";
-//         const paddle = <IPaddle>gameObject;
-//
-//         break;
-//       default:
-//         console.warn("Unknown game object type:", gameObject.type);
-//     }
-//   });
-//
-//   ctx.save();
-// }
+import { IGameObject } from "../../interfaces/IGame";
+import { Ball, IBall } from "./draw/Ball";
+import { Paddle, IPaddle } from "./draw/Paddle";
+import { alpha } from "./draw/lerping";
 
 
-// function drawBall(ctx: CanvasRenderingContext2D, pos: Vector2, radius: number) {
-//   ctx.beginPath();
-//   ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
-//   ctx.fillStyle = "yellow";
-//   ctx.fill();
-//   ctx.closePath();
-//   updatePointerCoordinates(pos.x, pos.y);
-// }
-
-
-// function drawRoundedRect(ctx: CanvasRenderingContext2D, pos: Vector2, scale: Vector2, radius: number) {
-//   ctx.beginPath();
-//   ctx.moveTo(pos.x + radius, pos.y);
-//   ctx.lineTo(pos.x + scale.x - radius, pos.y);
-//   ctx.quadraticCurveTo(pos.x + scale.x, pos.y, pos.x + scale.x, pos.y + radius);
-//   ctx.lineTo(pos.x + scale.x, pos.y + scale.y - radius);
-//   ctx.quadraticCurveTo(pos.x + scale.x, pos.y + scale.y, pos.x + scale.x - radius, pos.y + scale.y);
-//   ctx.lineTo(pos.x + radius, pos.y + scale.y);
-//   ctx.quadraticCurveTo(pos.x, pos.y + scale.y, pos.x, pos.y + scale.y - radius);
-//   ctx.lineTo(pos.x, pos.y + radius);
-//   ctx.quadraticCurveTo(pos.x, pos.y, pos.x + radius, pos.y);
-//   ctx.closePath();
-//   ctx.fill();
-// }
-
+export interface ISnapshot {
+  time: number;
+  object: IGameObject[];
+}
 
 export class Game {
   canvas: HTMLCanvasElement;
@@ -118,10 +15,14 @@ export class Game {
 
   width: number;
   height: number;
-  private lastTime: number = performance.now();
 
+  private startTime: number | null = null;
   private players: Map<string, Paddle> = new Map();
   private ball: Ball;
+
+  snapshots: ISnapshot[] = [];
+
+  alphaGraph: AlphaGraph = new AlphaGraph("alphaGraph");
 
   constructor(canvasId: string, paddles: IPaddle[]) {
     this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
@@ -190,82 +91,124 @@ export class Game {
     });
   }
 
-  update(objects: IGameObject[]) {
+  interpolate(renderTime: number) {
+    if (this.snapshots.length < 2) return;
 
-    objects.forEach((object) => {
-      switch (object.type) {
-        case 'ball':
-          this.ball.update(object as IBall);
+    let snapshotsA, snapshotsB;
+    for (let i = 0; i < this.snapshots.length - 1; i++) {
+      if (this.snapshots[i].time <= renderTime && this.snapshots[i + 1].time > renderTime) {
+        snapshotsA = this.snapshots[i];
+        snapshotsB = this.snapshots[i + 1];
+        break;
+      }
+    }
+
+    if (!snapshotsA || !snapshotsB) {
+      console.warn("No suitable snapshots found for interpolation");
+      return;
+    }
+
+    const t = alpha(snapshotsA.time, snapshotsB.time, renderTime);
+
+    this.alphaGraph.add(t);
+    this.alphaGraph.draw();
+
+    for (let i = 0; i < snapshotsA.object.length; i++) {
+      switch (snapshotsA.object[i].type) {
+        case "ball":
+          this.ball.interpolate(snapshotsA.object[i] as IBall, snapshotsB.object[i] as IBall, t);
           break;
-        case 'paddle':
-          this.players.get((object as IPaddle).id)?.update(object as IPaddle);
+        case "paddle":
+          this.players.get((snapshotsA.object[i] as IPaddle).id)?.interpolate(snapshotsA.object[i] as IPaddle, snapshotsB.object[i] as IPaddle, t);
           break;
         default:
-          console.warn("Unknown game object type:", object.type);
+          console.warn(`Unknown object type: ${snapshotsA.object[i].type}`);
+          break;
       }
-    });
+    }
+  }
+
+  addSnapshot(objects: IGameObject[], timerServer: number) {
+    if (!this.startTime) {
+      this.startTime = performance.now() - timerServer;
+    }
+
+    this.snapshots.push({ time: timerServer, object: objects });
+
+    if (this.snapshots.length > 10) {
+      this.snapshots.shift();
+    }
+
   }
 
   loop() {
-    const currentTime = performance.now();
-    let deltaTime = (currentTime - this.lastTime) / 1000;
-    deltaTime = deltaTime // TODO : a utiliser
-    this.lastTime = currentTime;
+    this.interpolate(performance.now() - this.startTime! - 33.333);
     this.draw();
     requestAnimationFrame(this.loop.bind(this));
   }
-
 }
 
+class AlphaGraph {
+  private canvas: HTMLCanvasElement;
+  private ctx: CanvasRenderingContext2D;
+  private values: number[] = [];
+  private maxPoints = 100;
+  private scale = 1;
 
-class Ball {
-  position: Vector2;
-  radius: number;
-
-  constructor() {
-    this.position = Vector2.zero();
-    this.radius = 10; // Default radius, can be updated later
+  constructor(canvasId: string) {
+    this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    this.ctx = this.canvas.getContext("2d")!;
   }
 
-  update(object: IBall) {
-    this.position = Vector2.fromObj(object.position);
-    this.radius = object.radius;
+  add(alpha: number) {
+    this.values.push(alpha);
+    if (this.values.length > this.maxPoints) {
+      this.values.shift();
+    }
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+  draw() {
+    const { ctx, canvas } = this;
+    const height = canvas.height;
+    const width = canvas.width;
+
+    ctx.clearRect(0, 0, width, height);
+
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0, 0, width, height);
+
+    const referenceLines = [0.2, 0.5, 0.8];
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 1;
+
+    for (const ref of referenceLines) {
+      const y = height - ref * height * this.scale;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+
+      ctx.fillStyle = "red";
+      ctx.font = "10px monospace";
+      ctx.fillText(ref.toFixed(1), 2, y - 2);
+    }
+
     ctx.beginPath();
-    ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = "yellow";
-    ctx.fill();
-    ctx.closePath();
+    ctx.strokeStyle = "lime";
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i < this.values.length; i++) {
+      const x = i * (width / this.maxPoints);
+      const alpha = this.values[i];
+      const y = height - alpha * height * this.scale;
+
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+
+    ctx.stroke();
   }
 }
 
 
-class Paddle {
-  id: string;
-  position: Vector2 = Vector2.zero();
-  scale: Vector2 = Vector2.zero();
-  radius: number = 10;
 
-  constructor(id: string) {
-    this.id = id;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = "white";
-    const pos: Vector2 = new Vector2(
-      this.position.x - this.scale.x / 2,
-      this.position.y - this.scale.y / 2
-    );
-    ctx.beginPath();
-    ctx.roundRect(pos.x, pos.y, this.scale.x, this.scale.y, this.radius);
-    ctx.fill();
-  }
-
-  update(object: IPaddle) {
-    this.position = Vector2.fromObj(object.position);
-    this.scale = Vector2.fromObj(object.scale);
-    this.radius = object.position.x / 2;
-  }
-}

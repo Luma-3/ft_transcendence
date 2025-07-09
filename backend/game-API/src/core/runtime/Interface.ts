@@ -32,6 +32,7 @@ export class Player {
     return {
       id: this.id,
       player_name: this.player_name,
+      avatar: this.avatar,
       ready: this.ready,
       score: this.score
     };
