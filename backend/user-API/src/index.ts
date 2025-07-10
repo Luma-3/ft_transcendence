@@ -7,6 +7,10 @@ import pendingRoutes from './pending/pending.routes.js'
 import blockedRoutes from './blocked/blocked.routes.js'
 import searchRoutes from './search/search.routes.js'
 
+// 2FA Routes
+import twofaRoute from './twofa/public.routes.js'
+import twofaRouteInternal from './twofa/internal.routes.js'
+
 dotenv.config()
 
 // redisSub.subscribe('ws.test.in', (message, channel) => {
@@ -34,6 +38,8 @@ server.register(friendRoutes);
 server.register(pendingRoutes);
 server.register(blockedRoutes);
 server.register(searchRoutes);
+server.register(twofaRoute);
+server.register(twofaRouteInternal);
 
 server.addHook('onRequest', async (req, _) => {
   console.log(`Header:${JSON.stringify(req.headers, undefined, 2)}`);

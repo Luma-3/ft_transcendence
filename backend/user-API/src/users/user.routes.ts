@@ -10,8 +10,7 @@ import {
   ConflictResponse,
   NotFoundResponse,
   UnauthorizedResponse,
-  ForbiddenResponse,
-  InternalServerErrorResponse
+  ForbiddenResponse
 } from '@transcenduck/error';
 
 import {
@@ -27,9 +26,7 @@ import {
   UserUsernameUpdateBody,
   VerifyCredentials,
   UsersQueryGetAll,
-  User2faStatus,
   User2faInfos,
-  UserActivateAccountParams,
   UserCreateRedis
 } from './user.schema.js';
 import { SearchResponseSchema } from '../search/search.schema.js';
@@ -37,7 +34,6 @@ import { Type } from '@sinclair/typebox';
 
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
-
   fastify.post('/users', {
     schema: {
       summary: 'Create a user',
@@ -324,90 +320,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 
     return rep.code(201).send({ message: 'User created from OAuth2', data: find });
   });
-
-  // ========================= 2FA Routes ========================
-
-  fastify.patch('/users/internal/activeAccount/:email', {
-    schema: {
-      summary: 'Active account of a user',
-      description: 'Endpoint to activate user account after verifying his e-mail',
-      tags: ['2FA'],
-      params: UserActivateAccountParams,
-      response: {
-        200: ResponseSchema(User2faStatus, 'Ok')
-      }
-    }
-  }, async (req, rep) => {
-    const email = req.params.email;
-    await UserService.activateUserAccount(email);
-    return rep.code(200).send({ message: 'Ok' });
-  })
-
-  fastify.get('/users/2fa', {
-    schema: {
-      summary: 'Get 2fa infos for a user',
-      description: 'Endpoint to get the 2 Factor Authentification informations',
-      tags: ['2FA'],
-      headers: UserHeaderAuthentication,
-      response: {
-        200: ResponseSchema(User2faStatus, 'Ok')
-      }
-    }
-  }, async(req, rep) => {
-    const userId = req.headers['x-user-id'];
-    const twoFaStatus = await UserService.get2faStatus(userId);
-    return rep.code(200).send({ message: 'Ok', data: twoFaStatus });
-  });
-
-  fastify.put('/users/2fa', {
-    schema: {
-      summary: 'Start enable 2fa for a user',
-      description: 'Endpoint to start enablation of 2 Factor Authentification',
-      tags: ['2FA'],
-      headers: UserHeaderAuthentication,
-      response: {
-        200: ResponseSchema(),
-        500: InternalServerErrorResponse
-      }
-    }
-  }, async(req, rep) => {
-    const userId = req.headers['x-user-id'];
-    await UserService.enable2FA(userId);
-    return rep.code(200).send({ message: "waiting for validation" });
-  });
-
-  fastify.delete('/users/2fa', {
-    schema: {
-      summary: 'Start disable 2fa for a user',
-      description: 'Endpoint to start disablation of 2 Factor Authentification',
-      tags: ['2FA'],
-      headers: UserHeaderAuthentication,
-      response: {
-        200: ResponseSchema(),
-        500: InternalServerErrorResponse
-      }
-    }
-  }, async(req, rep) => {
-    const userId = req.headers['x-user-id'];
-    await UserService.disable2FA(userId);
-    return rep.code(200).send({ message: "waiting for validation" });
-  });
-
-  fastify.patch('/internal/users/2fa/activate', {
-    schema: {
-      summary: 'Disable 2fa for a user',
-      description: 'Endpoint to disable the 2 Factor Authentification',
-      tags: ['2FA'],
-      body: UserCreateRedis,
-      response: {
-        200: ResponseSchema()
-      }
-    }
-  }, async(req, rep) => {
-    const message = await UserService.update2FA(req.body.userID);
-    return rep.code(200).send({ message: message })
-  })
-
 }
 
 export default route;

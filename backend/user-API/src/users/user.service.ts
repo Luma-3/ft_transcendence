@@ -2,7 +2,7 @@ import { ConflictError, NotFoundError, UnauthorizedError, EmailConfirmError } fr
 import { v4 as uuidV4 } from "uuid";
 import { hashPassword, comparePassword } from "../utils/bcrypt.js";
 
-import { UserCreateBodyType, UserBaseType, UserCreateBodyInternalType, User2faStatusType, UserRedisType } from "./user.schema.js";
+import { UserCreateBodyType, UserBaseType, UserCreateBodyInternalType, UserRedisType } from "./user.schema.js";
 import { PreferencesBaseType } from "../preferences/preferences.schema.js";
 import { knexInstance, Knex } from "../utils/knex.js";
 import { USER_PRIVATE_COLUMNS, USER_PUBLIC_COLUMNS, userModelInstance } from "./user.model.js"
@@ -55,7 +55,7 @@ export class UserService {
       redisCache.setEx(`users:pendingUser:${userID}`, 660, user);
       redisCache.setEx(`users:pendingUser:${user_obj.username}`, 660, userID);
 
-      await fetch(`https://${process.env.AUTH_IP}/internal/email-verification`, {
+      await fetch(`https://${process.env.AUTH_IP}/internal/2fa/email`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -107,70 +107,6 @@ export class UserService {
       return { ...user, preferences }
     });
     return transactionData;
-  }
-
-  static async get2faStatus(userId: string): Promise<User2faStatusType> {
-    const user = await userModelInstance.findByID(userId, ['twofa']);
-    if (!user) {
-      throw new NotFoundError('User');
-    }
-    return { twofa: user.twofa };
-  }
-
-  static async activateUserAccount(email: string) {
-    const user = await userModelInstance.findByEmail(email);
-    if (!user) {
-      throw new NotFoundError('User');
-    }
-    await userModelInstance.update(user.id, { validated: true }, USER_PRIVATE_COLUMNS);
-  }
-
-  static async enable2FA(userId: string) {
-    const user = await this.getUserByID(userId, true, USER_PRIVATE_COLUMNS, PREFERENCES_PRIVATE_COLUMNS);
-    if (!user) {
-      throw new NotFoundError('User');
-    }
-
-    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendCode`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json'
-      },
-      body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
-      agent: httpsAgent
-    }).catch(console.error)
-
-    redisCache.setEx("users:2fa:update:" + user.email , 600, userId);
-  }
-
-  static async disable2FA(userId: string) {
-    const user = await this.getUserByID(userId, true, USER_PRIVATE_COLUMNS, PREFERENCES_PRIVATE_COLUMNS);
-    if (!user) {
-      throw new NotFoundError('User');
-    }
-
-    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendCode`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json'
-      },
-      body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
-      agent: httpsAgent
-    }).catch(console.error)
-
-    redisCache.setEx("users:2fa:update:" + user.email, 600, userId);
-  }
-
-  static async update2FA(userId: string) {
-    const user = await userModelInstance.findByID(userId, USER_PRIVATE_COLUMNS);
-    const twofa = user!.twofa;
-    await userModelInstance.update(userId, { twofa: !twofa }, USER_PRIVATE_COLUMNS);
-    if ((!twofa) === true) {
-      return "2FA successfully enabled !";
-    }
-    return "2FA successfully disabled !"
   }
 
   static async createUserInternal(data: UserCreateBodyInternalType) {

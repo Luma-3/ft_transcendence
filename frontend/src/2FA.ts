@@ -1,5 +1,5 @@
 import { fetchApi, fetchApiWithNoError } from './api/fetch';
-import { MODULE_TWOFA, API_USER, API_SESSION } from './api/routes';
+import { TWOFA, API_USER, API_SESSION } from './api/routes';
 import { renderPrivatePage, renderPublicPage } from './controllers/renderPage';
 import { alertTemporary } from './components/ui/alert/alertTemporary';
 
@@ -98,7 +98,7 @@ export async function submit2FACode() {
 		return await alertTemporary("error", "Please enter your 2FA code", 'dark');
 	}
 
-	const response = await fetchApiWithNoError(MODULE_TWOFA.VERIFY.TWOFA, {
+	const response = await fetchApiWithNoError(TWOFA.TWOFA, {
 		method: 'POST',
 		body: JSON.stringify({ code })
 	});

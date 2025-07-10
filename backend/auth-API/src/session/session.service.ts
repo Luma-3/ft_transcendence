@@ -7,7 +7,7 @@ import { refreshTokenModelInstance } from "./token.model.js";
 import { FamiliesResponseType } from './session.schema.js';
 import { redisPub } from '../utils/redis.js';
 
-import { twoFaService, generateCode } from '../2FA/twofa.service.js';
+import { twoFaService, generateCode } from '../twofa/service.js';
 
 interface refreshTokenInfo {
   user_id: string;

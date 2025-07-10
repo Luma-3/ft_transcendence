@@ -198,13 +198,6 @@ export const User2faInfos = Type.Object({
 });
 export type User2faInfosType = Static<typeof User2faInfos>;
 
-export const User2faStatus = Type.Object({
-  twofa: Type.Boolean({
-    description: 'Indicates if the user has activated or not 2 Factor Authentification.'
-  })
-});
-export type User2faStatusType = Static<typeof User2faStatus>;
-
 export const UserRedis = Type.Object({
   user_obj: Type.Object({
     username: Type.String({ format: 'uuid' }),

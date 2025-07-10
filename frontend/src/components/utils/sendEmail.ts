@@ -1,6 +1,5 @@
 import { fetchApiWithNoError } from "../../api/fetch";
 import { FetchInterface } from "../../api/FetchInterface";
-import { MODULE_TWOFA } from "../../api/routes";
 import { renderPublicPage } from "../../controllers/renderPage";
 
 import { userRegisterInfo } from "../../pages/Register";

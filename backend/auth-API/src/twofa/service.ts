@@ -12,7 +12,7 @@ import { NotFoundError, UnauthorizedError, ConflictError } from '@transcenduck/e
 import verifyEmail from './public/html/verifyEmail.js';
 import twoFaEmail from './public/html/twoFaEmail.js';
 
-const path_public = 'src/2FA/public';
+const path_public = 'src/twofa/public';
 
 const TIMEOUT_MAIL = 60; // in seconds
 
@@ -98,7 +98,7 @@ async function verifyCreateUser( email: string, token: string ) {
 		body: JSON.stringify({ userID: token })
 	})
 
-	await fetch(`http://${process.env.USER_IP}/users/internal/activeAccount/${email}`, {
+	await fetch(`http://${process.env.USER_IP}/internal/users/${email}/account`, {
 		method: 'PATCH'
 	})
 }
@@ -197,7 +197,7 @@ export class twoFaService {
 			return 'Code verified successfully';
 		}
 
-		const response = await fetch(`http://${process.env.USER_IP}/internal/users/2fa/activate`, {
+		const response = await fetch(`http://${process.env.USER_IP}/internal/users/2fa`, {
 			method: 'PATCH',
 			headers: {
 				'content-type': 'application/json',
