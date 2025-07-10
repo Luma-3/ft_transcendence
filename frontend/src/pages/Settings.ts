@@ -49,7 +49,7 @@ export default function settingsPage(user: IUserInfo) {
 export async function change2FA() {
 
 	let id = 'enable2fa';
-	let translate = 'enable-2fa';
+	let translate = 'activate-2fa';
 
 	if (await FetchInterface.verify2FA()) {
 		id = 'disable2fa';
@@ -58,7 +58,7 @@ export async function change2FA() {
 	const activate_button = new Button(id, "1/4", translate, translate, "primary", "button");
 	let container = `
 	<div class="grid sm:grid-cols-2 gap-4 items-center">
-		
+
 		<div class="title-responsive-size font-title justify-center" translate="2fa-auth">
 
 			2FA Authentication

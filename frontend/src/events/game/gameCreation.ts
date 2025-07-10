@@ -8,7 +8,6 @@ import { IUserInfo } from "../../interfaces/IUser";
 import gameHtml from "../../pages/Game";
 import { socket } from "../../socket/Socket";
 import { onKeyDown, onKeyUp } from "./gameInput";
-import { resizeCanvas } from "./utils/resizeCanvas";
 
 export let g_game_type = '';
 
