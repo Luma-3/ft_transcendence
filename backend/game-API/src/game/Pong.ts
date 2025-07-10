@@ -5,6 +5,8 @@ import { Paddle } from "./Paddle.js";
 import { Vector2 } from "../core/physics/Vector.js";
 import { IOInterface } from "../utils/IOInterface.js";
 
+import { roomManagerInstance } from "../core/runtime/RoomManager.js";
+
 export class Pong extends GameObject {
   private ball: Ball;
   private paddleLeft: Paddle;
@@ -14,10 +16,11 @@ export class Pong extends GameObject {
 
   private readonly maxWin: number = 5;
 
+
+
   constructor() {
     super();
     this.ball = GameObject.instantiate(Ball, this.size);
-
     const playersId = [...SceneContext.get().players.keys()];
 
     this.paddleLeft = GameObject.instantiate(Paddle, playersId[0], new Vector2(0 + 50, this.size.y / 2));
@@ -59,6 +62,8 @@ export class Pong extends GameObject {
       JSON.stringify(payload),
       [...SceneContext.get().players.keys()]
     );
+
+    roomManagerInstance.deleteRoom(SceneContext.get().id);
   }
 
   checkBallGaol() {

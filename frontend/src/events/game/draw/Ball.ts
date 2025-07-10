@@ -14,9 +14,8 @@ export class Ball {
 
   constructor() {
     this.position = Vector2.zero();
-    this.radius = 10; // Default radius, can be updated later
+    this.radius = 10;
   }
-
 
   interpolate(snapshotsA: IBall, snapshotsB: IBall, alpha: number) {
     this.position = lerpVector2(snapshotsA.position, snapshotsB.position, alpha);

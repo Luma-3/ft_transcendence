@@ -46,7 +46,7 @@ class RoomManager {
   public leaveRoom(player: Player, room_id: string) {
     // const room = this.rooms.get(room_id);
     room_id = room_id;
-    // TODO :  room.removePlayer()
+    // TODO :  surement util pour le cas ou le joueur quitte la room (a modifier pour que la room soit supprimee par la suite)
     this.playersInRooms.delete(player.id);
   }
 
@@ -60,6 +60,19 @@ class RoomManager {
       throw new NotFoundError('room');
     }
     return room;
+  }
+
+  public deleteRoom(room_id: string) {
+    if (!this.rooms.has(room_id)) {
+      throw new NotFoundError('room');
+    }
+    this.rooms.delete(room_id);
+
+    this.playersInRooms.forEach((room, playerId) => {
+      if (room.id === room_id) {
+        this.playersInRooms.delete(playerId);
+      }
+    });
   }
 }
 
