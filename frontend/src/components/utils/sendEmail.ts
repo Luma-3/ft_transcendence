@@ -1,12 +1,8 @@
-import { fetchApiWithNoError } from "../../api/fetch";
 import { FetchInterface } from "../../api/FetchInterface";
-import { MODULE_TWOFA } from "../../api/routes";
-import { renderPublicPage } from "../../controllers/renderPage";
 import { initializeVerifyEmailTimers } from "../../events/email/verifyEmailTimers";
 
 import { userRegisterInfo } from "../../pages/Register";
 import { alertPublic } from "../ui/alert/alertPublic";
-import { alertTemporary } from "../ui/alert/alertTemporary";
 
 // Objet pour gérer le cooldown (référence partagée)
 const emailState = {
@@ -42,7 +38,6 @@ export function startEmailCooldown() {
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;
 	
 	if (sendEmailButton) {
-		console.log("Disabling send email button...");
 		sendEmailButton.disabled = true;
 		sendEmailButton.classList.add('opacity-0','hidden','cursor-not-allowed');
 	}
@@ -56,7 +51,6 @@ export function startEmailCooldown() {
 }
 
 export function endEmailCooldown() {
-	console.log("Ending email cooldown...");
 	emailState.isEmailCooldownActive = false;
 	
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;

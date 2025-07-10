@@ -1,4 +1,3 @@
-import { messageWithLink } from "../components/ui/messageWithLink";
 import { headerPage } from "../components/ui/headerPage";
 import { Form } from "../classes/Form";
 import { InputField } from "../classes/Input";
@@ -53,11 +52,21 @@ return `
 
 	${headerPage("login", "public")}
 	${formInstance.toHtml()}
+	<div class="flex flex-row text-responsive-size items-center justify-center dark:text-dtertiary">
+		<div class="font-title text-secondary dark:text-dtertiary" translate="no-account">
+			Don't have an account?
+		</div>
 
-	${messageWithLink("no-account", "register", "loadregister")}
+	<button type="button" id="loadregister" class="font-title p-2 dark:text-dsecondary  text-primary cursor-pointer
+		hover:text-tertiary hover:dark:text-dtertiary"
+		translate="register">
+		Register
+	</button>
+</div>
 
 </div>`;
 }
+// ${messageWithLink("no-account", "register", "loadregister")}
 
 export default function loginPage() {
   return renderLoginPage();

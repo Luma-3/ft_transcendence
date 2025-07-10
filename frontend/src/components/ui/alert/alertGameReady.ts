@@ -7,7 +7,7 @@ import { loadTranslation } from "../../../controllers/Translate";
 export async function alertGameReady() {
 	const customTheme = await getCustomAlertTheme(true);
 	if (!customTheme) {
-		return await alertTemporary("error", "Error while getting user alert theme", 'dark');
+		return await alertTemporary("error", "Error while getting user alert theme", 'dark', false);
 	}
 
 	const trad = await loadTranslation(customTheme.lang);
@@ -48,7 +48,7 @@ export async function alertWithTimer(title: string, message: string, timer: numb
 
 	const customTheme = await getCustomAlertTheme(true);
 	if (!customTheme) {
-		return await alertTemporary("error", "Error while getting user alert theme", 'dark');
+		return await alertTemporary("error", "Error while getting user alert theme", 'dark', false);
 	}
 
 	const trad = await loadTranslation(customTheme.lang);

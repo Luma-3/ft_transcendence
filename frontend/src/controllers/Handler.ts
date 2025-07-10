@@ -1,7 +1,6 @@
 import { registerUser } from '../pages/Register'
 import { loginUser } from '../pages/Login'
 import { logOutUser } from '../events/user/userLogout'
-import { deleteUser } from '../events/user/userDelete'
 import { changeLanguage, changeLanguageSettings, saveDefaultLanguage } from './Translate'
 import { handleSearchUserGame } from '../events/social/onlineUserSearch'
 
@@ -27,7 +26,7 @@ import { cancelFriendInvitation } from '../events/social/cancelInvitation'
 import { refuseFriendInvitation } from '../events/social/refusedInvitation'
 import { unfriendUser } from '../events/social/removeFriend'
 import { disable2FA, enable2FA, submit2FACode, submit2FACodeLogin } from '../pages/2FA'
-import { showNotificationDiv } from '../components/ui/alert/notificationsAlert'
+import { showNotificationDiv } from '../pages/Notifications'
 import { sendEmail } from '../components/utils/sendEmail'
 
 
@@ -51,7 +50,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'google': () => {
 		window.location.href = 'https://localhost:5173/api/auth/oauth2/google'
 	},
-	'logout': () => logOutUser(),
+	'logout': () => FetchInterface.logOutUser(),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 🏠 PAGES PRIVÉES

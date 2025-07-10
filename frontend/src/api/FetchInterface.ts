@@ -24,10 +24,34 @@ export class FetchInterface {
 		});
 		if (response.status !== "success") {
 				const trad = await loadTranslation(userData.preferences.lang);
-				alertPublic(trad[response.message] ?? response.message, "error");
+				alertTemporary("error", trad[response.message] ?? response.message, 'dark', false, true);
 				return false;
 			}
 		return true;
+	}
+	
+	/**
+	 * ! Log Out User
+	 */
+	public static async logOutUser() {
+
+	const confirmResponse = await alert("are-you-sure", "warning");
+	if (confirmResponse) {
+		console.log("User confirmed logout");
+			const responseApi = await fetchApiWithNoError(API.API_SESSION.DELETE, {
+				method: 'DELETE',
+				headers: {
+					"Content-Type": "text/plain",
+					credentials: 'include',
+				},
+				body: "",
+			});
+			if (responseApi.status === "error") {
+				return alert(responseApi.message, "error");
+			
+			}
+			window.location.href = "/";
+	} 
 	}
 
 	/**

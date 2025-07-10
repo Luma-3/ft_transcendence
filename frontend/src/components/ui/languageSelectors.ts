@@ -1,3 +1,5 @@
+import { Button } from "../../classes/Button";
+
 function selectorOptions(lang: string) {
 	
 	const all_langs = [
@@ -27,31 +29,30 @@ export function languageSelectorHome() {
 
 	const lang = sessionStorage.getItem('lang') || 'en';
 
-	return `
-	<div class="flex flex-col items-center font-title justify-center mt-5 mb-15 space-y-2 text-secondary dark:text-dtertiary">
-		<div class='flex flex-row text-responsive-size items-center justify-space-between'>
-			<label for='language' translate="lang-choice" class="p-3 font-title text-secondary dark:text-dtertiary">
-				Choose a language :
-			</label>
-			<select name='language' id='language'
-			class="rounded-lg p-1 font-title
-				bg-tertiary dark:bg-dprimary text-secondary dark:text-dtertiary
-				hover:cursor-pointer hover:ring-2 ring-tertiary dark:ring-dsecondary">
-				${selectorOptions(lang)}
-				</select>
-			</div>
-			<div class="flex flex-col justify-center items-center min-w-[200px]" translate="warning-language-default">
-				This language will be set as the default for navigation and your first login
-			</div>
-	</div>`;
+return `
+<div class="flex flex-col items-center font-title justify-center mt-5 mb-15 space-y-2 text-secondary dark:text-dtertiary">
+	<div class='flex flex-row text-responsive-size items-center justify-space-between'>
+		<label for='language' translate="lang-choice" class="p-3 font-title text-secondary dark:text-dtertiary">
+			Choose a language :
+		</label>
+		<select name='language' id='language'
+		class="rounded-lg p-1 font-title
+			bg-tertiary dark:bg-dprimary text-secondary dark:text-dtertiary
+			hover:cursor-pointer hover:ring-2 ring-tertiary dark:ring-dsecondary">
+			${selectorOptions(lang)}
+			</select>
+		</div>
+		<div class="flex flex-col justify-center items-center min-w-[200px]" translate="warning-language-default">
+			This language will be set as the default for navigation and your first login
+		</div>
+</div>`;
 }
 
-import { secondaryButton } from './buttons/secondaryButton'
 
 export function languageSelectorSettings(langPreselect: string) {
 
 	const all_langs = ["fr", "en", "es"];
-
+	const saveLangButton = new Button("saveLang", "Save", "button", "3/4", "primary", "button");
 	
 	const labels = all_langs.map((lang) => {
 
@@ -79,7 +80,7 @@ export function languageSelectorSettings(langPreselect: string) {
 				<nav class="flex flex-col md:flex-row  w-full gap-1 p-2">
 				${labels}
 				<div class="flex justify-center items-center min-w-[200px]">
-				${secondaryButton({id: 'saveLang', weight: "3/4", text: 'Save', translate: 'save', type: 'button'})}
+				${saveLangButton.primaryButton()}
 				</div>
 				</div>
 				</nav>`

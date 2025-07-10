@@ -5,7 +5,7 @@ export default function RGPD() {
 	<div class="flex flex-col w-full h-full rounded-lg justify-center mt-30">
 		${headerPage("rgpd")}
 		
-		<div class="flex flex-col w-full h-full rounded-lg justify-center items-center mt-5 mb-10">
+		<div class="flex flex-col w-full h-full rounded-lg justify-center items-center mt-5 mb-10 dark:bg-dprimary">
 			
 			<div class="flex font-title text-responsive-size justify-center w-1/2 items-center text-tertiary dark:text-dtertiary">
 	<section class="p-6 max-w-6xl mx-auto text-tertiary dark:text-dtertiary leading-relaxed text-sm sm:text-base">

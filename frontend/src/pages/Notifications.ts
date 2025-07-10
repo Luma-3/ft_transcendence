@@ -1,12 +1,12 @@
-import { alertTemporary } from "./alertTemporary";
-import { getCustomAlertTheme } from "./alertTheme";
-import { loadTranslation, translatePage } from "../../../controllers/Translate";
+import { alertTemporary } from "../components/ui/alert/alertTemporary";
+import { getCustomAlertTheme } from "../components/ui/alert/alertTheme";
+import { loadTranslation, translatePage } from "../controllers/Translate";
 import Swal from "sweetalert2";
-import { notificationList } from "../../../pages/Friends/Lists/notificationsList";
-import { friendRequest } from "../../../events/social/acceptInvitation";
-import { cancelFriendInvitation } from "../../../events/social/cancelInvitation";
-import { renderOtherProfilePage } from "../../../controllers/renderPage";
-import { refuseFriendInvitation } from "../../../events/social/refusedInvitation";
+import { notificationList } from "./Friends/Lists/notificationsList";
+import { friendRequest } from "../events/social/acceptInvitation";
+import { cancelFriendInvitation } from "../events/social/cancelInvitation";
+import { renderOtherProfilePage } from "../controllers/renderPage";
+import { refuseFriendInvitation } from "../events/social/refusedInvitation";
 
 export async function showNotificationDiv() {
 

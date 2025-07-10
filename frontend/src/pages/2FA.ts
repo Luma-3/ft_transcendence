@@ -8,6 +8,7 @@ import { socketConnection } from '../socket/Socket';
 import { alertPublic } from '../components/ui/alert/alertPublic';
 import { FetchInterface } from '../api/FetchInterface';
 import { alertTemporary } from '../components/ui/alert/alertTemporary';
+import { Button } from '../classes/Button';
 
 
 /** 
@@ -70,6 +71,8 @@ export async function submit2FACodeLogin() {
  * ! Contenu html de la page 2FA
  */
 export default async function twoFaPage() {
+
+	const formButton = new Button('submit2faCode', "1/4", 'Submit 2FA Code', 'submit-2fa-code','primary', 'submit' )
 return `<div class="flex flex-col w-full h-full rounded-lg justify-center mt-30">
 
 	${headerPage("2fa-auth", "private")}
@@ -99,7 +102,7 @@ return `<div class="flex flex-col w-full h-full rounded-lg justify-center mt-30"
 			
 			<input type="hidden" id="2faCodeInput" name="2faCode" />
 			
-			${primaryButton({id: 'submit2faCode', weight: "1/4", text: 'Submit 2FA Code', translate: 'submit-2fa-code', type: 'submit'})}
+			${formButton.primaryButton()}
 		</form>
 	
 	</div>
@@ -107,6 +110,7 @@ return `<div class="flex flex-col w-full h-full rounded-lg justify-center mt-30"
 }
 
 export async function loginTwoFaPage() {
+	const loginButton = new Button('login2faCode', "1/4", 'Submit 2FA Code', 'submit-2fa-code', 'primary', 'submit');
 return `<div class="flex flex-col w-full h-full rounded-lg justify-center mt-30">
 
 	${headerPage("2fa-auth", "private")}
@@ -135,8 +139,8 @@ return `<div class="flex flex-col w-full h-full rounded-lg justify-center mt-30"
 			</div>
 			
 			<input type="hidden" id="2faCodeLoginInput" name="2faCode" />
-			
-			${primaryButton({id: 'login2faCode', weight: "1/4", text: 'Submit 2FA Code', translate: 'submit-2fa-code', type: 'submit'})}
+
+			${loginButton.primaryButton()}
 		</form>
 	
 	</div>
