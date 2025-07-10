@@ -3,6 +3,18 @@ import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 
 import { FetchInterface } from "../../api/FetchInterface";
 
+function getPlayer2Name(){
+	const inputValue = (document.getElementById("player2-name") as HTMLInputElement).value;
+	if (!inputValue || inputValue.trim() === "") {
+		//TODO: Traduction
+		alert("enter-name-player2", "error");
+		return undefined;
+	}
+	return inputValue;
+}
+
+
+
 export async function initGame() {
 
 	const gameType = document.querySelector('input[name="game-type"]:checked') as HTMLInputElement;
@@ -10,8 +22,10 @@ export async function initGame() {
 		return alert("no-gametype-selected", "error");
 	}
 
-	//TODO: remettre bien les ids des divs pour travailler facilement
-	const player2 = (gameType.value === "localpvp") ? "SQUALALA" : ""; 
+	const player2 = (gameType.id === "local") ? getPlayer2Name() : "";
+	if (player2 === undefined) {
+		return;
+	}
 
 	const gameFormInfo = {
 		player_name: player2 ?? "",
@@ -27,5 +41,10 @@ export async function initGame() {
 	const success = await FetchInterface.createGameInServer(gameFormInfo);
 	
 	//TODO : Traduction
-	return (!success) ? alertTemporary("error", "cannot-create-game-wait-and-retry", userPref.theme, true, true) : alertTemporary("success", "game-created-successfully", userPref.theme, true, true);
+	if (!success) {
+		 alertTemporary("error", "cannot-create-game-wait-and-retry", userPref.theme, true, true);
+		 return;
+	} 
+	document.getElementById("create-game")?.classList.add("disabled");
+	alertTemporary("success", "game-created-successfully", userPref.theme, true, true);
 }

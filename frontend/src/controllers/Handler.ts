@@ -2,7 +2,7 @@ import { registerUser } from '../pages/Register'
 import { loginUser } from '../pages/Login'
 import { logOutUser } from '../events/user/userLogout'
 import { changeLanguage, changeLanguageSettings, saveDefaultLanguage } from './Translate'
-import { handleSearchUserGame } from '../events/social/onlineUserSearch'
+import { handleSearchOpponent, handleSearchUserGame, invitePlayerToPlay } from './searchHandler'
 
 import { renderPublicPage, renderPrivatePage, renderDocPages } from '../controllers/renderPage'
 import { renderBackPage } from '../controllers/renderPage'
@@ -76,6 +76,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'unfriend-user': (event) => unfriendUser(event.target as HTMLElement),
 	'cancel-invitation': (event) => cancelFriendInvitation(event.target as HTMLElement),
 	'refuse-invitation': (event) => refuseFriendInvitation(event.target as HTMLElement),
+	'invite-game': (event) => invitePlayerToPlay(event.target as HTMLElement),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 🚫 BLOCAGE UTILISATEURS
@@ -156,6 +157,7 @@ const inputChangetEvent: { [key: string]: (inputValue: DOMStringMap) => void } =
 
 const inputEvent: { [key: string]: (value: string) => void } = {
 	'search-user': (value) => handleSearchUserGame(value),
+	'search-opponent': (value) => handleSearchOpponent(value)
 }
 
 const clickSpecial: { [key: string]: (event: MouseEvent) => void } = {

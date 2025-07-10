@@ -16,8 +16,8 @@ function selectorOptions(lang: string) {
 
 	const all_options = all_langs.map(langObj => {
 		if (langObj.value !== lang) {
-			 return `<option class="font-title rounded-lg"
-			 		value='${langObj.value}'>${langObj.name}</option>`;
+			return `<option class="font-title rounded-lg"
+			value='${langObj.value}'>${langObj.name}</option>`;
 		}
 		return '';
 	}).join('');
@@ -52,7 +52,7 @@ return `
 export function languageSelectorSettings(langPreselect: string) {
 
 	const all_langs = ["fr", "en", "es"];
-	const saveLangButton = new Button("saveLang", "Save", "button", "3/4", "primary", "button");
+	const saveLangButton = new Button("saveLang", "3/4", "Save", "save", "secondary", "button");
 	
 	const labels = all_langs.map((lang) => {
 
@@ -80,7 +80,7 @@ export function languageSelectorSettings(langPreselect: string) {
 				<nav class="flex flex-col md:flex-row  w-full gap-1 p-2">
 				${labels}
 				<div class="flex justify-center items-center min-w-[200px]">
-				${saveLangButton.primaryButton()}
+				${saveLangButton.secondaryButton()}
 				</div>
 				</div>
 				</nav>`

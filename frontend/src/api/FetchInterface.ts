@@ -447,4 +447,9 @@ export class FetchInterface {
 			}
 			return true;
 	}
+
+	public static async inviteToPlay(user: IUserInfo, invitePlayerId: string) {
+		alertTemporary("success", "Player Invite" + invitePlayerId, user.preferences.theme, true, true);
+		return true;
+	}
 }

@@ -1,17 +1,18 @@
-import { searchBar } from "../../components/ui/searchBar"
+import { searchBarGame } from "../../components/ui/searchBar"
 
 export function onlineSettings() {
+	//TODO: Traduction
   return `
 <div id="online-settings" class="hidden flex-col w-full h-full p-4 space-y-4 mb-10 bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
-
-	${searchBar()}
-	<div class="flex flex-col font-title justify-center items-center w-full">
-		<div class="flex flex-col w-full h-full p-2 space-y-2 text-secondary dark:text-dsecondary bg-zinc-200 rounded-lg">
-			
-			Or click directly for play against a random opponent
+<div class="flex flex-col font-title justify-center items-center w-full">
+	<div class="flex flex-col w-full h-full p-2 space-y-2 text-secondary dark:text-dsecondary rounded-lg">
 		
-		</div> 
-	</div>
+		Or click directly on play for a random opponent
+	
+	</div> 
+</div>
+
+	${searchBarGame()}
 
 </div>`
 }
@@ -19,10 +20,18 @@ export function onlineSettings() {
 export function localPVPSettings() {
   return `
 <div id="local-PVP-settings" class="hidden flex-col w-full h-full p-4 space-y-4 mb-10 bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
+<div class="flex flex-col font-title justify-center items-center w-full">
+	<div class="flex flex-col w-full h-full p-2 space-y-2 text-secondary dark:text-dsecondary rounded-lg" translate="player2-name">
 
-	<label for="player2-name" class="text-2xl font-title text-zinc-600 mb-4" translate="player2">Player 2</label>
-	<input type="text" id="player2-name" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg" translate="username" placeholder="username"/>
+			Player 2 Name
+		</div> 
+		
+		<div class="flex flex-col w-full justify-center items-center px-10 mt-4">
 
+			<input type="text" id="player2-name" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg dark:text-dtertiary" translate="enter-username" placeholder="enter-username"/>
+
+		</div>
+	</div>
 </div>`
 }
 
