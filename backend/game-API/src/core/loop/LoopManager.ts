@@ -11,7 +11,7 @@ export class LoopManager {
   }
 
   constructor() {
-    this.networkLoop = new NetworkLoop(35);
+    this.networkLoop = new NetworkLoop(20);
     this.gameLoop = new GameLoop(60);
   }
 

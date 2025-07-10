@@ -6,18 +6,18 @@ export class InputManager {
   public playersInput: Map<string, Vector2> = new Map();
 
   public start() {
-    const players = SceneContext.get().players;
-    console.log("InputManager: onInstantiate", players);
+    const playersId = [...SceneContext.get().players.keys()];
+    console.log("InputManager: onInstantiate", playersId);
     if (SceneContext.get().gameType === "local") {
 
-      this.playersInput.set(players[0].user_id, Vector2.zero());
-      this.playersInput.set("other", Vector2.zero());
-      IOInterface.subscribe(`ws:game:player:${players[0].user_id}`, handleInput.bind(SceneContext.get()));
+      this.playersInput.set(playersId[1], Vector2.zero());
+      this.playersInput.set("local", Vector2.zero());
+      IOInterface.subscribe(`ws:game:player:${playersId[1]}`, handleInput.bind(SceneContext.get()));
       return;
     }
-    players.forEach(player => {
-      this.playersInput.set(player.user_id, Vector2.zero());
-      IOInterface.subscribe(`ws:game:player:${player.user_id}`, handleInput.bind(SceneContext.get()));
+    playersId.forEach(player => {
+      this.playersInput.set(player, Vector2.zero());
+      IOInterface.subscribe(`ws:game:player:${player}`, handleInput.bind(SceneContext.get()));
     })
   }
 
@@ -29,16 +29,21 @@ export class InputManager {
 function handleInput(message: string, channel: string): void {
   const payload = JSON.parse(message);
   const [, playerId] = channel.split(':').slice(-2);
+  console.log(`InputManager: handleInput`, payload, playerId);
+
   if (playerId !== payload.user_id) {
     console.warn(`InputManager: Player ID mismatch. Expected ${playerId}, got ${payload.user_id}`);
     return; // TODO : stop game
   }
   if (payload.action !== 'input') return;
+
   let movement = payload.data.movement;
   const inputManager = (this as SceneContext).inputManager;
+
   inputManager.get(playerId).y = +movement.up - +movement.down;
+
   if (this.gameType === "local") {
     movement = payload.data.otherMovement;
-    inputManager.get("other").y = +movement.up - +movement.down;
+    inputManager.get("local").y = +movement.up - +movement.down;
   }
 }

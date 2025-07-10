@@ -1,11 +1,16 @@
+export interface IGameFormInfo {
+  player_name: string;
+  game_name: string;
+  game_type: string;
+}
+
+
 export interface IRoomInfos {
-  room_id: string,
+  id: string,
   game_type: string,
   players: IPlayer[],
   status: string,
 }
-
-// START - Jb - Part
 
 export interface Vector2 {
   x: number;
@@ -16,22 +21,6 @@ export interface IGameObject {
   type: string;
 }
 
-export interface IBall {
-  type: string;
-  position: Vector2;
-  velocity: Vector2;
-  radius: number;
-}
-
-export interface IPaddle {
-  type: string;
-  id: string;
-  position: Vector2;
-  scale: Vector2;
-}
-
-
-// END - Jb - Part
 
 export interface FrontGameInfo {
   typeGame: string;
@@ -50,9 +39,10 @@ export interface IRoomData {
 }
 
 export interface IPlayer {
-  user_id: string;
+  id: string;
   player_name: string;
   ready: boolean;
+  avatar: string;
   score: number;
   win: boolean;
 }

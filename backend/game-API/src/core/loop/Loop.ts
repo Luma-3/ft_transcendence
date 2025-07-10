@@ -12,7 +12,7 @@ export class NetworkLoop extends ALoop {
   protected update(): void {
     const tab = [];
     this.objects.forEach((obj) => {
-      if (!obj.enabled) return;
+      if (!obj.snapshotEnabled) return;
       tab.push(obj.snapshot());
     });
     if (tab.length > 0) {
@@ -22,14 +22,15 @@ export class NetworkLoop extends ALoop {
 
   private sendBatch(snapshot: any[]): void {
     const payload = {
-
+      time: performance.now() - this.startTime,
       action: "snapshot",
       data: snapshot,
     }
     const player = SceneContext.get().players;
-    IOInterface.broadcast(JSON.stringify(payload), player.flatMap(p =>
-      p.user_id !== "other" ? [p.user_id] : []
-    ));
+    IOInterface.broadcast(
+      JSON.stringify(payload),
+      [...player.keys()]
+    );
   }
 }
 

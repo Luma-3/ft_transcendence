@@ -7,6 +7,7 @@ import { renderPublicPage } from "../controllers/renderPage";
 import { loadTranslation } from "../controllers/Translate";
 import { IOtherUser, IUserInfo, IUserPreferences, UserSearchResult } from "../interfaces/IUser";
 import { IApiResponse } from "../interfaces/IApi";
+import { IGameFormInfo } from "../interfaces/IGame";
 
 export class FetchInterface {
 	private constructor() {}
@@ -429,5 +430,21 @@ export class FetchInterface {
 		}
 		await alertTemporary("success", "2fa-code-verified", "dark", true, true);
 		return true;
+	}
+
+	public static async createGameInServer(FormInfos: IGameFormInfo) {
+		const response = await fetchApiWithNoError<{ id: string }>(API.API_GAME.CREATE, {
+				method: 'POST',
+				body: JSON.stringify({
+					player_name: FormInfos.player_name,
+					game_name: FormInfos.game_name,
+					game_type: FormInfos.game_type,
+				}),
+			});
+			if (!response || response.status === "error" || !response.data) {
+				alertTemporary("error", "game-creation-failed", 'dark', true);
+				return false;
+			}
+			return true;
 	}
 }

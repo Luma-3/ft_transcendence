@@ -1,101 +1,31 @@
 import { alert } from "../../components/ui/alert/alert";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 
-import { getUserPreferences } from "../../api/getterUser(s)";
-import { fetchApiWithNoError } from "../../api/fetch";
-import { API_GAME } from "../../api/routes";
 import { FetchInterface } from "../../api/FetchInterface";
 
-export let gameFrontInfo: gameFrontInfoType = {
-	gameId: "",
-	gameType: "",
-};
-
-type gameFrontInfoType = {
-	gameId: string;
-	gameType: string;
-}
-
-type GameFormInfo = {
-	gameId: string;
-	gameName: string;
-	gameType: string;
-	gameNameOpponent?: string;
-}
-
-async function sendDataToServer(gameFormInfo: GameFormInfo, userTheme: string) {
-
-	const response = await fetchApiWithNoError<{ id: string }>(API_GAME.CREATE, {
-		method: 'POST',
-		body: JSON.stringify({
-			player_name: gameFormInfo.gameName,
-			game_name: "Ok Coral !",
-			game_type: gameFormInfo.gameType,
-		}),
-	});
-	if (!response || response.status === "error" || !response.data) {
-		return alertTemporary("error", "game-creation-failed", userTheme, true);
-	}
-
-	gameFrontInfo.gameId = response.data.id;
-	gameFrontInfo.gameType = gameFormInfo.gameType;
-
-	/**
-	 * Petit alert de success qui s'affiche a droite sur l'ecran
-	 */
-	return alertTemporary("success", "game-created-successfully", userTheme, true);
-}
-
-
-/**
- * Recuperation des infos necessaires dans le dashboard
- * pour le lancement de la partie
- */
 export async function initGame() {
 
-	/**
-	 * Recuperation et verification de la selection du type de jeu et des donnees utiles au jeu
-	 */
 	const gameType = document.querySelector('input[name="game-type"]:checked') as HTMLInputElement;
 	if (!gameType) {
 		return alert("no-gametype-selected", "error");
 	}
 
-	const player1 = (document.getElementById('player1-name') as HTMLInputElement).value;
-	if (!player1) {
-		return alert("enter-both-players-names", "error");
-	}
+	//TODO: remettre bien les ids des divs pour travailler facilement
+	const player2 = (gameType.value === "localpvp") ? "SQUALALA" : ""; 
 
-	let player2;
-
-	switch (gameType.id) {
-
-		case "localpvp":
-			player2 = (document.getElementById('player2-name') as HTMLInputElement).value;
-			if (!player2) {
-				return alert("enter-name-player2", "error");
-			}
-			break;
-		default:
-			break;
-	}
-
-
-	/**
-	 * Creation d'un objet contenant les donnees de la partie
-	 * pour pouvoir stocker facilement toutes les donnees utiles au front
-	 * et l'envoi de la requete pour creer la partie
-	 */
 	const gameFormInfo = {
-		gameId: "",
-		gameName: player1,
-		gameType: gameType.id,
-		gameNameOpponent: (player2) ? player2 : "",
+		player_name: player2 ?? "",
+		game_name: "MMA in Pound !",
+		game_type: gameType.id,
 	}
 
 	const userPref = await FetchInterface.getUserPrefs();
 	if (!userPref) {
 		return await alertTemporary("error", "Error while getting user theme", 'dark');
 	}
-	await sendDataToServer(gameFormInfo, userPref.theme ?? 'dark');
+
+	const success = await FetchInterface.createGameInServer(gameFormInfo);
+	
+	//TODO : Traduction
+	return (!success) ? alertTemporary("error", "cannot-create-game-wait-and-retry", userPref.theme, true, true) : alertTemporary("success", "game-created-successfully", userPref.theme, true, true);
 }

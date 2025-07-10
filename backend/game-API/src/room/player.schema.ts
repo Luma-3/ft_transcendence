@@ -15,7 +15,7 @@ export const PlayerInfoSchema = Type.Object({
 export type PlayerInfoType = Static<typeof PlayerInfoSchema>;
 
 export const PlayersInfoSchema = Type.Array(Type.Object({
-  user_id: Type.String({
+  id: Type.String({
     format: "uuid",
     description: "Unique identifier for the player, formatted as a UUID",
     examples: ["123e4567-e89b-12d3-a456-426614174001"]
