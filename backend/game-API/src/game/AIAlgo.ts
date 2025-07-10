@@ -5,7 +5,7 @@ export function target(
     paddleY: number,
     fieldHeight = 600,
     zoneCount = 7,
-    threshold = 150
+    threshold = 30
 ): { move: number } {
     const zoneHeight = fieldHeight / zoneCount;
     const zoneCenter = (targetZone + 0.5) * zoneHeight;

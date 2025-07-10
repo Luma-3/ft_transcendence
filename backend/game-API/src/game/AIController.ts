@@ -2,15 +2,13 @@ import { Paddle } from "./Paddle.js";
 import { Ball } from "./Ball.js";
 import { SceneContext } from "../core/runtime/SceneContext.js";
 import { Vector2 } from "../core/physics/Vector.js";
-import { target } from "./AIAlgo.js";
-
 
 type BallSnapshot = {
     position: Vector2;
     velocity: Vector2;
     radius: number;
 };
-// ---------- L’IA Controller ----------
+
 export class AIController {
     private paddle: Paddle;
     private ball: Ball;
@@ -25,87 +23,75 @@ export class AIController {
         this.dt = dt;
         this.paddleid = paddle.Paddleid;
     }
+
     update() {
-        // 1. Alog de prediction a P{IMPER Prédiction de la trajectoire TIME ET ZONE 
-        const { impactY, framesToImpact } = predictBallImpact(
+        const { impactY, framesToImpact, goingToIA } = predictBallImpactWithDirection(
             {
                 position: this.ball.position.clone(),
                 velocity: this.ball.Ballvelocity.clone(),
                 radius: this.ball.radius
             },
-            this.paddle.position.x, // X du paddle IA
+            this.paddle.position.x,
             this.fieldHeight,
             this.dt,
         );
-        console.log('ImpactY:', impactY);
 
-        // TODO
-        // 2. Prise de décision (haut/bas/neutre)
-        const decision = this.computePaddleMovement(impactY, framesToImpact).move;
-        console.log('Decision IA', decision);
-
-        // 3. Injection de l’input IA
+        const decision = this.computePaddleMovement(impactY, framesToImpact, goingToIA).move;
         SceneContext.get().inputManager.set(this.paddleid, new Vector2(0, decision));
     }
 
     computePaddleMovement(
-    predictedY: number, framesToImpact: number
-): { move: number } {
-    const currentY = this.paddle.position.y;
-    const paddleSpeed = 530
-    const tickDuration = this.dt;
-    const zoneCount = 7;
-    const fieldHeight = 600;
-    const zoneHeight = fieldHeight / zoneCount;
+        predictedY: number,
+        framesToImpact: number,
+        goingToIA: boolean
+    ): { move: number } {
+        const currentY = this.paddle.position.y;
+        const paddleHalfLength = this.paddle.scale.y / 2;
 
-    // Cas où la balle repart -> replacer paddle au centre
-    if (predictedY === 0) {
-        return target(3, currentY, fieldHeight, zoneCount, paddleSpeed * tickDuration / 2);
-    }
+        void framesToImpact;
 
-    // Détermine la zone cible selon l'impact prédit
-    const zoneIndex = Math.floor(predictedY / zoneHeight);
+        // 1. Quand la balle part ou dépasse la moitié, on colle le paddle en haut ou en bas
+        if (!goingToIA || this.ball.position.x > 800 / 2) {
+            if (this.ball.position.y < this.fieldHeight / 2 && currentY > paddleHalfLength)
+                return { move: 1 }; // Monter (Y diminue)
+            else if (this.ball.position.y >= this.fieldHeight / 2 && currentY < this.fieldHeight - paddleHalfLength)
+                return { move: -1 }; // Descendre (Y augmente)
+            else
+                return { move: 0 };
+        }
 
-    // Centre de la zone cible
-    const zoneCenter = (zoneIndex + 0.5) * zoneHeight;
+        // 2. Si déjà bien placé, ne bouge pas
+        if (
+            currentY - paddleHalfLength <= predictedY &&
+            currentY + paddleHalfLength >= predictedY
+        ) {
+            return { move: 0 };
+        }
 
-    // Distance à parcourir
-    const distanceToTarget = Math.abs(currentY - zoneCenter);
-
-    // Temps pour atteindre la cible (à vitesse max du paddle)
-    const timeToReach = distanceToTarget / paddleSpeed;
-    const timeToImpact = framesToImpact * tickDuration;
-
-    // Si je dois déjà partir pour arriver à temps, je bouge
-    if (timeToReach >= timeToImpact) {
-        return target(zoneIndex, currentY, fieldHeight, zoneCount, paddleSpeed * tickDuration / 2);
-    }
-
-    // Sinon, ne bouge pas
-    return { move: 0 };                                      // Rester
+        // 3. Sinon, tente le tout pour le tout : va à fond vers l'impact
+        if (predictedY > currentY)
+            return { move: -1 }; // Descendre (Y augmente)
+        else
+            return { move: 1 }; // Monter (Y diminue)
     }
 }
 
 /**
  * Simule la trajectoire de la balle frame par frame jusqu’au X d’un paddle.
- * Retourne la position Y de l’impact et le nombre de frames.
+ * Retourne la position Y de l’impact, le nombre de frames et la direction.
  */
-export function predictBallImpact(
+export function predictBallImpactWithDirection(
     ball: BallSnapshot,
     paddleX: number,
     fieldHeight: number,
     dt: number
-): { impactY: number; framesToImpact: number } {
+): { impactY: number; framesToImpact: number; goingToIA: boolean } {
     let position = ball.position.clone();
     let velocity = ball.velocity.clone();
     let frames = 0;
 
-    // Tant que la balle va dans l'autre sens on se replacera au milieu donc on ne calcul pas un impact.
-    if (velocity.x > 0)
-        return {
-            impactY: 300,
-            framesToImpact: 0
-        };
+    // Teste la direction initiale de la balle
+    let goingToIA = (velocity.x < 0); // IA à gauche
 
     // On avance la balle tant qu’elle n’a pas traversé le X du paddle
     while (
@@ -113,27 +99,18 @@ export function predictBallImpact(
         (velocity.x < 0 && position.x > paddleX)
     ) {
         position = position.add(velocity.scale(dt));
-        // Rebond sur les murs haut/bas
         if (position.y - ball.radius < 0 || position.y + ball.radius > fieldHeight) {
             velocity = new Vector2(velocity.x, -velocity.y);
-            position.y = Math.max(ball.radius, Math.min(position.y, fieldHeight));
+            position.y = Math.max(ball.radius, Math.min(position.y, fieldHeight - ball.radius));
         }
         frames++;
     }
+    // Si la balle arrive de la droite (velocity.x < 0 pour une IA à gauche), c’est vers l’IA.
+    goingToIA = (velocity.x < 0);
+
     return {
         impactY: position.y,
-        framesToImpact: frames
+        framesToImpact: frames,
+        goingToIA: goingToIA,
     };
 }
-
-
-
-/* Je base la vitesse max en 1seconde sur : 
-
-
-    acceleration = 4
-
-    velocityModifer = 400
-
-    frictionFroce = 3
-*/
