@@ -18,6 +18,10 @@ class RoomManager {
   }
 
   public joinRoom(player: Player, id?: string) {
+    if (this.playersInRooms.has(player.id)) {
+      throw new Error(`Player ${player.id} is already in a room`);
+    }
+
     if (id) {
       const room = this.rooms.get(id);
       if (!room) {
@@ -25,12 +29,14 @@ class RoomManager {
       }
       console.log(`Player ${player.id} joining room ${id}`);
       room.addPlayer(player);
+      this.playersInRooms.set(player.id, room);
       return room.id;
     }
 
     this.rooms.forEach(room => {
       if (room.isJoinable()) {
         room.addPlayer(player)
+        this.playersInRooms.set(player.id, room);
         return room.id;
       }
     });

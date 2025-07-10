@@ -22,9 +22,10 @@ export class Ball {
     this.position = lerpVector2(snapshotsA.position, snapshotsB.position, alpha);
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+  draw(ctx: CanvasRenderingContext2D, revert: boolean, terrainWidth: number) {
     ctx.beginPath();
-    ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+    const x = revert ? terrainWidth - this.position.x : this.position.x;
+    ctx.arc(x, this.position.y, this.radius, 0, Math.PI * 2);
     ctx.fillStyle = "yellow";
     ctx.fill();
     ctx.closePath();

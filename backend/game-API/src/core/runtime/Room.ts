@@ -70,7 +70,7 @@ export class Room {
     }
 
     const playerInfo = await response.json();
-
+    player.side = (this.players.size === 1) ? 'left' : 'right';
     player.avatar = playerInfo.data.preferences.avatar;
     player.player_name = playerInfo.data.username;
 

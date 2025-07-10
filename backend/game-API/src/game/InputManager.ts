@@ -29,6 +29,7 @@ export class InputManager {
 function handleInput(message: string, channel: string): void {
   const payload = JSON.parse(message);
   const [, playerId] = channel.split(':').slice(-2);
+  console.log(`InputManager: handleInput`, payload, playerId);
 
   if (playerId !== payload.user_id) {
     console.warn(`InputManager: Player ID mismatch. Expected ${playerId}, got ${payload.user_id}`);

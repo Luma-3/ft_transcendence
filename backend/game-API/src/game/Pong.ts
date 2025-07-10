@@ -105,7 +105,6 @@ export class Pong extends GameObject {
       size: this.size,
     };
   }
-
 }
 
 export const game = () => {

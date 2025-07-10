@@ -3,10 +3,19 @@ import { Ball, IBall } from "./draw/Ball";
 import { Paddle, IPaddle } from "./draw/Paddle";
 import { alpha } from "./draw/lerping";
 
-
 export interface ISnapshot {
   time: number;
   object: IGameObject[];
+}
+
+interface IPlayer {
+  id: string;
+  player_name: string;
+  ready: boolean;
+  avatar: string;
+  side: "left" | "right";
+  score: number;
+  win: boolean;
 }
 
 export class Game {
@@ -18,13 +27,14 @@ export class Game {
 
   private startTime: number | null = null;
   private players: Map<string, Paddle> = new Map();
+  private revert: boolean = false;
   private ball: Ball;
 
   snapshots: ISnapshot[] = [];
 
   alphaGraph: AlphaGraph = new AlphaGraph("alphaGraph");
 
-  constructor(canvasId: string, paddles: IPaddle[]) {
+  constructor(canvasId: string, players: IPlayer[], userId: string) {
     this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
     if (!this.canvas) {
       throw new Error(`Canvas with id ${canvasId} not found`);
@@ -39,8 +49,13 @@ export class Game {
     this.height = this.canvas.height;
 
     this.ball = new Ball();
-    console.log("Paddles:", paddles);
-    paddles.forEach((paddle) => {
+
+    console.log("Initializing game with players:", players, userId); // PAS ok
+
+    this.revert = players.find(player => player.id === userId)!.side === 'right';
+
+    console.log("Revert:", this.revert, players);
+    players.forEach((paddle) => {
       console.log("Creating paddle with ID:", paddle.id);
       const player = new Paddle(paddle.id);
       this.players.set(paddle.id, player);
@@ -85,9 +100,10 @@ export class Game {
     this.clear();
     this.drawBackground();
 
-    this.ball.draw(this.ctx);
+    console.log("Revert Drawring: ", this.revert);
+    this.ball.draw(this.ctx, this.revert, this.width);
     this.players.forEach((player) => {
-      player.draw(this.ctx);
+      player.draw(this.ctx, this.revert, this.width);
     });
   }
 
@@ -142,7 +158,7 @@ export class Game {
   }
 
   loop() {
-    this.interpolate(performance.now() - this.startTime! - 33.333);
+    this.interpolate(performance.now() - this.startTime! - 65);
     this.draw();
     requestAnimationFrame(this.loop.bind(this));
   }

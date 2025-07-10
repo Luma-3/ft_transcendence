@@ -40,7 +40,7 @@ export async function createGame(data: any) {
   setTimeout(async () => {
     const main_container = document.querySelector<HTMLDivElement>('#app')!;
     await addListenerEvent(data, user.data!);
-    const newContainer = await gameHtml(data);
+    const newContainer = await gameHtml(data, user.data!.id);
     if (!newContainer) return;
 
     main_container.innerHTML = newContainer; // TODO Post event listener

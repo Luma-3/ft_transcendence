@@ -12,6 +12,7 @@ export class Player {
   public ready: boolean;
   public score: number = 0;
   public win: boolean = false;
+  public side: 'left' | 'right' = 'left';
   // TODO : mettre le check de score ici ! 
 
   constructor(user_id: string, player_name: string) {
@@ -34,7 +35,8 @@ export class Player {
       player_name: this.player_name,
       avatar: this.avatar,
       ready: this.ready,
-      score: this.score
+      score: this.score,
+      side: this.side,
     };
   }
 }

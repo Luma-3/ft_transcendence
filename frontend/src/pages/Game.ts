@@ -14,9 +14,12 @@ async function showPlayer(playerGameInfos: IPlayer, color: 'blue' | 'red') {
 
 </div>`;
 }
-export default async function gameHtml(roomInfos: IRoomInfos) {
-  const leftOpponentDiv = await showPlayer(roomInfos.players[0], 'blue');
-  const rightOpponentDiv = await showPlayer(roomInfos.players[1], 'red');
+export default async function gameHtml(roomInfos: IRoomInfos, userId: string) {
+  const playerLeft = roomInfos.players.find(player => player.id === userId)!;
+  const playerRight = roomInfos.players.find(player => player.id !== userId)!;
+
+  const leftOpponentDiv = await showPlayer(playerLeft, 'blue');
+  const rightOpponentDiv = await showPlayer(playerRight, 'red');
 
 
   return `
@@ -54,10 +57,10 @@ export default async function gameHtml(roomInfos: IRoomInfos) {
 		<div id="leftBanner" class="flex flex-col justify-center items-center w-32 h-[400px] bg-gradient-to-b from-purple-500 to-purple-700 rounded-lg border-2 border-purple-400 shadow-lg">
 			<div class="flex flex-col items-center text-white p-4 space-y-4">
 				<div class="text-lg font-bold">
-				${roomInfos.players[0].player_name}
+				${playerLeft.player_name}
 				</div>
 				<div id="player1Avatar" class="w-16 h-16 rounded-full border-2 border-white bg-purple-300">
-				<img src=${roomInfos.players[0].avatar} alt="avatar" class="w-full h-full rounded-full">
+				<img src=${playerLeft.avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player1Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
 					<div>Score: <div id="playerLeftScore" class="relative bottom-0 text-8xl">0</div></div>
@@ -72,10 +75,10 @@ export default async function gameHtml(roomInfos: IRoomInfos) {
 		<div id="rightBanner" class="flex flex-col justify-center items-center w-32 h-[400px] bg-gradient-to-b from-orange-500 to-orange-700 rounded-lg border-2 border-orange-400 shadow-lg">
 			<div class="flex flex-col justify-center items-center text-white p-4 space-y-4">
 				<div class="flex justify-center items-center text-lg font-bold text-center">
-					${(roomInfos.players[1] ? roomInfos.players[1].player_name : 'Waiting for opponent')}
+					${playerRight.player_name}
 				</div>
 				<div id="player2Avatar" class="w-16 h-16 rounded-full border-2 border-white bg-orange-300">
-					<img src=${roomInfos.players[1].avatar} alt="avatar" class="w-full h-full rounded-full">
+					<img src=${playerRight.avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player2Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
 					<div>Score: <div id="playerRightScore" class="relative bottom-0 text-8xl">0</div></div>

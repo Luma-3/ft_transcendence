@@ -20,10 +20,10 @@ export class Paddle {
     this.id = id;
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+  draw(ctx: CanvasRenderingContext2D, revert: boolean, terrainWidth: number) {
     ctx.fillStyle = "white";
     const pos: Vector2 = new Vector2(
-      this.position.x - this.scale.x / 2,
+      revert ? terrainWidth - this.position.x - this.scale.x / 2 : this.position.x - this.scale.x / 2,
       this.position.y - this.scale.y / 2
     );
     ctx.beginPath();
