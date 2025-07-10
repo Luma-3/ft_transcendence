@@ -24,7 +24,16 @@ export class InputManager {
   get(playerId: string): Vector2 {
     return this.playersInput.get(playerId);
   }
+
+  stop() {
+    this.playersInput.clear();
+    const playersId = [...SceneContext.get().players.keys()];
+    playersId.forEach(player => {
+      IOInterface.unsubscribe(`ws:game:player:${player}`);
+    });
+  }
 }
+
 
 function handleInput(message: string, channel: string): void {
   const payload = JSON.parse(message);
@@ -42,7 +51,7 @@ function handleInput(message: string, channel: string): void {
 
   inputManager.get(playerId).y = +movement.up - +movement.down;
 
-  if (this.gameType === "local") {
+  if (this.gameType === "local" && payload.data.otherMovement) {
     movement = payload.data.otherMovement;
     inputManager.get("local").y = +movement.up - +movement.down;
   }

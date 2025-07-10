@@ -55,7 +55,7 @@ function generateRankBadge(_user: IUserInfo) {
 	let rankInfo = {
 		name: 'Petit Volatile',
 		level: 1,
-		image: 'caneton.png',
+		image: 'petitVolatile2.png',
 		colors: 'from-purple-600 via-purple-700 to-purple-800',
 		textColors: 'from-tertiary via-gray-800 to-tertiary dark:from-dtertiary dark:via-white dark:to-dtertiary',
 		shadowColor: 'purple'
@@ -74,7 +74,7 @@ function generateRankBadge(_user: IUserInfo) {
 		rankInfo = {
 			name: 'Apprenti Canard',
 			level: Math.floor(wins / 8),
-			image: 'duckLearning.png',
+			image: 'duckLearning2.png',
 			colors: 'from-gray-200 via-gray-300 to-gray-500',
 			textColors: 'from-tertiary via-gray-700 to-gray-900 dark:from-gray-300 dark:via-gray-100 dark:to-dtertiary',
 			shadowColor: 'gray'

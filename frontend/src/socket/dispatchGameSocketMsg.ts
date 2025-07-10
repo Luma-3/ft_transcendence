@@ -1,15 +1,7 @@
-import { Game } from "../events/game/gameDraw";
-import { IGameObject } from "../interfaces/IGame";
-import { DisplayGameWinLose } from "../events/game/gameEnd";
 import { showGame } from "../events/game/utils/gameFadeOut";
-
-
-import { drawExplosion } from "../events/game/utils/gameBallExplosion";
-import { changeScore } from "../events/game/gameInput";
-import { startShapeSparkle } from "../events/game/utils/trailBall";
 import { bouncePlayer } from "../events/game/utils/bouncePlayer";
-import { createGame } from "../events/game/gameCreation";
-import { FetchInterface } from "../api/FetchInterface";
+import { GameManager } from "../events/game/GameManager";
+import { IGameObject } from "../events/game/Game";
 
 export type GameSnapshot = {
   serverTime: number;
@@ -19,23 +11,21 @@ export type GameSnapshot = {
 // export let clockoffset = 0;
 export let gameSnapshots: GameSnapshot[] = [];
 
-let game: Game;
-
-
-const socketHandler: Record<string, (data: any) => void> = {
-  roomReady: createGame,
+const socketHandler: {[key: string]: (data: any) => Promise<void>} = {
+  roomReady: GameManager.init,
   playerReady: bouncePlayer,
-  starting: /*TODO ,*/ showGame,
-  snapshot: handleSnapshot,
-  score: handleScore,
-  end: habdleEnd,
+  starting: showGame,
+  snapshot: GameManager.addSnapshot,
+  score: GameManager.addScore,
+  end: GameManager.endGame,
 }
+
 
 export async function dispatchGameSocketMsg(payload: any) {
   const handler = socketHandler[payload.action];
 
   if (handler) {
-    handler(payload.data);
+    await handler(payload.data);
     return;
   }
 

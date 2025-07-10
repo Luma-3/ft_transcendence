@@ -45,8 +45,8 @@ export async function submit2FACode() {
 	}
 
 	alertPublic("success", response.message);
-	setTimeout(() => {
-			socketConnection();
+	setTimeout(async () => {
+			await socketConnection();
 			renderPrivatePage('dashboard');
 		}, 1000);
 

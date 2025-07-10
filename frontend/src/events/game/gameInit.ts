@@ -13,8 +13,6 @@ function getPlayer2Name(){
 	return inputValue;
 }
 
-
-
 export async function initGame() {
 
 	const gameType = document.querySelector('input[name="game-type"]:checked') as HTMLInputElement;

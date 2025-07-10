@@ -1,25 +1,21 @@
 import { Room } from "./Room.js";
 import { gameType } from "../../room/room.schema.js";
 import { Player } from "./Interface.js";
-import { NotFoundError } from '@transcenduck/error'
+import { NotFoundError, ConflictError} from '@transcenduck/error'
 
 class RoomManager {
   private rooms: Map<string, Room> = new Map();
   private playersInRooms: Map<string, Room> = new Map();
 
-  public createRoom(game_name: string, type_game: gameType) {
-    const room = new Room({ name: game_name, type_game: type_game });
+  public createRoom(game_name: string, type_game: gameType, privateRoom: boolean = false): string {
+    const room = new Room({ name: game_name, type_game: type_game, privateRoom: privateRoom });
     this.rooms.set(room.id, room);
     return room.id;
   }
 
-  public removeRoom(id: string) {
-    this.rooms.delete(id);
-  }
-
   public joinRoom(player: Player, id?: string) {
     if (this.playersInRooms.has(player.id)) {
-      throw new Error(`Player ${player.id} is already in a room`);
+      throw new ConflictError(`Player ${player.id} is already in a room`);
     }
 
     if (id) {
@@ -64,8 +60,11 @@ class RoomManager {
 
   public deleteRoom(room_id: string) {
     if (!this.rooms.has(room_id)) {
-      throw new NotFoundError('room');
+      return;
     }
+    const room = this.rooms.get(room_id);
+    room.loopManager.stop();
+    room.inputManager.stop();
     this.rooms.delete(room_id);
 
     this.playersInRooms.forEach((room, playerId) => {

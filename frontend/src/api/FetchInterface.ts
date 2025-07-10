@@ -432,13 +432,15 @@ export class FetchInterface {
 		return true;
 	}
 
+	
+
 	public static async createGameInServer(FormInfos: IGameFormInfo) {
 		const response = await fetchApiWithNoError<{ id: string }>(API.API_GAME.CREATE, {
 				method: 'POST',
 				body: JSON.stringify({
-					player_name: FormInfos.player_name,
-					game_name: FormInfos.game_name,
-					game_type: FormInfos.game_type,
+					playerName: FormInfos.player_name,
+					gameType: FormInfos.game_type,
+					gameName: FormInfos.game_name,
 				}),
 			});
 			if (!response || response.status === "error" || !response.data) {
@@ -452,4 +454,10 @@ export class FetchInterface {
 		alertTemporary("success", "Player Invite" + invitePlayerId, user.preferences.theme, true, true);
 		return true;
 	}
+}
+
+export interface IGameFormInfo {
+  player_name: string;
+  game_name: string;
+  game_type: string;
 }

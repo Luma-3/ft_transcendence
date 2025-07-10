@@ -1,26 +1,3 @@
-export interface IGameFormInfo {
-  player_name: string;
-  game_name: string;
-  game_type: string;
-}
-
-
-export interface IRoomInfos {
-  id: string,
-  game_type: string,
-  players: IPlayer[],
-  status: string,
-}
-
-export interface Vector2 {
-  x: number;
-  y: number;
-}
-
-export interface IGameObject {
-  type: string;
-}
-
 
 export interface FrontGameInfo {
   typeGame: string;

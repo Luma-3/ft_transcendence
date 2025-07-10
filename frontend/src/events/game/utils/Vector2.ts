@@ -32,6 +32,13 @@ export class Vector2 {
     return mag === 0 ? new Vector2(0, 0) : this.scale(1 / mag);
   }
 
+  lerp(other: Vector2, t: number): Vector2 {
+    return new Vector2(
+      this.x * (1 - t) + other.x * t,
+      this.y * (1 - t) + other.y * t
+    )
+  }
+  
   static zero(): Vector2 {
     return new Vector2(0, 0);
   }
@@ -39,4 +46,5 @@ export class Vector2 {
   static fromObj(obj: { x: number, y: number }): Vector2 {
     return new Vector2(obj.x, obj.y);
   }
+
 }

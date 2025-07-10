@@ -1,5 +1,4 @@
-import { Vector2 } from "../utils/Vector";
-import { lerpVector2 } from "./lerping";
+import { Vector2 } from "../utils/Vector2";
 
 export interface IPaddle {
   type: string;
@@ -38,7 +37,6 @@ export class Paddle {
   }
 
   interpolate(snapshotsA: IPaddle, snapshotsB: IPaddle, alpha: number) {
-
-    this.position = lerpVector2(snapshotsA.position, snapshotsB.position, alpha);
+    this.position = Vector2.fromObj(snapshotsA.position).lerp(snapshotsB.position, alpha);
   }
 }

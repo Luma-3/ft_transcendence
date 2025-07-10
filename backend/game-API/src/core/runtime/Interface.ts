@@ -3,6 +3,7 @@ import { gameType } from '../../room/room.schema.js';
 export interface IGameInfos {
   name: string,
   type_game: gameType,
+  privateRoom?: boolean,
 }
 
 export class Player {

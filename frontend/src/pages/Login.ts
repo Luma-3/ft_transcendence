@@ -102,7 +102,7 @@ export async function loginUser() {
 		 * le chat et toutes communications bidirectionnelles
 		 * entre le client et le serveur qui ont besoin d'etre en temps reel
 		 */
-		socketConnection();
+		await socketConnection();
 		
 		renderPrivatePage('dashboard');
 	}

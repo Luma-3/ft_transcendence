@@ -108,7 +108,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 	}
 
 	if (!socket) {
-		socketConnection();
+		await socketConnection();
 	}
 
 	fadeOut();

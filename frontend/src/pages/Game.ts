@@ -1,4 +1,5 @@
-import { IPlayer, IRoomInfos } from "../interfaces/IGame";
+import { IPlayer } from "../interfaces/IGame";
+import { IGame } from "../events/game/Game";
 
 async function showPlayer(playerGameInfos: IPlayer, color: 'blue' | 'red') {
 
@@ -14,9 +15,9 @@ async function showPlayer(playerGameInfos: IPlayer, color: 'blue' | 'red') {
 
 </div>`;
 }
-export default async function gameHtml(roomInfos: IRoomInfos, userId: string) {
-  const playerLeft = roomInfos.players.find(player => player.id === userId)!;
-  const playerRight = roomInfos.players.find(player => player.id !== userId)!;
+export default async function gameHtml(gameInfo: IGame, userId: string) {
+  const playerLeft = gameInfo.players.find(player => player.id === userId)!;
+  const playerRight = gameInfo.players.find(player => player.id !== userId)!;
 
   const leftOpponentDiv = await showPlayer(playerLeft, 'blue');
   const rightOpponentDiv = await showPlayer(playerRight, 'red');
@@ -49,7 +50,7 @@ export default async function gameHtml(roomInfos: IRoomInfos, userId: string) {
 </div>
 
 <div id = "hiddenGame" class="flex flex-col justify-center mt-0 items-center animate-transition opacity-0 duration-500 ease-in-out">
-
+	
 	<!-- Zone de jeu avec bannières -->
 	<div class="flex flex-row justify-center items-center gap-4">
 		
@@ -63,13 +64,13 @@ export default async function gameHtml(roomInfos: IRoomInfos, userId: string) {
 				<img src=${playerLeft.avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player1Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
-					<div>Score: <div id="playerLeftScore" class="relative bottom-0 text-8xl">0</div></div>
+					<div>Score: <div id="${playerLeft.id}-score" class="relative bottom-0 text-8xl">0</div></div>
 				</div>
 			</div>
 		</div>
 		
 		<!-- Canvas de jeu -->
-		<canvas id="gamePong" width="800" height="600" class=" border-4 border-myblack bg-transparent rounded-lg mt-10 box-content" > </canvas>
+		<canvas id="game" width="800" height="600" class=" border-4 border-myblack bg-transparent rounded-lg mt-10 box-content" > </canvas>
 		
 		<!-- Bannière droite -->
 		<div id="rightBanner" class="flex flex-col justify-center items-center w-32 h-[400px] bg-gradient-to-b from-orange-500 to-orange-700 rounded-lg border-2 border-orange-400 shadow-lg">
@@ -81,7 +82,7 @@ export default async function gameHtml(roomInfos: IRoomInfos, userId: string) {
 					<img src=${playerRight.avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player2Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
-					<div>Score: <div id="playerRightScore" class="relative bottom-0 text-8xl">0</div></div>
+					<div>Score: <div id="${playerRight.id}-score" class="relative bottom-0 text-8xl">0</div></div>
 				</div>
 			</div>
 		</div>

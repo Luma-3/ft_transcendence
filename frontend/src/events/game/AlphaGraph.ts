@@ -3,24 +3,8 @@ import { Ball, IBall } from "./draw/Ball";
 import { Paddle, IPaddle } from "./draw/Paddle";
 import { alpha } from "./draw/lerping";
 
-export interface ISnapshot {
-  time: number;
-  object: IGameObject[];
-}
 
-interface IPlayer {
-  id: string;
-  player_name: string;
-  ready: boolean;
-  avatar: string;
-  side: "left" | "right";
-  score: number;
-  win: boolean;
-}
-
-
-
-class AlphaGraph {
+export class AlphaGraph {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private values: number[] = [];

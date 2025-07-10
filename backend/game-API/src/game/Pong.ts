@@ -50,7 +50,6 @@ export class Pong extends GameObject {
   }
 
   stopGame() {
-    SceneContext.get().loopManager.stop();
     const payload = {
       action: 'end',
       data: {
@@ -80,14 +79,19 @@ export class Pong extends GameObject {
       winner = this.paddleLeft.id;
     }
 
-    SceneContext.get().players.get(winner).score++;
+    const WinnerPlayer = SceneContext.get().players.get(winner);
+    if (!winner) {
+      console.warn("Winner not found in players map");
+      return;
+    }
+    WinnerPlayer.addScore();
 
     const payload = {
       action: 'score',
       data: {
         roomId: SceneContext.get().id,
         ball: this.ball.snapshot(),
-        player: Array.from(SceneContext.get().players.values()).map(player => player.toJSON())
+        players: Array.from(SceneContext.get().players.values()).map(player => player.toJSON())
       }
     }
     IOInterface.broadcast(
