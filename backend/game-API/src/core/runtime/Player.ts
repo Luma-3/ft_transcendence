@@ -1,9 +1,10 @@
-import { gameType } from '../../room/room.schema.js';
+import { GameType } from '../../room/room.schema.js';
 
 export interface IGameInfos {
   name: string,
-  type_game: gameType,
+  type_game: GameType,
   privateRoom?: boolean,
+  localPlayerName?: string,
 }
 
 export class Player {
@@ -16,10 +17,10 @@ export class Player {
   public side: 'left' | 'right' = 'left';
   // TODO : mettre le check de score ici ! 
 
-  constructor(user_id: string, player_name: string) {
-    this.id = user_id;
-    this.player_name = player_name;
+  constructor(userId: string, playerName: string) {
+    this.id = userId;
     this.ready = false;
+    this.player_name = playerName;
   }
 
   public addScore() {

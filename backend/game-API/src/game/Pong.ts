@@ -61,7 +61,7 @@ export class Pong extends GameObject {
       action: 'end',
       data: {
         roomId: SceneContext.get().id,
-        player: Array.from(SceneContext.get().players.values()).map(player => player.toJSON())
+        players: Array.from(SceneContext.get().players.values()).map(player => player.toJSON())
       }
     }
     IOInterface.broadcast(
@@ -124,7 +124,8 @@ export class Pong extends GameObject {
 }
 
 export const game = () => {
-  GameObject.instantiate(Pong);
+  const pong = GameObject.instantiate(Pong);
+  pong.snapshotEnabled = false;
   SceneContext.get().inputManager.start();
   SceneContext.get().loopManager.start();
 }

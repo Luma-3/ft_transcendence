@@ -7,8 +7,8 @@ async function showPlayer(playerGameInfos: IPlayer, color: 'blue' | 'red') {
 <div id=${playerGameInfos.id} class="flex flex-col p-4 justify-center items-center transition-transform duration-800 ease-in-out">
 	<div class="flex flex-col justify-center items-center">
 
-		<img src=${playerGameInfos.avatar} alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
-		${color === 'blue' ? 'border-blue-500' : 'border-red-500'}" />
+		<img src=${playerGameInfos.avatar} alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-4 mb-4
+		${color === 'blue' ? 'border-dprimary' : 'border-dsecondary'}" />
 		${playerGameInfos.player_name}
 
 	</div>
@@ -53,7 +53,7 @@ export default async function gameHtml(gameInfo: IGame, userId: string) {
 	
 	<!-- Zone de jeu avec bannières -->
 	<div id="gameName" class="text-4xl font-title text-center mt-4 mb-2 text-tertiary dark:text-dprimary">
-		${gameInfo.gameName}
+		${gameInfo.name}
 	</div>
 	<div class="flex flex-row justify-center items-center gap-4">
 		
@@ -99,8 +99,9 @@ export default async function gameHtml(gameInfo: IGame, userId: string) {
 			<img src="/images/duckQuitGame.png" alt="logo" class="w-10 h-10 ml-4">
 		</button>
 	</div>
-
-<div id="gameWin">
-</div>`
+</div>
+<div id="gameWin" class="flex flex-row space-x-2 justify-center items-center w-full h-full p-4">
+</div>
+`
 }
 //TODO:Traduction

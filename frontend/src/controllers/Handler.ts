@@ -76,7 +76,6 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'unfriend-user': (event) => unfriendUser(event.target as HTMLElement),
 	'cancel-invitation': (event) => cancelFriendInvitation(event.target as HTMLElement),
 	'refuse-invitation': (event) => refuseFriendInvitation(event.target as HTMLElement),
-	'invite-game': (event) => invitePlayerToPlay(event.target as HTMLElement),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 🚫 BLOCAGE UTILISATEURS

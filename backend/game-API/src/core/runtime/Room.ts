@@ -1,13 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
-import { gameType } from '../../room/room.schema.js';
+import { GameType } from '../../room/room.schema.js';
 import { LoopManager } from '../loop/LoopManager.js';
 import { IOInterface } from '../../utils/IOInterface.js';
 import { SceneContext } from './SceneContext.js';
-import { Player, IGameInfos } from './Interface.js';
+import { Player, IGameInfos } from './Player.js';
 import { game } from '../../game/Pong.js';
 import { InputManager } from '../../game/InputManager.js';
 import { randomNameGenerator } from './randomName.js';
-import { UnauthorizedError } from '@transcenduck/error';
 import { roomManagerInstance } from './RoomManager.js';
 
 type StatusType = 'waiting' | 'roomReady' | 'playing' | 'finished';
@@ -16,8 +15,8 @@ const MAX_PLAYER: number = 2;
 
 export class Room {
   public readonly id: string;
-  // private readonly name: string;
-  private readonly gameType: gameType;
+  private readonly name: string;
+  private readonly gameType: GameType;
 
   public players: Map<string, Player> = new Map();
   private status: StatusType = 'waiting';
@@ -31,7 +30,7 @@ export class Room {
 
   constructor(gameInfos: IGameInfos) {
     this.id = uuidv4();
-    // this.name = gameInfos.name;
+    this.name = gameInfos.name;
     console.log(`Creating room with id: ${this.id}`);
     this.gameType = gameInfos.type_game;
     this.privateRoom = gameInfos.privateRoom;
@@ -47,7 +46,7 @@ export class Room {
     }
     else if (this.gameType === 'local') {
       // TODO : gerer le nom du joueur local
-      this.players.set('local', new Player('local', 'Local Player'));
+      this.players.set('local', new Player('local', gameInfos.localPlayerName));
       const player = this.players.get('local');
       player!.avatar = `https://${process.env.AUTHORIZED_IP}/api/uploads/avatar/default.png`;
       player!.ready = true;
@@ -63,20 +62,7 @@ export class Room {
 
   async addPlayer(player: Player) {
     this.players.set(player.id, player);
-
-    const response = await fetch(`http://${process.env.USER_IP}/users/${player.id}?includePreferences=true`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-
-    if (!response.ok) {
-      throw new UnauthorizedError(`Failed to fetch player info for ${player.id}`);
-    }
-
-    const playerInfo = await response.json();
     player.side = (this.players.size === 1) ? 'left' : 'right';
-    player.avatar = playerInfo.data.preferences.avatar;
-    player.player_name = playerInfo.data.username;
 
     IOInterface.send(
       JSON.stringify({ action: 'joined', data: this.toJSON() }),
@@ -129,7 +115,7 @@ export class Room {
   }
 
   error(message: string) {
-    const {type, user_id, payload} = JSON.parse(message);
+    const { type, user_id, payload } = JSON.parse(message);
     if (type !== 'error') return; // Message is not for me
 
     console.error(`Error in room ${this.id} for player ${user_id}:`, payload);
@@ -144,7 +130,7 @@ export class Room {
   }
 
   deconnexion(message: string) {
-    const {type, user_id} = JSON.parse(message);
+    const { type, user_id } = JSON.parse(message);
     if (type !== 'disconnected') return; // Message is not for me
 
     console.log(`Player ${user_id} disconnected from room ${this.id}`);
@@ -177,6 +163,7 @@ export class Room {
   toJSON() {
     return {
       id: this.id,
+      name: this.name,
       gameType: this.gameType,
       players: Array.from(this.players.values()).map(player => player.toJSON()),
       status: this.status,

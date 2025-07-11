@@ -1,7 +1,7 @@
 import { InputManager } from "../../game/InputManager.js";
 import { gameType } from "../../room/player.schema.js";
 import { LoopManager } from "../loop/LoopManager.js";
-import { Player } from "./Interface.js";
+import { Player } from "./Player.js";
 import { AsyncLocalStorage } from "async_hooks";
 
 export class SceneContext {

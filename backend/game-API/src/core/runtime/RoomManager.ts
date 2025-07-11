@@ -1,14 +1,14 @@
 import { Room } from "./Room.js";
-import { gameType } from "../../room/room.schema.js";
-import { Player } from "./Interface.js";
-import { NotFoundError, ConflictError} from '@transcenduck/error'
+import { GameType } from "../../room/room.schema.js";
+import { Player } from "./Player.js";
+import { NotFoundError, ConflictError } from '@transcenduck/error'
 
 class RoomManager {
   private rooms: Map<string, Room> = new Map();
   private playersInRooms: Map<string, Room> = new Map();
 
-  public createRoom(game_name: string, type_game: gameType, privateRoom: boolean = false): string {
-    const room = new Room({ name: game_name, type_game: type_game, privateRoom: privateRoom });
+  public createRoom(game_name: string, type_game: GameType, privateRoom: boolean = false, localPlayerName?: string): string {
+    const room = new Room({ name: game_name, type_game: type_game, privateRoom: privateRoom, localPlayerName });
     this.rooms.set(room.id, room);
     return room.id;
   }

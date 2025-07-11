@@ -1,4 +1,4 @@
-import { FetchInterface } from "../api/FetchInterface";
+import { FetchInterface, IGameFormInfo } from "../api/FetchInterface";
 import { renderErrorPage } from "./renderPage";
 import { IOtherUser, IUserInfo } from "../interfaces/IUser";
 import { addFriendButton } from "../pages/Friends/Lists/allUsersList";
@@ -70,45 +70,52 @@ export async function handleSearchOpponent(value: string) {
 	
 	container.innerHTML = "";
 	for (const user of searchData.data!.users) {
+		const radioId = `${user.id}`;
 		container!.innerHTML += `
 		<div class="flex flex-row justify-between items-center w-full space-x-2 ">
-		<div class="flex justify-start items-center space-x-2">
-			<img src="${user.avatar}" alt="Avatar" class="w-8 h-8 rounded-full">
-			<div name="otherProfile" data-id="${user.id}" class="flex font-title text-secondary dark:text-dtertiary hover:cursor-pointer hover:underline">${user.username}</div>
-		</div>
-	
-		${inviteToGameButton(user)}
-	</div>`;
+			<label for="${radioId}" class="flex w-full justify-start items-center space-x-2 hover:cursor-pointer hover:bg-dprimary p-1 rounded">
+				<input type="radio" id="${radioId}" name="invite-game" data-id="${user.id}" class="font-title peer hidden " />
+				<div class="flex flex-row items-center space-x-4 w-full rounded p-2 peer-checked:bg-dprimary">
+				<img src="${user.avatar}" alt="Avatar" class="w-8 h-8 rounded-full">
+				<span class="font-title">${user.username}</span>
+				</div>
+			</label>
+
+			${seeProfileButton(user)}
+		</div>`;
 	}
 }
 
-
-export function inviteToGameButton(user: IOtherUser) {
-return `
-<button id="invite-game" data-username=${user.username} data-id=${user.id} class="relative hover:cursor-pointer hover:underline">
-	Invite to play
-</button>`
+function seeProfileButton(user: IOtherUser) {
+	return `
+	<div name="otherProfile" data-id="${user.id}" class="flex font-title text-secondary dark:text-dtertiary hover:cursor-pointer hover:underline">
+	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+</svg>
+</div>`
 }
 
+// export function inviteToGameButton(user: IOtherUser) {
+// return `
+// <button id="invite-game" data-username=${user.username} data-id=${user.id} class="relative dark:text-dprimary text-tertiaryhover:cursor-pointer hover:underline">
+// 	Invite to play
+// </button>`
+// }
 
-export async function invitePlayerToPlay(target: HTMLElement) {
+
+export async function invitePlayerToPlay(gameFormInfo: IGameFormInfo) {
 
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
 		return renderErrorPage('401');
-		
 	}
-
-	const targetId = target.dataset.id;
-	if (!targetId) {
-		return;
-	}
+	const choice = (document.querySelector('input[name="invite-game"]:checked') as HTMLInputElement)
+	const player_select = choice.id;
+	console.log("Selected player for game:", player_select);
 	
-	const success = await FetchInterface.inviteToPlay(user, targetId);
+	const success = await FetchInterface.inviteToPlay(gameFormInfo, user, player_select);
 	if (!success) {
-		alertTemporary("error", "failed-to-send-invitation!", user.preferences.theme, true, true);
 		return;
 	}
 	document.getElementById("initGame")?.classList.add("opacity-0", "pointer-events-none");
-	alertTemporary("success", "invitation-sent-successfully!", user.preferences.theme, true, true);
 }

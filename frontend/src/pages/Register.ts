@@ -3,7 +3,6 @@ import { Form } from "../classes/Form";
 import { InputField } from "../classes/Input";
 import { Button } from "../classes/Button";
 import { verifRegexPassword } from "../components/utils/regex";
-import { verifValueForm } from "../events/user/userRegister";
 import { renderErrorPage, renderPublicPage } from "../controllers/renderPage";
 import { FetchInterface } from "../api/FetchInterface";
 import { alertPublic } from "../components/ui/alert/alertPublic";
