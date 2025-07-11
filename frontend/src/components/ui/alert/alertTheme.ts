@@ -1,17 +1,27 @@
-import { getUserInfo } from "../../../api/getterUser(s)";
+import { FetchInterface } from "../../../api/FetchInterface";
 import { alertTemporary } from "./alertTemporary";
 
-export async function getCustomAlertTheme(needUser: boolean = true, theme: string = "dark") {
+export async function getCustomAlertTheme(
+	needUser: boolean = true,
+	theme: string = "dark"
+): Promise<{
+	theme: string;
+	lang: string;
+	bg: string;
+	text: string;
+	icon: string;
+	confirmButtonColor: string;
+	cancelButtonColor: string;
+} | undefined> {
 	let lang = sessionStorage.getItem('lang') || 'en';
 	
 	if (needUser) {
-		const response = await getUserInfo();
-		if (response.status === "error" || !response.data) {
-			alertTemporary("error", "Error while fetching user info", 'dark');
-			return;
+		const user = await FetchInterface.getUserInfo()
+		if (user === undefined) {
+			return await alertTemporary("error", "Error while fetching user info",'dark', false);
 		}
-		lang = response.data.preferences!.lang || 'en';
-		theme = response.data.preferences!.theme;
+		lang = user.preferences.lang ?? 'en';
+		theme = user.preferences.theme ?? 'dark';
 	}
 	const bg = theme === 'dark' ? '#000000' : '#FFFFFF';
 	const text = theme === 'dark' ? '#F8E9E9' : '#000000';

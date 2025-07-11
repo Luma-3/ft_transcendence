@@ -20,7 +20,7 @@
 	"no-account": "¿No tienes una cuenta?",
 	"create-account": "Crear una cuenta",
 	"you-have-to-verify-email": "¡Gracias! Te hemos enviado un correo electrónico. Solo tienes que hacer clic en el enlace para verificar tu dirección.",
-	"verify-email": "¡Gracias! Te hemos enviado un correo electrónico. Solo tienes que hacer clic en el enlace para verificar tu dirección. El enlace estará activo durante 10 minutos. Si no lo encuentras, revisa tu carpeta de spam o espera 10 minutos y vuelve a intentarlo.",
+	"verify-email": "¡Gracias! Te hemos enviado un correo electrónico. Solo tienes que hacer clic en el enlace para verificar tu dirección. El enlace estará activo durante 10 minutos. Si no lo encuentras, revisa tu carpeta de spam o espera 10 minutos y vuelve a intentarlo. <br> Si no has recibido el correo electrónico, puedes reenviarlo haciendo clic en el botón de abajo que aparecerá después de 1 minuto.",
 	"login": "Iniciar sesión",
 	"google-login": "Iniciar sesión con Google",
 	"username-already-in-use": "Nombre de usuario ya utilizado",
@@ -33,6 +33,13 @@
 	"no-changes-detected": "No se detectaron cambios",
 	"user-info-updated": "Información actualizada",
 
+	"api-doc-transcenduck-services": "Documentación de la API",
+	"auth-doc": "Servicio de autenticación",
+	"user-doc": "Servicio de usuario",
+	"upload-doc": "Servicio de carga de archivos",
+	"game-doc": "Servicio de juego",
+
+
 	"profil": "Perfil",
 	"stats": "Estadísticas de juegos",
 	"logout": "Cerrar sesión",
@@ -42,13 +49,15 @@
 	"settings": "Configuraciones",
 	"change-default-language": "Cambiar idioma predeterminado",
 	"language-update": "Idioma actualizado",
-	
+	"change-image": "Cambiar imagen",
 	"activate-2fa": "Activar 2FA",
 	"disable-2fa": "Desactivar 2FA",
 	
 	"2fa-auth": "Autenticación de dos factores",
 	"2fa-warning": "¡Advertencia! <br> No usar 2FA reduce la seguridad (ya que cualquiera puede acceder a tu cuenta)<br> y aumenta el riesgo de acciones accidentales.<br> ¡No se recomienda!",
-	
+	"2fa-description": "La autenticación de dos factores (2FA) agrega una capa de seguridad adicional a su cuenta. Además de su contraseña, deberá proporcionar un código de verificación recibido por correo electrónico.",
+	"2fa-code": "Ingrese su código de verificación 2FA",
+
 	"are-you-sure": "¿Estás seguro?",
 	"dangerous-action": "Acciones peligrosas",
 	"delete-account": "Eliminar cuenta",
@@ -86,9 +95,12 @@
 	"please-enter-all-fields": "Por favor, completa todos los campos",
 	"new-password-and-confirm-password-are-different": "La nueva contraseña y la confirmación de la contraseña son diferentes",
 	"password-changed": "Contraseña cambiada",
+	"new-password-must-be-different-from-old-password": "La nueva contraseña debe ser diferente de la antigua",
+
 	"user-infos-updated": "Información actualizada",
 	"user-infos-not-updated": "Información no actualizada",
 	"friend-invitation-sent": "Invitación de amigo enviada",
+	"friend-invitation-cancelled": "Invitación de amigo cancelada",
 	"issues-with-friend-invitation": "Problemas con la invitación de amigo",
 	"friend-invitation-refused": "Invitación de amigo rechazada",
 	"issues-with-invitation-refused": "Problemas con el rechazo de la invitación",
@@ -106,6 +118,8 @@
 	"you-sent-invitation": "Has enviado una invitación de amigo a ",
 	"notifications": "Notificaciones",
 	"cancel-invitation": "Cancelar invitación",
+		"accept-invitation": "Aceptar esta invitación",
+	"refuse-invitation": "Rechazar esta invitación",
 	"block-motherducker": "Bloquear a este hijo de ducka",
 	"unfriend-user": "Desamigar",
 	"add-friend": "Agregar amigo",

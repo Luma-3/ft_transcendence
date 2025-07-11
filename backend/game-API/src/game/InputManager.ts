@@ -28,11 +28,21 @@ export class InputManager {
   set(playerId: string, input: Vector2) {
     this.playersInput.set(playerId, input);
   }
+  
+  stop() {
+    this.playersInput.clear();
+    const playersId = [...SceneContext.get().players.keys()];
+    playersId.forEach(player => {
+      IOInterface.unsubscribe(`ws:game:player:${player}`);
+    });
+  }
 }
+
 
 function handleInput(message: string, channel: string): void {
   const payload = JSON.parse(message);
   const [, playerId] = channel.split(':').slice(-2);
+  console.log(`InputManager: handleInput`, payload, playerId);
 
   if (playerId !== payload.user_id) {
     console.warn(`InputManager: Player ID mismatch. Expected ${playerId}, got ${payload.user_id}`);
@@ -45,7 +55,7 @@ function handleInput(message: string, channel: string): void {
 
   inputManager.get(playerId).y = +movement.up - +movement.down;
 
-  if (this.gameType === "local") {
+  if (this.gameType === "local" && payload.data.otherMovement) {
     movement = payload.data.otherMovement;
     inputManager.get("local").y = +movement.up - +movement.down;
   }

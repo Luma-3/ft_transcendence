@@ -1,14 +1,14 @@
-import notfound from "./4xx";
 
 import { navbar } from "../components/ui/navbar";
-
 import { backButton } from "../components/ui/buttons/backButton";
 
-import { getFriends, getOtherUserInfo } from "../api/getterUser(s)";
-import { API_CDN } from "../api/routes";
-import { IUserInfo } from "../interfaces/IUser";
 
-function avatarBanner(userPref: {avatar: string, banner: string}) {
+import { getFriends } from "../api/getterUser(s)";
+import { IUserInfo } from "../interfaces/IUser";
+import { renderErrorPage } from "../controllers/renderPage";
+import { FetchInterface } from "../api/FetchInterface";
+
+function avatarBanner(userPref: any) {
 return `
 <div class="flex flex-col mb-20 items-center justify-center space-y-2 pt-4">
 	
@@ -62,11 +62,11 @@ async function friends(user:User) {
 				<span traslate="friends" >Friends</span>
 			<div class="flex flex-col w-full max-h-[400px] overflow-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
 			`;
-	const friendsList = await getFriends();
-	if (friendsList.status === "error" || !friendsList.data) {
+	const friendsList = await FetchInterface.getFriends();
+	if (!friendsList) {
 		return `${container}<span class="text-secondary dark:text-dtertiary" translate="no-friends">No friends found</span></div>`;
 	}
-	for(const friend of friendsList.data) {
+	for(const friend of friendsList) {
 		console.log("Friend:", friend);
 		container += `
 		<div class="flex flex-row justify-between w-1/2 font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary">
@@ -101,23 +101,25 @@ async function friends(user:User) {
 	return container;
 }
 
-export async function renderOtherProfile(container: HTMLElement) {
+export async function renderOtherProfile(container: HTMLElement, myUser: IUserInfo) {
 
-	console.log("Rendering other profile page...");
 	const userId = container.dataset.id;
-	const response = await getOtherUserInfo(userId!);
-	if (response.status === "success" && response.data) {
-		const user = response.data;
+	if (!userId) {
+		return renderErrorPage('404');
+	}
 
-		return `
-			${navbar(user)}
-			${backButton()}
-			<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
-			${avatarBanner(user.preferences)}
-			${userInfo(user)}
-			</div>`
-		}
-		return notfound();
+	const user = await FetchInterface.getOtherUserInfo(userId);
+	if (user === undefined) {
+		return renderErrorPage('404');
+	}
+
+	return `
+${navbar(myUser)}
+${backButton()}
+<div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
+	${avatarBanner(user.preferences)}
+	${userInfo(user)}
+</div>`
 }
 
 

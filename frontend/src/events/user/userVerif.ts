@@ -1,6 +1,7 @@
 import { fetchApiWithNoError } from "../../api/fetch";
 import { MODULE_TWOFA } from "../../api/routes";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
+import { renderPublicPage } from "../../controllers/renderPage";
 
 export async function verifyEmailUser(token: string) {
 	alertTemporary("info", "Verifying your email...", "dark");
@@ -9,10 +10,11 @@ export async function verifyEmailUser(token: string) {
 		method: "GET",
 	});
 	if (response.status === "error") {
-		alertTemporary("error", "Error with email verification", "dark");
-		return window.location.href = "/home";
+		await alertTemporary("error", "Error with email verification", "dark", true, true);
+		// renderPublicPage('register');
+		return;
 	}
 
-	alertTemporary("success", "Email verified successfully", "dark");
-	return window.location.href = "/login";
+	await alertTemporary("success", "Email verified successfully", "dark", true, true);
+	// window.location.href = "/login";
 }

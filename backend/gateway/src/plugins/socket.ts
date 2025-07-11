@@ -72,16 +72,18 @@ function handleMessage(socket: WebSocket, raw: string) {
 
 function handleError(socket: WebSocket, error: Error) {
   console.error(`[WS] Error on client ${socket.user_id}:`, error);
-  socket.send(JSON.stringify({
+  redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
     type: 'error',
-    payload: { message: error.message }
+    user_id: socket.user_id,
+    payload: { error: error.message }
   }));
 }
 
 function handleClose(socket: WebSocket, code?: number, reason?: string) {
   console.log(`[WS] client ${socket.user_id} disconnected: code=${code}, reason=${reason}`);
   redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
-
+    type: 'disconnected',
+    user_id: socket.user_id,
   }));
 }
 

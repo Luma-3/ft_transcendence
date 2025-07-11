@@ -18,7 +18,7 @@
 	"register": "S'inscrire",
 	"no-account": "Pas de compte ?",
 	"create-account": "Créer un compte",
-	"you-have-to-verify-email": "Merci ! Nous vous avons envoyé un e-mail. Il vous suffit de cliquer sur le lien pour vérifier votre adresse. Ce lien est valable pendant 10 minutes. Si vous ne le trouvez pas, vérifiez votre dossier spam ou attendez 10 minutes et essayez à nouveau.",
+	"you-have-to-verify-email": "Merci ! Nous vous avons envoyé un e-mail. Il vous suffit de cliquer sur le lien pour vérifier votre adresse. Ce lien est valable pendant 10 minutes. Si vous ne le trouvez pas, vérifiez votre dossier spam ou attendez 10 minutes et essayez à nouveau.<br> Si vous n'avez pas reçu l'e-mail, vous pouvez le renvoyer en cliquant sur le bouton ci-dessous qui apparaîtra après 1 minute.",
 	"verify-email": "Vérifier l'email",
 	"login": "Connexion",
 	"google-login": "Connexion avec Google",
@@ -29,6 +29,13 @@
 	"password-must-include": "Le mot de passe doit inclure au moins : 8 caractères, 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
 	"no-changes-detected": "Aucun changement détecté",
 	"user-info-updated": "Informations mises à jour",
+	
+	"api-doc-transcenduck-services": "Documentation de l'API",
+	"auth-doc": "Service d'authentification",
+	"user-doc": "Service utilisateur",
+	"upload-doc": "Service de téléchargement de fichiers",
+	"game-doc": "Service de jeu",
+
 
 	"profil": "Profil",
 	"stats": "Statistiques de jeux",
@@ -39,12 +46,15 @@
 	"settings": "Paramètres",
 	"change-default-language": "Changer la langue par défaut",
 	"language-update": "Langue mise à jour",
+	"change-image": "Changer l'image",
 	
 	"activate-2fa": "Activer 2FA",
 	"disable-2fa": "Désactiver 2FA",
 	
 	"2fa-auth": "Authentification à deux facteurs",
 	"2fa-warning": "Avertissement ! <br> Pas de 2FA réduit la sécurité (car n'importe qui peut accéder à votre compte) et augmente le risque d'actions accidentelles.<br> Ce n'est pas recommandé !",
+	"2fa-description": "L'authentification à deux facteurs (2FA) ajoute une couche de sécurité supplémentaire à votre compte. En plus de votre mot de passe, vous devrez fournir un code de vérification recu par email.",
+	"2fa-code": "Entrez votre code de vérification 2FA",
 	
 	"are-you-sure": "Êtes-vous sûr ?",
 	"dangerous-action": "Actions dangereuses",
@@ -72,6 +82,7 @@
 	"profile": "Profil",
 	"your-informations": "Vos informations",
 	"save-changes": "Sauvegarder les modifications",
+
 	"change-your-password": "Changer votre mot de passe",
 	"change-your-password-description": "Changez votre mot de passe regulierement pour sécuriser votre compte.",
 	"change-password": "Changer le mot de passe",
@@ -81,9 +92,12 @@
 	"please-enter-all-fields": "Veuillez remplir tous les champs",
 	"new-password-and-confirm-password-are-different": "Le nouveau mot de passe et la confirmation du mot de passe sont différents",
 	"password-changed": "Mot de passe changé",
+	"new-password-must-be-different-from-old-password": "Le nouveau mot de passe doit être différent de l'ancien mot de passe",
+	
 	"user-infos-updated": "Informations mises à jour",
 	"user-infos-not-updated": "Informations non mises à jour",
 	"friend-invitation-sent": "Demande d'ami envoyée",
+	"friend-invitation-cancelled": "Invitation d'ami annulée",
 	"issues-with-friend-invitation": "Problèmes avec l'invitation d'ami",
 	"friend-invitation-refused": "Invitation d'ami refusée",
 	"issues-with-invitation-refused": "Erreur avec le refus de l'invitation",
@@ -101,6 +115,9 @@
 	"you-sent-invitation": "Vous avez envoyé une invitation d'ami à ",
 	"notifications": "Notifications",
 	"cancel-invitation": "Annuler l'invitation",
+	"accept-invitation": "Accepter cette invitation",
+	"refuse-invitation": "Refuser cette invitation",
+
 	"block-motherducker": "Bloquer ce fils de canard",
 	"unfriend-user": "Enlever des amies",
 	"add-friend": "Ajouter en ami",

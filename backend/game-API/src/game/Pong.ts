@@ -6,6 +6,8 @@ import { Vector2 } from "../core/physics/Vector.js";
 import { IOInterface } from "../utils/IOInterface.js";
 import { AIController } from "./AIController.js"
 
+import { roomManagerInstance } from "../core/runtime/RoomManager.js";
+
 export class Pong extends GameObject {
   private ball: Ball;
   private paddleLeft: Paddle;
@@ -55,7 +57,6 @@ export class Pong extends GameObject {
   }
 
   stopGame() {
-    SceneContext.get().loopManager.stop();
     const payload = {
       action: 'end',
       data: {
@@ -67,6 +68,8 @@ export class Pong extends GameObject {
       JSON.stringify(payload),
       [...SceneContext.get().players.keys()]
     );
+
+    roomManagerInstance.deleteRoom(SceneContext.get().id);
   }
 
   checkBallGaol() {
@@ -83,14 +86,19 @@ export class Pong extends GameObject {
       winner = this.paddleLeft.Paddleid;
     }
 
-    SceneContext.get().players.get(winner).score++;
+    const WinnerPlayer = SceneContext.get().players.get(winner);
+    if (!winner) {
+      console.warn("Winner not found in players map");
+      return;
+    }
+    WinnerPlayer.addScore();
 
     const payload = {
       action: 'score',
       data: {
         roomId: SceneContext.get().id,
         ball: this.ball.snapshot(),
-        player: Array.from(SceneContext.get().players.values()).map(player => player.toJSON())
+        players: Array.from(SceneContext.get().players.values()).map(player => player.toJSON())
       }
     }
     IOInterface.broadcast(
@@ -113,7 +121,6 @@ export class Pong extends GameObject {
       size: this.size,
     };
   }
-
 }
 
 export const game = () => {

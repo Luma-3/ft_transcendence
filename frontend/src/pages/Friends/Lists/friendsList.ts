@@ -1,20 +1,21 @@
-import { getFriends } from '../../../api/getterUser(s)';
+import { FetchInterface } from '../../../api/FetchInterface';
 import { headerOtherUserMenu } from '../../../components/ui/userMenu';
 
 
 export async function friendsList() {
 let container = `
-<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-10 text-tertiary dark:text-dtertiary">
+<div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-5 text-tertiary dark:text-dtertiary">
 
+	<div class="relative h-[400px] w-full z-10 overflow-y-auto font-title title-responsive-size items-center justify-center space-y-4 text-primary dark:text-dtertiary">
+
+		<div class="flex flex-col w-full justify-center items-center gap-4 p-4">`;
 	
-	<div class="flex flex-col w-full h-[400px] font-title title-responsive-size items-center justify-center space-y-4 gap-4 p-4 text-tertiary dark:text-dtertiary">`;
-	const friendsList = await getFriends();
+	const friendsList = await FetchInterface.getFriends();
+	if (!friendsList) {
+		return `${container}</div></div></div>`;
+	}
 	
-	if (friendsList.status === "error" || friendsList.data?.length == 0) {
-		return `${container}</div></div>`;
-	}	
-	
-	for(const friend of friendsList.data!) {
+	for(const friend of friendsList) {
 		container += `
 		<div id="friend-${friend.id}"
 	class="flex flex-col justify-between w-full font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary
@@ -69,6 +70,7 @@ let container = `
 	}
 
 container += `
+		</div>
 	</div>
 </div>`;
 

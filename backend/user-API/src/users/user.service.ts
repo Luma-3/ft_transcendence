@@ -10,8 +10,7 @@ import { PREFERENCES_PRIVATE_COLUMNS, preferencesModelInstance } from "../prefer
 
 import fetch from "node-fetch";
 import https from "https"
-import { redisPub, redisCache } from "../utils/redis.js";
-
+import { redisCache } from "../utils/redis.js";
 const httpsAgent = new https.Agent({ rejectUnauthorized: false })
 
 async function verifyConflict(username: string, email: string) {
@@ -53,10 +52,10 @@ export class UserService {
     // Backdor for development purposes
     // if (process.env.NODE_ENV !== 'development') {
 
-      redisPub.setEx(`users:pendingUser:${userID}`, 660, user);
-      redisPub.setEx(`users:pendingUser:${user_obj.username}`, 660, userID);
+      redisCache.setEx(`users:pendingUser:${userID}`, 660, user);
+      redisCache.setEx(`users:pendingUser:${user_obj.username}`, 660, userID);
 
-      await fetch(`https://${process.env.AUTH_IP}/internal/2fa/sendVerifEmail`, {
+      await fetch(`https://${process.env.AUTH_IP}/internal/email-verification`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -92,6 +91,9 @@ export class UserService {
       validated: true
     }
 
+    if( data.avatar && data.avatar.indexOf('googleusercontent.com/') !== -1) {
+      data.avatar = process.env.REDIRECT_URI +`/api/uploads/proxy?url=` + encodeURIComponent(data.avatar.substring(0, data.avatar.lastIndexOf('=')));
+    }
     const user_preferences: Omit<PreferencesBaseType, 'user_id'> = {
       lang: 'en',
       avatar: data.avatar ?? (process.env.REDIRECT_URI +`/api/uploads/avatar/default.png`),
@@ -142,7 +144,7 @@ export class UserService {
       agent: httpsAgent
     }).catch(console.error)
 
-    redisPub.setEx("users:2fa:update:" + user.email , 600, userId);
+    redisCache.setEx("users:2fa:update:" + user.email , 600, userId);
   }
 
   static async disable2FA(userId: string) {
@@ -161,7 +163,7 @@ export class UserService {
       agent: httpsAgent
     }).catch(console.error)
 
-    redisPub.setEx("users:2fa:update:" + user.email, 600, userId);
+    redisCache.setEx("users:2fa:update:" + user.email, 600, userId);
   }
 
   static async update2FA(userId: string) {
@@ -205,22 +207,30 @@ export class UserService {
 
   static async deleteUser(id: string) {
     await userModelInstance.delete(id);
-    const multi = redisPub.multi();
+    const multi = redisCache.multi();
     multi.del(`users:data:${id}`);
     multi.del(`users:data:${id}:hydrate`);
     multi.exec().catch(console.error);
+
+    fetch(`https://${process.env.AUTH_IP}/internal/session/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'accept': 'application/json'
+      },
+      agent: new https.Agent({ rejectUnauthorized: false })
+    }).then(() => console.log("hsdkjfhsdfkj")).catch(console.error);
   }
 
   static async createUserRedis(userId: string) {
 
-    const user = await redisPub.get(`users:pendingUser:${userId}`);
+    const user = await redisCache.get(`users:pendingUser:${userId}`);
     if (!user) {
       throw new NotFoundError('User');
     }
 
     const userData = JSON.parse(user) as UserRedisType;
     
-    const multi = redisPub.multi();
+    const multi = redisCache.multi();
     multi.del(`users:pendingUser:${userId}`);
     multi.del(`users:pendingUser:${userData.user_obj.username}`)
     multi.exec().catch(console.error);
@@ -242,16 +252,16 @@ export class UserService {
     preferencesColumns: string[]
   ): Promise<UserBaseType & { preferences?: PreferencesBaseType }> {
     if (!includePreferences) {
-      const data = await redisPub.getEx(`users:data:${id}`, {type:'EX', value: 3600 });
+      const data = await redisCache.getEx(`users:data:${id}`, {type:'EX', value: 3600 });
       if (data) {
         return JSON.parse(data);
       }
       const user = await userModelInstance.findByID(id, userColumns);
       if (!user) throw new NotFoundError("User");
-      await redisPub.setEx(`users:data:${id}`, 3600 , JSON.stringify(user));
+      await redisCache.setEx(`users:data:${id}`, 3600 , JSON.stringify(user));
       return user;
     }
-    const data = await redisPub.getEx(`users:data:${id}:hydrate`, {type:'EX', value: 3600 });
+    const data = await redisCache.getEx(`users:data:${id}:hydrate`, {type:'EX', value: 3600 });
     if (data) {
       return JSON.parse(data);
     }
@@ -265,7 +275,7 @@ export class UserService {
     if (!preferences) throw new NotFoundError("Preferences");
 
     const userWithPreferences = { ...user, preferences };
-    await redisPub.setEx(`users:data:${id}:hydrate`, 3600 , JSON.stringify(userWithPreferences));
+    await redisCache.setEx(`users:data:${id}:hydrate`, 3600 , JSON.stringify(userWithPreferences));
     return userWithPreferences;
   }
 
@@ -294,28 +304,56 @@ export class UserService {
     const hash_pass = await hashPassword(newPassword);
     const [updatedUser] = await userModelInstance.update(id, { password: hash_pass }, USER_PRIVATE_COLUMNS);
 
-    redisPub.DEL(`users:credentials:${updatedUser.username}`).catch(console.error);
+    redisCache.DEL(`users:credentials:${updatedUser.username}`).catch(console.error);
     return updatedUser;
   }
 
   static async updateUserEmail(
     id: string,
     email: string
-  ): Promise<UserBaseType> {
-    const user = await userModelInstance.findByID(id);
+  ) {
+    const user = await this.getUserByID(id, true, USER_PRIVATE_COLUMNS, PREFERENCES_PRIVATE_COLUMNS);
     if (!user) throw new NotFoundError("User");
 
     const existingEmail = await userModelInstance.findByEmail(email, true);
     if (existingEmail) throw new ConflictError("Email already in use");
 
-    const [updatedUser] = await userModelInstance.update(id, { email: email }, USER_PRIVATE_COLUMNS);
+    const tokenMail = uuidV4();
+    const data = JSON.stringify({ token: tokenMail, userID: id });
 
-  const multi = redisCache.multi();
-  multi.DEL(`users:data:${id}:hydrate`);
-  multi.DEL(`users:data:${id}`);
-  multi.exec().catch(console.error);
-  return updatedUser;
-}
+    redisCache.setEx(`users:pendingEmail:${tokenMail}`, 660, email);
+    redisCache.setEx(`users:pendingEmail:${email}`, 660, data);
+    redisCache.setEx(`users:pendingEmail:${id}`, 660, email);
+
+    await fetch(`https://${process.env.AUTH_IP}/internal/email-verification`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({ email: email, lang: user.preferences!.lang, token: tokenMail }),
+      agent: httpsAgent
+    }).catch(console.error);
+  }
+
+  static async updateUserEmailRedis ( userID: string ) {
+
+    const email = await redisCache.get(`users:pendingEmail:${userID}`);
+    if (!email) {
+      throw new NotFoundError('Email not found or verification email expired');
+    }
+
+    const [updatedUser] = await userModelInstance.update(userID, { email: email }, USER_PRIVATE_COLUMNS);
+
+    const multi = redisCache.multi();
+    multi.DEL(`users:pendingEmail:${userID}`);
+    multi.DEL(`users:pendingEmail:${email}`);
+    multi.DEL(`users:data:${userID}:hydrate`);
+    multi.DEL(`users:data:${userID}`);
+    multi.exec().catch(console.error);
+    
+    return updatedUser;
+  }
 
   static async updateUserUsername(
     id: string,
@@ -329,12 +367,12 @@ export class UserService {
 
     const [updatedUser] = await userModelInstance.update(id, { username: username }, USER_PRIVATE_COLUMNS);
 
-  const multi = redisCache.multi();
-  multi.DEL(`users:data:${id}:hydrate`);
-  multi.DEL(`users:data:${id}`);
-  multi.exec().catch(console.error);
-  return updatedUser;
-}
+    const multi = redisCache.multi();
+    multi.DEL(`users:data:${id}:hydrate`);
+    multi.DEL(`users:data:${id}`);
+    multi.exec().catch(console.error);
+    return updatedUser;
+  }
 
   static async verifyCredentials(username: string, password: string): Promise<UserBaseType> {
     const user = await userModelInstance.findByUsername(username, undefined, ['password', 'validated', ...USER_PRIVATE_COLUMNS]);

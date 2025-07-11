@@ -22,9 +22,11 @@ export class NetworkLoop extends ALoop {
 
   private sendBatch(snapshot: any[]): void {
     const payload = {
-      time: performance.now() - this.startTime,
       action: "snapshot",
-      data: snapshot,
+      data: {
+        time: performance.now() - this.startTime,
+        objects: snapshot,
+      }
     }
     const player = SceneContext.get().players;
     IOInterface.broadcast(

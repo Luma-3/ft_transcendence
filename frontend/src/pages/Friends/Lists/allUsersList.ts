@@ -1,6 +1,6 @@
-import { getAllUsers } from '../../../api/getterUser(s)';
+import { FetchInterface } from '../../../api/FetchInterface';
 import { headerOtherUserMenu } from "../../../components/ui/userMenu";
-import { IOtherUser } from '../../interfaces/PeopleInterface';
+import { IOtherUser } from '../../../interfaces/IUser';
 
 export async function allUsersList() {
 let container = `
@@ -10,13 +10,12 @@ let container = `
 
 		<div class="grid grid-cols-1 gap-4 p-4">`;
 		
-		const allUsers = await getAllUsers('you', false, false, 1, 100, true);
-		console.log(allUsers);
-		if (allUsers.status === "error" || !allUsers.data) {
+		const allUsers = await FetchInterface.getAllUser('all');
+		if (!allUsers) {
 			return `${container}</div></div>`;
 		}
 		
-		for(const otherUser of allUsers.data!.users) {
+		for(const otherUser of allUsers.users) {
 		container += `
 			<div id="user-${otherUser.id}" class="flex flex-col justify-between w-full font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary
 			bg-myblack from-primary to-secondary">
@@ -61,7 +60,7 @@ container += `
 return container;
 }
 
-function addFriendButton(user: IOtherUser) {
+export function addFriendButton(user: IOtherUser) {
 return `
 <div id="add-friend" data-username=${user.username} data-id=${user.id} class="group/item relative hover:cursor-pointer">
 	

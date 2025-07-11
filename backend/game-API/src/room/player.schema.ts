@@ -61,9 +61,9 @@ export const gameTypeSchema = Type.Union([
 export type gameType = Static<typeof gameTypeSchema>;
 
 export const PlayerInitialSchema = Type.Object({
-  player_name: Type.String(),
-  game_type: gameTypeSchema,
-  game_name: Type.String({
+  playerName: Type.String(),
+  gameType: gameTypeSchema,
+  gameName: Type.String({
     description: "Name of the player in the game",
     examples: ["Player1"]
   }),
@@ -80,7 +80,7 @@ export const HeaderBearer = Type.Object({
 export type HeaderBearerType = Static<typeof HeaderBearer>;
 
 export const GameIdSchema = Type.Object({
-  game_id: Type.String({
+  id: Type.String({
     format: 'uuid',
     description: 'Unique identifier for the room, formatted as a UUID'
   })
@@ -89,10 +89,21 @@ export type GameIdType = Static<typeof GameIdSchema>
 
 export const RoomInfoSchema = Type.Object({
   id: Type.String({ format: 'uuid', description: 'Unique identifier for the room, formatted as a UUID' }),
-  game_type: gameTypeSchema,
+  gameType: gameTypeSchema,
   players: PlayersInfoSchema,
   status: Type.String({
     description: "Current status of the room",
   }),
 })
 export type RoomInfoType = Static<typeof RoomInfoSchema>;
+
+
+
+// --- NEW --- //
+
+// export const PrivateRoomSchema = Type.Object({
+//   gameName: Type.String({
+//     description: "Name of the game for the private room",
+//   })
+// });
+// export type PrivateRoomType = Static<typeof PrivateRoomSchema>;

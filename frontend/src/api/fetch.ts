@@ -15,7 +15,7 @@ export async function fetchApi<T>(url: string, option?: RequestInit): Promise<IA
 			responseData = await response.json();
 		}
 
-		if (!response.ok || responseData?.status === "error") {
+		if (!response.ok || responseData?.status === "error" || !responseData.data) {
 			window.location.href = "/error?status=" + response.status + "&message=" + encodeURIComponent(responseData?.message || "Unknown error");
 		}
 

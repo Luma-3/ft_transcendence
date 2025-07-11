@@ -3,6 +3,7 @@ import { gameType } from '../../room/room.schema.js';
 export interface IGameInfos {
   name: string,
   type_game: gameType,
+  privateRoom?: boolean,
 }
 
 export class Player {
@@ -12,6 +13,7 @@ export class Player {
   public ready: boolean;
   public score: number = 0;
   public win: boolean = false;
+  public side: 'left' | 'right' = 'left';
   // TODO : mettre le check de score ici ! 
 
   constructor(user_id: string, player_name: string) {
@@ -34,7 +36,8 @@ export class Player {
       player_name: this.player_name,
       avatar: this.avatar,
       ready: this.ready,
-      score: this.score
+      score: this.score,
+      side: this.side,
     };
   }
 }

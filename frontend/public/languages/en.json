@@ -19,7 +19,7 @@
 	"register": "Register",
 	"no-account": "Don't have an account yet?",
 	"create-account": "Create an account",
-	"you-have-to-verify-email": "Thank you! We've sent you an email. Just click the link inside to verify your address. The link will be active for 10 minutes. If you can't find it, check your spam folder or wait 10 minutes and try again.",
+	"you-have-to-verify-email": "Thank you! We've sent you an email. Just click the link inside to verify your address. The link will be active for 10 minutes. If you can't find it, check your spam folder or wait 10 minutes and try again.<br> If you didn't receive the email, you can resend it by clicking the button below which will appear after 1 minute.",
 	"verify-email": "Verify email",
 	"login": "Login",
 	"google-login": "Login with Google",
@@ -31,6 +31,12 @@
 	"no-changes-detected": "No changes detected",
 	"user-info-updated": "Informations updated",
 
+	"api-doc-transcenduck-services": "API Documentation",
+	"auth-doc": "Authentication service",
+	"user-doc": "User service",
+	"upload-doc": "File upload service",
+	"game-doc": "Game service",
+
 	"profil": "Profile",
 	"stats": "Games stats",
 	"logout": "Logout",
@@ -40,9 +46,12 @@
 	"settings": "Settings",
 	"change-default-language": "Change default language",
 	"language-update": "Language updated",
+	"change-image": "Change image",
 
 	"activate-2fa": "Activate 2FA",
 	"disable-2fa": "Disable 2FA",
+	"2fa-description": "Two factor authentication (2FA) adds an extra layer of security to your account. In addition to your password, you will need to provide a verification code received by email.",
+	"2fa-code": "Enter your 2FA verification code",
 
 	"2fa-auth": "Two factor authentication",
 	"2fa-warning": "Warning ! <br> No 2FA reduces security (as anyone can access your account)<br> and increases the risk of accidental actions.<br> This is not recommended !",
@@ -83,9 +92,13 @@
 	"please-enter-all-fields": "Please enter all fields",
 	"new-password-and-confirm-password-are-different": "New password and confirm password are different",
 	"password-changed": "Password changed",
+	"new-password-must-be-different-from-old-password": "New password must be different from old password",
+	
 	"user-infos-updated": "Informations updated",
 	"user-infos-not-updated": "Informations not updated",
+	
 	"friend-invitation-sent": "Friend invitation sent",
+	"friend-invitation-cancelled": "Friend invitation cancelled",
 	"issues-with-friend-invitation": "Issues with friend invitation",
 	"friend-invitation-refused": "Friend invitation refused",
 	"issues-with-invitation-refused": "Issues with invitation refused",
@@ -102,6 +115,8 @@
 	"you-sent-invitation": "You sent a friend request to ",
 	"notifications": "Notifications",
 	"cancel-invitation": "Cancel invitation",
+	"accept-invitation": "Accept this invitation",
+	"refuse-invitation": "Refuse this invitation",
 	"friend-removed": "Friend removed",
 	"block-motherducker": "Block this motherducker",
 	"unfriend-user": "Unfriend",

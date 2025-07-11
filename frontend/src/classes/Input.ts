@@ -5,10 +5,10 @@ export class InputField {
 	private autocomplete: string;
 	private required: boolean;
 	private translate: string;
-	private labelClass?: string;
 	private value?: string;
+	private disable: boolean;
 
-	constructor(name: string, type: string, placeholder: string, autocomplete: string, required: boolean, translate: string) {
+	constructor(name: string, type: string, placeholder: string, autocomplete: string, required: boolean, translate: string, value: string = '', disable: boolean = false) {
 
 		this.name = name;
 		this.type = type;
@@ -16,12 +16,14 @@ export class InputField {
 		this.autocomplete = autocomplete;
 		this.required = required;
 		this.translate = translate;
+		this.value = value ?? '';
+		this.disable = disable;
 	}
 	
 	public toHtml() {
 	return `
 	<label for="${this.name}" 
-		class="${this.labelClass ?? 'sr-only'}"
+		class="flex w-full font-title text-tertiary dark:text-dtertiary justify-left items-left"
 		translate="${this.translate}"
 	>
 		${this.placeholder}
@@ -36,6 +38,8 @@ export class InputField {
 		translate="${this.translate}"
 		
 		placeholder="${this.placeholder}" ${this.required ? 'required' : ''} 
-		value="${this.value ?? ''}"
+		value="${this.value}"
+		${this.disable ? 'disabled style="color:#D4D3D3"' : ''}
+
 	/>`
 }}

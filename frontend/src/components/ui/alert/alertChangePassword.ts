@@ -1,18 +1,18 @@
 import Swal from "sweetalert2";
-import { fetchApi } from "../../../api/fetch";
-import { API_USER } from "../../../api/routes";
+
 import { alertTemporary } from "./alertTemporary";
 import { getCustomAlertTheme } from "./alertTheme";
 import { loadTranslation } from "../../../controllers/Translate";
 import { verifRegexNewPassword } from "../../utils/regex";
+import { FetchInterface } from "../../../api/FetchInterface";
 
 export async function alertChangePassword() {
 	
 	const customTheme = await getCustomAlertTheme();
 	if (!customTheme) {
-		alertTemporary("error", "Error while getting user theme", 'dark');
-		return;
+		return await alertTemporary("error", "Error while getting user theme", 'dark');
 	}
+
 	const trad = await loadTranslation(customTheme.lang);
 	let messageError = "";
 	Swal.fire({
@@ -56,23 +56,15 @@ export async function alertChangePassword() {
 			} else if(verifRegexNewPassword(newPassword) === false) {
 				messageError = trad['password-must-include'];
 				Swal.showValidationMessage(messageError);
+			} else if (oldPassword === newPassword) {
+				messageError = trad['new-password-must-be-different-from-old-password'];
+				Swal.showValidationMessage(messageError);
 			}
 			return { oldPassword, newPassword };
 		}
 	}).then(async (result) => {
 		if (result.isConfirmed) {
-			const response = await fetchApi(API_USER.UPDATE.PASSWORD, {
-				method: "PATCH",
-				body: JSON.stringify({
-					oldPassword: result.value?.oldPassword.length > 0 ? result.value?.oldPassword : undefined,
-					password: result.value?.newPassword,
-				}),
-			});
-			if (response.status === "success") {
-				alertTemporary("success", trad['password-changed'], customTheme.theme);
-			} else {
-				alertTemporary("error", trad['error-while-changing-password'], customTheme.theme);
-			}
+			await FetchInterface.updatePassword(result.value.oldPassword, result.value.newPassword, trad, customTheme)
 		}
 	});
 }

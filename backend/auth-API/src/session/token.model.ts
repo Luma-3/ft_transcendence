@@ -56,6 +56,10 @@ class RefreshTokenModel {
     await this.knex('token').where({ family_id }).delete();
   }
 
+  async deleteAllTokensByUserId(userId: string): Promise<void> {
+    await this.knex('token').where({ user_id: userId }).delete();
+  }
+
 }
 
 export const refreshTokenModelInstance = new RefreshTokenModel(knexInstance);

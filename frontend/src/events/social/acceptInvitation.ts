@@ -1,72 +1,32 @@
-import { fetchApi } from "../../api/fetch";
-import { getUserInfo } from "../../api/getterUser(s)";
-import { API_USER } from "../../api/routes";
-import { alertTemporary } from "../../components/ui/alert/alertTemporary";
+import { FetchInterface } from "../../api/FetchInterface";
 import { renderErrorPage } from "../../controllers/renderPage";
-import { notificationList } from "../../pages/Friends/Lists/notificationsList";
+import { updateAllLists, updateFriendsList, updateNotificationsList } from "../../pages/Friends/Lists/updatersList";
 
-export async function friendRequest(target: HTMLElement, action: "send" | "accept") {
+export async function friendRequest(target: HTMLElement, action: "send" | "accept", type: "alert" | "page" = "page") {
 
-	const user = await getUserInfo();
-	if (!user || user.status === "error") {
+	const user = await FetchInterface.getUserInfo();
+	if (!user) {
 		return renderErrorPage('401');
 		
 	}
 
 	const targetId = target.dataset.id;
-	const response = await fetchApi(API_USER.SOCIAL.NOTIFICATIONS + `${(action == "send" ? "" : "/accept")}/${targetId}`, {
-		method: "POST",
-		body: JSON.stringify({
-			friendId: targetId,
-		})
-	});
-	
-	if (response.status === "error") {
-		return (action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.data!.preferences!.theme, true)
-																: alertTemporary("error", "issues-with-friend-acceptance", user.data!.preferences!.theme, true);
+	if (!targetId) {
+		return;
 	}
-
-	(action === "send") ? alertTemporary("success", "friend-invitation-sent", user.data!.preferences!.theme, true) 
-											: alertTemporary("success", "friend-invitation-accepted", user.data!.preferences!.theme, true);
-
 	
-	target.parentElement?.parentElement?.parentElement?.remove();
-	const targetDiv = document.getElementById("notifications-div");
-	if (targetDiv) {
-		targetDiv.innerHTML = "";
-		targetDiv.innerHTML = await notificationList(user.data!)
+	const success = await FetchInterface.acceptFriendRequest(user, targetId, action);
+	if (!success) {
+		return;
+	}
+	if (type === "page") {
+		await updateNotificationsList();
+		await updateFriendsList();
+		await updateAllLists();
+		target.parentElement?.parentElement?.parentElement?.remove();
+
+	} else {
+		target.parentElement?.parentElement?.parentElement?.remove();
 	}
 
 }
-
-// export async function acceptFriendRequest(target: HTMLElement) {
-
-// 	const user = await getUserInfo();
-// 	if (!user || user.status === "error") {
-// 		return renderErrorPage('401');
-		
-// 	}
-
-// 	const targetId = target.dataset.id;
-// 	const response = await fetchApi(API_USER.SOCIAL.NOTIFICATIONS + `"/accept"/${targetId}`, {
-// 		method: "POST",
-// 		body: JSON.stringify({
-// 			friendId: targetId,
-// 		})
-// 	});
-	
-// 	if (response.status === "error") {
-// 		return  alertTemporary("error", "issues-with-friend-acceptance", user.data!.preferences!.theme, true);
-// 	}
-
-
-// 	alertTemporary("success", "friend-invitation-accepted", user.data!.preferences!.theme, true);
-
-// 	target.parentElement?.parentElement?.parentElement?.remove();
-// 	const targetDiv = document.getElementById("notification-list");
-// 	if (targetDiv) {
-// 		targetDiv.innerHTML = "";
-// 		targetDiv.innerHTML = await notificationList(user.data!)
-// 	}
-// }
-

@@ -1,5 +1,4 @@
-import { Vector2 } from "../utils/Vector";
-import { lerpVector2 } from "./lerping";
+import { Vector2 } from "../utils/Vector2";
 
 export interface IPaddle {
   type: string;
@@ -20,10 +19,10 @@ export class Paddle {
     this.id = id;
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+  draw(ctx: CanvasRenderingContext2D, revert: boolean, terrainWidth: number) {
     ctx.fillStyle = "white";
     const pos: Vector2 = new Vector2(
-      this.position.x - this.scale.x / 2,
+      revert ? terrainWidth - this.position.x - this.scale.x / 2 : this.position.x - this.scale.x / 2,
       this.position.y - this.scale.y / 2
     );
     ctx.beginPath();
@@ -38,7 +37,6 @@ export class Paddle {
   }
 
   interpolate(snapshotsA: IPaddle, snapshotsB: IPaddle, alpha: number) {
-
-    this.position = lerpVector2(snapshotsA.position, snapshotsB.position, alpha);
+    this.position = Vector2.fromObj(snapshotsA.position).lerp(snapshotsB.position, alpha);
   }
 }

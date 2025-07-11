@@ -1,3 +1,5 @@
+import { backSafePlace } from "../components/ui/buttons/backSafePlace";
+
 function messageErrorFromTheServer(messageServer?: string) {
 	if (!messageServer) {
 		return;
@@ -29,8 +31,8 @@ return `
 	${error_code}
 	
 	</div>
-	
-	${messageErrorFromTheServer() || ''}
+
+	${messageErrorFromTheServer(messageServer) || ''}
 
 	<div class="flex font-title text-xl p-4 rounded=lg">
 
@@ -38,13 +40,7 @@ return `
 
 	</div>
 	
-	<button onClick="window.location.href='/'" class="flex flex-row rounded-full items-center justify-center mt-4 py-2 px-4 text-secondary dark:text-dtertiary bg-primary dark:bg-dprimary hover:bg-secondary dark:hover:bg-dtertiary hover:text-primary dark:hover:text-dprimary 
-	shadow-lg transform transition-transform duration-300"
-	translate="go-back-to-safe-place">
-
-	TEXT
-
-	</button>
+	${backSafePlace()}
 
 </div>`;
 }

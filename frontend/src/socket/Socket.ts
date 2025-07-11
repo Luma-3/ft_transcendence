@@ -1,19 +1,14 @@
 // import { alertWithTimer } from "../components/ui/alert/alertGameReady";
-import { alertPublic } from "../components/ui/alert/alertPublic";
-import { renderPublicPage } from "../controllers/renderPage";
 import { dispatchGameSocketMsg } from "../socket/dispatchGameSocketMsg";
-import { dispatchUserSocketMsg, PayloadUserSocketMsg } from "./dispatchUserSocketMsg";
+import { dispatchUserSocketMsg } from "./dispatchUserSocketMsg";
+import { alertWithTimer } from "../components/ui/alert/alertGameReady";
 
 export let socket: WebSocket;
-const MAX_RECONNECT_TENTATIVE = 5;
 
-let reconnectTentative = 0;
-
-export function socketConnection() {
+export async function socketConnection() {
 	socket = new WebSocket('/api/ws');
 
 	socket.addEventListener("open", () => {
-		reconnectTentative = 0;
 		console.log("WebSocket connection established.");
 	});
 
@@ -34,28 +29,29 @@ export function socketConnection() {
 		}
 	});
 
-	socket.addEventListener('error', () => {
-		alertPublic("WebSocket connection error. Trying to reconnect... Try " + reconnectTentative + " of " + MAX_RECONNECT_TENTATIVE, "error");
-
+	socket.addEventListener('error', async () => {
+		//TODO: Traduction
+		await alertWithTimer("ERROR", "Connection with the serveur lost. Auto-Refresh en cour, 2000");
 		socket.close();
-		if (reconnectTentative < MAX_RECONNECT_TENTATIVE) {
-			reconnectTentative++;
-			socketConnection();
-		} else {
-			alertPublic("WebSocket connection failed. Please log in again.", "error");
-			reconnectTentative = 0;
+		window.location.href = "/login";
 
-			setTimeout(() => { window.location.href = "/login"; }, 1000);
-		}
+
+	socket.addEventListener('close', () => {
+		window.location.href = "/login";
+	});
 	});
 
-	socket.addEventListener('close', (event) => {
-		if (event.wasClean!) {
-			alertPublic(`WebSocket connection closed unexpectedly with code ${event.code}. Message: ${event.reason}. You will be redirected to the main page.`, "error");
-			setTimeout(() => { 
-				renderPublicPage("home") }, 2000);
-		}
-	});
+}
 
+export function sendInSocket(service: string, scope: string, target: string, action: string, data: any) {
+	socket.send(JSON.stringify({
+		service: service,
+		scope: scope,
+		target: target,
+		payload: {
+			action: action,
+			data: data
+		},
+	}));
 }
 	

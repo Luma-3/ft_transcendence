@@ -23,6 +23,12 @@ export class RoomService {
     return roomManagerInstance.joinRoom(player, room_id);
   }
 
+  static createPrivateRoom(player: Player) {
+    const room_id = roomManagerInstance.createRoom(player.id, 'online', true);
+    roomManagerInstance.joinRoom(player, room_id);
+    return room_id;
+  }
+
   static leaveCurrentRoom(player: Player) {
     const room = roomManagerInstance.findCurrentRoom(player);
     if (!room) {

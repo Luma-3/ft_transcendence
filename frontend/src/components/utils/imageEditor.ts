@@ -1,10 +1,10 @@
 import ImageEditor from 'tui-image-editor';
-import { getUserInfo } from '../../api/getterUser(s)';
 import { alertTemporary } from '../ui/alert/alertTemporary';
 import { loadTranslation } from '../../controllers/Translate';
 import { dataURLToBlob } from './convertImage';
 import { API_USER } from '../../api/routes';
 import { fetchApi } from '../../api/fetch';
+import { FetchInterface } from '../../api/FetchInterface';
 
 /**
  * Function que gere l'apparition et la disparition de l'editeur d'image
@@ -97,15 +97,15 @@ async function initImageEditor(): Promise<ImageEditor | null> {
 
 	const div_editor = document.getElementById('tui-image-editor-container') as HTMLDivElement;
 	if (!div_editor) {
-		return alertTemporary("error", "Error while initializing image editor", 'dark'), null;
+		return await alertTemporary("error", "Error while initializing image editor", 'dark'), null;
 	}
 	
-	const user = await getUserInfo();
-	if (user.status === "error" || !user.data) {
-		return alertTemporary("error", "Error while fetching user info", 'dark'), null;
+	const user = await FetchInterface.getUserInfo();
+	if (!user) {
+		return await alertTemporary("error", "Error while fetching user info", 'dark'), null;
 	}
 
-	const theme = user.data.preferences!.theme;
+	const theme = user.preferences!.theme;
 	const headerColor = theme === 'dark' ? '#000000' : '#FFFFFF';
 	const loadButtonColor = theme === 'dark' ? '#FF8904' : '#44BBA4';
 	const backgroundColor = theme === 'dark' ? '#000000' : '#FFFFFF';
@@ -154,12 +154,11 @@ async function initImageEditor(): Promise<ImageEditor | null> {
 }
 
 async function translateImageEditorLabel() {
-	const infos = await getUserInfo();
-	if (infos.status === "error" || !infos.data) {
-		alertTemporary("error", "Error while fetching user info", 'dark');
-		return;
+	const userPrefs = await FetchInterface.getUserPrefs();
+	if (!userPrefs) {
+		return await alertTemporary("error", "Error while fetching user info", 'dark');
 	}
-	const lang = infos.data.preferences!.lang;
+	const lang = userPrefs.lang;
 	if (lang === "en") {
 		return;
 	}

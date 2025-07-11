@@ -1,47 +1,47 @@
-import { renderPrivatePage, renderPublicPage } from '../../controllers/renderPage'
+// import { renderPrivatePage, renderPublicPage } from '../../controllers/renderPage'
 
-import { alertPublic } from '../../components/ui/alert/alertPublic';
+// import { alertPublic } from '../../components/ui/alert/alertPublic';
 
-import { API_SESSION } from '../../api/routes';
-import { socketConnection } from '../../socket/Socket';
-import { fetchApiWithNoError } from '../../api/fetch';
+// import { API_SESSION } from '../../api/routes';
+// import { socketConnection } from '../../socket/Socket';
+// import { fetchApiWithNoError } from '../../api/fetch';
 
-export async function loginUser() {
+// async function loginUser() {
 
-	/**
-	 * Validation du formulaire de connexion
-	 * Verification si le formulaire est pas corrompu
-	 */
-	const form = document.forms.namedItem("LoginForm") as HTMLFormElement | null;
-	if (!form) { return; }
+// 	/**
+// 	 * Validation du formulaire de connexion
+// 	 * Verification si le formulaire est pas corrompu
+// 	 */
+// 	const form = document.forms.namedItem("LoginForm") as HTMLFormElement | null;
+// 	if (!form) { return; }
 
-	const formData = new FormData(form);
-	const userdata = Object.fromEntries(formData) as Record<string, string>;
+// 	const formData = new FormData(form);
+// 	const userdata = Object.fromEntries(formData) as Record<string, string>;
 
-	if (userdata.username === "" || userdata.password === "") {
-		return;
-	}
+// 	if (userdata.username === "" || userdata.password === "") {
+// 		return;
+// 	}
 
-	/**
-	 * Creation de session
-	 */
-	const response = await fetchApiWithNoError(API_SESSION.CREATE, {
-		method: "POST", 
-		body: JSON.stringify(userdata)
-	});
-	if (response.code === 460) {
-		return renderPublicPage('2FALogin');
-	} else if (response.code === 461) {
-		return renderPublicPage('verifyEmail');
-	} else if (response.status === "error") {
-		return alertPublic("username-or-password-incorrect", "error");
-	}
+// 	/**
+// 	 * Creation de session
+// 	 */
+// 	const response = await fetchApiWithNoError(API_SESSION.CREATE, {
+// 		method: "POST", 
+// 		body: JSON.stringify(userdata)
+// 	});
+// 	if (response.code === 460) {
+// 		return renderPublicPage('2FALogin');
+// 	} else if (response.code === 461) {
+// 		return renderPublicPage('verifyEmail');
+// 	} else if (response.status === "error") {
+// 		return alertPublic("username-or-password-incorrect", "error");
+// 	}
 
-	/**
-	 * Creation du socket qui sera bien utile pour le pong
-	 * le chat et toutes communications bidirectionnelles
-	 * entre le client et le serveur qui ont besoin d'etre en temps reel
-	 */
-	socketConnection();
-	renderPrivatePage('dashboard');
-}
+// 	/**
+// 	 * Creation du socket qui sera bien utile pour le pong
+// 	 * le chat et toutes communications bidirectionnelles
+// 	 * entre le client et le serveur qui ont besoin d'etre en temps reel
+// 	 */
+// 	socketConnection();
+// 	renderPrivatePage('dashboard');
+// }

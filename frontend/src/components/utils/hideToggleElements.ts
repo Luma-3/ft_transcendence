@@ -1,4 +1,4 @@
-import { toggleUserMenu } from "./toggleUserMenu";
+import { toggleUserMenu } from "./togglers/toggleUserMenu";
 
 /**
  * @brief Hide or show elements based on the target element.

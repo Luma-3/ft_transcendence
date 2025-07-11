@@ -44,7 +44,7 @@
 } 
 
 .icon-responsive-size {
-  @apply size-20 md:size-24 lg:size-28;
+  @apply size-30 md:size-40 lg:size-50;
 }
 
 /* Theme general de l'application et mise en place d'alias pour les classes tailwind */

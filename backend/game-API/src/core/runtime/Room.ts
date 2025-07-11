@@ -7,6 +7,8 @@ import { Player, IGameInfos } from './Interface.js';
 import { game } from '../../game/Pong.js';
 import { InputManager } from '../../game/InputManager.js';
 import { randomNameGenerator } from './randomName.js';
+import { UnauthorizedError } from '@transcenduck/error';
+import { roomManagerInstance } from './RoomManager.js';
 
 type StatusType = 'waiting' | 'roomReady' | 'playing' | 'finished';
 
@@ -18,23 +20,21 @@ export class Room {
   private readonly gameType: gameType;
 
   public players: Map<string, Player> = new Map();
-  // public players: Player[] = [];
   private status: StatusType = 'waiting';
 
   public loopManager: LoopManager = new LoopManager();
   public inputManager: InputManager = new InputManager();
-  // public ioManager: IOManager = new IOManager();
 
   // private readonly createdAt: Date = new Date();
-  // private playerReady: number = 0;
 
-  // private roomPrivate: boolean = false; // Peut-etre ?
+  private privateRoom: boolean = false;
 
   constructor(gameInfos: IGameInfos) {
     this.id = uuidv4();
     // this.name = gameInfos.name;
     console.log(`Creating room with id: ${this.id}`);
     this.gameType = gameInfos.type_game;
+    this.privateRoom = gameInfos.privateRoom;
 
     if (this.gameType === 'ai') {
       // Create a room with AI player
@@ -43,6 +43,7 @@ export class Room {
       const player = this.players.get('ai');
       player!.avatar = `https://${process.env.AUTHORIZED_IP}/api/uploads/avatar/default.png`;
       player!.ready = true;
+      this.privateRoom = true;
     }
     else if (this.gameType === 'local') {
       // TODO : gerer le nom du joueur local
@@ -50,10 +51,14 @@ export class Room {
       const player = this.players.get('local');
       player!.avatar = `https://${process.env.AUTHORIZED_IP}/api/uploads/avatar/default.png`;
       player!.ready = true;
+      this.privateRoom = true;
     }
+
+    IOInterface.subscribe(`ws:all:broadcast:all`, this.error.bind(this));
+    IOInterface.subscribe(`ws:all:broadcast:all`, this.deconnexion.bind(this));
   }
 
-  isJoinable(): boolean { return (this.status === 'waiting' && this.nbPlayers() < MAX_PLAYER); }
+  isJoinable(): boolean { return (this.status === 'waiting' && this.nbPlayers() < MAX_PLAYER && this.privateRoom === false); }
   nbPlayers() { return this.players.size; }
 
   async addPlayer(player: Player) {
@@ -65,12 +70,11 @@ export class Room {
     });
 
     if (!response.ok) {
-      console.error(`Failed to fetch player info for ${player.id}`);
-      return;
+      throw new UnauthorizedError(`Failed to fetch player info for ${player.id}`);
     }
 
     const playerInfo = await response.json();
-
+    player.side = (this.players.size === 1) ? 'left' : 'right';
     player.avatar = playerInfo.data.preferences.avatar;
     player.player_name = playerInfo.data.username;
 
@@ -106,6 +110,7 @@ export class Room {
     if (action !== 'ready' || !player) return;
     player.ready = true;
 
+    console.log(`Player ${user_id} is ready in room ${this.id}`);
     IOInterface.broadcast(
       JSON.stringify({ action: 'playerReady', data: this.toJSON() }),
       [...this.players.keys()]
@@ -116,13 +121,41 @@ export class Room {
 
   tryStart() {
     for (const player of this.players.values()) {
-      if (!player.ready) {
-        return;
-      }
+      if (!player.ready) return;
     }
 
     IOInterface.unsubscribe(`ws:game:room:${this.id}`);
     this.start();
+  }
+
+  error(message: string) {
+    const {type, user_id, payload} = JSON.parse(message);
+    if (type !== 'error') return; // Message is not for me
+
+    console.error(`Error in room ${this.id} for player ${user_id}:`, payload);
+    IOInterface.unsubscribe(`ws:all:broadcast:all`);
+    IOInterface.unsubscribe(`ws:game:room:${this.id}`);
+    IOInterface.broadcast(
+      JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
+      [...this.players.keys()]
+    );
+    this.players.clear();
+    roomManagerInstance.deleteRoom(this.id);
+  }
+
+  deconnexion(message: string) {
+    const {type, user_id} = JSON.parse(message);
+    if (type !== 'disconnected') return; // Message is not for me
+
+    console.log(`Player ${user_id} disconnected from room ${this.id}`);
+    IOInterface.unsubscribe(`ws:all:broadcast:all`);
+    IOInterface.unsubscribe(`ws:game:room:${this.id}`);
+    IOInterface.broadcast(
+      JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
+      [...this.players.keys()]
+    );
+    this.players.clear();
+    roomManagerInstance.deleteRoom(this.id);
   }
 
   start() {
@@ -144,7 +177,7 @@ export class Room {
   toJSON() {
     return {
       id: this.id,
-      game_type: this.gameType,
+      gameType: this.gameType,
       players: Array.from(this.players.values()).map(player => player.toJSON()),
       status: this.status,
     };

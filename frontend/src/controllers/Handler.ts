@@ -1,110 +1,131 @@
-import { registerUser } from '../events/user/userRegister'
-import { loginUser } from '../events/user/userLogin'
+import { registerUser } from '../pages/Register'
+import { loginUser } from '../pages/Login'
 import { logOutUser } from '../events/user/userLogout'
-import { deleteUser } from '../events/user/userDelete'
 import { changeLanguage, changeLanguageSettings, saveDefaultLanguage } from './Translate'
-import { handleSearchUserGame } from '../events/social/onlineUserSearch'
+import { handleSearchOpponent, handleSearchUserGame, invitePlayerToPlay } from './searchHandler'
 
 import { renderPublicPage, renderPrivatePage, renderDocPages } from '../controllers/renderPage'
 import { renderBackPage } from '../controllers/renderPage'
 
-import { changeLightMode } from '../components/utils/toggleLight'
-import { toggleUserMenu } from '../components/utils/toggleUserMenu'
-import { toggleGameStat } from '../components/utils/toggleGameStat'
-import { toggleChat } from '../components/utils/toggleChat'
-import { toggleGameSettings } from '../components/utils/toggleGameSettings'
+import { changeLightMode } from '../components/utils/togglers/toggleLight'
+import { toggleUserMenu } from '../components/utils/togglers/toggleUserMenu'
+import { toggleGameSettings } from '../components/utils/togglers/toggleGameSettings'
 import { hideToggleElements } from '../components/utils/hideToggleElements'
 
-import { changeUserNameEmail } from '../events/user/userChange'
-import { changeUserPassword } from '../events/user/userChange'
+import { changeUserNameEmail } from '../pages/Profile/Profile'
+import { changeUserPassword } from '../pages/Profile/Profile'
 import { showEditorPicture } from '../components/utils/imageEditor'
 import { saveNewPicture } from '../components/utils/imageEditor'
 import { cancelEditor } from '../components/utils/imageEditor'
 
 import { initGame } from '../events/game/gameInit'
-import { addNewMessage } from '../chat/newMessage'
 import { renderOtherProfilePage } from '../controllers/renderPage'
 import { friendRequest } from '../events/social/acceptInvitation'
 import { blockUser } from '../events/social/blockUser'
 import { cancelFriendInvitation } from '../events/social/cancelInvitation'
 import { refuseFriendInvitation } from '../events/social/refusedInvitation'
 import { unfriendUser } from '../events/social/removeFriend'
-import { disable2FA, enable2FA, submit2FACode, submit2FACodeLogin } from '../2FA'
-import { showNotificationDiv } from '../events/notifications/notificationsDiv'
+import { disable2FA, enable2FA, submit2FACode, submit2FACodeLogin } from '../pages/2FA'
+import { showNotificationDiv } from '../pages/Notifications'
 import { sendEmail } from '../components/utils/sendEmail'
+
+
+import { FetchInterface } from '../api/FetchInterface'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 
-  // * -------------- Public Page Load -------------- */
-  'loadhome': () => renderPublicPage('home'),
-  'loadlogin': () => renderPublicPage('login'),
-  'loadregister': () => renderPublicPage('register'),
-  'loginForm': () => loginUser(),
-  'google': () => {
-    window.location.href = 'https://localhost:5173/api/auth/oauth2/google'
-  },
-
-	// * -------------- Private Page Load -------------- */
-	'loaddashboard': () => renderPrivatePage('dashboard'),
+	// ═══════════════════════════════════════════════════════════════
+	// 🌐 PAGES PUBLIQUES
+	// ═══════════════════════════════════════════════════════════════
+	'loadhome': () => renderPublicPage('home'),
+	'loadlogin': () => renderPublicPage('login'),
+	'loadregister': () => renderPublicPage('register'),
 	'loaddocumentation': () => renderPublicPage('documentation'),
+
+	// ═══════════════════════════════════════════════════════════════
+	// 🔐 AUTHENTIFICATION
+	// ═══════════════════════════════════════════════════════════════
+	'loginForm': () => loginUser(),
+	'google': () => {
+		window.location.href = 'https://localhost:5173/api/auth/oauth2/google'
+	},
+	'logout': () => FetchInterface.logOutUser(),
+
+	// ═══════════════════════════════════════════════════════════════
+	// 🏠 PAGES PRIVÉES
+	// ═══════════════════════════════════════════════════════════════
+	'loaddashboard': () => renderPrivatePage('dashboard'),
+	'loadprofile': () => renderPrivatePage('profile'),
+	'loadsettings': () => renderPrivatePage('settings'),
+	'loadfriends': () => renderPrivatePage('friends'),
+	'loadrgpd': () => renderPrivatePage('rgpd'),
+
+	// ═══════════════════════════════════════════════════════════════
+	// 👤 GESTION UTILISATEUR
+	// ═══════════════════════════════════════════════════════════════
+	'change-password': () => changeUserPassword(),
+	'deleteAccount': async () => await FetchInterface.deleteUser(),
 	'user-menu-button': () => toggleUserMenu(),
 
-	// * -------------- Profile Page  -------------- */
-	'loadprofile': () => renderPrivatePage('profile'),
-	'changeUserInfo': () => changeUserNameEmail(),
-	'change-password': () => changeUserPassword(),
-	
+	// ═══════════════════════════════════════════════════════════════
+	// 👥 GESTION SOCIALE
+	// ═══════════════════════════════════════════════════════════════
 	'add-friend': (event) => friendRequest(event.target as HTMLElement, "send"),
 	'accept-friend': (event) => friendRequest(event.target as HTMLElement, "accept"),
-	
 	'unfriend-user': (event) => unfriendUser(event.target as HTMLElement),
-	
-	'unblock-user': (event) => blockUser(event.target as HTMLElement, true),
-	'block-user': (event) => blockUser(event.target as HTMLElement, false),
-	
 	'cancel-invitation': (event) => cancelFriendInvitation(event.target as HTMLElement),
 	'refuse-invitation': (event) => refuseFriendInvitation(event.target as HTMLElement),
+	'invite-game': (event) => invitePlayerToPlay(event.target as HTMLElement),
 
-	// * ---- Image Editor  ---- */
-	'cancel-image': () => cancelEditor(),
-	'save-image': () => saveNewPicture(),
+	// ═══════════════════════════════════════════════════════════════
+	// 🚫 BLOCAGE UTILISATEURS
+	// ═══════════════════════════════════════════════════════════════
+	'block-user': (event) => blockUser(event.target as HTMLElement, false),
+	'unblock-user': (event) => blockUser(event.target as HTMLElement, true),
+
+	// ═══════════════════════════════════════════════════════════════
+	// 🖼️ ÉDITEUR D'IMAGES
+	// ═══════════════════════════════════════════════════════════════
 	'file-upload': () => showEditorPicture(),
 	'banner-upload': () => showEditorPicture("BANNER"),
+	'save-image': () => saveNewPicture(),
+	'cancel-image': () => cancelEditor(),
 
-	// * -------------- Settings Page  -------------- */
-	'loadsettings': () => renderPrivatePage('settings'),
+	// ═══════════════════════════════════════════════════════════════
+	// ⚙️ PARAMÈTRES & PRÉFÉRENCES
+	// ═══════════════════════════════════════════════════════════════
 	'saveLang': () => saveDefaultLanguage(),
-	'deleteAccount': () => deleteUser(),
-	'logout': () => logOutUser(),
-
-	// * -------------- Friends Page   -------------- */
-	'loadfriends': () => renderPrivatePage('friends'),
-
-
-	'notifications': () => showNotificationDiv(),
-
-	// * -------------- Settings  -------------- */
 	'enable2fa': () => enable2FA(),
 	'disable2fa': () => disable2FA(),
-	// * -------------- Chat  -------------- */
-	'send-chat': () => addNewMessage(),
 
-	// * -------------- Common Components  -------------- */
-
-	'loadBackPage': () => renderBackPage(),
-	'showGameStat': () => toggleGameStat(),
-	'showChat': () => toggleChat(),
+	// ═══════════════════════════════════════════════════════════════
+	// 🎮 JEUX
+	// ═══════════════════════════════════════════════════════════════
 	'initGame': () => initGame(),
 
-	// * -------------- Documentation  -------------- */
+	// ═══════════════════════════════════════════════════════════════
+	// 🔔 NOTIFICATIONS
+	// ═══════════════════════════════════════════════════════════════
+	'notifications': () => showNotificationDiv(),
+
+	// ═══════════════════════════════════════════════════════════════
+	// 📧 EMAIL
+	// ═══════════════════════════════════════════════════════════════
+	'send-email': () => sendEmail(),
+
+	// ═══════════════════════════════════════════════════════════════
+	// 📚 DOCUMENTATION
+	// ═══════════════════════════════════════════════════════════════
 	'showUserDoc': () => renderDocPages('/api/user/doc/json', "user"),
 	'showUploadDoc': () => renderDocPages('/api/uploads/doc/json', "upload"),
 	'showGameDoc': () => renderDocPages('/api/game/doc/json', "game"),
 	'showAuthDoc': () => renderDocPages('/api/auth/doc/json', "auth"),
 
-  // * -------------- Email  -------------- */
-  'sendEmail': () => sendEmail(),
+	// ═══════════════════════════════════════════════════════════════
+	// 🔄 NAVIGATION
+	// ═══════════════════════════════════════════════════════════════
+	'loadBackPage': () => renderBackPage(),
 
 };
 
@@ -120,7 +141,8 @@ const submitEvent: { [key: string]: () => void } = {
 	'loginForm': loginUser,
 	'registerForm': registerUser,
 	'2faCodeForm': submit2FACode,
-	'2faCodeLoginForm': submit2FACodeLogin   
+	'2faCodeLoginForm': submit2FACodeLogin,
+	'updateInfosUserForm': changeUserNameEmail
 };
 
 /**
@@ -135,6 +157,7 @@ const inputChangetEvent: { [key: string]: (inputValue: DOMStringMap) => void } =
 
 const inputEvent: { [key: string]: (value: string) => void } = {
 	'search-user': (value) => handleSearchUserGame(value),
+	'search-opponent': (value) => handleSearchOpponent(value)
 }
 
 const clickSpecial: { [key: string]: (event: MouseEvent) => void } = {

@@ -208,6 +208,10 @@ export class SessionService {
     return await refreshTokenModelInstance.getAllFamiliesByUserId(userId);
   }
 
+  static async deleteById(userId: string) {
+    return await refreshTokenModelInstance.deleteAllTokensByUserId(userId);         
+  }
+
   static async getFamilyById(familyId: string): Promise<FamiliesResponseType> {
     return await refreshTokenModelInstance.getAllTokensByFamilyId(familyId);
   }

@@ -1,22 +1,26 @@
 import { renderErrorPage, renderPrivatePage, renderPublicPage } from './controllers/renderPage'
 import { addAllEventListenOnPage } from './controllers/Handler'
-import { fetchToken } from './api/fetchToken'
 import { verifyEmailUser } from './events/user/userVerif'
+import { FetchInterface } from './api/FetchInterface'
 
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 
+
 //* Ajout de la page dans l'historique de navigation et enregistrement de la page precedente pour le button back
 export function addToHistory(page: string, updateHistory: boolean = true) {
 	if (updateHistory && page !== history.state?.page) {
-		history.pushState({ page }, '', `/${page}`)
+		// Vérifier aussi que l'URL actuelle n'est pas déjà la même
+		const currentPath = window.location.pathname.substring(1) || 'home';
+		if (page !== currentPath) {
+			history.pushState({ page }, '', `/${page}`);
+		}
 	}
 }
 
 addAllEventListenOnPage(main_container);
 
-const publicPages = ['home', 'login', 'register'];
-
+const publicPages = ['home', 'login', 'register', 'verifyEmail']
 // * Au chargement initial ou refresh de la page
 // * On verfie si l'utilisateur a une session active
 // * On affiche la page prive si l'utilisateur est connecté
@@ -36,17 +40,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 			return verifyEmailUser(new URLSearchParams(window.location.search).get('value') || '');
 
 		default: 
-			const user = await fetchToken();
-			console.log("response fetchToken: ", user);
-			if (user.status === "success") {
-				if (publicPages.includes(page)) {
-					return renderPrivatePage('dashboard', true);
-				}
-				return renderPrivatePage(page);
+			const activeSession = await FetchInterface.verifySession();
+			if (!activeSession) {
+				return renderPublicPage(page);
 			}
-			console.log(`User not authenticated, rendering public page: ${page}`);
-			return renderPublicPage(page);
+			(publicPages.includes(page)) 
+			? renderPrivatePage('dashboard', true) 
+			: renderPrivatePage(page);
 	}
+
 });
 
 // * Au changement de page lors de l'utilisation du bouton back/forward
