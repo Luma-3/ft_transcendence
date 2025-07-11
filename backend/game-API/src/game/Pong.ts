@@ -33,7 +33,7 @@ export class Pong extends GameObject {
       console.log('XXXXXXXXXX'); 
       const ctx = SceneContext.get();
       const aiController = new AIController(this.paddleLeft, this.ball);
-      ctx.loopManager.addIAObject(aiController);
+      ctx.loopManager.addAIObject(aiController);
     }
   }
 
@@ -129,7 +129,3 @@ export const game = () => {
   SceneContext.get().inputManager.start();
   SceneContext.get().loopManager.start();
 }
-
-
-// J'ai rajoute l'intantiation de mon AIcontroller qui prend le paddle2 et la ball pour fonctionner. 
-// ensuite j'ajoute ce controller Ia a la loop Ia qui est lance dans loopManager. 
