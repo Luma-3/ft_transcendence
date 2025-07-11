@@ -217,6 +217,11 @@ const logoDoc: { [key: string]: string } = {
 export async function renderDocPages(page: string, index_logo: string) {
 
   const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
+	if (!redoc_container) {
+		console.error('Redoc container not found');
+		return;
+	}
+	redoc_container.classList.remove('hidden');
   redoc_container.innerHTML = '';
   fetch(`${page}`)
     .then(res => res.json())

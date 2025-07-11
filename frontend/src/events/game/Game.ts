@@ -92,10 +92,6 @@ export class Game {
   }
 
   private addEventListener() {
-  
-    //TODO: Zoom To 100%
-    // window.addEventListener('resize', resizeCanvas)
-  
     onkeyup = (event) => {
       onKeyUp(event, this.userId);
     }
@@ -104,7 +100,6 @@ export class Game {
       const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
   
       if (divGame.classList.contains("opacity-0")) {
-        console.log("Game is not visible, ignoring keydown event");
         sendInSocket("game", "room", this.id, "ready", {});
         return;
       }
@@ -117,7 +112,6 @@ export class Game {
   }
 
   addScore(data: any) {
-    console.log("Adding score", data);
     const player1Div = document.getElementById(`${data.players[0].id}-score`) as HTMLDivElement;
     const player2Div = document.getElementById(`${data.players[1].id}-score`) as HTMLDivElement;
     

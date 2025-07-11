@@ -45,4 +45,5 @@ server.addHook('onSend', (request, reply, payload, done) => {
   console.log(`Content-Encoding: ${contentEncoding}`);
   done();
 });
+
 export default server;

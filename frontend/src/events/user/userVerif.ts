@@ -1,10 +1,10 @@
 import { fetchApiWithNoError } from "../../api/fetch";
-import { MODULE_TWOFA } from "../../api/routes";
+import { TWOFA } from "../../api/routes";
 import { alertPublic } from "../../components/ui/alert/alertPublic";
 
 export async function verifyEmailUser(token: string) {
 
-	const response = await fetchApiWithNoError(MODULE_TWOFA.VERIFY.EMAIL + `/${token}`, {
+	const response = await fetchApiWithNoError(TWOFA.EMAIL + `/${token}`, {
 		method: "GET",
 	});
 	//TODO: Traduction

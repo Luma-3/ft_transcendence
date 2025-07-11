@@ -3,6 +3,8 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { UserHeaderIdType } from '../users/schema.js';
 import { PREFERENCES_PRIVATE_COLUMNS } from './model.js';
 
+import server from '../fastify.js';
+
 export async function updateAvatarPreferences(req: FastifyRequest<{
 	Headers: UserHeaderIdType;
 }>, rep: FastifyReply) {
@@ -35,7 +37,7 @@ export async function updateAvatarPreferences(req: FastifyRequest<{
 		const oldAvatar = oldPreferences.avatar.substring(oldPreferences.avatar.lastIndexOf('/') + 1);
 		fetch('http://' + process.env.UPLOAD_IP + '/internal/avatar/' + oldAvatar, {
 			method: 'DELETE'
-		}).catch(console.error);
+		}).catch(server.log.error);
 	}
 	const preferences = await PreferencesService.updatePreferences(userID, { avatar: info.data.Url }, PREFERENCES_PRIVATE_COLUMNS);
 	return rep.code(200).send({ message: 'Ok', data: preferences });
@@ -72,7 +74,7 @@ export async function updateBannerPreferences(req: FastifyRequest<{
 		const oldBanner = oldPreferences.banner.substring(oldPreferences.banner.lastIndexOf('/') + 1);
 		await fetch('http://' + process.env.UPLOAD_IP + '/internal/banner/' + oldBanner, {
 			method: 'DELETE'
-		}).catch(console.error);
+		}).catch(server.log.error);
 	}
 	const preferences = await PreferencesService.updatePreferences(userID, { banner: info.data.Url }, PREFERENCES_PRIVATE_COLUMNS);
 	return rep.code(200).send({ message: 'Ok', data: preferences });

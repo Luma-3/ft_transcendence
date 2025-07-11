@@ -3,6 +3,7 @@ import { renderErrorPage } from "./renderPage";
 import { IOtherUser, IUserInfo } from "../interfaces/IUser";
 import { addFriendButton } from "../pages/Friends/Lists/allUsersList";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
+import { createRoomInServer } from "../events/game/gameInit";
 
 export async function handleSearchUserGame(value: string) {
 	const container = document.getElementById("search-user-list");
@@ -95,14 +96,6 @@ function seeProfileButton(user: IOtherUser) {
 </div>`
 }
 
-// export function inviteToGameButton(user: IOtherUser) {
-// return `
-// <button id="invite-game" data-username=${user.username} data-id=${user.id} class="relative dark:text-dprimary text-tertiaryhover:cursor-pointer hover:underline">
-// 	Invite to play
-// </button>`
-// }
-
-
 export async function invitePlayerToPlay(gameFormInfo: IGameFormInfo) {
 
 	const user = await FetchInterface.getUserInfo();
@@ -110,8 +103,11 @@ export async function invitePlayerToPlay(gameFormInfo: IGameFormInfo) {
 		return renderErrorPage('401');
 	}
 	const choice = (document.querySelector('input[name="invite-game"]:checked') as HTMLInputElement)
+	if (!choice) {
+		return createRoomInServer(gameFormInfo);
+	}
+	
 	const player_select = choice.id;
-	console.log("Selected player for game:", player_select);
 	
 	const success = await FetchInterface.inviteToPlay(gameFormInfo, user, player_select);
 	if (!success) {

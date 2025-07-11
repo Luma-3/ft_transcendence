@@ -1,8 +1,9 @@
 import { alert } from "../../components/ui/alert/alert";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 
-import { FetchInterface } from "../../api/FetchInterface";
+import { FetchInterface, IGameFormInfo } from "../../api/FetchInterface";
 import { invitePlayerToPlay } from "../../controllers/searchHandler";
+import { socket } from "../../socket/Socket";
 
 function getPlayer2Name() {
   const inputValue = (document.getElementById("player2-name") as HTMLInputElement).value;
@@ -15,6 +16,10 @@ function getPlayer2Name() {
 }
 
 export async function initGame() {
+  //TODO: Traduction
+  if (!socket) {
+    return alertTemporary("error", 'wait-for-socket-connection', 'dark', true, true);
+  }
 
   const gameType = document.querySelector('input[name="game-type"]:checked') as HTMLInputElement;
   if (!gameType) {
@@ -35,7 +40,11 @@ export async function initGame() {
     invitePlayerToPlay(gameFormInfo);
     return;
   }
-  const userPref = await FetchInterface.getUserPrefs();
+  await createRoomInServer(gameFormInfo);
+}
+
+export async function createRoomInServer(gameFormInfo: IGameFormInfo) {
+   const userPref = await FetchInterface.getUserPrefs();
   if (!userPref) {
     return await alertTemporary("error", "Error while getting user theme", 'dark');
   }

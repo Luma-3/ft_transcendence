@@ -314,8 +314,8 @@ export class FetchInterface {
    */
   public static async resendVerificationEmail(email: string, lang: string) {
 
-    const response = await fetchApiWithNoError(API.MODULE_TWOFA.RESEND_EMAIL, {
-      method: 'POST',
+    const response = await fetchApiWithNoError(API.TWOFA.EMAIL, {
+      method: 'PATCH',
       body: JSON.stringify({ email, lang })
     });
     console.log("Response from resendVerificationEmail:", response);

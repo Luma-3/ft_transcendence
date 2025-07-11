@@ -21,7 +21,7 @@ ${backButton()}
 
 	</div>
 
-	<div class="flex flex-col w-full items-center justify-center">
+	<div class="flex flex-col w-full items-center justify-center mb-10">
 
 		<div class="flex flex-row w-3/4 space-x-4 justify-center items-center">
 
@@ -35,7 +35,7 @@ ${backButton()}
 
 	<div class="flex justify-center items-center">
 
-	<div id='redoc-container' class="flex ml-4 mr-4 mt-10
+	<div id='redoc-container' class="hidden flex ml-4 mr-4 mt-10
 	bg-white rounded-xl border-6 border-primary dark:border-dprimary mb-40">
 	</div>
 
