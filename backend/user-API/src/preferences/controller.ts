@@ -3,6 +3,8 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { UserHeaderIdType } from '../users/schema.js';
 import { PREFERENCES_PRIVATE_COLUMNS } from './model.js';
 
+import server from '../fastify.js';
+
 export async function updateAvatarPreferences(req: FastifyRequest<{
 	Headers: UserHeaderIdType;
 }>, rep: FastifyReply) {

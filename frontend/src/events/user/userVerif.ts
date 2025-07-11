@@ -1,5 +1,5 @@
 import { fetchApiWithNoError } from "../../api/fetch";
-import { MODULE_TWOFA } from "../../api/routes";
+import { TWOFA } from "../../api/routes";
 import { alertPublic } from "../../components/ui/alert/alertPublic";
 
 export async function verifyEmailUser(token: string) {

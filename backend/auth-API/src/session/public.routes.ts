@@ -2,7 +2,7 @@
 import { UnauthorizedError } from '@transcenduck/error'
 import { FastifyPluginAsyncTypebox, Type } from "@fastify/type-provider-typebox";
 
-import { SessionPostBody, UserHeaderAuthentication, FamilyId, FamiliesResponse, twoFaBody } from "./schema.js";
+import { SessionPostBody, UserHeaderAuthentication, FamilyId, FamiliesResponse, twoFaBody, UserId } from "./schema.js";
 
 import { SessionService } from "./service.js";
 
