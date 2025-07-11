@@ -51,8 +51,8 @@ export class GameLoop extends ALoop {
   }
 }
 
-// IALoop.ts
-export class IALoop extends ALoop {
+// AILoop.ts
+export class AILoop extends ALoop {
   constructor(tickRate: number) {
     super(tickRate); // Ex: 1 tick/seconde (tickRate=1)
   }

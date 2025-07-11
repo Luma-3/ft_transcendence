@@ -2,5 +2,8 @@
   "dependencies": {
     "mime-types": "^3.0.1",
     "node-cache": "^5.1.2"
+  },
+  "devDependencies": {
+    "playwright": "^1.54.0"
   }
 }
