@@ -2,7 +2,7 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { headerUserID, twofaStatus } from "./schema.js";
 import { ResponseSchema } from "../utils/schema.js";
 import { twofaService } from "./service.js";
-import { UserActivateAccountParams } from "../users/user.schema.js";
+import { UserActivateAccountParams } from "../users/schema.js";
 
 const route : FastifyPluginAsyncTypebox = async (fastify) => {
 	fastify.patch('/internal/users/2fa', {

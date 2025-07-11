@@ -12,15 +12,15 @@ all: install-dev run-dev
 
 build-dev:
 	@echo "$(YELLOW)Démarrage du build dev...$(RESET)"
-	@$(COMPOSE) -f docker-compose.dev.yml build
+	@$(COMPOSE) -f ./docker-compose.dev.yml build
 	@echo "$(GREEN)Build dev terminé !$(RESET)"
 
 run-dev: build-dev
 	@echo "$(YELLOW)Lancement du run dev...$(RESET)"
 	@echo "$(YELLOW)Reconstruction de base...$(RESET)"
-	@$(COMPOSE) -f docker-compose.dev.yml build
+	@$(COMPOSE) -f ./docker-compose.dev.yml build
 	@echo "$(GREEN)Base reconstruite !$(RESET)\n$(YELLOW)Lancement de tous les conteneurs...$(RESET)"
-	@$(COMPOSE) -f docker-compose.dev.yml up
+	@$(COMPOSE) -f ./docker-compose.dev.yml up
 	@echo "$(GREEN)Run dev terminé !$(RESET)"
 
 install-dev: init-dev migrate-dev
@@ -34,6 +34,7 @@ init-dev:
 	@echo "$(YELLOW)Base...$(RESET)"
 	@cd backend/packages/error && npm i && npm run build
 	@cd backend/packages/formatter && npm i && npm run build
+	@$(COMPOSE) -f docker-compose.dev.yml build --no-cache base
 	@echo "$(YELLOW)Installation des dépendances pour les APIs...$(RESET)"
 	@echo "$(YELLOW)Gateway...$(RESET)"
 	@cd backend/gateway && npm i

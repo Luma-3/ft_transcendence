@@ -1,9 +1,9 @@
 import { NotFoundError } from "@transcenduck/error";
 
-import { USER_PRIVATE_COLUMNS, userModelInstance } from "../users/user.model.js";
+import { USER_PRIVATE_COLUMNS, userModelInstance } from "../users/model.js";
 import { User2faStatusType } from "./schema.js";
-import { UserService } from "../users/user.service.js";
-import { PREFERENCES_PRIVATE_COLUMNS } from "../preferences/preferences.model.js";
+import { UserService } from "../users/service.js";
+import { PREFERENCES_PRIVATE_COLUMNS } from "../preferences/model.js";
 import { redisCache } from "../utils/redis.js";
 
 import fetch from "node-fetch";

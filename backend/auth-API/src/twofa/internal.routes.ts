@@ -1,12 +1,14 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox"
 import {
-  sendEmailBody,
-  UserPublicResponse,
+	sendEmailBody,
+	UserPublicResponse,
 } from "./schema.js";
-import { twoFaService } from "./service.js";
+import { TwoFaService } from "./service.js";
 import { ResponseSchema } from "../utils/schema.js";
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
+
+	// ==================== ROUTE: Send 2FA Code (Internal) ====================
 	fastify.post('/internal/2fa/code', {
 		schema: {
 			summary: 'Send 2FA code (internal)',
@@ -19,10 +21,11 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 		}
 	}, async (req, rep) => {
 		const { email, lang } = req.body;
-		await twoFaService.generateSendCode(email, lang);
+		await TwoFaService.generateSendCode(email, lang);
 		rep.code(200).send({ message: '2FA code sent (internal)' });
 	});
 
+	// ==================== ROUTE: Send Email Verification (Internal) ====================
 	fastify.post('/internal/2fa/email', {
 		schema: {
 			summary: 'Send email verification (internal)',
@@ -35,7 +38,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 		}
 	}, async (req, rep) => {
 		const { email, lang, token } = req.body;
-		await twoFaService.generateSendToken(email, lang, token);
+		await TwoFaService.generateSendToken(email, lang, token);
 		rep.code(200).send({ message: 'Verification email sent (internal)' });
 	});
 }

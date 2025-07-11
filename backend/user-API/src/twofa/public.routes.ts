@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { InternalServerErrorResponse } from "@transcenduck/error";
 
-import { UserHeaderAuthentication } from "../users/user.schema.js";
+import { UserHeaderAuthentication } from "../users/schema.js";
 import { ResponseSchema } from "../utils/schema.js";
 
 import { twofaStatus } from "./schema.js";

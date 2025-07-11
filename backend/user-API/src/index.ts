@@ -1,11 +1,15 @@
 import dotenv from 'dotenv'
 import server from './fastify.js'
-import userRoutes from './users/user.routes.js'
-import preferencesRouts from './preferences/preferences.routes.js'
-import friendRoutes from './friends/friends.routes.js'
-import pendingRoutes from './pending/pending.routes.js'
-import blockedRoutes from './blocked/blocked.routes.js'
-import searchRoutes from './search/search.routes.js'
+
+// User Routes
+import userRoutes from './users/public.routes.js'
+import userRoutesInternal from './users/internal.routes.js'
+
+import preferencesRoutes from './preferences/public.routes.js'
+import friendRoutes from './friends/public.routes.js'
+import pendingRoutes from './pending/public.routes.js'
+import blockedRoutes from './blocked/public.routes.js'
+import searchRoutes from './search/public.routes.js'
 
 // 2FA Routes
 import twofaRoute from './twofa/public.routes.js'
@@ -33,7 +37,8 @@ dotenv.config()
 
 
 server.register(userRoutes);
-server.register(preferencesRouts);
+server.register(userRoutesInternal);
+server.register(preferencesRoutes);
 server.register(friendRoutes);
 server.register(pendingRoutes);
 server.register(blockedRoutes);

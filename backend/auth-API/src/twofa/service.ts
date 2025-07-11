@@ -1,212 +1,171 @@
 import crypto from 'crypto';
 import fs from 'fs';
-
+import fetch from 'node-fetch';
 import { transporter } from '../utils/mail.js';
 import { redisCache } from '../utils/redis.js';
-import { SendMailOptions } from 'nodemailer'
+import { SendMailOptions } from 'nodemailer';
 import { randomUUID } from 'crypto';
-import fetch from 'node-fetch'
-
 import { NotFoundError, UnauthorizedError, ConflictError } from '@transcenduck/error';
-
 import verifyEmail from './public/html/verifyEmail.js';
 import twoFaEmail from './public/html/twoFaEmail.js';
 
-const path_public = 'src/twofa/public';
+const PATH_PUBLIC = 'src/twofa/public';
+const TIMEOUT_MAIL = 60; // seconds
 
-const TIMEOUT_MAIL = 60; // in seconds
-
-async function loadLang(language: string){
-  const trad = JSON.parse(fs.readFileSync(`./${path_public}/languages/${language}.json`, 'utf8'));
-	return trad;
+// Charge le fichier de langue
+async function loadLanguage(language: string) {
+	const filePath = `./${PATH_PUBLIC}/languages/${language}.json`;
+	return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
+// Génère un code à 6 chiffres
 export function generateCode(): string {
-	const code = crypto.randomInt(0, 1000000);
-	return code.toString().padStart(6, '0');
+	return crypto.randomInt(0, 1000000).toString().padStart(6, '0');
 }
 
-async function sendVerificationEmail(email: string, data: string, language: string) {
-	const trad = await loadLang(language);
+// Envoie l'email de vérification
+async function sendVerificationEmail(email: string, token: string, language: string) {
+	const trad = await loadLanguage(language);
 	const mailOptions: SendMailOptions = {
 		from: 'Transcenduck <transcenduck@gmail.com>',
 		to: email,
-		subject: `${trad['subject_valid_email']}`,
+		subject: trad['subject_valid_email'],
 		attachments: [
-			{
-				filename: 'fond.webp',
-				path: path_public + '/imgs/fond.webp',
-				cid: 'backgroundImg'
-			},
-			{
-				filename: 'logo.webp',
-				path: path_public + '/imgs/logo.webp',
-				cid: 'logo'
-			},
-			{
-				filename: 'duckHappy.png',
-				path: path_public + '/imgs/duckHappy.png',
-				cid: 'duckHappy'
-			}
+			{ filename: 'fond.webp', path: `${PATH_PUBLIC}/imgs/fond.webp`, cid: 'backgroundImg' },
+			{ filename: 'logo.webp', path: `${PATH_PUBLIC}/imgs/logo.webp`, cid: 'logo' },
+			{ filename: 'duckHappy.png', path: `${PATH_PUBLIC}/imgs/duckHappy.png`, cid: 'duckHappy' }
 		],
-		html: verifyEmail(trad, process.env.URL!, data)
-	}
+		html: verifyEmail(trad, process.env.URL!, token)
+	};
 	await transporter.sendMail(mailOptions);
 }
 
-async function send2FACode(email: string, code: string, language?: string) {
-	const trad = await loadLang(language ?? 'en');
+// Envoie le code 2FA
+async function send2FACode(email: string, code: string, language: string = 'en') {
+	const trad = await loadLanguage(language);
 	const mailOptions: SendMailOptions = {
 		from: 'Transcenduck <transcenduck@gmail.com>',
 		to: email,
 		subject: `${trad['subject_2FA']} ${code}`,
 		attachments: [
-			{
-				filename: 'fond.webp',
-				path: path_public + '/imgs/fond.webp',
-				cid: 'backgroundImg'
-			},
-			{
-				filename: 'logo.webp',
-				path: path_public + '/imgs/logo.webp',
-				cid: 'logo'
-			},
-			{
-				filename: 'duckHappy.png',
-				path: path_public + '/imgs/duckHappy.png',
-				cid: 'duckHappy'
-			}
+			{ filename: 'fond.webp', path: `${PATH_PUBLIC}/imgs/fond.webp`, cid: 'backgroundImg' },
+			{ filename: 'logo.webp', path: `${PATH_PUBLIC}/imgs/logo.webp`, cid: 'logo' },
+			{ filename: 'duckHappy.png', path: `${PATH_PUBLIC}/imgs/duckHappy.png`, cid: 'duckHappy' }
 		],
 		html: twoFaEmail(trad, code)
-	}
+	};
 	await transporter.sendMail(mailOptions);
 }
 
-async function verifyCreateUser( email: string, token: string ) {
-	const tokenRedis = await redisCache.get("users:check:email:" + email);
+// Vérifie le mail et créer l'utilisateur
+async function verifyCreateUser(email: string, token: string) {
+	const tokenRedis = await redisCache.get(`users:check:email:${email}`);
 	if (token !== tokenRedis) {
-		await redisCache.del("users:check:token:" + token);
-		throw new ConflictError("Token not found or expired");
+		await redisCache.del(`users:check:token:${token}`);
+		throw new ConflictError('Token not found or expired');
 	}
 
 	await fetch(`http://${process.env.USER_IP}/internal/user`, {
 		method: 'POST',
-		headers: {
-			'content-type': 'application/json',
-			'accept': 'application/json'
-		},
+		headers: { 'content-type': 'application/json', 'accept': 'application/json' },
 		body: JSON.stringify({ userID: token })
-	})
+	});
 
-	await fetch(`http://${process.env.USER_IP}/internal/users/${email}/account`, {
-		method: 'PATCH'
-	})
+	await fetch(`http://${process.env.USER_IP}/internal/users/${email}/account`, { method: 'PATCH' });
 }
 
-async function verifyUpdateUserEmail( email: string, token: string ) {
-	const rawDataRedis = await redisCache.get(`users:pendingEmail:${email}`);
-	if (!rawDataRedis) {
-		throw new NotFoundError('RedisData');
-	}
+// Vérifie le mail utilisateur et le modifie
+async function verifyUpdateUserEmail(email: string, token: string) {
+	const rawData = await redisCache.get(`users:pendingEmail:${email}`);
+	if (!rawData) throw new NotFoundError('RedisData');
 
-	const dataRedis = JSON.parse(rawDataRedis) as { token: string, userID: string }
-
+	const { token: redisToken, userID } = JSON.parse(rawData) as { token: string, userID: string };
 	await redisCache.del(`users:pendingEmail:${token}`);
-	
-	if (token !== dataRedis.token) {
-		throw new ConflictError("Token not found or expired");
-	}
+
+	if (token !== redisToken) throw new ConflictError('Token not found or expired');
 
 	await fetch(`http://${process.env.USER_IP}/internal/email`, {
 		method: 'PATCH',
-		headers: {
-			'content-type': 'application/json',
-			'accept': 'application/json'
-		},
-		body: JSON.stringify({ userID: dataRedis.userID })
-	})
+		headers: { 'content-type': 'application/json', 'accept': 'application/json' },
+		body: JSON.stringify({ userID })
+	});
 }
 
-export class twoFaService {	
+// Service 2FA
+export class TwoFaService {
+	// Génère et envoie le token de vérification
 	static async generateSendToken(email: string, lang: string, token?: string) {
-		if (!token)
-			token = randomUUID();
-		
-		const userCooldown = await redisCache.ttl(`users:email_cooldown:${email}`);
-		if (userCooldown > 0) {
-			throw new UnauthorizedError(`${userCooldown.toString()}`);
-		}
-		sendVerificationEmail(email, token, lang);
-		await redisCache.setEx("users:check:token:" + token, 600, email);
-		await redisCache.setEx("users:check:email:" + email, 600, token);
-		await redisCache.setEx(`users:email_cooldown:${email}`, TIMEOUT_MAIL, "1");
+		token ??= randomUUID();
+
+		const cooldown = await redisCache.ttl(`users:email_cooldown:${email}`);
+		if (cooldown > 0) throw new UnauthorizedError(cooldown.toString());
+
+		await sendVerificationEmail(email, token, lang);
+		await redisCache.setEx(`users:check:token:${token}`, 600, email);
+		await redisCache.setEx(`users:check:email:${email}`, 600, token);
+		await redisCache.setEx(`users:email_cooldown:${email}`, TIMEOUT_MAIL, '1');
 	}
 
+	// Génère et envoie le code 2FA
 	static async generateSendCode(email: string, lang: string, code?: string) {
-		if (!code)
-			code = generateCode();
+		code ??= generateCode();
 
-		const multi = redisCache.multi();		
-		send2FACode(email, code, lang);
-		await multi.setEx("users:check:code:" + code, 600, email);
-		await multi.setEx("users:check:email:" + email, 600, code);
-
+		const multi = redisCache.multi();
+		await send2FACode(email, code, lang);
+		await multi.setEx(`users:check:code:${code}`, 600, email);
+		await multi.setEx(`users:check:email:${email}`, 600, code);
 		multi.exec().catch(console.error);
 	}
 
+	// Renvoie l'email si non expiré
 	static async resendEmail(email: string, lang: string) {
-		const token = await redisCache.get("user:check:email" + email);
-		if (token) {
-			throw new ConflictError('Email already sent and not expired');
-		}
+		const token = await redisCache.get(`user:check:email${email}`);
+		if (token) throw new ConflictError('Email already sent and not expired');
 		await this.generateSendToken(email, lang);
 	}
 
+	// Vérifie l'email via le token
 	static async verifyEmail(token: string) {
-		let email = await redisCache.get(`users:pendingEmail:${token}`)
+		let email = await redisCache.get(`users:pendingEmail:${token}`);
 		if (email) {
 			await verifyUpdateUserEmail(email, token);
 		} else {
-			email = await redisCache.get("users:check:token:" + token);
-			if (!email) throw new NotFoundError("Token not found or expired");
-			await verifyCreateUser(email, token);			
+			email = await redisCache.get(`users:check:token:${token}`);
+			if (!email) throw new NotFoundError('Token not found or expired');
+			await verifyCreateUser(email, token);
 		}
 
 		const multi = redisCache.multi();
-		multi.del("users:check:token:" + token);
-		multi.del("users:check:email:" + email);
+		multi.del(`users:check:token:${token}`);
+		multi.del(`users:check:email:${email}`);
 		multi.exec().catch(console.error);
 	}
 
+	// Vérifie le code 2FA
 	static async verifyCode(code: string) {
-		const email = await redisCache.get("users:check:code:" + code);
-		if (!email) throw new NotFoundError("Code not found or expired");
+		const email = await redisCache.get(`users:check:code:${code}`);
+		if (!email) throw new NotFoundError('Code not found or expired');
 
-		const codeRedis = await redisCache.get("users:check:email:" + email);
+		const codeRedis = await redisCache.get(`users:check:email:${email}`);
 		if (code !== codeRedis) {
-			await redisCache.del("users:check:code:" + code);
-			throw new UnauthorizedError("Code not found or expired");
+			await redisCache.del(`users:check:code:${code}`);
+			throw new UnauthorizedError('Code not found or expired');
 		}
-		await redisCache.del("users:check:code:" + code);
-		await redisCache.del("users:check:email:" + email);
+		await redisCache.del(`users:check:code:${code}`);
+		await redisCache.del(`users:check:email:${email}`);
 
-		const redis2faUpdate = await redisCache.get("users:2fa:update:" + email);
-		redisCache.del("users:2fa:update:" + email);
+		const redis2faUpdate = await redisCache.get(`users:2fa:update:${email}`);
+		redisCache.del(`users:2fa:update:${email}`);
 
-		if (!redis2faUpdate) {
-			return 'Code verified successfully';
-		}
+		if (!redis2faUpdate) return 'Code verified successfully';
 
 		const response = await fetch(`http://${process.env.USER_IP}/internal/users/2fa`, {
 			method: 'PATCH',
-			headers: {
-				'content-type': 'application/json',
-        'accept': 'application/json'
-      },
+			headers: { 'content-type': 'application/json', 'accept': 'application/json' },
 			body: JSON.stringify({ userID: redis2faUpdate })
-		})
+		});
 
-		const reponseData = await response.json() as { message: string, status: string};
-		return reponseData.message;
+		const responseData = await response.json() as { message: string, status: string };
+		return responseData.message;
 	}
 }

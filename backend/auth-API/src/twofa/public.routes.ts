@@ -1,11 +1,11 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox"
-
 import { ResponseSchema } from "../utils/schema.js";
-
-import { CodeValidationBody, sendEmailBody, ValidationEmailQueryGet, } from "./schema.js";
-import { twoFaService } from "./service.js";
+import { CodeValidationBody, sendEmailBody, ValidationEmailQueryGet } from "./schema.js";
+import { TwoFaService } from "./service.js";
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
+
+  // ========= Verify 2FA code =========
   fastify.post('/2fa/code', {
     schema: {
       summary: 'Verify 2FA code',
@@ -17,10 +17,11 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       },
     }
   }, async (req, rep) => {
-    const message = await twoFaService.verifyCode(req.body.code);
+    const message = await TwoFaService.verifyCode(req.body.code);
     rep.code(200).send({ message });
   });
-  
+
+  // ========= Verify email by token =========
   fastify.get('/2fa/email/:token', {
     schema: {
       summary: 'Verify email by token',
@@ -29,13 +30,14 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       params: ValidationEmailQueryGet,
       response: {
         200: ResponseSchema()
-			},
+      },
     }
   }, async (req, rep) => {
-    await twoFaService.verifyEmail(req.params.token);
+    await TwoFaService.verifyEmail(req.params.token);
     rep.code(200).send({ message: 'Email verified successfully' });
   });
 
+  // ========= Resend verification email =========
   fastify.patch('/2fa/email', {
     schema: {
       summary: 'Resend verification email',
@@ -48,9 +50,10 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async (req, rep) => {
     const { email, lang } = req.body;
-    await twoFaService.resendEmail(email, lang);
+    await TwoFaService.resendEmail(email, lang);
     rep.code(200).send({ message: 'Verification email resent' });
   });
+
 };
 
 export default route;
