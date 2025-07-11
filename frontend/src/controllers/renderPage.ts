@@ -11,7 +11,8 @@ import profile from '../pages/Profile/Profile'
 import friends from '../pages/Friends/Friends'
 import documentation from '../pages/Documentation'
 import verifyEmail from '../pages/VerifyEmail'
-import twoFaPage, { loginTwoFaPage } from '../2FA'
+import RGPD from '../pages/RGPD'
+import twoFaPage, { loginTwoFaPage, init2FAPage, initLogin2FAPage } from '../pages/2FA'
 
 /**
  * ! UTILS
@@ -21,7 +22,6 @@ import { setupColorTheme } from '../components/utils/setColorTheme'
 import { translatePage } from './Translate'
 import { fadeIn, fadeOut } from '../components/utils/fade'
 import { removeLoadingScreen } from '../components/utils/removeLoadingScreen'
-import { initializeVerifyEmailTimers } from '../events/email/verifyEmailTimers'
 
 /**
  * ! API
@@ -33,13 +33,13 @@ import { IUserInfo } from '../interfaces/IUser'
  * Associe les pages publics aux fonctions de rendu
 */
 const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
-	'home': home,
-	'login': login,
-	'register': register,
-	'2FA': twoFaPage,
-	'2FALogin': loginTwoFaPage,
-	'documentation': documentation,
-	'verifyEmail': verifyEmail,
+  'home': home,
+  'login': login,
+  'register': register,
+  '2FA': twoFaPage,
+  '2FALogin': loginTwoFaPage,
+  'documentation': documentation,
+  'verifyEmail': verifyEmail,
 };
 
 /**
@@ -47,18 +47,18 @@ const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
  */
 export async function renderPublicPage(page: string, updateHistory: boolean = true) {
 
-	const main_container = document.querySelector<HTMLDivElement>('#app')!
-	const lang = sessionStorage.getItem('lang') || 'en';
+  const main_container = document.querySelector<HTMLDivElement>('#app')!
+  const lang = sessionStorage.getItem('lang') || 'en';
 
-	setupColorTheme('dark');
+  setupColorTheme('dark');
 
-	fadeOut();
-	setTimeout(async () => {
+  fadeOut();
+  setTimeout(async () => {
 
-		const rendererFunction = rendererPublicPage[page];
-		if (!rendererFunction) {
-			return renderErrorPage('404');
-		}
+    const rendererFunction = rendererPublicPage[page];
+    if (!rendererFunction) {
+      return renderErrorPage('404');
+    }
 
 		const page_content = await Promise.resolve(rendererFunction());
 		main_container.innerHTML = page_content;
@@ -67,10 +67,12 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 			addToHistory(page, updateHistory);
 		}
 		
-		if (page === 'verifyEmail') {
-			setTimeout(() => {
-				initializeVerifyEmailTimers();
-			}, 100);
+		if (page === '2FA') {
+			init2FAPage();
+		}
+		
+		if (page === '2FALogin') {
+			initLogin2FAPage();
 		}
 		
 		removeLoadingScreen();
@@ -91,6 +93,7 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
 	'profile': profile,
 	'friends': friends,
 	'documentation': documentation,
+	'rgpd': RGPD,
 }
 
 /**
@@ -105,7 +108,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 	}
 
 	if (!socket) {
-		socketConnection();
+		await socketConnection();
 	}
 
 	fadeOut();
@@ -125,13 +128,14 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		translatePage(user.preferences.lang);
 		addToHistory(page, updateHistory);
 
-		removeLoadingScreen();
+    removeLoadingScreen();
 
 		fadeIn();
+		document.querySelector("footer")?.classList.remove("hidden");
+
 
 	}, 200);
 }
-
 
 import { renderOtherProfile } from '../pages/OtherProfile'
 import { redocInit } from '../components/utils/redocInit'
@@ -146,11 +150,11 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 		return;
 	}
 
-	fadeOut();
+  fadeOut();
 
-	setTimeout(async () => {
+  setTimeout(async () => {
 
-		const main_container = document.querySelector<HTMLDivElement>('#app')!
+    const main_container = document.querySelector<HTMLDivElement>('#app')!
 
 		const newContainer = await renderOtherProfile(target, user);
 		if (!newContainer) {
@@ -162,7 +166,7 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 
 		translatePage(user.preferences.lang);
 
-		removeLoadingScreen();
+    removeLoadingScreen();
 
 		fadeIn();
 	}
@@ -174,10 +178,10 @@ export async function renderOtherProfilePage(target: HTMLElement) {
  */
 export async function renderErrorPage(code: string, messageServer?: string) {
 
-	const main_container = document.querySelector<HTMLDivElement>('#app')!
+  const main_container = document.querySelector<HTMLDivElement>('#app')!
 
-	let lang = 'en';
-	let theme = 'dark';
+  let lang = 'en';
+  let theme = 'dark';
 
 	const userPreferences = await FetchInterface.getUserPrefs();
 	if (userPreferences !== undefined) {
@@ -185,18 +189,18 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 		theme = userPreferences.theme;
 	}
 
-	setupColorTheme(theme);
-	fadeOut();
+  setupColorTheme(theme);
+  fadeOut();
 
 	setTimeout(async () => {
 		const page_content = dispatchError(code, messageServer || '');
 
-		main_container.innerHTML = page_content;
-		translatePage(lang);
+    main_container.innerHTML = page_content;
+    translatePage(lang);
 
-		addToHistory(code, false);
+    addToHistory(code, false);
 
-		removeLoadingScreen();
+    removeLoadingScreen();
 
 		fadeIn();
 	}
@@ -204,26 +208,26 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 }
 
 const logoDoc: { [key: string]: string } = {
-	'user': '/images/duckHandsUp.png',
-	'upload': '/images/duckUpload.png',
-	'game': '/images/dashboard.png',
-	'auth': '/images/duckPolice.png',
+  'user': '/images/duckHandsUp.png',
+  'upload': '/images/duckUpload.png',
+  'game': '/images/dashboard.png',
+  'auth': '/images/duckPolice.png',
 };
 
 export async function renderDocPages(page: string, index_logo: string) {
 
-	const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
-	redoc_container.innerHTML = '';
-	fetch(`${page}`)
-		.then(res => res.json())
-		.then(spec => {
-			spec.info['x-logo'] = {
-				url: logoDoc[index_logo],
-				backgroundColor: '#FFFFFF',
-				altText: 'Logo de l\'API',
-			};
-			redocInit(spec, redoc_container);
-		});
+  const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
+  redoc_container.innerHTML = '';
+  fetch(`${page}`)
+    .then(res => res.json())
+    .then(spec => {
+      spec.info['x-logo'] = {
+        url: logoDoc[index_logo],
+        backgroundColor: '#FFFFFF',
+        altText: 'Logo de l\'API',
+      };
+      redocInit(spec, redoc_container);
+    });
 }
 
 /**

@@ -12,7 +12,7 @@ export class NetworkLoop extends ALoop {
   protected update(): void {
     const tab = [];
     this.objects.forEach((obj) => {
-      if (!obj.enabled) return;
+      if (!obj.snapshotEnabled) return;
       tab.push(obj.snapshot());
     });
     if (tab.length > 0) {
@@ -22,14 +22,17 @@ export class NetworkLoop extends ALoop {
 
   private sendBatch(snapshot: any[]): void {
     const payload = {
-
       action: "snapshot",
-      data: snapshot,
+      data: {
+        time: performance.now() - this.startTime,
+        objects: snapshot,
+      }
     }
     const player = SceneContext.get().players;
-    IOInterface.broadcast(JSON.stringify(payload), player.flatMap(p =>
-      p.user_id !== "other" ? [p.user_id] : []
-    ));
+    IOInterface.broadcast(
+      JSON.stringify(payload),
+      [...player.keys()]
+    );
   }
 }
 
@@ -47,3 +50,17 @@ export class GameLoop extends ALoop {
     CollisionSystem.iterateCollisions(this.objects);
   }
 }
+
+// IALoop.ts
+export class IALoop extends ALoop {
+  constructor(tickRate: number) {
+    super(tickRate); // Ex: 1 tick/seconde (tickRate=1)
+  }
+
+  protected update(): void {
+    this.objects.forEach((obj) => {
+      obj.update();
+    });
+  }
+}
+

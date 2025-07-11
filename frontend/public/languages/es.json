@@ -55,7 +55,9 @@
 	
 	"2fa-auth": "Autenticación de dos factores",
 	"2fa-warning": "¡Advertencia! <br> No usar 2FA reduce la seguridad (ya que cualquiera puede acceder a tu cuenta)<br> y aumenta el riesgo de acciones accidentales.<br> ¡No se recomienda!",
-	
+	"2fa-description": "La autenticación de dos factores (2FA) agrega una capa de seguridad adicional a su cuenta. Además de su contraseña, deberá proporcionar un código de verificación recibido por correo electrónico.",
+	"2fa-code": "Ingrese su código de verificación 2FA",
+
 	"are-you-sure": "¿Estás seguro?",
 	"dangerous-action": "Acciones peligrosas",
 	"delete-account": "Eliminar cuenta",
@@ -93,6 +95,8 @@
 	"please-enter-all-fields": "Por favor, completa todos los campos",
 	"new-password-and-confirm-password-are-different": "La nueva contraseña y la confirmación de la contraseña son diferentes",
 	"password-changed": "Contraseña cambiada",
+	"new-password-must-be-different-from-old-password": "La nueva contraseña debe ser diferente de la antigua",
+
 	"user-infos-updated": "Información actualizada",
 	"user-infos-not-updated": "Información no actualizada",
 	"friend-invitation-sent": "Invitación de amigo enviada",

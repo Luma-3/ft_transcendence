@@ -6,6 +6,7 @@ import { alertTemporary } from "../components/ui/alert/alertTemporary";
 import { renderPublicPage } from "../controllers/renderPage";
 import { loadTranslation } from "../controllers/Translate";
 import { IOtherUser, IUserInfo, IUserPreferences, UserSearchResult } from "../interfaces/IUser";
+import { IApiResponse } from "../interfaces/IApi";
 
 export class FetchInterface {
 	private constructor() {}
@@ -22,11 +23,36 @@ export class FetchInterface {
 			body: JSON.stringify(userData)
 		});
 		if (response.status !== "success") {
+			console.log("Error in registerUser:", response.message);
 				const trad = await loadTranslation(userData.preferences.lang);
 				alertPublic(trad[response.message] ?? response.message, "error");
 				return false;
 			}
 		return true;
+	}
+	
+	/**
+	 * ! Log Out User
+	 */
+	public static async logOutUser() {
+
+	const confirmResponse = await alert("are-you-sure", "warning");
+	if (confirmResponse) {
+		console.log("User confirmed logout");
+			const responseApi = await fetchApiWithNoError(API.API_SESSION.DELETE, {
+				method: 'DELETE',
+				headers: {
+					"Content-Type": "text/plain",
+					credentials: 'include',
+				},
+				body: "",
+			});
+			if (responseApi.status === "error") {
+				return alert(responseApi.message, "error");
+			
+			}
+			window.location.href = "/";
+	} 
 	}
 
 	/**
@@ -209,7 +235,16 @@ export class FetchInterface {
 	//TODO: Verifier si response.data est toujours present, pour mieux gerer les erreurs serveur
 	public static async getFriends() {
 		const response = await fetchApi<IOtherUser[]>(API.API_USER.SOCIAL.FRIENDS);
+		console.log("Response from getFriends:", response);
 		return response.data ?? undefined;
+	}
+
+	/**
+	 * ! Search Users in all users
+	 */
+	public static async getSearchUsers(q: string, page: number = 1, limit: number = 10, hydrate: boolean = true): Promise<IApiResponse<UserSearchResult>> {
+		const response = await fetchApi<UserSearchResult>(API.API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}`);
+		return response;
 	}
 
 	/**
@@ -224,14 +259,13 @@ export class FetchInterface {
 			});
 			
 			if (response.status === "error") {
-				(action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true)
-																		: alertTemporary("error", "issues-with-friend-acceptance", user.preferences!.theme, true);
+				(action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true) : alertTemporary("error", "issues-with-friend-acceptance", user.preferences.theme, true);
 				return false;
 			}
 
 			if (action === "send") {
-				alertTemporary("success", "friend-invitation-sent", user.preferences!.theme, true);
-				return true
+				alertTemporary("success", "friend-invitation-sent", user.preferences.theme, true);
+				return true;
 			}
 
 			return true;
@@ -279,10 +313,11 @@ export class FetchInterface {
 			body: JSON.stringify({})
 		});
 		if (response.status === "error") {
-			return alertTemporary("error", "issues-with-friend-removal", user.preferences.theme, true);
+			 alertTemporary("error", "issues-with-friend-removal", user.preferences.theme, true);
+			 return false;
 		}
-		
 		alertTemporary("success", "friend-removed", user.preferences!.theme, true);
+		return true;
 	}
 
 	/**
@@ -330,10 +365,100 @@ export class FetchInterface {
 		});
 		console.log("Response from resendVerificationEmail:", response);
 		if (response.status === "error") {
-			alertPublic("error", "email-already-sent");
+			await alertPublic("error", "email-already-sent");
 			return false;
 		}
-		alertPublic("success", "email-sent-successfully");
+		await alertPublic("success", "email-sent-successfully");
 		return true;
 	}
+
+	/**
+	 * ! 2FA Verification
+	 */
+	public static async verify2FA(): Promise<boolean> {
+		const response = await fetchApiWithNoError<{ twofa: boolean }>(API.API_USER.TWOFA, {
+			method: 'GET',
+		});
+		if (response.status === "error" || !response.data) {
+			return false;
+		}
+		return response.data.twofa;
+	}
+
+	/**
+	 * ! Activate 2FA
+	 */
+	public static async activate2FA(): Promise<boolean> {
+		const response = await fetchApiWithNoError(API.API_USER.TWOFA, {
+			method: 'PUT',
+			headers: { "Content-Type": "text/plain" }
+		});
+		if (response.status === "error") {
+			await alertTemporary("error", "cannot-activate-2fa", "dark");
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * ! Deactivate 2FA
+	 */
+	public static async desactivate2FA(): Promise<boolean> {
+		const response = await fetchApiWithNoError(API.API_USER.TWOFA, {
+			method: 'DELETE',
+			headers: { "Content-Type": "text/plain" }
+		});
+		if (response.status === "error") {
+			await alertTemporary("error", "cannot-desactivate-2fa", "dark");
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * ! Send TwoFA Code
+	 */
+
+	public static async submit2FACode(code: string): Promise<boolean> {
+		const response = await fetchApiWithNoError(API.MODULE_TWOFA.VERIFY.TWOFA, {
+			method: 'POST',
+			body: JSON.stringify({ code })
+		});
+		console.log("Response from submit2FACode:", response);
+		if (response.status === "error") {
+			await alertTemporary("error", "invalid-2fa-code", "dark", true, true);
+			return false;
+		}
+		await alertTemporary("success", "2fa-code-verified", "dark", true, true);
+		return true;
+	}
+
+	public static async createGameInServer(FormInfos: IGameFormInfo) {
+		// const response = await fetchApiWithNoError<{ id: string }>(API.API_GAME.CREATE + `/${FormInfos.game_type}`, {
+
+		const response = await fetchApiWithNoError<{ id: string }>(API.API_GAME.CREATE, {
+				method: 'POST',
+				body: JSON.stringify({
+					playerName: FormInfos.player_name,
+					gameName: FormInfos.game_name,
+					gameType: FormInfos.game_type,
+				}),
+			});
+			if (!response || response.status === "error" || !response.data) {
+				alertTemporary("error", "game-creation-failed", 'dark', true);
+				return false;
+			}
+			return true;
+	}
+
+	public static async inviteToPlay(user: IUserInfo, invitePlayerId: string) {
+		alertTemporary("success", "Player Invite" + invitePlayerId, user.preferences.theme, true, true);
+		return true;
+	}
+}
+
+export interface IGameFormInfo {
+  player_name: string;
+  game_name: string;
+  game_type: string;
 }

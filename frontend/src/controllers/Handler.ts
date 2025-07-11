@@ -1,9 +1,8 @@
 import { registerUser } from '../pages/Register'
 import { loginUser } from '../pages/Login'
 import { logOutUser } from '../events/user/userLogout'
-import { deleteUser } from '../events/user/userDelete'
 import { changeLanguage, changeLanguageSettings, saveDefaultLanguage } from './Translate'
-import { handleSearchUserGame } from '../events/social/onlineUserSearch'
+import { handleSearchOpponent, handleSearchUserGame, invitePlayerToPlay } from './searchHandler'
 
 import { renderPublicPage, renderPrivatePage, renderDocPages } from '../controllers/renderPage'
 import { renderBackPage } from '../controllers/renderPage'
@@ -26,10 +25,9 @@ import { blockUser } from '../events/social/blockUser'
 import { cancelFriendInvitation } from '../events/social/cancelInvitation'
 import { refuseFriendInvitation } from '../events/social/refusedInvitation'
 import { unfriendUser } from '../events/social/removeFriend'
-import { disable2FA, enable2FA, submit2FACode, submit2FACodeLogin } from '../2FA'
-import { showNotificationDiv } from '../components/ui/alert/notificationsAlert'
+import { disable2FA, enable2FA, submit2FACode, submit2FACodeLogin } from '../pages/2FA'
+import { showNotificationDiv } from '../pages/Notifications'
 import { sendEmail } from '../components/utils/sendEmail'
-import { initializeVerifyEmailTimers } from '../events/email/verifyEmailTimers'
 
 
 import { FetchInterface } from '../api/FetchInterface'
@@ -52,7 +50,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'google': () => {
 		window.location.href = 'https://localhost:5173/api/auth/oauth2/google'
 	},
-	'logout': () => logOutUser(),
+	'logout': () => FetchInterface.logOutUser(),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 🏠 PAGES PRIVÉES
@@ -61,6 +59,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'loadprofile': () => renderPrivatePage('profile'),
 	'loadsettings': () => renderPrivatePage('settings'),
 	'loadfriends': () => renderPrivatePage('friends'),
+	'loadrgpd': () => renderPrivatePage('rgpd'),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 👤 GESTION UTILISATEUR
@@ -77,6 +76,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'unfriend-user': (event) => unfriendUser(event.target as HTMLElement),
 	'cancel-invitation': (event) => cancelFriendInvitation(event.target as HTMLElement),
 	'refuse-invitation': (event) => refuseFriendInvitation(event.target as HTMLElement),
+	'invite-game': (event) => invitePlayerToPlay(event.target as HTMLElement),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 🚫 BLOCAGE UTILISATEURS
@@ -103,6 +103,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	// 🎮 JEUX
 	// ═══════════════════════════════════════════════════════════════
 	'initGame': () => initGame(),
+	'leaveGame': () => { window.location.href = '/dashboard'; },
 
 	// ═══════════════════════════════════════════════════════════════
 	// 🔔 NOTIFICATIONS
@@ -157,6 +158,7 @@ const inputChangetEvent: { [key: string]: (inputValue: DOMStringMap) => void } =
 
 const inputEvent: { [key: string]: (value: string) => void } = {
 	'search-user': (value) => handleSearchUserGame(value),
+	'search-opponent': (value) => handleSearchOpponent(value)
 }
 
 const clickSpecial: { [key: string]: (event: MouseEvent) => void } = {

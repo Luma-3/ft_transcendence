@@ -35,4 +35,9 @@ export class Vector2 {
   static zero(): Vector2 {
     return new Vector2(0, 0);
   }
+
+  clone(): Vector2 {
+  return new Vector2(this.x, this.y);
+}
+
 }

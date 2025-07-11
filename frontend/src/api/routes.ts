@@ -66,8 +66,16 @@ export const API_CDN = {
 	BANNER: `${SERVICES.CDN}/banner`,
 }
 
-export const TWOFA = {
-	EMAIL: `${SERVICES.TWOFA}/email`,
-	TWOFA: `${SERVICES.TWOFA}/code`,
+export const API_2FA = {
+	TWOFA: `${SERVICES.USER}/2fa`, //GET || PUT (activate) || DELETE (desactivate)
+	SEND: `${SERVICES.SESSION}/2fa`, //POST
+}
+
+export const MODULE_TWOFA = {
+	RESEND_EMAIL: `${SERVICES.AUTH}/email-verification/resend`,
+	VERIFY: {
+			EMAIL: `${SERVICES.AUTH}/email-verification`,
+			TWOFA: `${SERVICES.TWOFA}/code/verify`,
+	},
 }
 

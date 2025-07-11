@@ -4,5 +4,5 @@ return `
 
 		Go back to safe place
 
-		</button>`
+</button>`
 }

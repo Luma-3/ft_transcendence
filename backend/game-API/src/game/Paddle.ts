@@ -16,12 +16,17 @@ export class Paddle extends GameObject implements Rectangle {
   private id: string = '';
   // private inMove = false;
 
+  get Paddleid() {
+    return this.id;
+  }
+
   constructor(id: string, pos: Vector2) {
     super();
 
     this.id = id;
     this.startPosition(pos);
   }
+
 
   startPosition(pos: Vector2) {
     this.position = pos;
@@ -30,14 +35,11 @@ export class Paddle extends GameObject implements Rectangle {
   update() {
     this.move();
     this.calculateFriction();
-    this.position = this.position.add(this.velocity.scale(SceneContext.get().loopManager.deltaTime)); // Update position based on velocity and delta time
-    this.clampPosition(600 - 10, 0 + 10); // Clamp the paddle position to stay within the game area
+    this.position = this.position.add(this.velocity.scale(SceneContext.get().loopManager.deltaTime));
+    this.clampPosition(10, 590);
   }
 
-
-  // -- END REQUIREMENTS FUNCTION --
-
-  clampPosition(max: number, min: number) {
+  clampPosition(min: number, max: number) {
     // Clamp the paddle position to stay within the game area
     if (this.position.y < min + this.scale.y / 2) {
       this.position.y = min + this.scale.y / 2;

@@ -106,14 +106,14 @@ export async function registerUser() {
 	 * Creation de l'utilisateur
 	 */
 	const success = await FetchInterface.registerUser(userData);
-	if (success) {
+	if (!success) {
+		return;
+	}
 		userRegisterInfo = {
 			email: userData.email,
 			lang: userData.preferences.lang,
 		};
 		renderPublicPage('verifyEmail');
-	}
-
 }
 
 export function verifValueForm(userData: Record<string, string>) {

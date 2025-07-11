@@ -34,10 +34,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 	switch (page) {
 
 		case 'error':
-			return renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
+			renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
+			break;
 
 		case 'verifyEmail':
-			return verifyEmailUser(new URLSearchParams(window.location.search).get('value') || '');
+			await verifyEmailUser(new URLSearchParams(window.location.search).get('value') || '');
+			break;
 
 		default: 
 			const activeSession = await FetchInterface.verifySession();

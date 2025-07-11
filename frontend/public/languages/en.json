@@ -23,8 +23,8 @@
 	"verify-email": "Verify email",
 	"login": "Login",
 	"google-login": "Login with Google",
-	"username-already-in-use": "Username already in use",
-	"email-already-in-use": "Email already in use",
+	"Username already Exist": "Username already in use",
+	"Email already in use": "Email already in use",
 	"passwords-dont-match": "Passwords do not match",
 	"username-or-password-incorrect": "Username or password incorrect",
 	"password-must-include": "Password must include at least: 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
@@ -50,6 +50,8 @@
 
 	"activate-2fa": "Activate 2FA",
 	"disable-2fa": "Disable 2FA",
+	"2fa-description": "Two factor authentication (2FA) adds an extra layer of security to your account. In addition to your password, you will need to provide a verification code received by email.",
+	"2fa-code": "Enter your 2FA verification code",
 
 	"2fa-auth": "Two factor authentication",
 	"2fa-warning": "Warning ! <br> No 2FA reduces security (as anyone can access your account)<br> and increases the risk of accidental actions.<br> This is not recommended !",
@@ -90,6 +92,8 @@
 	"please-enter-all-fields": "Please enter all fields",
 	"new-password-and-confirm-password-are-different": "New password and confirm password are different",
 	"password-changed": "Password changed",
+	"new-password-must-be-different-from-old-password": "New password must be different from old password",
+	
 	"user-infos-updated": "Informations updated",
 	"user-infos-not-updated": "Informations not updated",
 	

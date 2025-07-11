@@ -6,8 +6,9 @@ export class InputField {
 	private required: boolean;
 	private translate: string;
 	private value?: string;
+	private disable: boolean;
 
-	constructor(name: string, type: string, placeholder: string, autocomplete: string, required: boolean, translate: string, value: string = '') {
+	constructor(name: string, type: string, placeholder: string, autocomplete: string, required: boolean, translate: string, value: string = '', disable: boolean = false) {
 
 		this.name = name;
 		this.type = type;
@@ -16,6 +17,7 @@ export class InputField {
 		this.required = required;
 		this.translate = translate;
 		this.value = value ?? '';
+		this.disable = disable;
 	}
 	
 	public toHtml() {
@@ -37,5 +39,7 @@ export class InputField {
 		
 		placeholder="${this.placeholder}" ${this.required ? 'required' : ''} 
 		value="${this.value}"
+		${this.disable ? 'disabled style="color:#D4D3D3"' : ''}
+
 	/>`
 }}

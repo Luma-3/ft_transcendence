@@ -19,6 +19,7 @@ export abstract class GameObject {
   }
 
   public enabled: boolean = true; // Indicates if the object is enabled or not
+  public snapshotEnabled: boolean = true;
 
   collider(): Circle | Rectangle { return null; }
 

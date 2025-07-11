@@ -56,6 +56,9 @@ export async function alertChangePassword() {
 			} else if(verifRegexNewPassword(newPassword) === false) {
 				messageError = trad['password-must-include'];
 				Swal.showValidationMessage(messageError);
+			} else if (oldPassword === newPassword) {
+				messageError = trad['new-password-must-be-different-from-old-password'];
+				Swal.showValidationMessage(messageError);
 			}
 			return { oldPassword, newPassword };
 		}

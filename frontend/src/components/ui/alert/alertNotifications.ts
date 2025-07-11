@@ -1,17 +1,17 @@
 import Swal, { SweetAlertIcon } from "sweetalert2";
+
 import { getCustomAlertTheme } from "./alertTheme";
 import { loadTranslation } from "../../../controllers/Translate";
 import { alertTemporary } from "./alertTemporary";
-import { showNotificationDiv } from "./notificationsAlert";
+import { showNotificationDiv } from "../../../pages/Notifications";
 
 export async function alertNotifications(level: string, message: string, theme: string, trad = false, duration = 4000) {
 	const customTheme = await getCustomAlertTheme(true, theme);
 	if (!customTheme) {
-		return await alertTemporary("error", "Error while getting user alert theme", 'dark');
+		return await alertTemporary("error", "Error while getting user alert theme", 'dark', false);
 	}
 	const allowedIcons = ['success', 'error', 'warning', 'info', 'question'];
 	if (!allowedIcons.includes(level)) {
-		console.error(`Invalid alert level: ${level}. Allowed levels are: ${allowedIcons.join(', ')}`);
 		return;
 	}
 	if (trad) {

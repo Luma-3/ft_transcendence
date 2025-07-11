@@ -3,10 +3,11 @@ import { navbar } from "../components/ui/navbar";
 import { animateButton } from "../components/ui/buttons/animateButton";
 
 import { languageSelectorSettings } from "../components/ui/languageSelectors";
-import { change2FA } from "../2FA";
 import { headerPage } from "../components/ui/headerPage";
 import { IUserInfo } from "../interfaces/IUser";
 import { Button } from "../classes/Button";
+import { FetchInterface } from "../api/FetchInterface";
+
 
 async function renderSettingsPage(user: IUserInfo) {
 
@@ -42,4 +43,42 @@ ${headerPage("settings")}
 
 export default function settingsPage(user: IUserInfo) {
 	return renderSettingsPage(user);
+}
+
+
+export async function change2FA() {
+
+	let id = 'enable2fa';
+	let translate = 'activate-2fa';
+
+	if (await FetchInterface.verify2FA()) {
+		id = 'disable2fa';
+		translate = 'disable-2fa';
+	}
+	const activate_button = new Button(id, "1/4", translate, translate, "primary", "button");
+	let container = `
+	<div class="grid sm:grid-cols-2 gap-4 items-center">
+
+		<div class="title-responsive-size font-title justify-center" translate="2fa-auth">
+
+			2FA Authentication
+
+		</div>
+
+		${activate_button.primaryButton()}
+
+	</div>`
+
+	if (id === 'enable2fa') {
+		container += `
+		<div class="flex flex-col p-2 max-w-[800px] justify-center items-center w-full text-responsive-size font-title" translate="2fa-warning">
+			
+			Warning !
+			No 2FA reduces security
+			(as anyone can access your account)<br> and increases the
+			risk of accidental actions.<br> This is not recommended !
+
+		</div>`
+	}
+	return container;
 }

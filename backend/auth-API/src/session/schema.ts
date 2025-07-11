@@ -15,6 +15,13 @@ export const FamilyId = Type.Object({
   familyId: Type.String()
 })
 
+// export type CookieResponseType = Static<typeof CookieResponse>;
+export const UserId = Type.Object({
+  userId: Type.String({ format: 'uuid' })
+})
+
+export type UserIdType = Static<typeof UserId>;
+
 export const RefreshTokenBase = Type.Object({
   id: Type.String(),
   user_id: Type.String(),

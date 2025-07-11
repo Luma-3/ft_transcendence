@@ -1,18 +1,13 @@
-import { IUserInfo } from "../interfaces/IUser";
-import { IPlayer, IRoomInfos } from "../interfaces/IGame";
+import { IPlayer } from "../interfaces/IGame";
+import { IGame } from "../events/game/Game";
 
-import { API_CDN } from "../api/routes";
+async function showPlayer(playerGameInfos: IPlayer, color: 'blue' | 'red') {
 
-import { randomNameGenerator } from "../components/utils/randomNameGenerator";
-
-async function showPlayer(playerGameInfos: IPlayer, playerInfo: IUserInfo, color: 'blue' | 'red') {
-
-return `
-<div id=${playerGameInfos.user_id} class="flex flex-col p-4 justify-center items-center transition-transform duration-800 ease-in-out">
-
+  return `
+<div id=${playerGameInfos.id} class="flex flex-col p-4 justify-center items-center transition-transform duration-800 ease-in-out">
 	<div class="flex flex-col justify-center items-center">
 
-		<img src=${API_CDN.AVATAR}/${playerInfo.preferences?.avatar} alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
+		<img src=${playerGameInfos.avatar} alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
 		${color === 'blue' ? 'border-blue-500' : 'border-red-500'}" />
 		${playerGameInfos.player_name}
 
@@ -20,26 +15,15 @@ return `
 
 </div>`;
 }
+export default async function gameHtml(gameInfo: IGame, userId: string) {
+  const playerLeft = gameInfo.players.find(player => player.id === userId)!;
+  const playerRight = gameInfo.players.find(player => player.id !== userId)!;
 
-export default async function gameHtml(roomInfos: IRoomInfos, leftOpponentInfos: IUserInfo, rightOpponentInfos: IUserInfo) {
+  const leftOpponentDiv = await showPlayer(playerLeft, 'blue');
+  const rightOpponentDiv = await showPlayer(playerRight, 'red');
 
-	let rightOpponentDiv = '';
 
-	const leftOpponentDiv = await showPlayer(roomInfos.players[0], leftOpponentInfos, 'blue');
-	if (roomInfos.players.length > 1) {
-		rightOpponentDiv = await showPlayer(roomInfos.players[1], rightOpponentInfos, 'red');
-	} else {
-		rightOpponentDiv = `<div id="otherPlayerDiv" class="flex flex-col p-4 justify-center items-center
-		transition-transform duration-800 ease-in-out">
-		<div class="flex flex-col justify-center items-center">
-			<img src=${API_CDN.AVATAR}/default.png alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-2 mb-4
-			border-red-500" />
-			${randomNameGenerator()}
-			</div>
-			</div>`;
-	}
-
-return `
+  return `
 <div class="flex flex-col justify-center items-center text-tertiary dark:text-dtertiary">
 	
 	<div id="startGameInfos" class="flex flex-col justify-center items-center pt-10 animate-transition opacity-100 duration-500 ease-in-out">
@@ -65,47 +49,58 @@ return `
 	</div>
 </div>
 
-<div id = "hiddenGame" class="flex flex-col justify-center mt-0 items-center animate-transition opacity-0 duration-500 ease-in-out">
-
+<div id="hiddenGame" class="flex flex-col justify-center mt-0 items-center animate-transition opacity-0 duration-500 ease-in-out">
+	
 	<!-- Zone de jeu avec bannières -->
+	<div id="gameName" class="text-4xl font-title text-center mt-4 mb-2 text-tertiary dark:text-dprimary">
+		${gameInfo.gameName}
+	</div>
 	<div class="flex flex-row justify-center items-center gap-4">
 		
 		<!-- Bannière gauche -->
 		<div id="leftBanner" class="flex flex-col justify-center items-center w-32 h-[400px] bg-gradient-to-b from-purple-500 to-purple-700 rounded-lg border-2 border-purple-400 shadow-lg">
 			<div class="flex flex-col items-center text-white p-4 space-y-4">
 				<div class="text-lg font-bold">
-				${roomInfos.players[0].player_name}
+				${playerLeft.player_name}
 				</div>
 				<div id="player1Avatar" class="w-16 h-16 rounded-full border-2 border-white bg-purple-300">
-				<img src=${leftOpponentInfos?.preferences?.avatar} alt="avatar" class="w-full h-full rounded-full">
+				<img src=${playerLeft.avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player1Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
-					<div>Score: <div id="playerLeftScore" class="relative bottom-0 text-8xl">0</div></div>
+					<div>Score: <div id="${playerLeft.id}-score" class="relative bottom-0 text-8xl">0</div></div>
 				</div>
 			</div>
 		</div>
 		
 		<!-- Canvas de jeu -->
-		<canvas id="gamePong" width="800" height="600" class="flex w-[800px] h-[600px] border-4 border-myblack bg-transparent rounded-lg mt-10" > </canvas>
+		<canvas id="game" width="800" height="600" class=" border-4 border-myblack bg-transparent rounded-lg mt-2 box-content" > </canvas>
 		
 		<!-- Bannière droite -->
 		<div id="rightBanner" class="flex flex-col justify-center items-center w-32 h-[400px] bg-gradient-to-b from-orange-500 to-orange-700 rounded-lg border-2 border-orange-400 shadow-lg">
 			<div class="flex flex-col justify-center items-center text-white p-4 space-y-4">
 				<div class="flex justify-center items-center text-lg font-bold text-center">
-					${(roomInfos.players[1] ? roomInfos.players[1].player_name : 'Waiting for opponent')}
+					${playerRight.player_name}
 				</div>
 				<div id="player2Avatar" class="w-16 h-16 rounded-full border-2 border-white bg-orange-300">
-					<img src=${rightOpponentInfos.preferences?.avatar} alt="avatar" class="w-full h-full rounded-full">
+					<img src=${playerRight.avatar} alt="avatar" class="w-full h-full rounded-full">
 				</div>
 				<div id="player2Stats" class="flex flex-col text-sm text-center space-y-2 mt-5">
-					<div>Score: <div id="playerRightScore" class="relative bottom-0 text-8xl">0</div></div>
+					<div>Score: <div id="${playerRight.id}-score" class="relative bottom-0 text-8xl">0</div></div>
 				</div>
 			</div>
 		</div>
-		
+
+  <!-- Graphique de l'alpha -->
+  <canvas id="alphaGraph" width="300" height="100" class="absolute top-2 right-2 border border-gray-500 bg-black"></canvas>
 	</div>
-</div>
-	
+	<div class="flex flex-row mt-2 mb-2 w-full font-title text-tertiary dark:text-dtertiary justify-center items-center p-2">
+		<button id="leaveGame" class="flex flex-row items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" translate="leaveGame">
+			Leave Game
+			<img src="/images/duckQuitGame.png" alt="logo" class="w-10 h-10 ml-4">
+		</button>
+	</div>
+
 <div id="gameWin">
 </div>`
 }
+//TODO:Traduction
