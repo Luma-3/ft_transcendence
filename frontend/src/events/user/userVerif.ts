@@ -1,20 +1,18 @@
 import { fetchApiWithNoError } from "../../api/fetch";
 import { MODULE_TWOFA } from "../../api/routes";
-import { alertTemporary } from "../../components/ui/alert/alertTemporary";
-import { renderPublicPage } from "../../controllers/renderPage";
+import { alertPublic } from "../../components/ui/alert/alertPublic";
 
 export async function verifyEmailUser(token: string) {
-	alertTemporary("info", "Verifying your email...", "dark");
 
 	const response = await fetchApiWithNoError(MODULE_TWOFA.VERIFY.EMAIL + `/${token}`, {
 		method: "GET",
 	});
+	//TODO: Traduction
 	if (response.status === "error") {
-		await alertTemporary("error", "Error with email verification", "dark", true, true);
-		// renderPublicPage('register');
+		await alertPublic("cannot-verify-email-too-old-mail-or-retry-registration-process", "error");
+		window.location.href = "/register";
 		return;
 	}
-
-	await alertTemporary("success", "Email verified successfully", "dark", true, true);
-	// window.location.href = "/login";
+	await alertPublic("email-verified-successfully", "success");
+	window.location.href = "/login";
 }

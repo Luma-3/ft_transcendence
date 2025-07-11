@@ -24,6 +24,7 @@ export async function translatePage(lang : string = 'en') {
 		lang = 'en'
 	
 	const container = document.querySelector<HTMLDivElement>('#app')!
+	const footer = document.getElementById('footer')!
 	
 	const translations = await loadTranslation(lang)
 
@@ -40,6 +41,15 @@ export async function translatePage(lang : string = 'en') {
 			else {
 				element.innerHTML = translations[key]
 			}
+		}
+	})
+
+	const footerElements = footer.querySelectorAll('[translate]')
+	footerElements.forEach(element => {
+		const key = element.getAttribute('translate')
+		if (key && translations[key])
+		{
+			element.innerHTML = translations[key]
 		}
 	})
 }

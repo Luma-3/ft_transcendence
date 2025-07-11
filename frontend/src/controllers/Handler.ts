@@ -103,6 +103,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	// 🎮 JEUX
 	// ═══════════════════════════════════════════════════════════════
 	'initGame': () => initGame(),
+	'leaveGame': () => { window.location.href = '/dashboard'; },
 
 	// ═══════════════════════════════════════════════════════════════
 	// 🔔 NOTIFICATIONS

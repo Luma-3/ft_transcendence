@@ -7,7 +7,6 @@ import { renderPublicPage } from "../controllers/renderPage";
 import { loadTranslation } from "../controllers/Translate";
 import { IOtherUser, IUserInfo, IUserPreferences, UserSearchResult } from "../interfaces/IUser";
 import { IApiResponse } from "../interfaces/IApi";
-import { IGameFormInfo } from "../interfaces/IGame";
 
 export class FetchInterface {
 	private constructor() {}
@@ -24,8 +23,9 @@ export class FetchInterface {
 			body: JSON.stringify(userData)
 		});
 		if (response.status !== "success") {
+			console.log("Error in registerUser:", response.message);
 				const trad = await loadTranslation(userData.preferences.lang);
-				alertTemporary("error", trad[response.message] ?? response.message, 'dark', false, true);
+				alertPublic(trad[response.message] ?? response.message, "error");
 				return false;
 			}
 		return true;
@@ -235,6 +235,7 @@ export class FetchInterface {
 	//TODO: Verifier si response.data est toujours present, pour mieux gerer les erreurs serveur
 	public static async getFriends() {
 		const response = await fetchApi<IOtherUser[]>(API.API_USER.SOCIAL.FRIENDS);
+		console.log("Response from getFriends:", response);
 		return response.data ?? undefined;
 	}
 
@@ -258,14 +259,13 @@ export class FetchInterface {
 			});
 			
 			if (response.status === "error") {
-				(action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true)
-																		: alertTemporary("error", "issues-with-friend-acceptance", user.preferences!.theme, true);
+				(action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true) : alertTemporary("error", "issues-with-friend-acceptance", user.preferences.theme, true);
 				return false;
 			}
 
 			if (action === "send") {
-				alertTemporary("success", "friend-invitation-sent", user.preferences!.theme, true);
-				return true
+				alertTemporary("success", "friend-invitation-sent", user.preferences.theme, true);
+				return true;
 			}
 
 			return true;
@@ -313,10 +313,11 @@ export class FetchInterface {
 			body: JSON.stringify({})
 		});
 		if (response.status === "error") {
-			return alertTemporary("error", "issues-with-friend-removal", user.preferences.theme, true);
+			 alertTemporary("error", "issues-with-friend-removal", user.preferences.theme, true);
+			 return false;
 		}
-		
 		alertTemporary("success", "friend-removed", user.preferences!.theme, true);
+		return true;
 	}
 
 	/**
@@ -432,15 +433,15 @@ export class FetchInterface {
 		return true;
 	}
 
-	
-
 	public static async createGameInServer(FormInfos: IGameFormInfo) {
+		// const response = await fetchApiWithNoError<{ id: string }>(API.API_GAME.CREATE + `/${FormInfos.game_type}`, {
+
 		const response = await fetchApiWithNoError<{ id: string }>(API.API_GAME.CREATE, {
 				method: 'POST',
 				body: JSON.stringify({
 					playerName: FormInfos.player_name,
-					gameType: FormInfos.game_type,
 					gameName: FormInfos.game_name,
+					gameType: FormInfos.game_type,
 				}),
 			});
 			if (!response || response.status === "error" || !response.data) {

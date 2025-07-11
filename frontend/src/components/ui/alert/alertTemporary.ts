@@ -4,7 +4,7 @@ import { loadTranslation } from "../../../controllers/Translate";
 
 export async function alertTemporary(level: string, message: string, theme: string, needUser = true, trad = false) {
 
-	const customTheme = await getCustomAlertTheme(true, theme);
+	const customTheme = await getCustomAlertTheme(needUser, theme);
 	if (!customTheme) {
 		await alertTemporary(level, message, "dark", false, true);
 		return;

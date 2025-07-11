@@ -49,9 +49,12 @@ export default async function gameHtml(gameInfo: IGame, userId: string) {
 	</div>
 </div>
 
-<div id = "hiddenGame" class="flex flex-col justify-center mt-0 items-center animate-transition opacity-0 duration-500 ease-in-out">
+<div id="hiddenGame" class="flex flex-col justify-center mt-0 items-center animate-transition opacity-0 duration-500 ease-in-out">
 	
 	<!-- Zone de jeu avec bannières -->
+	<div id="gameName" class="text-4xl font-title text-center mt-4 mb-2 text-tertiary dark:text-dprimary">
+		${gameInfo.gameName}
+	</div>
 	<div class="flex flex-row justify-center items-center gap-4">
 		
 		<!-- Bannière gauche -->
@@ -70,7 +73,7 @@ export default async function gameHtml(gameInfo: IGame, userId: string) {
 		</div>
 		
 		<!-- Canvas de jeu -->
-		<canvas id="game" width="800" height="600" class=" border-4 border-myblack bg-transparent rounded-lg mt-10 box-content" > </canvas>
+		<canvas id="game" width="800" height="600" class=" border-4 border-myblack bg-transparent rounded-lg mt-2 box-content" > </canvas>
 		
 		<!-- Bannière droite -->
 		<div id="rightBanner" class="flex flex-col justify-center items-center w-32 h-[400px] bg-gradient-to-b from-orange-500 to-orange-700 rounded-lg border-2 border-orange-400 shadow-lg">
@@ -89,10 +92,15 @@ export default async function gameHtml(gameInfo: IGame, userId: string) {
 
   <!-- Graphique de l'alpha -->
   <canvas id="alphaGraph" width="300" height="100" class="absolute top-2 right-2 border border-gray-500 bg-black"></canvas>
-		
 	</div>
-</div>
-	
+	<div class="flex flex-row mt-2 mb-2 w-full font-title text-tertiary dark:text-dtertiary justify-center items-center p-2">
+		<button id="leaveGame" class="flex flex-row items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" translate="leaveGame">
+			Leave Game
+			<img src="/images/duckQuitGame.png" alt="logo" class="w-10 h-10 ml-4">
+		</button>
+	</div>
+
 <div id="gameWin">
 </div>`
 }
+//TODO:Traduction

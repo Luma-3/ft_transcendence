@@ -8,6 +8,7 @@ import { AlphaGraph } from "./AlphaGraph";
 export interface IGame {
   id: string;
   gameType: string;
+  gameName: string;
   players: IPlayer[],
   status: string
 }

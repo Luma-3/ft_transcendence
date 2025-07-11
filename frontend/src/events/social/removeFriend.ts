@@ -1,6 +1,5 @@
 import { FetchInterface } from "../../api/FetchInterface";
 import { renderErrorPage } from "../../controllers/renderPage";
-import { allUsersList } from "../../pages/Friends/Lists/allUsersList";
 import { updateAllUserLists, updateFriendsList } from "../../pages/Friends/Lists/updatersList";
 
 export async function unfriendUser(target: HTMLElement) {
@@ -18,7 +17,6 @@ export async function unfriendUser(target: HTMLElement) {
 	if (!success) {
 		return;
 	}
-
 	await updateFriendsList();
 	await updateAllUserLists();
 }
