@@ -31,7 +31,7 @@ export async function initGame() {
     roomName: "MMA in Pound !",
     gameType: gameType.id,
   }
-  if(gameType.id === "online") {
+  if(gameType.id === "online" && gameFormInfo.playerName === "") {
     invitePlayerToPlay(gameFormInfo);
     return;
   }

@@ -229,14 +229,3 @@ export async function renderDocPages(page: string, index_logo: string) {
       redocInit(spec, redoc_container);
     });
 }
-
-/**
- * S'occuper du renderer de la page de retour et verifie si on est deja sur le dashboard 
- * ( si l'utilisateur clique tres vite plusieurs fois sur le bouton de retour )
- * pour eviter de partir au dela du dashboard
-
- * @returns Renders the previous page in the history stack
- */
-export function renderBackPage() {
-	window.history.go(-1);
-}

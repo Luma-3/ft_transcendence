@@ -1,11 +1,10 @@
 import { registerUser } from '../pages/Register'
 import { loginUser } from '../pages/Login'
-import { logOutUser } from '../events/user/userLogout'
 import { changeLanguage, changeLanguageSettings, saveDefaultLanguage } from './Translate'
-import { handleSearchOpponent, handleSearchUserGame, invitePlayerToPlay } from './searchHandler'
+import { handleSearchOpponent, handleSearchUserGame } from './searchHandler'
 
 import { renderPublicPage, renderPrivatePage, renderDocPages } from '../controllers/renderPage'
-import { renderBackPage } from '../controllers/renderPage'
+import { renderBackPage } from '../main'
 
 import { changeLightMode } from '../components/utils/togglers/toggleLight'
 import { toggleUserMenu } from '../components/utils/togglers/toggleUserMenu'

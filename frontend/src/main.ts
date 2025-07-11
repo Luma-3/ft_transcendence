@@ -3,8 +3,17 @@ import { addAllEventListenOnPage } from './controllers/Handler'
 import { verifyEmailUser } from './events/user/userVerif'
 import { FetchInterface } from './api/FetchInterface'
 
+const publicPages = ['home', 'login', 'register', 'verifyEmail']
+
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
+export async function renderBackPage() {
+	const backPage = history.state?.page || 'home';
+	if (publicPages.includes(backPage) && await FetchInterface.verifySession()) {
+		return window.location.href = '/dashboard';
+	}
+	window.history.go(-1);
+}
 
 
 //* Ajout de la page dans l'historique de navigation et enregistrement de la page precedente pour le button back
@@ -20,7 +29,6 @@ export function addToHistory(page: string, updateHistory: boolean = true) {
 
 addAllEventListenOnPage(main_container);
 
-const publicPages = ['home', 'login', 'register', 'verifyEmail']
 // * Au chargement initial ou refresh de la page
 // * On verfie si l'utilisateur a une session active
 // * On affiche la page prive si l'utilisateur est connecté
