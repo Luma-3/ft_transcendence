@@ -8,6 +8,7 @@ import { randomUUID } from 'crypto';
 import { NotFoundError, UnauthorizedError, ConflictError } from '@transcenduck/error';
 import verifyEmail from './public/html/verifyEmail.js';
 import twoFaEmail from './public/html/twoFaEmail.js';
+import server from '../fastify.js';
 
 const PATH_PUBLIC = 'src/twofa/public';
 const TIMEOUT_MAIL = 60; // seconds
@@ -37,7 +38,7 @@ async function sendVerificationEmail(email: string, token: string, language: str
 		],
 		html: verifyEmail(trad, process.env.URL!, token)
 	};
-	await transporter.sendMail(mailOptions);
+	transporter.sendMail(mailOptions).catch(server.log.error);
 }
 
 // Envoie le code 2FA
@@ -54,7 +55,7 @@ async function send2FACode(email: string, code: string, language: string = 'en')
 		],
 		html: twoFaEmail(trad, code)
 	};
-	await transporter.sendMail(mailOptions);
+	transporter.sendMail(mailOptions).catch(server.log.error);
 }
 
 // Vérifie le mail et créer l'utilisateur

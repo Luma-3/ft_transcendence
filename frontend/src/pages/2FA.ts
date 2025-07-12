@@ -70,7 +70,7 @@ export async function submit2FACode() {
 /**
  * ! Contenu html de la page 2FA
  */
-export default async function twoFaPage(target: string = 'enable') {
+export default async function twoFaPage(target: string = 'login') {
 	
 	_action = target;
 	const formButton = new Button('submit2faCode', "1/4", 'Submit 2FA Code', 'submit-2fa-code','primary', 'submit' )

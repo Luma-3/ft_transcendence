@@ -67,6 +67,7 @@ export const API_2FA = {
   SEND: `${SERVICES.SESSION}/2fa`, //POST
 }
 
+
 export const TWOFA = {
 	EMAIL: `${SERVICES.TWOFA}/email`,
 	TWOFA: `${SERVICES.TWOFA}/code`,

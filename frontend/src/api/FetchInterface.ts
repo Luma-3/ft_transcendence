@@ -344,11 +344,10 @@ export class FetchInterface {
    */
   //USER: get / PUT sur User pour demander activation et DELETE pour desactivation
   public static async submit2FACode(code: string, method: 'GET' | 'PUT' | 'DELETE'): Promise<boolean> {
-    
     /**
      * * Verification du code 2FAs
      */
-    const response = await fetchApiWithNoError(API.API_2FA.SEND, {
+    const response = await fetchApiWithNoError(method === 'GET' ? API.API_2FA.SEND : API.TWOFA.TWOFA, {
       method: 'POST',
       body: JSON.stringify({ code })
     });
@@ -359,22 +358,7 @@ export class FetchInterface {
       return false;
     }
     await alertTemporary("success", "2fa-code-verified", 'dark', true);
-    
-    let success = false;
-    switch (method) {
-      case 'GET':
-        success = await FetchInterface.verify2FA();
-        break;
-      case 'PUT':
-        success = await FetchInterface.activate2FA();
-        break;
-      case 'DELETE':
-        success = await FetchInterface.desactivate2FA();
-        break;
-      default:
-        return false;
-    }
-        return true;
+    return true;
   }
 
     /**
