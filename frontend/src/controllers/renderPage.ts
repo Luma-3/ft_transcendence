@@ -66,14 +66,6 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 			addToHistory(page, updateHistory);
 		}
 		
-		if (page === '2FA') {
-			init2FAPage();
-		}
-		
-		if (page === '2FALogin') {
-			initLogin2FAPage();
-		}
-		
 		removeLoadingScreen();
 		
 		fadeIn();
@@ -258,7 +250,8 @@ export async function render2FaPages(action: string) {
 		}
 
 		main_container.innerHTML = newContainer;
-
+			
+		init2FAPage();
 		setupColorTheme((user === undefined) ? 'dark' : user.preferences.theme);
 		translatePage((user === undefined) ? 'en' : user.preferences.lang);
 
