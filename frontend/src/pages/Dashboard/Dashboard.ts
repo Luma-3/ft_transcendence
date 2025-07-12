@@ -20,7 +20,7 @@ ${navbar(user)}
 				<img src="${user.preferences.banner ?? 'default.webp'}" alt="Banner" class="flex w-[1000px] h-[300px] object-cover rounded-lg shadow-lg group-hover:blur-sm" />
 						
 				<div id="dashboardScreen" class="absolute w-full flex inset-0 items-center justify-center">
-				
+					
 					<img src="${user.preferences.avatar ?? 'default.webp'}" alt="Bienvenue" class="rounded-full w-50" />
 				</div>
 			</div>
@@ -31,23 +31,89 @@ ${navbar(user)}
 			</div>
 		</div>
 
-				${gameTypes()}
-
-				<div class="flex w-full justify-center items-center mb-10">
-				
-					${playButton.primaryButton()}
-				
-				</div>
-			
-			</div> <!--! Fermeture main Panel -->
-
+		<div id="lastGamesContainer" class="w-full flex justify-center items-center pointer-events-none">
+			<div id="lastGamesPanel" class="flex font-title w-full justify-center pointer-events-auto transform translate-x-0 opacity-100 transition-all duration-500">
+				${generateLastGames(user)}
+			</div>
 		</div>
-	</div>
+		<!-- Bouton voir les stats -->
+		
+		${gameTypes()}
+		
+
+
+		<!-- Bloc stats animé -->
+		<div class="flex w-full justify-center items-center mb-10">
+		${playButton.primaryButton()}
+		</div>
+		</div> <!--! Fermeture main Panel -->
+		
+		</div>
 </div>
-	`
+`
 }
 
-function generateRankBadge(_user: IUserInfo) {
+		// <div class="flex w-full justify-center mb-4">
+		// 	<button id="toggleStats" class="px-4 py-2 rounded bg-dprimary text-white font-bold shadow hover:bg-dsecondary transition-colors duration-200">
+		// 		Cacher les stats
+		// 	</button>
+		// </div>
+export function toggleGameStats() {
+	const btn = document.getElementById('toggleStats');
+	const panel = document.getElementById('lastGamesPanel');
+	if (!btn || !panel) {
+		return;
+	}
+
+	if (panel.classList.contains('translate-x-full')) {
+		panel.classList.remove('translate-x-full', 'opacity-0', 'hidden');
+		panel.classList.add('translate-x-0', 'opacity-100');
+		btn.textContent = 'Voir les stats';
+	}
+	else {
+		panel.classList.add('translate-x-full', 'opacity-0');
+		panel.classList.remove('translate-x-0', 'opacity-100');
+		btn.textContent = 'Cacher les stats';
+	}
+}
+
+// Affiche les dernières parties du joueur dans un div scrollable
+export function generateLastGames(user: IUserInfo) {
+  // Exemple de structure attendue :
+  const lastGames = [
+	{ opponent: 'DuckMaster', score: '5-3', date: '2025-07-10', win: true },
+  //   ...
+  ]
+  const games = lastGames && Array.isArray(lastGames) ? lastGames : [];
+  if (games.length === 0) {
+	return `<div class="w-full font-title max-w-[600px] h-64 bg-white/80 dark:bg-black/5 rounded-lg shadow-inner flex flex-col items-center justify-center mb-6 overflow-y-auto">
+	  <span class="text-gray-400 italic">Aucune partie récente</span>
+	</div>`;
+  }
+  return `
+	<div class="w-full max-w-[600px] h-64 bg-white/80 dark:bg-black/5 rounded-lg shadow-inner mb-6 overflow-y-auto p-4 flex flex-col">
+	  <h4 class="text-lg font-bold mb-2 text-gray-700 dark:text-dtertiary">Dernières parties</h4>
+	  <ul class="flex flex-col gap-2">
+		${games.map(game => `
+		  <li class="flex items-center justify-between bg-gradient-to-r from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-900 rounded-md px-3 py-2 shadow-sm">
+			<div class="flex flex-col">
+			  <span class="font-semibold text-primary dark:text-dsecondary">vs ${game.opponent}</span>
+			  <span class="text-xs text-gray-500">${game.date}</span>
+			</div>
+			<div class="flex items-center gap-2">
+			  <span class="font-mono text-lg">${game.score}</span>
+			  <span class="px-2 py-1 rounded text-md font-bold ${game.win ? ' text-green-500' : ' text-red-700'}">
+				${game.win ? 'Win' : 'Lose'}
+			  </span>
+			</div>
+		  </li>
+		`).join('')}
+	  </ul>
+	</div>
+  `;
+}
+
+export function generateRankBadge(_user: IUserInfo) {
 	const wins = Math.floor(Math.random() * 50) + 5; // Données d'exemple
 	const losses = Math.floor(Math.random() * 30) + 2; // Données d'exemple
 	const totalGames = wins + losses;
@@ -56,37 +122,37 @@ function generateRankBadge(_user: IUserInfo) {
 		name: 'Petit Volatile',
 		level: 1,
 		image: 'petitVolatile2.png',
-		colors: 'from-purple-600 via-purple-700 to-purple-800',
-		textColors: 'from-tertiary via-gray-800 to-tertiary dark:from-dtertiary dark:via-white dark:to-dtertiary',
-		shadowColor: 'purple'
+		colors: 'from-[#744FAC] via-[#8B5CF6] to-[#744FAC]', // violet principal
+	   textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+		shadowColor: '[#744FAC]'
 	};
-	
+
 	if (totalGames >= 50 && wins >= 30) {
 		rankInfo = {
 			name: 'Roi de la Mare',
 			level: Math.floor(wins / 10),
 			image: 'duckKing.png',
-			colors: 'from-yellow-400 via-yellow-500 to-yellow-600',
-			textColors: 'from-dsecondary via-yellow-600 to-orange-700 dark:from-dsecondary dark:via-yellow-400 dark:to-yellow-600',
-			shadowColor: 'yellow'
+			colors: 'from-[#FF8904] via-yellow-400 to-[#744FAC]', // orange -> jaune -> violet
+		   textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+			shadowColor: '[#FF8904]'
 		};
 	} else if (totalGames >= 30 && wins >= 20) {
 		rankInfo = {
 			name: 'Apprenti Canard',
 			level: Math.floor(wins / 8),
 			image: 'duckLearning2.png',
-			colors: 'from-gray-200 via-gray-300 to-gray-500',
-			textColors: 'from-tertiary via-gray-700 to-gray-900 dark:from-gray-300 dark:via-gray-100 dark:to-dtertiary',
-			shadowColor: 'gray'
+			colors: 'from-[#FF8904] via-[#744FAC] to-[#FF8904]', // orange -> violet -> orange
+		   textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+			shadowColor: '[#FF8904]'
 		};
 	} else if (totalGames >= 20 && wins >= 12) {
 		rankInfo = {
 			name: 'Professeur Palmipède',
 			level: Math.floor(wins / 5),
 			image: 'duckProf.png',
-			colors: 'from-yellow-400 via-orange-500 to-red-600',
-			textColors: 'from-red-700 via-dsecondary to-red-800 dark:from-dsecondary dark:via-orange-400 dark:to-yellow-500',
-			shadowColor: 'yellow'
+			colors: 'from-[#744FAC] via-[#FF8904] to-yellow-400', // violet -> orange -> jaune
+		   textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+			shadowColor: '[#FF8904]'
 		};
 	}
 	
@@ -94,9 +160,9 @@ function generateRankBadge(_user: IUserInfo) {
 		<div class="flex flex-col items-center justify-center group">
 			<div class="relative flex justify-center items-center">
 				<!-- Cercle extérieur avec effet de lueur -->
-				<div class="w-32 h-32 rounded-full bg-gradient-to-br ${rankInfo.colors} p-1 shadow-2xl group-hover:shadow-${rankInfo.shadowColor}-500/50 transition-all duration-300 group-hover:scale-110">
+				<div class="w-32 h-32 rounded-full bg-gradient-to-br ${rankInfo.colors} p-1 shadow-2xl transition-all duration-300 group-hover:scale-110">
 					<!-- Cercle intérieur -->
-					<div class="w-full h-full rounded-full bg-gradient-to-br from-gray-800 to-gray-900 dark:from-gray-900 dark:to-black flex items-center justify-center border-2 border-${rankInfo.shadowColor}-400/30">
+					<div class="w-full h-full rounded-full bg-gradient-to-br from-gray-800 to-gray-900 dark:from-gray-900 dark:to-black flex items-center justify-center border-2 border-white/20">
 						<!-- Image du rang -->
 						<img src="/images/${rankInfo.image}" alt="${rankInfo.name} Rank Badge" class="w-20 h-20 object-contain drop-shadow-lg group-hover:drop-shadow-xl transition-all duration-300" />
 						<!-- Effet de brillance -->
@@ -109,7 +175,7 @@ function generateRankBadge(_user: IUserInfo) {
 				<h3 class="text-2xl font-bold bg-gradient-to-r ${rankInfo.textColors} bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
 					${rankInfo.name}
 				</h3>
-				<p class="text-sm text-gray-600 dark:text-gray-400 mt-1 group-hover:text-${rankInfo.shadowColor}-400 transition-colors duration-300">
+				<p class="text-sm text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-300">
 					Level ${rankInfo.level}
 				</p>
 				</div>

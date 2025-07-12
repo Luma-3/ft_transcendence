@@ -37,7 +37,6 @@ const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
   'login': login,
   'register': register,
   '2FA': twoFaPage,
-  '2FALogin': loginTwoFaPage,
   'documentation': documentation,
   'verifyEmail': verifyEmail,
 };
@@ -59,7 +58,7 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
     if (!rendererFunction) {
       return renderErrorPage('404');
     }
-
+		
 		const page_content = await Promise.resolve(rendererFunction());
 		main_container.innerHTML = page_content;
 		translatePage(lang);
@@ -233,4 +232,39 @@ export async function renderDocPages(page: string, index_logo: string) {
       };
       redocInit(spec, redoc_container);
     });
+}
+
+
+export async function render2FaPages(action: string) {
+	console.log("render2FaPages called with action:", action);
+	
+	let user = undefined;
+	if (action !== 'login') {
+		user = await FetchInterface.getUserInfo();
+		if (user === undefined) {
+			return;
+		}
+	}
+
+	fadeOut();
+
+	setTimeout(async () => {
+
+		const main_container = document.querySelector<HTMLDivElement>('#app')!
+
+		const newContainer = await twoFaPage(action);
+		if (!newContainer) {
+			return;
+		}
+
+		main_container.innerHTML = newContainer;
+
+		setupColorTheme((user === undefined) ? 'dark' : user.preferences.theme);
+		translatePage((user === undefined) ? 'en' : user.preferences.lang);
+
+		removeLoadingScreen();
+
+		fadeIn();
+	}
+		, 200);
 }

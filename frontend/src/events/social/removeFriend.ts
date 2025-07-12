@@ -1,6 +1,6 @@
 import { FetchInterface } from "../../api/FetchInterface";
 import { renderErrorPage } from "../../controllers/renderPage";
-import { updateAllUserLists, updateFriendsList } from "../../pages/Friends/Lists/updatersList";
+// import { updateAllUserLists, updateFriendsList } from "../../pages/Friends/Lists/updatersList";
 
 export async function unfriendUser(target: HTMLElement) {
 	
@@ -17,6 +17,7 @@ export async function unfriendUser(target: HTMLElement) {
 	if (!success) {
 		return;
 	}
-	await updateFriendsList();
-	await updateAllUserLists();
+	target.parentElement?.parentElement?.parentElement?.remove();
+	// await updateFriendsList();
+	// await updateAllUserLists();
 }

@@ -114,6 +114,9 @@ export async function saveLanguage(lang_select: string) {
 export function saveDefaultLanguage() {
 
 	const choice = (document.querySelector('input[name="lang-selector"]:checked') as HTMLInputElement)
+	if (!choice) {
+		return;
+	}
 	const lang_select = choice.id.split('-')[0];
 
 	return saveLanguage(lang_select);

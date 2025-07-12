@@ -46,7 +46,6 @@ let container = `
 					</div>
 	
 					<div class="flex flex-row space-x-2 items-center">
-						Waiting ...
 							<div id="cancel-invitation" data-id="${invitation.id}" data-username="${invitation.username}" class="ml-4 justify-end hover:cursor-pointer group/item relative">
 								<span class="tooltip absolute z-10 left-1/2 transform -translate-x-full -top-8 mb-1 hidden group-hover/item:block bg-primary text-secondary dark:bg-dprimary dark:text-dtertiary text-xs rounded py-1 px-2 whitespace-nowrap" translate="cancel-invitation">
 								${trad['cancel-invitation']}

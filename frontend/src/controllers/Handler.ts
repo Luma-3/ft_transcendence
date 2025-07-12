@@ -24,12 +24,13 @@ import { blockUser } from '../events/social/blockUser'
 import { cancelFriendInvitation } from '../events/social/cancelInvitation'
 import { refuseFriendInvitation } from '../events/social/refusedInvitation'
 import { unfriendUser } from '../events/social/removeFriend'
-import { disable2FA, enable2FA, submit2FACode, submit2FACodeLogin } from '../pages/2FA'
+import { disable2FA, enable2FA, submit2FACode } from '../pages/2FA'
 import { showNotificationDiv } from '../pages/Notifications'
 import { sendEmail } from '../components/utils/sendEmail'
 
 
 import { FetchInterface } from '../api/FetchInterface'
+import { toggleGameStats } from '../pages/Dashboard/Dashboard'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
@@ -102,6 +103,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	// ═══════════════════════════════════════════════════════════════
 	'initGame': () => initGame(),
 	'leaveGame': () => { window.location.href = '/dashboard'; },
+	'toggleStats': () => toggleGameStats(),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 🔔 NOTIFICATIONS
@@ -140,7 +142,6 @@ const submitEvent: { [key: string]: () => void } = {
 	'loginForm': loginUser,
 	'registerForm': registerUser,
 	'2faCodeForm': submit2FACode,
-	'2faCodeLoginForm': submit2FACodeLogin,
 	'updateInfosUserForm': changeUserNameEmail
 };
 

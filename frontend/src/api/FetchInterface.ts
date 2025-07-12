@@ -3,7 +3,7 @@ import * as API from "./routes";
 import { alert } from "../components/ui/alert/alert";
 import { alertPublic } from "../components/ui/alert/alertPublic";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
-import { renderPublicPage } from "../controllers/renderPage";
+import { render2FaPages, renderPublicPage } from "../controllers/renderPage";
 import { loadTranslation } from "../controllers/Translate";
 import { IOtherUser, IUserInfo, IUserPreferences, UserSearchResult } from "../interfaces/IUser";
 import { IApiResponse } from "../interfaces/IApi";
@@ -66,7 +66,7 @@ export class FetchInterface {
 
     switch (response.code) {
       case 460:
-        renderPublicPage('2FALogin');
+        render2FaPages('login');
         return false;
 
       case 461:
@@ -180,9 +180,11 @@ export class FetchInterface {
         password: newPassword,
       }),
     });
-    if (response.status === "success") {
-      return await alertTemporary("success", trad['password-changed'], customTheme.theme);
+    if (response.status === "error") {
+      //TODO: Traduction
+      return await alertTemporary("error", trad['wrong-password'] ?? response.message, customTheme.theme, true);
     }
+    return await alertTemporary("success", trad['password-changed'], customTheme.theme, true, true);
 	}
 
   /**
@@ -318,7 +320,6 @@ export class FetchInterface {
       method: 'PATCH',
       body: JSON.stringify({ email, lang })
     });
-    console.log("Response from resendVerificationEmail:", response);
     if (response.status === "error") {
       await alertPublic("error", "email-already-sent");
       return false;
@@ -327,7 +328,56 @@ export class FetchInterface {
     return true;
   }
 
+  public static async changeState2FA(state: boolean): Promise<boolean> {
+    const response = await fetchApiWithNoError<{ twofa: boolean }>(API.API_USER.TWOFA, {
+      method: state ? 'PUT' : 'DELETE',
+    });
+    if (response.status === "error") {
+      await alertTemporary("error", state ? "cannot-activate-2fa" : "cannot-desactivate-2fa", "dark");
+      return false;
+    }
+    return true;
+  }
+
   /**
+   * ! Send 2Fa
+   */
+  //USER: get / PUT sur User pour demander activation et DELETE pour desactivation
+  public static async submit2FACode(code: string, method: 'GET' | 'PUT' | 'DELETE'): Promise<boolean> {
+    
+    /**
+     * * Verification du code 2FAs
+     */
+    const response = await fetchApiWithNoError(API.API_2FA.SEND, {
+      method: 'POST',
+      body: JSON.stringify({ code })
+    });
+    console.log("Response from submit2FACode:", response);
+    //TODO: Traduction
+    if (response.status === 'error') {
+      await alertTemporary("error", "invalid-2fa-code", 'dark', true);
+      return false;
+    }
+    await alertTemporary("success", "2fa-code-verified", 'dark', true);
+    
+    let success = false;
+    switch (method) {
+      case 'GET':
+        success = await FetchInterface.verify2FA();
+        break;
+      case 'PUT':
+        success = await FetchInterface.activate2FA();
+        break;
+      case 'DELETE':
+        success = await FetchInterface.desactivate2FA();
+        break;
+      default:
+        return false;
+    }
+        return true;
+  }
+
+    /**
    * ! 2FA Verification
    */
   public static async verify2FA(): Promise<boolean> {

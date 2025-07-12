@@ -27,7 +27,8 @@ export class GameManager {
 			main_container.innerHTML = await gameHtml(data, user.id);
 			
 			setupColorTheme(user.preferences.theme);
-			translatePage(user.preferences.lang); 
+			translatePage(user.preferences.lang);
+			window.scrollTo(0, 0);
 			removeLoadingScreen();
 			fadeIn();
 
@@ -70,7 +71,7 @@ export class GameManager {
 			console.warn("Game instance not initialized");
 			return;
 		}
-		DisplayGameWinLose(data.players)
+		DisplayGameWinLose(data)
 		GameManager.instance.end();
 		GameManager.instance = null;
 	}

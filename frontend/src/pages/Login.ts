@@ -73,7 +73,6 @@ export default function loginPage() {
 }
 
 export async function loginUser() {
-
 	/**
 	 * Validation du formulaire de connexion
 	 * Verification si le formulaire est pas corrompu

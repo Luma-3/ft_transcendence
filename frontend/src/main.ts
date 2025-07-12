@@ -8,10 +8,6 @@ const publicPages = ['home', 'login', 'register', 'verifyEmail']
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
 export async function renderBackPage() {
-	const backPage = history.state?.page || 'home';
-	if (publicPages.includes(backPage) && await FetchInterface.verifySession()) {
-		return window.location.href = '/dashboard';
-	}
 	window.history.go(-1);
 }
 
@@ -41,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	switch (page) {
 
-		case 'error':
+		case 'error': 
 			renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
 			break;
 
@@ -55,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 				return renderPublicPage(page);
 			}
 			(publicPages.includes(page)) 
-			? renderPrivatePage('dashboard', true) 
+			? window.location.href = '/dashboard' 
 			: renderPrivatePage(page);
 	}
 

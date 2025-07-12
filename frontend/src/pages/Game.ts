@@ -100,7 +100,7 @@ export default async function gameHtml(gameInfo: IGame, userId: string) {
 		</button>
 	</div>
 </div>
-<div id="gameWin" class="flex flex-row space-x-2 justify-center items-center w-full h-full p-4">
+<div id="gameWin">
 </div>
 `
 }
