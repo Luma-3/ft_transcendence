@@ -3,7 +3,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { Oauth2Service } from "./service.js";
 import { QueryCallbackType } from "./schema.js";
 import { SessionService } from "../session/service.js";
-import { UnauthorizedError } from "@transcenduck/error";
+import { TwoFaError, UnauthorizedError } from "@transcenduck/error";
 import { UAParser } from "ua-parser-js";
 export class Oauth2Controller {
   static getAuthorizationUrl = async (_: FastifyRequest, rep: FastifyReply) => {
@@ -22,30 +22,35 @@ export class Oauth2Controller {
       throw new UnauthorizedError('User-Agent header is required');
 
     const parser = new UAParser(userAgent);
-    const { accessToken, refreshToken } = await SessionService.login({
-      username: dataUser.name!,
-      email: dataUser.email!,
-      avatar: dataUser.picture ?? undefined
-    }, {
-      ip_address: req.headers['x-forwarded-for'] ?? req.ip,
-      user_agent: userAgent,
-      device_id: parser.getOS().toString(),
-    }, true);
-
-    rep.setCookie(
-      "accessToken", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
-      path: '/'
-    }).setCookie(
-      "refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
-      path: '/'
+    try {
+      const { accessToken, refreshToken } = await SessionService.login({
+        username: dataUser.name!,
+        email: dataUser.email!,
+        avatar: dataUser.picture ?? undefined
+      }, {
+        ip_address: req.headers['x-forwarded-for'] ?? req.ip,
+        user_agent: userAgent,
+        device_id: parser.getOS().toString(),
+      }, true);
+      rep.setCookie(
+        "accessToken", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
+        path: '/'
+      }).setCookie(
+        "refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
+        path: '/'
+      }
+      ).redirect(`${process.env.REDIRECT_URI}/dashboard`);
+    } catch (error) {
+      if(error instanceof TwoFaError) {
+        rep.redirect(`${process.env.REDIRECT_URI}/2FA`);
+      }
     }
-    ).redirect(`${process.env.REDIRECT_URI}/dashboard`);
   }
 }
 

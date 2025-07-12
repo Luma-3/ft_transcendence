@@ -5,7 +5,7 @@ import { generateToken } from "../utils/jwt.js";
 import { refreshTokenModelInstance } from "./model.js";
 
 import { FamiliesResponseType } from './schema.js';
-import { redisPub } from '../utils/redis.js';
+import { redisCache } from '../utils/redis.js';
 
 import { TwoFaService, generateCode } from '../twofa/service.js';
 
@@ -148,18 +148,23 @@ export class SessionService {
     
     await TwoFaService.generateSendCode(email, lang, code)
     
-    redisPub.setEx('users:userIds:' + code + ':userId', 600, userInfo.id);
-    redisPub.setEx('users:userIds:' + code + ':family_id', 600, family_id);
+    const multi = redisCache.multi();
+    multi.setEx('users:userIds:' + code + ':userId', 600, userInfo.id);
+    multi.setEx('users:userIds:' + code + ':family_id', 600, family_id);
+    await multi.exec();
     throw new TwoFaError();
   }
 
   static async login2FA (code: string, clientInfo?: clientInfo) {
     await TwoFaService.verifyCode(code);
 
-    const id = await redisPub.get('users:userIds:' + code + ':userId');
-    const family_id = await redisPub.get('users:userIds:' + code + ':family_id');
+    const id = await redisCache.get('users:userIds:' + code + ':userId');
+    if (!id) {
+      throw new UnauthorizedError('Invalid or expired 2FA code');
+    }
+    const family_id = await redisCache.get('users:userIds:' + code + ':family_id');
 
-    const multi = redisPub.multi();
+    const multi = redisCache.multi();
     multi.del('users:userIds:' + code + ':userId');
     multi.del('users:userIds:' + code + ':family_id');
     await multi.exec();

@@ -79,17 +79,25 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       description: 'This endpoint allows users to create a new session by providing their credentials after 2fa verification.',
       tags: ['Sessions', '2FA'],
       body: twoFaBody,
+      headers: Type.Object({
+        "x-forwarded-for": Type.String()
+      }),
       response: {
         201: ResponseSchema(undefined, 'Session created successfully')
       }
     }
   }, async (req, rep) => {
+    const userAgent = req.headers["user-agent"] ?? undefined;
+    if(userAgent === undefined)
+      throw new UnauthorizedError('User-Agent header is required');
+
+    const parser = new UAParser(userAgent);
     const { accessToken, refreshToken } = await SessionService.login2FA(req.body.code, {
-      ip_address: req.ip,
+      ip_address: req.headers['x-forwarded-for'] ?? req.ip,
       // user_agent: parser.getBrowser().toString(),
       // device_id: parser.getDevice().toString(),
-      user_agent: req.headers['user-agent'] || 'unknown',
-      device_id: 'unknown',
+      user_agent: userAgent,
+      device_id: parser.getOS().toString(),
     });
     
     rep.code(201).send({

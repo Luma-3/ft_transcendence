@@ -39,6 +39,9 @@ const plugin: FastifyPluginCallback<JWTOptions> = (fastify, opts, done) => {
 
     try {
       const user = fastify.jwt.verify<JWTPayload>(token);
+      if (!user || !user.sub) {
+        throw new UnauthorizedError('Invalid token payload');
+      }
 
       req.headers['x-user-id'] = user.sub;
       // req.headers['x-user-username'] = user.username;
