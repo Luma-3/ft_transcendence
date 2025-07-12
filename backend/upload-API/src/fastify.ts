@@ -13,12 +13,7 @@ const server = fastify({
 
 await server.register(fastifyMultipart);
 await server.register(formatter);
-await server.register(fastifyCompress, { 
-  global: true,
-  threshold: 0,
-  removeContentLengthHeader: true,
-  encodings: ['gzip', 'deflate', 'br']
-});
+
 await server.register(swagger, {
     version: '1.0.0',
     title: 'Upload Service API',
