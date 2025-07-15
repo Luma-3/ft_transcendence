@@ -1,5 +1,5 @@
 // Gestionnaire des compteurs de la page de vérification d'email
-
+let mainInterval: number | undefined = undefined;
 
 export function initializeVerifyEmailTimers() {
 	// Gros compteur de 10 minutes (600 secondes)
@@ -20,13 +20,17 @@ export function initializeVerifyEmailTimers() {
 		
 		mainTimeLeft--;
 	}
-	
-	// Démarrer le compteur principal
-	const mainInterval = setInterval(updateMainTimer, 1000);
-	updateMainTimer(); // Affichage initial
-	
-	// Nettoyage quand on quitte la page
-	window.addEventListener('beforeunload', function() {
-		clearInterval(mainInterval);
-	});
+
+// Démarrer le compteur principal
+mainInterval = setInterval(updateMainTimer, 1000);
+updateMainTimer(); // Affichage initial
+
+// Nettoyage quand on quitte la page
+window.addEventListener('beforeunload', function() {
+	clearInterval(mainInterval);
+});
+}
+
+export function stopMainTimer() {
+	clearInterval(mainInterval);
 }

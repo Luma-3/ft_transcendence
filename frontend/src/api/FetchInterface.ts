@@ -7,6 +7,7 @@ import { render2FaPages, renderPublicPage } from "../controllers/renderPage";
 import { loadTranslation } from "../controllers/Translate";
 import { IOtherUser, IUserInfo, IUserPreferences, UserSearchResult } from "../interfaces/IUser";
 import { IApiResponse } from "../interfaces/IApi";
+import { startEmailCooldown } from "../components/utils/sendEmail";
 
 export class FetchInterface {
   private constructor() { }
@@ -71,6 +72,7 @@ export class FetchInterface {
 
       case 461:
         renderPublicPage('verifyEmail');
+	      startEmailCooldown();
         return false;
 
       default:

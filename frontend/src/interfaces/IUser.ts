@@ -4,6 +4,7 @@ export interface IUserInfo {
 	username: string;
 	created_at?: string;
 	email: string;
+	online?: boolean;
 	preferences: IUserPreferences;
 }
 

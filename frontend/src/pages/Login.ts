@@ -2,7 +2,7 @@ import { headerPage } from "../components/ui/headerPage";
 import { Form } from "../classes/Form";
 import { InputField } from "../classes/Input";
 import { Button } from "../classes/Button";
-import { renderPrivatePage } from "../controllers/renderPage";
+import { renderPrivatePage, renderPublicPage } from "../controllers/renderPage";
 import { socketConnection } from "../socket/Socket";
 import { FetchInterface } from "../api/FetchInterface";
 
@@ -104,6 +104,8 @@ export async function loginUser() {
 		await socketConnection();
 		
 		renderPrivatePage('dashboard');
+		return;
 	}
+	// renderPublicPage('login');
 	
 }

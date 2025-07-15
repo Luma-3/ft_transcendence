@@ -6,6 +6,7 @@ import { verifRegexPassword } from "../components/utils/regex";
 import { renderErrorPage, renderPublicPage } from "../controllers/renderPage";
 import { FetchInterface } from "../api/FetchInterface";
 import { alertPublic } from "../components/ui/alert/alertPublic";
+import { startEmailCooldown } from "../components/utils/sendEmail";
 
 let formInstance: Form | null;
 

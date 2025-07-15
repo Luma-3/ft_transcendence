@@ -1,5 +1,5 @@
 import { FetchInterface } from "../../api/FetchInterface";
-import { initializeVerifyEmailTimers } from "../../events/email/verifyEmailTimers";
+import { initializeVerifyEmailTimers, stopMainTimer } from "../../events/email/verifyEmailTimers";
 
 import { userRegisterInfo } from "../../pages/Register";
 import { alertPublic } from "../ui/alert/alertPublic";
@@ -18,21 +18,21 @@ export function setEmailCooldownState(value: boolean) {
 }
 
 export async function sendEmail() {
-	let userNewEmail = userRegisterInfo?.email;
-	if (!userNewEmail) {
-		userNewEmail = userNewEmail || "";
+	let newEmail = userRegisterInfo?.email;
+	if (!newEmail) {
+		newEmail = userNewEmail || "";
 	}
 	//TODO: Add GetUserInfo 
-	const success = await FetchInterface.resendVerificationEmail(userNewEmail, 'en');
-	console.log("Email sent successfully:", success);
+	const success = await FetchInterface.resendVerificationEmail(newEmail ?? "", 'en');
 	if (!success) {
 		return alertPublic("error", "email-already-sent");
 	}
+	endEmailCooldown();
 	startEmailCooldown();
 }
 
 export function startEmailCooldown() {
-	console.log("Starting email cooldown...");
+	console.log("Starting email cooldown");
 	emailState.isEmailCooldownActive = true;
 
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;
@@ -43,7 +43,7 @@ export function startEmailCooldown() {
 	}
 	setTimeout(() => {
 		initializeVerifyEmailTimers();
-	}, 100);
+	}, 10);
 
 	setTimeout(() => {
 		endEmailCooldown();
@@ -51,7 +51,8 @@ export function startEmailCooldown() {
 }
 
 export function endEmailCooldown() {
-	console.log("Ending email cooldown...");
+	stopMainTimer();
+	console.log("Ending email cooldown");
 	emailState.isEmailCooldownActive = false;
 
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;
