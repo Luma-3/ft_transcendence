@@ -7,6 +7,7 @@ export class LoopManager {
   private gameLoop: ALoop;
   private aiLoop: AILoop;
 
+
   public get deltaTime() {
     return this.gameLoop.deltaTime;
   }

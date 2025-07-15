@@ -50,6 +50,8 @@ export class AIController {
 
         void framesToImpact;
 
+        if (!this.ball.enabled)
+            return { move: 0 };
         // 1. Quand la balle part ou dépasse la moitié, on colle le paddle en haut ou en bas
         if (!goingToIA || this.ball.position.x > 800 / 2) {
             if (this.ball.position.y < this.fieldHeight / 2 && currentY > paddleHalfLength)
@@ -59,7 +61,6 @@ export class AIController {
             else
                 return { move: 0 };
         }
-
         // 2. Si déjà bien placé, ne bouge pas
         if (
             currentY - paddleHalfLength <= predictedY &&
