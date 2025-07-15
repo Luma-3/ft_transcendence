@@ -5,13 +5,16 @@ import { Paddle } from "./Paddle.js";
 import { Vector2 } from "../core/physics/Vector.js";
 import { IOInterface } from "../utils/IOInterface.js";
 import { AIController } from "./AIController.js"
+import { RoomModelInstance} from "../room/model.js"
 
 import { roomManagerInstance } from "../core/runtime/RoomManager.js";
+import { Player } from "../core/runtime/Player.js";
 
 export class Pong extends GameObject {
   private ball: Ball;
   private paddleLeft: Paddle;
   private paddleRight: Paddle;
+  private winner: Player = null;
 
   private readonly size: Vector2 = new Vector2(800, 600);
 
@@ -53,7 +56,11 @@ export class Pong extends GameObject {
   checkWin(id: string) {
     const players = SceneContext.get().players;
     const player = players.get(id);
-    return (player.score >= this.maxWin);
+    if (player.score >= this.maxWin) {
+      this.winner = player;
+      return true;
+    }
+    return false;
   }
 
   stopGame() {
@@ -68,7 +75,8 @@ export class Pong extends GameObject {
       JSON.stringify(payload),
       [...SceneContext.get().players.keys()]
     );
-
+    const scene = SceneContext.get(); 
+    RoomModelInstance.addMatch({id: scene.id, player_1: scene.players[0], player_2: scene.players[1], winner: this.winner, score_1: scene.players[0].score, score_2: scene.players[1].score, type : scene.gameType})
     roomManagerInstance.deleteRoom(SceneContext.get().id);
   }
 

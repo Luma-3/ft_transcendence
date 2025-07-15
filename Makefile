@@ -54,6 +54,8 @@ migrate-dev:
 	@cd backend/auth-API && npm run knex migrate:latest
 	@echo "$(YELLOW)user-API...$(RESET)"
 	@cd backend/user-API && npm run knex migrate:latest
+	@echo "$(YELLOW)game-API...$(RESET)"
+	@cd backend/game-API && npm run knex migrate:latest
 	@echo "$(GREEN)Migrations terminées$(RESET)"
 
 clean-package:

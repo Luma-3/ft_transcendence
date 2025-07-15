@@ -66,3 +66,41 @@ export const RoomQuerySchema = Type.Object({
   }))
 })
 export type RoomQueryType = Static<typeof RoomQuerySchema>;
+
+export const RoomGetResponse = Type.Object({
+  id : Type.String({
+    format: "uuid",
+    description: "Unique identifier for the room",
+    examples: ["123e4567-e89b-12d3-a456-426614174000"]
+  }),
+  player_1 : Type.String({
+    format: "uuid",
+    description: "Unique identifier for the player_1",
+    examples: ["123e4567-e89b-12d3-a456-426614174000"]
+  }),
+    player_2 : Type.String({
+    format: "uuid",
+    description: "Unique identifier for the player_2",
+    examples: ["123e4567-e89b-12d3-a456-426614174000"]
+  }),
+    winner : Type.String({
+    format: "uuid",
+    description: "Unique identifier for the winner",
+    examples: ["123e4567-e89b-12d3-a456-426614174000"]
+  }),
+    score_1 : Type.String({
+    format: "integer",
+    description: "Score of player 1",
+    examples: ["4"]
+  }),
+    score_2 : Type.String({
+    format: "integer",
+    description: "Score of player 2",
+    examples: ["2"]
+  }),
+    type : Type.String({
+    format: "string",
+    description: "Type of the game",
+    examples: ["Tournament"]
+  }),
+})

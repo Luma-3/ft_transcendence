@@ -22,6 +22,21 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, PostRoomHandler);
 
+  fastify.get('/rooms/:userId', {
+     schema: {
+      body: RoomBodySchema,
+      headers: HeaderBearerSchema,
+      params: RoomParamSchema,
+      querystring: RoomQuerySchema,
+      response: {
+        200: ResponseSchema(RoomResponseSchema, 'Player added to room'),
+        404: NotFoundResponse,
+        500: InternalServerErrorResponse
+      }
+    }
+  },)
+
+
   // fastify.get('/rooms/:game_id', {
   //   schema: {
   //     params: GameIdSchema,
