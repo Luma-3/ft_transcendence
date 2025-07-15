@@ -27,7 +27,7 @@ export class Ball extends GameObject implements Circle {
   public get Ballvelocity(): Vector2 {
     return this.velocity;
   }
-  
+
   update() {
     this.move();
     this.checkTopBottomCollision();
@@ -115,7 +115,7 @@ export class Ball extends GameObject implements Circle {
       id: 'ball',
       position: this.position,
       velocity: this.velocity,
-      radius: this.radius
+
     };
   }
 }

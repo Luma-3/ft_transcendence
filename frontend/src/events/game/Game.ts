@@ -32,7 +32,7 @@ interface IPlayer {
 }
 
 export class Game {
-  
+
   // -------- Canvas and Context --------//
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
@@ -42,19 +42,21 @@ export class Game {
   private height: number;
 
   private revertDrawing: boolean = false;
-  
+
   // -------- Game Objects --------//
   paddles: Map<string, Paddle> = new Map();
   private ball: Ball;
-  
-  
+
+
   // ------------- Game Interpolation ---------------//
   private startTime: number | null = null;
   private snapshots: ISnapshot[] = [];
   private alphaGraph: AlphaGraph = new AlphaGraph("alphaGraph");
 
+  private lastTime = performance.now();
+
   private id: string;
-  public userId : string;
+  public userId: string;
   public gameType: string;
 
   constructor(data: IGame, userId: string) {
@@ -64,14 +66,14 @@ export class Game {
     this.gameType = data.gameType;
 
     this.canvas = document.getElementById('game') as HTMLCanvasElement;
-    if (!this.canvas) { 
-      sendInSocket("game", "room", this.id, "error", "Canvas not found") 
+    if (!this.canvas) {
+      sendInSocket("game", "room", this.id, "error", "Canvas not found")
       return;
     }
 
     const ctx = this.canvas.getContext("2d");
-    if (!ctx) { 
-      sendInSocket("game", "room", this.id, "error", "Context not found") 
+    if (!ctx) {
+      sendInSocket("game", "room", this.id, "error", "Context not found")
       return;
     }
 
@@ -91,17 +93,17 @@ export class Game {
   }
 
   private addEventListener() {
-  
+
     //TODO: Zoom To 100%
     // window.addEventListener('resize', resizeCanvas)
-  
+
     onkeyup = (event) => {
       onKeyUp(event, this.userId);
     }
-  
+
     onkeydown = (event) => {
       const divGame = document.getElementById("hiddenGame") as HTMLDivElement;
-  
+
       if (divGame.classList.contains("opacity-0")) {
         console.log("Game is not visible, ignoring keydown event");
         sendInSocket("game", "room", this.id, "ready", {});
@@ -119,12 +121,12 @@ export class Game {
     console.log("Adding score", data);
     const player1Div = document.getElementById(`${data.players[0].id}-score`) as HTMLDivElement;
     const player2Div = document.getElementById(`${data.players[1].id}-score`) as HTMLDivElement;
-    
+
     player1Div.innerText = data.players[0].score.toString();
     player2Div.innerText = data.players[1].score.toString();
   }
 
-  clear() { this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);}
+  clear() { this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); }
 
   drawBackground() {
     this.ctx.fillStyle = "rgba(178, 157, 210, 0.4)";
@@ -163,11 +165,11 @@ export class Game {
     }
 
     if (!snapshotsA || !snapshotsB) {
-      // console.warn("No suitable snapshots found for interpolation");
-      return;
+      return false;
     }
 
     const t = snapshotsA.time === snapshotsB.time ? 0 : (renderTime - snapshotsA.time) / (snapshotsB.time - snapshotsA.time);
+
 
     this.alphaGraph.add(t);
     this.alphaGraph.draw();
@@ -185,6 +187,7 @@ export class Game {
           break;
       }
     }
+    return true;
   }
 
   addSnapshot(data: ISnapshot) {
@@ -197,11 +200,12 @@ export class Game {
     if (this.snapshots.length > 10) {
       this.snapshots.shift();
     }
-
   }
 
+
   loop() {
-    this.interpolate(performance.now() - this.startTime! - 65);
+    this.lastTime = performance.now();
+    this.interpolate(performance.now() - this.startTime! - 65)
     this.draw();
     requestAnimationFrame(this.loop.bind(this));
   }

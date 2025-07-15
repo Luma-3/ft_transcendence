@@ -12,17 +12,17 @@ export class Pong extends GameObject {
   private ball: Ball;
   private paddleLeft: Paddle;
   private paddleRight: Paddle;
-  
+
   private readonly size: Vector2 = new Vector2(800, 600);
-  
+
   private readonly maxWin: number = 5;
-  
+
   constructor() {
     super();
     this.ball = GameObject.instantiate(Ball, this.size);
-    
+
     const playersId = [...SceneContext.get().players.keys()];
-    
+
     this.paddleLeft = GameObject.instantiate(Paddle, playersId[0], new Vector2(0 + 50, this.size.y / 2));
     this.paddleLeft.enabled = false;
     this.paddleRight = GameObject.instantiate(Paddle, playersId[1], new Vector2(this.size.x - 50, this.size.y / 2));
@@ -30,7 +30,7 @@ export class Pong extends GameObject {
     this.start();
 
     if (SceneContext.get().gameType === "ai") {
-      console.log('XXXXXXXXXX'); 
+      console.log('XXXXXXXXXX');
       const ctx = SceneContext.get();
       const aiController = new AIController(this.paddleLeft, this.ball);
       ctx.loopManager.addAIObject(aiController);
@@ -112,7 +112,9 @@ export class Pong extends GameObject {
     }
 
     this.ball.resetBall(this.size, this.paddleLeft.Paddleid === winner ? this.paddleRight : this.paddleLeft);
-    this.ball.enabled = true;
+    setTimeout(() => {
+      this.ball.enabled = true;
+    }, 1000);
   }
 
   snapshot() {
