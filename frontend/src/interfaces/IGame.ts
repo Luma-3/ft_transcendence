@@ -29,3 +29,7 @@ export interface IServerGameData {
   data: IRoomData;
 }
 
+export interface IGameData {
+  
+}
+

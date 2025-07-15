@@ -4,7 +4,6 @@ export interface IUserInfo {
 	username: string;
 	created_at?: string;
 	email: string;
-	online?: boolean;
 	preferences: IUserPreferences;
 }
 
@@ -18,6 +17,7 @@ export interface IUserPreferences {
 export interface IOtherUser { 
 	id: string;
 	username: string;
+	online: boolean;
 	avatar: string;
 	banner: string;
 }
