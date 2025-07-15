@@ -9,7 +9,7 @@ export default function documentation() {
 	const gameApi = new Button("showGameDoc", "full", "Game Doc", "game-doc", "primary", "button");
 
 return `
-${backButton()}
+${backButton('dashboard')}
 
 <div class="flex flex-col items-center justify-center">
 

@@ -1,5 +1,6 @@
 import { IPlayer } from "../interfaces/IGame";
 import { IGame } from "../events/game/Game";
+import { truncateText } from "../components/utils/truncateText";
 
 async function showPlayer(playerGameInfos: IPlayer, color: 'blue' | 'red') {
 
@@ -9,7 +10,9 @@ async function showPlayer(playerGameInfos: IPlayer, color: 'blue' | 'red') {
 
 		<img src=${playerGameInfos.avatar} alt="logo" class="w-40 h-40 md:w-70 md:h-70 rounded-lg border-4 mb-4
 		${color === 'blue' ? 'border-dprimary' : 'border-dsecondary'}" />
-		${playerGameInfos.player_name}
+		<div class="flex w-40 justify-center items-center font-title mb-2">
+		${truncateText(playerGameInfos.player_name, 15)}
+		</div>
 
 	</div>
 
@@ -78,8 +81,8 @@ export default async function gameHtml(gameInfo: IGame, userId: string) {
 		<!-- Bannière droite -->
 		<div id="rightBanner" class="flex flex-col justify-center items-center w-32 h-[400px] bg-gradient-to-b from-orange-500 to-orange-700 rounded-lg border-2 border-orange-400 shadow-lg">
 			<div class="flex flex-col justify-center items-center text-white p-4 space-y-4">
-				<div class="flex justify-center items-center text-lg font-bold text-center">
-					${playerRight.player_name}
+				<div class="flex justify-center items-center text-lg font-bold text-center ">
+					${truncateText(playerRight.player_name, 10)}
 				</div>
 				<div id="player2Avatar" class="w-16 h-16 rounded-full border-2 border-white bg-orange-300">
 					<img src=${playerRight.avatar} alt="avatar" class="w-full h-full rounded-full">

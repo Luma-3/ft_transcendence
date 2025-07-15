@@ -11,8 +11,11 @@ import { FetchInterface } from "../../api/FetchInterface";
 import { loadTranslation } from "../../controllers/Translate";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { alertChangePassword } from "../../components/ui/alert/alertChangePassword";
+import { renderPrivatePage, renderPublicPage } from "../../controllers/renderPage";
+import { userRegisterInfo } from "../Register";
 	
 let formInstance: Form | null;
+let userNewEmail: string | null = null;
 
 async function renderProfilePage(user: IUserInfo) {
 	const inputs = [
@@ -20,7 +23,7 @@ async function renderProfilePage(user: IUserInfo) {
 				"username",
 				"text",
 				"username",
-				"off",
+				"username",
 				true,
 				"username",
 				user.username
@@ -29,11 +32,10 @@ async function renderProfilePage(user: IUserInfo) {
 				"email",
 				"email",
 				"email",
-				"off",
+				"email",
 				true,
 				"email",
 				user.email,
-				true
 			)
 		]
 	
@@ -147,6 +149,11 @@ export async function changeUserNameEmail() {
 		const success = await FetchInterface.updateEmail(values.email);
 		if (!success) {
 			return alertTemporary("error", trad["email-already-in-use"], user.preferences.theme);
+		} else {
+			console.log("Email updated successfully:", values.email);
+			console.log("User register info updated with new email:", userRegisterInfo);
+			userNewEmail = values.email;
+			renderPublicPage('verifyEmail');
 		}
 	}
 

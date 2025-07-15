@@ -3,7 +3,7 @@ import { initializeVerifyEmailTimers } from "../../events/email/verifyEmailTimer
 
 import { userRegisterInfo } from "../../pages/Register";
 import { alertPublic } from "../ui/alert/alertPublic";
-
+import { userNewEmail } from "../../pages/Profile/Profile";
 // Objet pour gérer le cooldown (référence partagée)
 const emailState = {
 	isEmailCooldownActive: false
@@ -18,12 +18,12 @@ export function setEmailCooldownState(value: boolean) {
 }
 
 export async function sendEmail() {
-	
-	if (!userRegisterInfo || !userRegisterInfo.email || !userRegisterInfo.lang) {
-		alertPublic("error", "Email or language not set. Please redo the registration form.");
-		return;
+	let userNewEmail = userRegisterInfo?.email;
+	if (!userNewEmail) {
+		userNewEmail = userNewEmail || "";
 	}
-	const success = await FetchInterface.resendVerificationEmail(userRegisterInfo.email, userRegisterInfo.lang);
+	//TODO: Add GetUserInfo 
+	const success = await FetchInterface.resendVerificationEmail(userNewEmail, 'en');
 	console.log("Email sent successfully:", success);
 	if (!success) {
 		return alertPublic("error", "email-already-sent");
@@ -34,12 +34,12 @@ export async function sendEmail() {
 export function startEmailCooldown() {
 	console.log("Starting email cooldown...");
 	emailState.isEmailCooldownActive = true;
-	
+
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;
-	
+
 	if (sendEmailButton) {
 		sendEmailButton.disabled = true;
-		sendEmailButton.classList.add('opacity-0','hidden','cursor-not-allowed');
+		sendEmailButton.classList.add('opacity-0', 'hidden', 'cursor-not-allowed');
 	}
 	setTimeout(() => {
 		initializeVerifyEmailTimers();
@@ -51,10 +51,11 @@ export function startEmailCooldown() {
 }
 
 export function endEmailCooldown() {
+	console.log("Ending email cooldown...");
 	emailState.isEmailCooldownActive = false;
-	
+
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;
-	
+
 	if (sendEmailButton) {
 		sendEmailButton.disabled = false;
 		sendEmailButton.classList.remove('opacity-0', 'cursor-not-allowed', 'hidden');

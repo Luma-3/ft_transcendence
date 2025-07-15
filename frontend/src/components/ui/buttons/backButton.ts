@@ -1,6 +1,11 @@
-export function backButton() {
-return `
-<div id="loadBackPage" class="flex flex-col mt-2 sticky-top items-left text-primary dark:text-dtertiary justify-start
+export function backButton(pageToLoad: string = "") {
+	let id = "loadBackPage";
+	if (pageToLoad !== "") {
+		id = `load${pageToLoad}`;
+	}
+
+	return `
+<div id="${id}" class="flex flex-col mt-2 sticky-top items-left text-primary dark:text-dtertiary justify-start
 	w-50 p-2 lg:ml-20 md:ml-10 sm:ml-10 ml-5 transform transition-transform duration-300
 	hover:-translate-x-1 hover:scale-110">
 		

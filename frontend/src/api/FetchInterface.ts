@@ -188,6 +188,37 @@ export class FetchInterface {
 	}
 
   /**
+   * ! Update Email
+   */
+  public static async updateEmail(newEmail: string ): Promise<boolean> {
+    const response = await fetchApiWithNoError(API.API_USER.UPDATE.EMAIL, {
+      method: "PATCH",
+      body: JSON.stringify({
+        email: newEmail,
+      }),
+    });
+    if (response.status === "error") {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * ! Update Username
+  */
+  public static async updateUsername(newUsername: string ): Promise<boolean> {
+    const response = await fetchApiWithNoError(API.API_USER.UPDATE.USERNAME, {
+      method: "PATCH",
+      body: JSON.stringify({
+        username: newUsername,
+      }),
+    });
+    if (response.status === "error") {
+      return false;
+    }
+    return true;
+  }
+  /**
    * ! Get all of my friends
    */
   //TODO: Verifier si response.data est toujours present, pour mieux gerer les erreurs serveur

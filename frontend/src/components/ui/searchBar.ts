@@ -18,7 +18,7 @@ return `
 
 		<input type="text" id="search-opponent" class="w-full font-title p-2 border-2 border-zinc-300 rounded-lg dark:text-dtertiary" translate="enter-username" placeholder="enter-username"/>
 
-		<div id="search-opponent-list" class="flex flex-col w-full max-h-[300px] overflow-auto p-2 space-y-2
+		<div id="search-opponent-list" class="flex flex-col w-full max-h-[300px] p-2 space-y-2
 	text-secondary dark:text-dsecondary rounded-lg">
 		</div>
 

@@ -30,7 +30,7 @@ export async function dispatchUserSocketMsg(payload: PayloadUserSocketMsg) {
 			alertNotifications("info", `${trad['new-friend-request']} ${user.username}`, "dark", true)
 			break;
 		case 'accept':
-			alertNotifications("info", `${trad['your-friend-request-was-accepted']} ${user.username}`, "dark", true)
+			alertTemporary("info", `${trad['your-friend-request-was-accepted']} ${user.username}`, "dark", true, true)
 			const friendDiv = document.getElementById("friends-div");
 				const friendsHtml = await friendsList();
 				if (friendDiv && friendsHtml) {

@@ -261,7 +261,7 @@ export class UserService {
     redisCache.setEx(`users:pendingEmail:${email}`, 660, data);
     redisCache.setEx(`users:pendingEmail:${id}`, 660, email);
 
-    await fetch(`https://${process.env.AUTH_IP}/internal/email-verification`, {
+    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/email`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

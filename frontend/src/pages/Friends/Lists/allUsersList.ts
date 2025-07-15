@@ -3,22 +3,22 @@ import { headerOtherUserMenu } from "../../../components/ui/userMenu";
 import { IOtherUser } from '../../../interfaces/IUser';
 
 export async function allUsersList() {
-let container = `
+	let container = `
 <div class="flex flex-col w-full overflow-visible font-title title-responsive-size items-center justify-center space-y-4 pt-5 text-tertiary dark:text-dtertiary">
 	
 	<div class="relative h-[400px] w-full overflow-y-auto font-title title-responsive-size items-center z-10 justify-center space-y-4 text-primary dark:text-dtertiary">
 
 		<div class="grid grid-cols-1 gap-4 p-4">`;
-		
-		const allUsers = await FetchInterface.getAllUser('all');
-		if (!allUsers) {
-			return `${container}</div></div>`;
-		}
-		
-		for(const otherUser of allUsers.users) {
+
+	const allUsers = await FetchInterface.getAllUser('all');
+	if (!allUsers) {
+		return `${container}</div></div>`;
+	}
+
+	for (const otherUser of allUsers.users) {
 		container += `
 			<div id="user-${otherUser.id}" class="flex flex-col justify-between w-full font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary
-			bg-myblack from-primary to-secondary">
+			bg-myblack from-primary to-secondary ">
 			
 				${headerOtherUserMenu(otherUser)}
 				
@@ -50,21 +50,21 @@ let container = `
 					</div>
 				</div>
 			</div>`;
-}
+	}
 
-container += `
+	container += `
 		</div>
 	</div>
 </div>`;
 
-return container;
+	return container;
 }
 
 export function addFriendButton(user: IOtherUser) {
-return `
+	return `
 <div id="add-friend" data-username=${user.username} data-id=${user.id} class="group/item relative hover:cursor-pointer">
 	
-	<span class="tooltip absolute z-10 left-1/2 transform -translate-x-full -top-8 mb-1 hidden group-hover/item:block bg-primary text-secondary dark:bg-dprimary dark:text-dtertiary text-xs rounded py-1 px-2 whitespace-nowrap" translate="add-friend">
+	<span class="tooltip absolute left-1/2 transform -translate-x-full -top-8 mb-1 hidden group-hover/item:block bg-primary text-secondary dark:bg-dprimary dark:text-dtertiary text-xs rounded py-1 px-2 whitespace-nowrap" translate="add-friend">
 
 		Add Friend
 							

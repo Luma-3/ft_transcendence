@@ -29,7 +29,7 @@ export async function alertNotifications(level: string, message: string, theme: 
 		title: message,
 		showConfirmButton: true,
 		confirmButtonText: 'Voir notifications',
-		confirmButtonColor: customTheme.confirmButtonColor || '#3085d6',
+		confirmButtonColor: customTheme.confirmButtonColor || '#FF8904',
 		timer: duration,
 		timerProgressBar: true,
 		showCloseButton: true,

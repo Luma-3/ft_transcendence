@@ -28,34 +28,15 @@ let container = `
 		const invitationReceived = results[1] ?? [];
 		console.log("invitationSent", invitationSent);
 		console.log("invitationReceived", invitationReceived);
-		
-		for(const invitation of invitationSent) {
-			if (!invitation) continue;
-			container += `
-			<div id="user-${invitation.id}" class="flex flex-col justify-between w-full font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary
-			bg-myblack from-primary to-secondary">
 
-				${headerOtherUserMenu(invitation)}
-
-				<div class="flex flex-row justify-between items-center space-x-4 mt-4">
-					
-					<div name="otherProfile" data-id=${invitation.id} class="flex font-title truncate hover:underline hover:cursor-pointer">
-					
-					${invitation.username}
-					
-					</div>
-	
-					<div class="flex flex-row space-x-2 items-center">
-							<div id="cancel-invitation" data-id="${invitation.id}" data-username="${invitation.username}" class="ml-4 justify-end hover:cursor-pointer group/item relative">
-								<span class="tooltip absolute z-10 left-1/2 transform -translate-x-full -top-8 mb-1 hidden group-hover/item:block bg-primary text-secondary dark:bg-dprimary dark:text-dtertiary text-xs rounded py-1 px-2 whitespace-nowrap" translate="cancel-invitation">
-								${trad['cancel-invitation']}
-								</span>
-								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 pointer-events-none">
-								<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-								</svg>
-						</div>
-					</div>
-				</div>
+		if (invitationReceived.length != 0) {
+			container += `<div class="flex justify-center items-center w-full font-title">
+				For you...
+			</div>`
+		} else {
+			//TODO: Traduction
+			container += `<div class="flex justify-center items-center w-full font-title">
+				No invitations received
 			</div>`;
 		}
 
@@ -96,6 +77,51 @@ let container = `
 				</div>
 			</div>`;
 		}
+		container += `
+		<div class="flex justify-center w-full overflow-hidden items-center text-primary dark:text-dprimary font-title">
+			-----------------
+		</div>`;
+
+		if (invitationSent.length != 0) {
+			container += `<div class="flex justify-center items-center w-full font-title">
+				Waiting...
+			</div>`
+		} else {
+			//TODO: Traduction
+			container += `<div class="flex justify-center items-center w-full font-title">
+				No invitations sent
+			</div>`;
+		}
+		for(const invitation of invitationSent) {
+			if (!invitation) continue;
+			container += `
+			<div id="user-${invitation.id}" class="flex flex-col justify-between w-full font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary
+			bg-myblack from-primary to-secondary">
+
+				${headerOtherUserMenu(invitation)}
+
+				<div class="flex flex-row justify-between items-center space-x-4 mt-4">
+					
+					<div name="otherProfile" data-id=${invitation.id} class="flex font-title truncate hover:underline hover:cursor-pointer">
+					
+					${invitation.username}
+					
+					</div>
+	
+					<div class="flex flex-row space-x-2 items-center">
+							<div id="cancel-invitation" data-id="${invitation.id}" data-username="${invitation.username}" class="ml-4 justify-end hover:cursor-pointer group/item relative">
+								<span class="tooltip absolute z-10 left-1/2 transform -translate-x-full -top-8 mb-1 hidden group-hover/item:block bg-primary text-secondary dark:bg-dprimary dark:text-dtertiary text-xs rounded py-1 px-2 whitespace-nowrap" translate="cancel-invitation">
+								${trad['cancel-invitation']}
+								</span>
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 pointer-events-none">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+								</svg>
+						</div>
+					</div>
+				</div>
+			</div>`;
+		}
+		
 
 		container += `
 			</div>
