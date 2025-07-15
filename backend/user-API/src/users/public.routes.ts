@@ -26,6 +26,7 @@ import {
   UsersQueryGetAll
 } from './schema.js';
 import { SearchResponseSchema } from '../search/schema.js';
+import { UserStatus } from '../preferences/status.js';
 
 // ======================= ROUTE DEFINITION =======================
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
@@ -51,7 +52,10 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
                 page,
                 limit,
                 total: users.length,
-                users
+                users: users.map(user => ({
+                  ...user,
+                  online: UserStatus.isUserOnline(user.id)
+                }))
             } });
   });
 
@@ -73,7 +77,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const { includePreferences } = req.query;
 
     const user = await UserService.getUserByID(id, includePreferences, USER_PUBLIC_COLUMNS, PREFERENCES_PUBLIC_COLUMNS);
-    return rep.code(200).send({ message: 'Ok', data: user })
+    return rep.code(200).send({ message: 'Ok', data: {...user, online: UserStatus.isUserOnline(id)} })
   });
 
   // ---------- GET CURRENT USER ----------
@@ -94,9 +98,9 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const id = req.headers['x-user-id'];
     const { includePreferences } = req.query;
 
-    const user = await UserService.getUserByID(id, includePreferences,
+    const data = await UserService.getUserByID(id, includePreferences,
       USER_PRIVATE_COLUMNS, PREFERENCES_PRIVATE_COLUMNS);
-    return rep.code(200).send({ message: 'Ok', data: user });
+    return rep.code(200).send({ message: 'Ok', data: data });
   });
 
   // ---------- CREATE USER ----------
