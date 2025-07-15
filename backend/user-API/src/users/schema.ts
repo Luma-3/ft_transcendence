@@ -62,7 +62,7 @@ export type UserDBBaseType = Static<typeof UserDBBase>;
 
 export const UserPublicResponse = Type.Object({
   ...UserSharedFields,
-  online: Type.Optional(Type.Boolean()),
+  online: Type.Optional(Type.Boolean({ description: 'Indicates if the user is currently online' })),
   preferences: Type.Optional(PreferencesPublicResponse)
 });
 export type UserPublicResponseType = Static<typeof UserPublicResponse>;
@@ -72,7 +72,7 @@ export const UserPrivateResponse = Type.Object({
   email: Type.String({ format: 'email' }),
   validated: Type.Boolean(),
   twofa: Type.Boolean(),
-  online: Type.Optional(Type.Boolean()),
+  online: Type.Optional(Type.Boolean({ description: 'Indicates if the user is currently online' })),
   preferences: Type.Optional(PreferencesPrivateResponse)
 });
 export type UserPrivateResponseType = Static<typeof UserPrivateResponse>;

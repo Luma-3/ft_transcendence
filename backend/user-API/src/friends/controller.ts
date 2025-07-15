@@ -1,7 +1,8 @@
 import { FriendsService } from "./services.js";
-import { FriendParamType, UserHeaderIdType } from "./schema.js";
+import { FriendDBHydrateType, FriendParamType, UserHeaderIdType } from "./schema.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { redisCache, redisPub } from "../utils/redis.js";
+import { UserStatus } from "../preferences/status.js";
 
 
 
@@ -13,17 +14,23 @@ export class FriendsController {
         const userId = req.headers['x-user-id'];
         const data = await redisCache.getEx(`users:data:${userId}:friends`, {type:'EX', value: 3600 });
         if (data) {
-            const friends = JSON.parse(data);
+            const friends = JSON.parse(data) as FriendDBHydrateType[];
             return rep.status(200).send({
                 message: 'Friends retrieved successfully',
-                data: friends
+                data: friends.map(friend => ({
+                    ...friend,
+                    online: UserStatus.isUserOnline(friend.id)
+                }))
             });
         }
         const friends = await FriendsService.findFriendsByID(userId);
         redisCache.setEx(`users:data:${userId}:friends`, 3600 , JSON.stringify(friends)).catch(console.error);
         return rep.status(200).send({
             message: 'Friends retrieved successfully',
-            data: friends
+            data: friends.map(friend => ({
+                ...friend,
+                online: UserStatus.isUserOnline(friend.id)
+            }))
         });
     };
 

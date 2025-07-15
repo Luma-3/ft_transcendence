@@ -17,7 +17,8 @@ export const PendingDBHydrateSchema = Type.Object({
   id: Type.String({ format: 'uuid' }),
   username: Type.String(),
   avatar: Type.Optional(Type.String({ description: 'URL of the user\'s avatar' })),
-  banner: Type.Optional(Type.String({ description: 'URL of the user\'s banner' }))
+  banner: Type.Optional(Type.String({ description: 'URL of the user\'s banner' })),
+  online: Type.Boolean({ description: 'Indicates if the user is currently online' }),
 }, {
   description: "Hydrated pending request schema with user details",
   additionalProperties: false
