@@ -9,6 +9,7 @@ export class IOInterface {
 
   public static broadcast(message: string, target: string[]): void {
     target.forEach((playerId) => {
+      if (playerId === 'local' || playerId === 'ai') return;
       redisPub.publish(`game:gateway:out:${playerId}`, message);
     });
   }

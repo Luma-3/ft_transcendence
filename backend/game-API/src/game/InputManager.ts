@@ -9,7 +9,7 @@ export class InputManager {
     const playersId = [...SceneContext.get().players.keys()];
     console.log("InputManager: onInstantiate", playersId);
     if (SceneContext.get().gameType === "local") {
-
+      console.log("WHAT GAME TYPE" + SceneContext.get().gameType);
       this.playersInput.set(playersId[1], Vector2.zero());
       this.playersInput.set("local", Vector2.zero());
       IOInterface.subscribe(`ws:game:player:${playersId[1]}`, handleInput.bind(SceneContext.get()));

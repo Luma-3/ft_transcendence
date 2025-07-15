@@ -135,10 +135,6 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
           payload: payload
         }));
       }
-      else {
-        console.warn(`[WS][Redis] No socket found for user_id ${user_id} on channel ${channel} `);
-      }
-      // TODO faire un truc ici pour gerer l'erreur si on trouve pas le socket du gars
     }
     catch (err) {
       console.error('Error when handle outgoing message', err);

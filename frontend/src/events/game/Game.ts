@@ -53,8 +53,6 @@ export class Game {
   private snapshots: ISnapshot[] = [];
   private alphaGraph: AlphaGraph = new AlphaGraph("alphaGraph");
 
-  private lastTime = performance.now();
-
   private id: string;
   public userId: string;
   public gameType: string;
