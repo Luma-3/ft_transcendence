@@ -5,7 +5,7 @@ import { Paddle } from "./Paddle.js";
 import { Vector2 } from "../core/physics/Vector.js";
 import { IOInterface } from "../utils/IOInterface.js";
 import { AIController } from "./AIController.js"
-import { RoomModelInstance} from "../room/model.js"
+import { RoomModelInstance } from "../room/model.js"
 
 import { roomManagerInstance } from "../core/runtime/RoomManager.js";
 import { Player } from "../core/runtime/Player.js";
@@ -33,7 +33,6 @@ export class Pong extends GameObject {
     this.start();
 
     if (SceneContext.get().gameType === "ai") {
-      console.log('XXXXXXXXXX');
       const ctx = SceneContext.get();
       const aiController = new AIController(this.paddleLeft, this.ball);
       ctx.loopManager.addAIObject(aiController);
@@ -77,7 +76,17 @@ export class Pong extends GameObject {
     );
     const scene = SceneContext.get();
     const players = Array.from(scene.players.values());
-    RoomModelInstance.addMatch({id: scene.id, player_1: players[0], player_2: players[1], winner: this.winner, score_1: players[0].score, score_2: players[1].score, type : scene.gameType})
+    const data = {
+      id: scene.id,
+      player_1: (players[0].id === "local") ? null : players[0].id,
+      player_2: players[1].id,
+      winner: this.winner,
+      score_1: players[0].score,
+      score_2: players[1].score,
+      type: scene.gameType
+    }
+    console.log(data);
+    RoomModelInstance.addMatch(data);
     roomManagerInstance.deleteRoom(SceneContext.get().id);
   }
 

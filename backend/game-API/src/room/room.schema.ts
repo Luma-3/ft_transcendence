@@ -113,6 +113,6 @@ export const RoomData = Type.Object({
 
 export type RoomDataType = Static<typeof RoomData>;
 
-export const RoomArray = Type.Array(RoomData);
+export const RoomArray = Type.Object({rooms: Type.Array(RoomData)});
 
 export type RommArrayType = Static<typeof RoomArray>;
