@@ -1,7 +1,7 @@
-import type { Knex } from 'knex';
+// import type { Knex } from 'knex';
 import { knexInstance } from '../utils/knex.js';
 
-import { UserBaseType, UserDBHydrateType } from './schema.js'
+// import { UserBaseType, UserDBHydrateType } from './schema.js'
 
 export const USER_PUBLIC_COLUMNS: string[] = [
   'users.id',

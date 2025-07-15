@@ -75,8 +75,9 @@ export class Pong extends GameObject {
       JSON.stringify(payload),
       [...SceneContext.get().players.keys()]
     );
-    const scene = SceneContext.get(); 
-    RoomModelInstance.addMatch({id: scene.id, player_1: scene.players[0], player_2: scene.players[1], winner: this.winner, score_1: scene.players[0].score, score_2: scene.players[1].score, type : scene.gameType})
+    const scene = SceneContext.get();
+    const players = Array.from(scene.players.values());
+    RoomModelInstance.addMatch({id: scene.id, player_1: players[0], player_2: players[1], winner: this.winner, score_1: players[0].score, score_2: players[1].score, type : scene.gameType})
     roomManagerInstance.deleteRoom(SceneContext.get().id);
   }
 
