@@ -36,6 +36,8 @@ export function onKeyDown(event: KeyboardEvent, playerId: string) {
   switch (event.key) {
     case "w": actionUserUp = true; break;
     case "s": actionUserDown = true; break;
+    case "S": actionUserUp = true; break;
+    case "W": actionUserDown = true; break;
     case "ArrowUp": if (GameManager.getGame()!.gameType === "local") actionUser2Up = true; event.preventDefault(); break;
     case "ArrowDown": if (GameManager.getGame()!.gameType === "local") actionUser2Down = true; event.preventDefault(); break;
   }
@@ -48,6 +50,8 @@ export function onKeyUp(event: KeyboardEvent, playerId: string) {
   switch (event.key) {
     case "w": actionUserUp = false; break;
     case "s": actionUserDown = false; break;
+    case "S": actionUserUp = true; break;
+    case "W": actionUserDown = true; break;
     case "ArrowUp": if (GameManager.getGame()!.gameType === "local") actionUser2Up = false; event.preventDefault(); break;
     case "ArrowDown": if (GameManager.getGame()!.gameType === "local") actionUser2Down = false; event.preventDefault(); break;
   }
