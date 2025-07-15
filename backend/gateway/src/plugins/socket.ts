@@ -101,6 +101,10 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
       socket.user_id = user_id;
       fastify.ws_clients.set(user_id, socket);
       console.log(`[WS] client ${user_id} connected`);
+      redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
+        type: 'connected',
+        user_id: user_id,
+      }));
 
       socket.on('message', (raw: string) => {
         handleMessage(socket, raw);
