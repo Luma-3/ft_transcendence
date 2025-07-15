@@ -78,6 +78,7 @@ export class FetchInterface {
       default:
         if (response.status === "error") {
           alertPublic("username-or-password-incorrect", "error");
+          renderPublicPage('login');
           return false;
         }
         return true;

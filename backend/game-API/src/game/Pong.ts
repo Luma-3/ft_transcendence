@@ -80,7 +80,7 @@ export class Pong extends GameObject {
       id: scene.id,
       player_1: (players[0].id === "local") ? null : players[0].id,
       player_2: players[1].id,
-      winner: this.winner,
+      winner: this.winner.id,
       score_1: players[0].score,
       score_2: players[1].score,
       type: scene.gameType

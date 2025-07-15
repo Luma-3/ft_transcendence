@@ -106,6 +106,5 @@ export async function loginUser() {
 		renderPrivatePage('dashboard');
 		return;
 	}
-	// renderPublicPage('login');
 	
 }

@@ -2,6 +2,10 @@ import { navbar } from "../../components/ui/navbar";
 import { IUserInfo } from "../../interfaces/IUser";
 import { gameTypes } from "./gameTypeButton";
 import { Button } from "../../classes/Button";
+import { fetchApi } from "../../api/fetch";
+import { API_GAME } from "../../api/routes";
+import { IGameData } from "../../interfaces/IGame";
+import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 
 async function renderDashboard(user: IUserInfo) {
 
@@ -33,7 +37,7 @@ ${navbar(user)}
 
 		<div id="lastGamesContainer" class="w-full flex justify-center items-center pointer-events-none">
 			<div id="lastGamesPanel" class="flex font-title w-full justify-center pointer-events-auto transform translate-x-0 opacity-100 transition-all duration-500">
-				${generateLastGames(user)}
+				${await generateLastGames(user)}
 			</div>
 		</div>
 		<!-- Bouton voir les stats -->
@@ -78,40 +82,83 @@ export function toggleGameStats() {
 }
 
 // Affiche les dernières parties du joueur dans un div scrollable
-export function generateLastGames(user: IUserInfo) {
+export async function generateLastGames(user: IUserInfo, userId: string = user.id) {
+
+	const response = await fetchApi(API_GAME.GET_ALL_DATA + `/${userId}`, {
+		method: 'GET'
+	});
+	if (!response || !response.data) {
+		//TODO: Traduction
+		return alertTemporary("error", "no-game-data", user.preferences.theme, true, true);
+	}
+	console.log("Response from API_GAME.GET_ALL_DATA:", response.data);
   // Exemple de structure attendue :
-  const lastGames = [
-	{ opponent: 'DuckMaster', score: '5-3', date: '2025-07-10', win: true },
-  //   ...
-  ]
-  const games = lastGames && Array.isArray(lastGames) ? lastGames : [];
+  // const lastGames = [
+	// { opponent: 'DuckMaster', score: '5-3', date: '2025-07-10', win: true },
+  // //   ...
+  // ]
+  const games = response.data.rooms;
+	if (!games) {
+		//TODO: Traduction
+		return alertTemporary("error", "no-game-data", user.preferences.theme, true, true);
+	}
   if (games.length === 0) {
 	return `<div class="w-full font-title max-w-[600px] h-64 bg-white/80 dark:bg-black/5 rounded-lg shadow-inner flex flex-col items-center justify-center mb-6 overflow-y-auto">
 	  <span class="text-gray-400 italic">Aucune partie récente</span>
 	</div>`;
   }
-  return `
-	<div class="w-full max-w-[600px] h-64 bg-white/80 dark:bg-black/5 rounded-lg shadow-inner mb-6 overflow-y-auto p-4 flex flex-col">
+	let container = `<div class="w-full max-w-[600px] h-64 bg-white/80 dark:bg-black/5 rounded-lg shadow-inner mb-6 overflow-y-auto p-4 flex flex-col">
 	  <h4 class="text-lg font-bold mb-2 text-gray-700 dark:text-dtertiary">Dernières parties</h4>
-	  <ul class="flex flex-col gap-2">
-		${games.map(game => `
-		  <li class="flex items-center justify-between bg-gradient-to-r from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-900 rounded-md px-3 py-2 shadow-sm">
+	  <ul class="flex flex-col gap-2">`;
+
+	for (const game of games) {
+		let win = false;
+		let opponent = '';
+		win = (game.winner === user.id) ? true : false;
+		(game.player_1 === user.id) ? opponent = game.player_2 : opponent = game.player_1;
+		if (opponent === "") {
+			(game.type === "local") ? opponent = "Local" : opponent = "IA";
+		}
+
+		container += `
+		<li class="flex items-center justify-between bg-gradient-to-r from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-900 rounded-md px-3 py-2 shadow-sm">
 			<div class="flex flex-col">
-			  <span class="font-semibold text-primary dark:text-dsecondary">vs ${game.opponent}</span>
-			  <span class="text-xs text-gray-500">${game.date}</span>
-			</div>
-			<div class="flex items-center gap-2">
-			  <span class="font-mono text-lg">${game.score}</span>
-			  <span class="px-2 py-1 rounded text-md font-bold ${game.win ? ' text-green-500' : ' text-red-700'}">
-				${game.win ? 'Win' : 'Lose'}
-			  </span>
-			</div>
-		  </li>
-		`).join('')}
+				<span class="font-semibold text-primary dark:text-dsecondary">vs ${opponent}</span>
+				</div>
+				<div class="flex items-center gap-2">
+				<span class="font-mono text-lg">${game.score_2}-${game.score_1}</span>
+				<span class="px-2 py-1 rounded text-md font-bold ${win ? ' text-green-500' : ' text-red-700'}">
+				${win ? 'Win' : 'Lose'}
+				</span>
+				</div>
+				</li>`;
+		}
+			// <span class="text-xs text-gray-500">${game.date}</span>
+
+	container += `
 	  </ul>
 	</div>
   `;
+	return container;
 }
+
+	// 	  <li class="flex items-center justify-between bg-gradient-to-r from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-900 rounded-md px-3 py-2 shadow-sm">
+	// 		<div class="flex flex-col">
+	// 		  <span class="font-semibold text-primary dark:text-dsecondary">vs ${game.opponent}</span>
+	// 		  <span class="text-xs text-gray-500">${game.date}</span>
+	// 		</div>
+	// 		<div class="flex items-center gap-2">
+	// 		  <span class="font-mono text-lg">${game.score}</span>
+	// 		  <span class="px-2 py-1 rounded text-md font-bold ${game.win ? ' text-green-500' : ' text-red-700'}">
+	// 			${game.win ? 'Win' : 'Lose'}
+	// 		  </span>
+	// 		</div>
+	// 	  </li>
+	// 	}
+	//   </ul>
+	// </div>
+  // `;
+// }
 
 export function generateRankBadge(_user: IUserInfo) {
 	const wins = Math.floor(Math.random() * 50) + 5; // Données d'exemple

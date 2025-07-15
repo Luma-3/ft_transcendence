@@ -55,6 +55,7 @@ export const API_SESSION = {
 
 export const API_GAME = {
   CREATE: `${SERVICES.GAME}/rooms`,
+  GET_ALL_DATA: `${SERVICES.GAME}/rooms/`,
 }
 
 export const API_CDN = {
