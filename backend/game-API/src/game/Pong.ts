@@ -113,6 +113,7 @@ export class Pong extends GameObject {
 
     this.ball.resetBall(this.size, this.paddleLeft.Paddleid === winner ? this.paddleRight : this.paddleLeft);
     setTimeout(() => {
+      this.ball.resetBall(this.size, this.paddleLeft.Paddleid === winner ? this.paddleRight : this.paddleLeft);
       this.ball.enabled = true;
     }, 1000);
   }
