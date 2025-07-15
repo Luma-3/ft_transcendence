@@ -1,9 +1,47 @@
 {
-  "dependencies": {
-    "mime-types": "^3.0.1",
-    "node-cache": "^5.1.2"
+  "name": "transcenduck_game-services",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon",
+    "knex": "tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts",
+    "migrate": "npm run knex migrate:latest",
+    "migrate:rollback": "npm run knex migrate:rollback",
+    "migrate:make": "npm run knex migrate:make",
+    "start": "node dist/index.js",
+    "build": "tsc"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luma-3/ft_transcendence.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Luma-3/ft_transcendence/issues"
+  },
+  "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
   "devDependencies": {
-    "playwright": "^1.54.0"
+    "@fastify/cors": "^10.0.2",
+    "@types/knex": "^0.15.2",
+    "@types/node": "^22.15.23",
+    "nodemon": "^3.1.10",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@fastify/swagger": "^9.4.2",
+    "@fastify/type-provider-typebox": "^5.1.0",
+    "@sinclair/typebox": "^0.34.33",
+    "@transcenduck/error": "file:./packages/error",
+    "@transcenduck/formatter": "file:./packages/formatter",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.2",
+    "fastify-plugin": "^5.0.1",
+    "knex": "^3.1.0",
+    "sqlite3": "^5.1.7",
+    "ts-node": "^10.9.2"
   }
 }
