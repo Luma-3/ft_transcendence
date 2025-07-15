@@ -3,9 +3,7 @@ import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 
 import swagger from "./plugins/swagger.js";
 import formatter from "@transcenduck/formatter";
-import uploadRoute from "./routes/upload.js";
 import fastifyMultipart from "@fastify/multipart";
-import fastifyCompress from "@fastify/compress";
 
 const server = fastify({
   logger: true,
