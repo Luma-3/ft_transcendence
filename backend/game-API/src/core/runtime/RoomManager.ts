@@ -1,3 +1,5 @@
+import { EventEmitter } from "node:events";
+
 import { Room } from "./Room.js";
 import { GameType } from "../../room/room.schema.js";
 import { Player } from "./Player.js";
@@ -6,6 +8,7 @@ import { NotFoundError, ConflictError } from '@transcenduck/error'
 class RoomManager {
   private rooms: Map<string, Room> = new Map();
   private playersInRooms: Map<string, Room> = new Map();
+  public RoomEmitter = new EventEmitter();
 
   public createRoom(game_name: string, type_game: GameType, privateRoom: boolean = false, localPlayerName?: string): string {
     const room = new Room({ name: game_name, type_game: type_game, privateRoom: privateRoom, localPlayerName });
@@ -62,6 +65,7 @@ class RoomManager {
     if (!this.rooms.has(room_id)) {
       return;
     }
+
     const room = this.rooms.get(room_id);
     room.loopManager.stop();
     room.inputManager.stop();
@@ -73,6 +77,8 @@ class RoomManager {
       }
     });
   }
+
+
 }
 
 export const roomManagerInstance = new RoomManager

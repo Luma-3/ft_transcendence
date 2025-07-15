@@ -7,6 +7,7 @@ import { IOInterface } from "../utils/IOInterface.js";
 import { AIController } from "./AIController.js"
 
 import { roomManagerInstance } from "../core/runtime/RoomManager.js";
+import { Room } from "../core/runtime/Room.js";
 
 export class Pong extends GameObject {
   private ball: Ball;
@@ -16,6 +17,7 @@ export class Pong extends GameObject {
   private readonly size: Vector2 = new Vector2(800, 600);
 
   private readonly maxWin: number = 5;
+  private winner = null;
 
   constructor() {
     super();
@@ -53,7 +55,11 @@ export class Pong extends GameObject {
   checkWin(id: string) {
     const players = SceneContext.get().players;
     const player = players.get(id);
-    return (player.score >= this.maxWin);
+    if (player.score >= this.maxWin){
+      this.winner = player;
+      return true;
+    }
+    return false;
   }
 
   stopGame() {
@@ -68,7 +74,7 @@ export class Pong extends GameObject {
       JSON.stringify(payload),
       [...SceneContext.get().players.keys()]
     );
-
+    roomManagerInstance.RoomEmitter.emit('endGame', SceneContext.get().id, this.winner);
     roomManagerInstance.deleteRoom(SceneContext.get().id);
   }
 
