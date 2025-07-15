@@ -9,8 +9,8 @@ export class Paddle extends GameObject implements Rectangle {
   public velocity: Vector2 = new Vector2(0, 0); // Velocity of the paddle movement
 
   private readonly velocityModifer: number = 400;
-  private readonly frictionFroce: number = 3;
-  private readonly acceleration: number = 4;
+  private readonly frictionForce: number = 5;
+  private readonly acceleration: number = 6;
 
   // private readonly maxVelocity: number = 10;
   private id: string = '';
@@ -52,7 +52,7 @@ export class Paddle extends GameObject implements Rectangle {
 
   calculateFriction() {
     let vel = this.velocity;
-    const friction = vel.scale(SceneContext.get().loopManager.deltaTime * this.frictionFroce);
+    const friction = vel.scale(SceneContext.get().loopManager.deltaTime * this.frictionForce);
     vel = vel.sub(friction);
     this.velocity = vel;
   }
@@ -76,7 +76,7 @@ export class Paddle extends GameObject implements Rectangle {
       type: 'paddle',
       id: this.id,
       position: this.position,
-      scale: this.scale
+      velocity: this.velocity
     };
   }
 }

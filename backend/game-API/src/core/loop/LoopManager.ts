@@ -5,14 +5,14 @@ import { GameLoop, NetworkLoop, IALoop } from "./Loop.js";
 export class LoopManager {
   private networkLoop: ALoop;
   private gameLoop: ALoop;
-  private iaLoop: IALoop; 
+  private iaLoop: IALoop;
 
   public get deltaTime() {
     return this.gameLoop.deltaTime;
   }
 
   constructor() {
-    this.networkLoop = new NetworkLoop(20);
+    this.networkLoop = new NetworkLoop(25);
     this.gameLoop = new GameLoop(60);
     this.iaLoop = new IALoop(1);
   }
