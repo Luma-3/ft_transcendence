@@ -97,14 +97,13 @@ export default async function gameHtml(gameInfo: IGame, userId: string) {
   <canvas id="alphaGraph" width="300" height="100" class="absolute top-2 right-2 border border-gray-500 bg-black"></canvas>
 	</div>
 	<div class="flex flex-row mt-2 mb-2 w-full font-title text-tertiary dark:text-dtertiary justify-center items-center p-2">
-		<button id="leaveGame" class="flex flex-row items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" translate="leaveGame">
+		<button id="leaveGame" class="flex flex-row items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" translate="leave-game">
 			Leave Game
+			</button>
 			<img src="/images/duckQuitGame.png" alt="logo" class="w-10 h-10 ml-4">
-		</button>
 	</div>
 </div>
 <div id="gameWin">
 </div>
 `
 }
-//TODO:Traduction

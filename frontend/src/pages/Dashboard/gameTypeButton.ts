@@ -1,11 +1,10 @@
 import { searchBarGame } from "../../components/ui/searchBar"
 
 export function onlineSettings() {
-	//TODO: Traduction
   return `
 <div id="online-settings" class="hidden flex-col w-full h-full p-4 space-y-4 mb-10 bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
 <div class="flex flex-col font-title justify-center items-center w-full">
-	<div class="flex flex-col w-full h-full p-2 space-y-2 text-secondary dark:text-dtertiary rounded-lg">
+	<div class="flex flex-col w-full h-full p-2 space-y-2 text-secondary dark:text-dtertiary rounded-lg" translate="click-for-random-opponent">
 		
 		Or click directly on play for a random opponent
 	

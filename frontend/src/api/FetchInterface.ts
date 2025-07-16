@@ -184,11 +184,27 @@ export class FetchInterface {
       }),
     });
     if (response.status === "error") {
-      //TODO: Traduction
       return await alertTemporary("error", trad['wrong-password'] ?? response.message, customTheme.theme, true);
     }
-    return await alertTemporary("success", trad['password-changed'], customTheme.theme, true, true);
+    return await alertTemporary("success", trad['password-updated'], customTheme.theme, true, true);
 	}
+
+  /**
+   * ! Verify Email
+   */
+  public static async verifyEmailUser(token: string) {
+  
+    const response = await fetchApiWithNoError(API.TWOFA.EMAIL + `/${token}`, {
+      method: "GET",
+    });
+    if (response.status === "error") {
+      await alertPublic("cannot-verify-email-too-old-mail-or-retry-registration-process", "error");
+      window.location.href = "/register";
+      return;
+    }
+    await alertPublic("email-verified-successfully", "success");
+    window.location.href = "/login";
+  }
 
   /**
    * ! Update Email
@@ -321,7 +337,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      alertTemporary("error", "issues-with-blocking-user", user.preferences.theme, true);
+      alertTemporary("error", "issues-with-user-blocked", user.preferences.theme, true);
       return false;
     }
     alertTemporary("success", isBlocking ? "user-unblocked" : "user-blocked", user.preferences.theme, true);
@@ -386,12 +402,11 @@ export class FetchInterface {
       body: JSON.stringify({ code })
     });
     console.log("Response from submit2FACode:", response);
-    //TODO: Traduction
     if (response.status === 'error') {
-      await alertTemporary("error", "invalid-2fa-code", 'dark', true);
+      await alertTemporary("error", "invalid-2fa-code", 'dark', true, true);
       return false;
     }
-    await alertTemporary("success", "2fa-code-verified", 'dark', true);
+    await alertTemporary("success", "2fa-code-verified", 'dark', true, true);
     return true;
   }
 
@@ -450,28 +465,24 @@ export class FetchInterface {
         roomName: FormInfos.roomName,
       }),
     });
-    if (!response || response.status === "error" || !response.data) {
-      alertTemporary("error", "game-creation-failed", 'dark', true);
+    if (response.status === "error") {
       return false;
     }
     return true;
   }
 
   public static async inviteToPlay(gameFormInfo: IGameFormInfo, user: IUserInfo, invitePlayerId: string) {
-    console.log("Inviting player to play:", invitePlayerId);
     const response = await fetchApiWithNoError(API.API_GAME.CREATE + `/${gameFormInfo.gameType}?privateRoom=true&userIdInvited=${invitePlayerId}`, {
       method: 'POST',
       body: JSON.stringify({
         roomName: gameFormInfo.roomName,
       })
     });
-    console.log("Reponse from the server", response);
     if (response.status === "error") {
-      //TODO: Traduction
-      alertTemporary("error", "failed-to-send-invitation!", user.preferences.theme, true, true);
+      alertTemporary("error", "failed-to-send-invitation", user.preferences.theme, true, true);
       return false;
     }
-    alertTemporary("success", "Player Invited", user.preferences.theme, true, true);
+    alertTemporary("success", "player-invited", user.preferences.theme, true, true);
     return true;
   }
 }

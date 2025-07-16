@@ -46,33 +46,3 @@ export async function dispatchUserSocketMsg(payload: PayloadUserSocketMsg) {
 			targetDiv.innerHTML = notificationsHtml;
 		}
 }
-
-// function dispatchPending(action: string, userId: string) {
-	
-// 	switch (action) {
-// 		case 'add':
-// 			alertNotifications("info", `Pending request from user ${userId}`, "dark", true)
-// 			break;
-// 		case 'remove':
-// 			alert(`Pending request removed from user ${userId}`);
-// 			break;
-// 		case 'accept':
-// 			alert(`Pending request accepted from user ${userId}`);
-// 			break;
-// 		case 'refuse':
-// 			alert(`Pending request refused from user ${userId}`);
-// 			break;
-// 		default:
-// 			console.error(`Unknown pending action: ${action}`);
-// 	}
-// }
-
-// function dispatchFriend(action: string, userId: string) {
-// 	switch (action) {
-// 		case 'remove':
-// 			alert(`Friendship removed with user ${userId}`);
-// 			break;
-// 		default:
-// 			console.error(`Unknown friend action: ${action}`);
-// 	}
-// }

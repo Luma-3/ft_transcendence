@@ -1,9 +1,9 @@
 import { FetchInterface } from "../../api/FetchInterface";
-import { initializeVerifyEmailTimers, stopMainTimer } from "../../events/email/verifyEmailTimers";
+import { initializeVerifyEmailTimers, stopMainTimer } from "./verifyEmailTimers";
 
 import { userRegisterInfo } from "../../pages/Register";
-import { alertPublic } from "../ui/alert/alertPublic";
 import { userNewEmail } from "../../pages/Profile/Profile";
+import { alertTemporary } from "../ui/alert/alertTemporary";
 // Objet pour gérer le cooldown (référence partagée)
 const emailState = {
 	isEmailCooldownActive: false
@@ -22,10 +22,9 @@ export async function sendEmail() {
 	if (!newEmail) {
 		newEmail = userNewEmail || "";
 	}
-	//TODO: Add GetUserInfo 
 	const success = await FetchInterface.resendVerificationEmail(newEmail ?? "", 'en');
 	if (!success) {
-		return alertPublic("error", "email-already-sent");
+		return alertTemporary("error", "email-already-sent", 'dark', false, true);
 	}
 	endEmailCooldown();
 	startEmailCooldown();

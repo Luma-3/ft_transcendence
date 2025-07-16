@@ -42,7 +42,7 @@ export function tournamentMatches() {
 		<polyline points="${match2.x},${match2.y} ${midX},${match2.y} ${midX},${finalY} ${finalX},${finalY}" fill="none" stroke="#888" stroke-width="3" />
 		<!-- Badge gagnant match 2 -->
 		<circle cx="${midX}" cy="${match2.y}" r="18" fill="#fff" stroke="#888" stroke-width="3" />
-		<text x="${midX}" y="${match2.y + 6}" text-anchor="middle" font-size="20" fill="#888" font-family="Arial">?</text>
+		<text x="${midX}" y="${match2.y + 6}" text-anchor="middle" font-size="20" fill="#888" font-family="Arial">MOIMOI</text>
 	  </svg>
 	  <div class="absolute" style="top:${match1Top}px; left:${leftCol}px; width:${boxWidth}px; height:${boxHeight}px;">
 		<div class="flex flex-col items-center bg-primary dark:bg-dprimary text-secondary dark:text-dtertiary border rounded-lg p-6 w-full min-h-[200px] shadow-lg">

@@ -1,5 +1,10 @@
 import { headerPage } from "../components/ui/headerPage"
 import { startEmailCooldown } from "../components/utils/sendEmail"
+
+
+
+
+
 export default async function verifyEmail() {
 startEmailCooldown();
 return `

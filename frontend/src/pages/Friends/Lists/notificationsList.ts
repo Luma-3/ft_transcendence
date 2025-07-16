@@ -22,26 +22,21 @@ let container = `
 			FetchInterface.getNotifications("receiver")
 		
 		]);
-		console.log("results in LIST", results);
 
 		const invitationSent = results[0] ?? [];
 		const invitationReceived = results[1] ?? [];
-		console.log("invitationSent", invitationSent);
-		console.log("invitationReceived", invitationReceived);
 
 		if (invitationReceived.length != 0) {
-			container += `<div class="flex justify-center items-center w-full font-title">
+			container += `<div class="flex justify-center items-center w-full font-title" translate="invitations-received">
 				For you...
 			</div>`
 		} else {
-			//TODO: Traduction
-			container += `<div class="flex justify-center items-center w-full font-title">
+			container += `<div class="flex justify-center items-center w-full font-title" translate="no-invitations-received">
 				No invitations received
 			</div>`;
 		}
 
 		for(const invitation of invitationReceived) {
-			console.log("invitation", invitation);
 			container += `
 			<div id="user-${invitation.id}" class="flex flex-col justify-between w-full font-title text-xl border-2 p-2 rounded-lg border-primary dark:border-dprimary text-secondary
 			bg-myblack from-primary to-secondary">
@@ -83,12 +78,11 @@ let container = `
 		</div>`;
 
 		if (invitationSent.length != 0) {
-			container += `<div class="flex justify-center items-center w-full font-title">
+			container += `<div class="flex justify-center items-center w-full font-title" translate="invitations-sent">
 				Waiting...
 			</div>`
 		} else {
-			//TODO: Traduction
-			container += `<div class="flex justify-center items-center w-full font-title">
+			container += `<div class="flex justify-center items-center w-full font-title" translate="no-invitations-sent">
 				No invitations sent
 			</div>`;
 		}

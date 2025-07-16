@@ -3,12 +3,11 @@ import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 
 import { FetchInterface, IGameFormInfo } from "../../api/FetchInterface";
 import { invitePlayerToPlay } from "../../controllers/searchHandler";
-import { socket } from "../../socket/Socket";
+import { socket, socketConnection } from "../../socket/Socket";
 
 function getPlayer2Name() {
   const inputValue = (document.getElementById("player2-name") as HTMLInputElement).value;
   if (!inputValue || inputValue.trim() === "") {
-    //TODO: Traduction
     alert("enter-name-player2", "error");
     return undefined;
   }
@@ -16,9 +15,8 @@ function getPlayer2Name() {
 }
 
 export async function initGame() {
-  //TODO: Traduction
   if (!socket) {
-    return alertTemporary("error", 'wait-for-socket-connection', 'dark', true, true);
+    socketConnection();
   }
 
   const gameType = document.querySelector('input[name="game-type"]:checked') as HTMLInputElement;
@@ -48,12 +46,11 @@ export async function createRoomInServer(gameFormInfo: IGameFormInfo) {
   if (!userPref) {
     return await alertTemporary("error", "Error while getting user theme", 'dark');
   }
-
   const success = await FetchInterface.createGameInServer(gameFormInfo);
 
-  //TODO : Traduction
+  // TODO : Traduction
   if (!success) {
-    alertTemporary("error", "cannot-create-game-wait-and-retry", userPref.theme, true, true);
+    // alertTemporary("error", "cannot-create-game-wait-and-retry", userPref.theme, true, true);
     return;
   }
   document.getElementById("create-game")?.classList.add("disabled");

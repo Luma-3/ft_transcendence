@@ -55,7 +55,7 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 
     const rendererFunction = rendererPublicPage[page];
     if (!rendererFunction) {
-      return renderErrorPage('404');
+      return window.location.href = '/login';
     }
 		
 		const page_content = await Promise.resolve(rendererFunction());
@@ -108,7 +108,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		const main_container = document.querySelector<HTMLDivElement>('#app')!
 		const rendererFunction = rendererPrivatePage[page];
 		if (!rendererFunction) {
-			return renderErrorPage('404');
+			return renderErrorPage('404')
 		}
 		
 		const page_content = await Promise.resolve(rendererFunction(user));
@@ -133,7 +133,7 @@ import { redocInit } from '../components/utils/redocInit'
 import { dispatchError } from './DispatchError'
 import { socket, socketConnection } from '../socket/Socket'
 import { FetchInterface } from '../api/FetchInterface'
-import { simpleMatchView, tournament, tournamentBracket, tournamentMatches } from '../pages/Tournament'
+import { tournamentMatches } from '../pages/Tournament'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 

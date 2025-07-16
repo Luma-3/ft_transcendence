@@ -4,7 +4,6 @@ import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { backButton } from "../../components/ui/buttons/backButton";
 import { navbar } from "../../components/ui/navbar";
 import { translatePage } from "../../controllers/Translate";
-import { IPlayer, IServerGameData } from "../../interfaces/IGame";
 
 export async function DisplayGameWinLose(data: any) {
 
@@ -16,32 +15,43 @@ export async function DisplayGameWinLose(data: any) {
 	const myId = user.id;
 	let isWin = false;
 	let winnerId = '';
-	let winnerSide = 'left';
+	let winnerSide = 'right';
 	let endDiv = '';
-
 	for (const player of data.players) {
 		if (player.id === myId && player.score === 5) {
 			isWin = true;
-			winnerSide = player.side;
+			winnerSide = 'left';
 			winnerId = player.id;
 			break;
 		}
 	}
-	// if (data.gameType === 'local') {
+	console.log("DisplayGameWinLose data:", data);
+	if (data.gameType === 'local' || data.gameType === 'ia') {
 	endDiv = `${navbar(user)}
 	${backButton()}
 	<div class="grid grid-cols-2 gap-4 h-full w-full items-center justify-center">
 		${(winnerSide === 'left') ? gameWinContainer() + gameLoseContainer() : gameLoseContainer() + gameWinContainer()}
 	</div>`
-	// } else {
-		// endDiv = isWin ? gameWinContainer() : gameLoseContainer();
-	// }
 
-	// const backButton = new Button('loaddashboard', "1/2", 'Back to Dashboard', 'back-to-dashboard', 'secondary', 'button');
+	const EndButton = new Button('loaddashboard', "1/2", 'Back to Dashboard', 'back-to-dashboard', 'secondary', 'button');
 
-	// endDiv += 	`<div class="flex space-y-4 justify-center items-center w-full h-full p-4">
-	// 	${backButton.primaryButton()}
-	// </div>`
+	endDiv += 	`<div class="flex space-y-4 justify-center items-center w-full h-full p-4">
+		${EndButton.primaryButton()}
+	</div>`
+	} else {
+		endDiv = `${navbar(user)}
+		${backButton()}
+		<div class="flex flex-col w-full items-center justify-center">
+			${(isWin) ? gameWinContainer() : gameLoseContainer()}
+		</div>`;
+
+		const EndButton = new Button('loaddashboard', "1/2", 'Back to Dashboard', 'back-to-dashboard', 'secondary', 'button');
+
+		endDiv += `<div class="flex space-y-4 justify-center items-center w-full h-full p-4">
+			${EndButton.primaryButton()}
+		</div>`;
+	}
+
 
 	const game = document.getElementById("hiddenGame") as HTMLDivElement;
 	game.classList.replace("opacity-100", "opacity-0");
@@ -53,27 +63,26 @@ export async function DisplayGameWinLose(data: any) {
 
 	
 }
-//TODO: Traduction
 function gameWinContainer() {
 
 return `
 <div class="flex flex-col justify-center items-center w-full h-full">
 	<div class="flex flex-col items-center justify-center">
-		<img src="/images/duckHappy.png" alt="Duck Happy" class="w-140 h-140" />
-		<div class="font-title text-8xl text-center font-bold mb-4" translate="you-win">
+		<img src="/images/duckWin.png" alt="Duck Happy" class="w-140 h-140" />
+		<div class="font-title text-8xl text-green-500 text-center font-bold mb-4" translate="you-win">
 		You Win !
 		</div>
 	</div>
 
 </div>`;
 }
-//TODO: Traduction
+
 function gameLoseContainer() {
 
 return `
 <div class="flex flex-col justify-center items-center w-full h-full">
 	<div class="flex flex-col items-center justify-center">
-		<img src="/images/duckSad.png" alt="Duck Sad" class="w-140 h-140" />
+		<img src="/images/duckLose.png" alt="Duck Sad" class="w-140 h-140" />
 		<div class="font-title text-8xl text-center font-bold mb-4 text-red-500" translate="you-lose">
 		You Lose !
 		</div>
