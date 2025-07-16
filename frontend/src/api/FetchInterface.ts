@@ -202,7 +202,7 @@ export class FetchInterface {
       window.location.href = "/register";
       return;
     }
-    await alertPublic("email-verified-successfully", "success");
+    await alertTemporary("success", "email-verified-successfully", 'dark', false, true);
     window.location.href = "/login";
   }
 
@@ -267,12 +267,12 @@ export class FetchInterface {
 
     if (response.status === "error") {
       (action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true)
-        : alertTemporary("error", "issues-with-friend-acceptance", user.preferences!.theme, true);
+        : alertTemporary("error", "issues-with-friend-acceptance", user.preferences!.theme, true, true);
       return false;
     }
 
     if (action === "send") {
-      alertTemporary("success", "friend-invitation-sent", user.preferences!.theme, true);
+      alertTemporary("success", "friend-invitation-sent", user.preferences!.theme, true, true);
       return true
     }
 
@@ -289,7 +289,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      await alertTemporary("error", "issues-with-invitation-cancelled", user.preferences.theme, true);
+      await alertTemporary("error", "issues-with-invitation-cancelled", user.preferences.theme, true, true);
       return false;
     }
     return true;
@@ -305,7 +305,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      await alertTemporary("error", "issues-with-invitation-refused", user.preferences!.theme, true);
+      await alertTemporary("error", "issues-with-invitation-refused", user.preferences!.theme, true, true);
       return false;
     }
     return true;
@@ -321,10 +321,10 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      return alertTemporary("error", "issues-with-friend-removal", user.preferences.theme, true);
+      return alertTemporary("error", "issues-with-friend-removal", user.preferences.theme, true, true);
     }
 
-    alertTemporary("success", "friend-removed", user.preferences!.theme, true);
+    alertTemporary("success", "friend-removed", user.preferences!.theme, true, true);
   }
 
   /**
@@ -337,10 +337,10 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      alertTemporary("error", "issues-with-user-blocked", user.preferences.theme, true);
+      alertTemporary("error", "issues-with-user-blocked", user.preferences.theme, true, true);
       return false;
     }
-    alertTemporary("success", isBlocking ? "user-unblocked" : "user-blocked", user.preferences.theme, true);
+    alertTemporary("success", isBlocking ? "user-unblocked" : "user-blocked", user.preferences.theme, true, true);
     return true;
   }
 
@@ -374,7 +374,6 @@ export class FetchInterface {
       await alertPublic("error", "email-already-sent");
       return false;
     }
-    await alertPublic("success", "email-sent-successfully");
     return true;
   }
 
@@ -383,7 +382,7 @@ export class FetchInterface {
       method: state ? 'PUT' : 'DELETE',
     });
     if (response.status === "error") {
-      await alertTemporary("error", state ? "cannot-activate-2fa" : "cannot-desactivate-2fa", "dark");
+      await alertTemporary("error", state ? "cannot-activate-2fa" : "cannot-desactivate-2fa", "dark", true, true);
       return false;
     }
     return true;
@@ -432,7 +431,7 @@ export class FetchInterface {
       headers: { "Content-Type": "text/plain" }
     });
     if (response.status === "error") {
-      await alertTemporary("error", "cannot-activate-2fa", "dark");
+      await alertTemporary("error", "cannot-activate-2fa", "dark", true, true);
       return false;
     }
     return true;
@@ -447,7 +446,7 @@ export class FetchInterface {
       headers: { "Content-Type": "text/plain" }
     });
     if (response.status === "error") {
-      await alertTemporary("error", "cannot-desactivate-2fa", "dark");
+      await alertTemporary("error", "cannot-desactivate-2fa", "dark", true, true);
       return false;
     }
     return true;

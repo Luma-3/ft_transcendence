@@ -9,7 +9,7 @@ export async function DisplayGameWinLose(data: any) {
 
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
-		return await alertTemporary("error", "error-while-fetching-user-info", "dark");
+		return await alertTemporary("error", "error-while-fetching-user-info", "dark", false, true);
 	}
 
 	const myId = user.id;

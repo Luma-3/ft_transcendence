@@ -1,6 +1,5 @@
 import notFoundPage from "../pages/4xx";
 import errorPage from "../pages/5xx";
-import { renderPublicPage } from "./renderPage";
 
 const knownErrors = new Map<string, string>([
 	['400', 'Bad Request'],
@@ -21,8 +20,6 @@ export function dispatchError(code: string, messageServer: string) {
 	switch (code) {
 		case '404':
 			return notFoundPage();
-		// case '401':
-		// 	return window.location.href = '/login';
 		default:
 			return errorPage(code, knownErrors.get(code) || "Unknown error", messageServer);
 	}

@@ -84,14 +84,15 @@ export function changeLanguageSettings(dataset: DOMStringMap) {
 * Changement de langue sur la page settings avec preference user et verification si la langue est autorisée
 */
 export async function saveLanguage(lang_select: string) {
-	
+	//TODO: Traduction
 	if (!autorizedLangs.includes(lang_select)) {
-		alertTemporary("error",'Language not autorized', 'dark');
+		alertTemporary("error",'Language not autorized', 'dark', true, true);
 	}
 	
+	//TODO: Traduction
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
-		return await alertTemporary("error", 'Error while getting user info', 'dark');
+		return await alertTemporary("error", 'Error while getting user info', 'dark', false, true);
 	}
 	
 	const response = await fetchApi(API_USER.UPDATE.PREF.ALL, {
@@ -101,10 +102,10 @@ export async function saveLanguage(lang_select: string) {
 		})
 	});
 	if (response.status === "error") {
-		return await alertTemporary("error",'Error while updating language' + response.message, 'dark');
+		return await alertTemporary("error",'Error while updating language' + response.message, 'dark', false, true);
 	}
 	const trad = await loadTranslation(lang_select);
-	alertTemporary("success", trad['language-update'], user.preferences.theme);
+	alertTemporary("success", trad['language-update'], user.preferences.theme, true, true);
 }
 
 

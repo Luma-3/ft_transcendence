@@ -44,7 +44,7 @@ export async function initGame() {
 export async function createRoomInServer(gameFormInfo: IGameFormInfo) {
    const userPref = await FetchInterface.getUserPrefs();
   if (!userPref) {
-    return await alertTemporary("error", "Error while getting user theme", 'dark');
+    return await alertTemporary("error", "Error while getting user theme", 'dark', false, true);
   }
   const success = await FetchInterface.createGameInServer(gameFormInfo);
 

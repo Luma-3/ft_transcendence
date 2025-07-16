@@ -10,7 +10,7 @@ export async function alertChangePassword() {
 	
 	const customTheme = await getCustomAlertTheme();
 	if (!customTheme) {
-		return await alertTemporary("error", "Error while getting user theme", 'dark');
+		return await alertTemporary("error", "Error while getting user theme", 'dark', false);
 	}
 
 	const trad = await loadTranslation(customTheme.lang);

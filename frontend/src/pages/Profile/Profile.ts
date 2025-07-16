@@ -130,7 +130,7 @@ export async function changeUserNameEmail() {
 	 * Verifie si il n'y a pas de changement
 	 */
 	if (user.username === values.username && user.email === values.email) {
-		return alertTemporary("info", trad["no-changes-detected"], user.preferences.theme);
+		return alertTemporary("info", trad["no-changes-detected"], user.preferences.theme, true, true);
 	}
 
 	/**
@@ -139,7 +139,7 @@ export async function changeUserNameEmail() {
 	if (values.username !== user.username) {
 		const success = await FetchInterface.updateUsername(values.username);
 		if (!success) {
-			return alertTemporary("error", trad["username-already-in-use"], user.preferences.theme);
+			return alertTemporary("error", trad["username-already-in-use"], user.preferences.theme, true, true);
 		}
 	}
 
@@ -149,15 +149,13 @@ export async function changeUserNameEmail() {
 	if (values.email !== user.email) {
 		const success = await FetchInterface.updateEmail(values.email);
 		if (!success) {
-			return alertTemporary("error", trad["email-already-in-use"], user.preferences.theme);
+			return alertTemporary("error", trad["email-already-in-use"], user.preferences.theme, true, true);
 		} else {
-			console.log("Email updated successfully:", values.email);
-			console.log("User register info updated with new email:", userRegisterInfo);
 			userNewEmail = values.email;
 			renderPublicPage('verifyEmail');
 			return;
 		}
 	}
 
-	alertTemporary("success", trad["user-info-updated"], user.preferences.theme);
+	alertTemporary("success", trad["user-info-updated"], user.preferences.theme, true, true);
 }

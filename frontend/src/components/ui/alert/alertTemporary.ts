@@ -15,7 +15,7 @@ export async function alertTemporary(level: string, message: string, theme: stri
 		return;
 	}
 	if (trad) {
-		const trad = await loadTranslation(customTheme.lang);
+		const trad = await loadTranslation(customTheme.lang ?? 'en');
 		message = trad[message] || message;
 	}
 

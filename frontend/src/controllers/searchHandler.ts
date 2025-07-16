@@ -2,7 +2,6 @@ import { FetchInterface, IGameFormInfo } from "../api/FetchInterface";
 import { renderErrorPage } from "./renderPage";
 import { IOtherUser, IUserInfo } from "../interfaces/IUser";
 import { addFriendButton } from "../pages/Friends/Lists/allUsersList";
-import { alertTemporary } from "../components/ui/alert/alertTemporary";
 import { createRoomInServer } from "../events/game/gameInit";
 
 export async function handleSearchUserGame(value: string) {

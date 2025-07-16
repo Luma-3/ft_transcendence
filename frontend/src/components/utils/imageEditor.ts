@@ -81,7 +81,7 @@ export async function saveNewPicture() {
 		headers: {},
 		body: formData
 	});
-	(response.status === "error") ? alertTemporary("error", "Error while saving new picture: " + response.message, 'dark') : alertTemporary("success", "New picture saved successfully!", 'dark');
+	(response.status === "error") ? alertTemporary("error", "Error while saving new picture: " + response.message, 'dark', true, true) : alertTemporary("success", "New picture saved successfully!", 'dark', true, true);
 	setTimeout(() => {
 		window.location.reload();
 	}, 1000); 
@@ -97,12 +97,12 @@ async function initImageEditor(): Promise<ImageEditor | null> {
 
 	const div_editor = document.getElementById('tui-image-editor-container') as HTMLDivElement;
 	if (!div_editor) {
-		return await alertTemporary("error", "Error while initializing image editor", 'dark'), null;
+		return await alertTemporary("error", "Error while initializing image editor", 'dark', true, true), null;
 	}
 	
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
-		return await alertTemporary("error", "Error while fetching user info", 'dark'), null;
+		return await alertTemporary("error", "Error while fetching user info", 'dark', true, true), null;
 	}
 
 	const theme = user.preferences!.theme;
@@ -156,7 +156,7 @@ async function initImageEditor(): Promise<ImageEditor | null> {
 async function translateImageEditorLabel() {
 	const userPrefs = await FetchInterface.getUserPrefs();
 	if (!userPrefs) {
-		return await alertTemporary("error", "Error while fetching user info", 'dark');
+		return await alertTemporary("error", "Error while fetching user info", 'dark', false, true);
 	}
 	const lang = userPrefs.lang;
 	if (lang === "en") {
