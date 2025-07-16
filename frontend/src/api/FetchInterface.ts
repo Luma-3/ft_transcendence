@@ -456,7 +456,6 @@ export class FetchInterface {
   /**
    * ! Send TwoFA Code
    */
-
   public static async createGameInServer(FormInfos: IGameFormInfo) {
     const response = await fetchApiWithNoError<{ id: string }>(API.API_GAME.CREATE + `/${FormInfos.gameType}`, {
       method: 'POST',

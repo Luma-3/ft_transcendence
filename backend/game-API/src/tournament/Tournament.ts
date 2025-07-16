@@ -6,10 +6,10 @@ import { RoomManager } from '../core/runtime/RoomManager.js';
 
 import { TournamentManager } from './TournamentManager.js';
 
-type StatusType = 'waiting' | 'playing' | 'finished';
+type StatusType = 'waiting' | 'readyToStart' | 'playing' | 'finished';
 
 function shuffle(array: Player[]) {
-	let shuffled = array;
+  let shuffled = array;
   let currentIndex = array.length;
 
   while (currentIndex != 0) {
@@ -18,37 +18,39 @@ function shuffle(array: Player[]) {
     [shuffled[currentIndex], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[currentIndex]];
   }
 
-	return shuffled;
+  return shuffled;
 }
 
 export class Tournament {
-	public readonly id : string;
-	
-	private players: Player[] = [];
-	private playerTournament: Player[] = [];
-	private activeMatches: Map<string, Player[]> = new Map();
-	private winners: Player[] = [];
+  public readonly id: string;
 
-	private pairs: [Player, Player][] = [];
+  private players: Player[] = [];
+  private playerTournament: Player[] = [];
+  private activeMatches: Map<string, Player[]> = new Map();
+  private winners: Player[] = [];
 
-	private status: StatusType = 'waiting';
+  private pairs: [Player, Player][] = [];
 
-	constructor() {
-		this.id = uuidv4();
+  private matchHistory: [Player, Player][] = [];
 
-		IOInterface.subscribe(`ws:all:broadcast:all`, this.error.bind(this));
-		IOInterface.subscribe(`ws:all:broadcast:all`, this.deconnexion.bind(this));
-	}
+  private status: StatusType = 'waiting';
 
-	isFinish(): boolean { return this.status === 'finished'; }
-	isJoinable(): boolean { return this.status === 'waiting'; }
+  constructor() {
+    this.id = uuidv4();
 
-	nbPlayers(): number { return this.players.length; }
+    IOInterface.subscribe(`ws:all:broadcast:all`, this.error.bind(this));
+    IOInterface.subscribe(`ws:all:broadcast:all`, this.deconnexion.bind(this));
+  }
 
-	async addPlayer(player: Player) {
-		this.players.push(player);
+  isFinish(): boolean { return this.status === 'finished'; }
+  isJoinable(): boolean { return this.status === 'waiting'; }
 
-		IOInterface.send(
+  nbPlayers(): number { return this.players.length; }
+
+  async addPlayer(player: Player) {
+    this.players.push(player);
+
+    IOInterface.send(
       JSON.stringify({ action: 'joined', data: this.toJSON() }),
       player.id
     ); // Notify the player who joined
@@ -57,112 +59,130 @@ export class Tournament {
       JSON.stringify({ action: 'playerJoined', data: this.toJSON() }),
       this.players.map((value) => value.id)
     ); // Notify all players in the room
-	}
 
-	start() {
-		this.status = 'playing';
-		this.playerTournament = this.players;
-		this.NextPool(this.playerTournament);
-	}
+    if (this.players.length === 4) {
+      this.start();
+    }
+  }
 
-	stop() {
-		this.status = 'finished';
 
-		[...this.activeMatches.keys()].forEach(roomId => {
-			RoomManager.getInstance().stopRoom(roomId);
-		})
+  start() {
+    this.status = 'playing';
+    this.playerTournament = this.players;
+    this.NextPool(this.playerTournament);
+  }
 
-		this.players = [];
-		this.playerTournament = [];
-		this.activeMatches.clear();
-		this.winners = [];
-		this.pairs = [];
-	}
+  stop() {
+    this.status = 'finished';
 
-	NextPool (players: Player[]) {
-		if (this.status === 'finished') {
-			return ;
-		}
-		this.pairs = this.createPairs(players);
+    [...this.activeMatches.keys()].forEach(roomId => {
+      RoomManager.getInstance().stopRoom(roomId, false);
+    })
 
-		IOInterface.broadcast(
-      JSON.stringify({ action: 'nextPool', data: this.toJSON() }),
+    this.players = [];
+    this.playerTournament = [];
+    this.activeMatches.clear();
+    this.winners = [];
+    this.pairs = [];
+    this.matchHistory = [];
+  }
+
+  NextPool(players: Player[]) {
+    if (this.status === 'finished') {
+      return;
+    }
+    this.pairs = this.createPairs(players);
+
+    console.log(JSON.stringify(this.toJSON(), null, 2));
+    IOInterface.broadcast(
+  		JSON.stringify({ action: 'nextPool', data: this.toJSON() }),
+      players.map((value) => value.id)
+	  );
+
+    players.forEach(player => {
+      player.reset();
+    }) 
+
+    setTimeout(() => {
+
+      this.pairs.forEach(async ([p1, p2]) => {
+        const roomId = RoomManager.getInstance().createRoom('mma in the pound', 'tournament', true);
+        await Promise.all([
+          RoomManager.getInstance().joinRoom(p1, roomId),
+          RoomManager.getInstance().joinRoom(p2, roomId)
+        ]);
+        this.activeMatches.set(roomId, [p1, p2]);
+      })
+ 
+      this.pairs = [];
+  
+      RoomManager.getInstance().on('room:end', (roomId, winner) => {
+        this.endRoom(roomId, winner);
+      })
+    }, 10000); // waiting 10 seconds to let the player to see his pool
+  }
+
+  endRoom(roomId: string, winner: Player) {
+    this.activeMatches.delete(roomId);
+    this.winners.push(winner);
+
+    if (this.activeMatches.size === 0) {
+      if (this.winners.length === 1) {
+        //TODO : call winner
+        TournamentManager.getInstance().deleteTournament(this.id);
+        return;
+      }
+
+      this.playerTournament = [...this.winners];
+      this.winners = [];
+      this.NextPool(this.playerTournament);
+    }
+  }
+
+  createPairs(players: Player[]): [Player, Player][] {
+    const shuffled = shuffle(players);
+    const pairs: [Player, Player][] = [];
+
+    for (let i = 0; i < shuffled.length; i += 2) {
+      if (i + 1 < shuffled.length) {
+        pairs.push([shuffled[i], shuffled[i + 1]]);
+        this.matchHistory.push([shuffled[i], shuffled[i + 1]]);
+      }
+      else {
+        this.winners.push(shuffled[i]);
+      }
+    }
+
+    return pairs;
+  }
+
+  error(message: string) {
+    const { type, user_id, payload } = JSON.parse(message);
+    if (this.players.find(player => player.id === user_id) === undefined) return; // Message is not for me
+    if (type !== 'error') return; // Message is not for me
+
+    console.error(`Error in tournament ${this.id} for player ${user_id}:`, payload);
+    IOInterface.unsubscribe(`ws:all:broadcast:all`);
+    TournamentManager.getInstance().deleteTournament(this.id);
+  }
+
+  deconnexion(message: string) {
+    const { type, user_id } = JSON.parse(message);
+    if (this.players.find(player => player.id === user_id) === undefined) return; // Message is not for me
+    if (type !== 'disconnected') return; // Message is not for me
+
+    console.log(`Player ${user_id} disconnected from tournament ${this.id}`);
+    IOInterface.broadcast(
+      JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
       this.players.map((value) => value.id)
     );
+    IOInterface.unsubscribe(`ws:all:broadcast:all`);
+    TournamentManager.getInstance().deleteTournament(this.id);
+  }
 
-		setInterval(() => {}, 10000); // waiting 10 seconds to let the player to see his pool
-
-		this.pairs.forEach(async ([p1, p2]) => {
-			const roomId = RoomManager.getInstance().createRoom('mma in the pound', 'tournament', true);
-			await Promise.all([
-				RoomManager.getInstance().joinRoom(p1, roomId),
-				RoomManager.getInstance().joinRoom(p2, roomId)
-			]);
-			this.activeMatches.set(roomId, [p1, p2]);
-		})
-
-		this.pairs = [];
-
-		RoomManager.getInstance().on('room:end', (roomId, winner) => {
-			this.endRoom(roomId, winner);
-		})
-	}
-
-	endRoom(roomId: string, winner: Player) {
-		this.activeMatches.delete(roomId);
-		this.winners.push(winner);
-
-		if (this.activeMatches.size === 0) {
-			if (this.winners.length === 1) {
-				//TODO : call winner
-				TournamentManager.getInstance().deleteTournament(this.id);
-				return ;
-			}
-
-			this.playerTournament = [...this.winners];
-			this.winners = [];
-			this.NextPool(this.playerTournament);
-		}
-	}
-
-	createPairs(players: Player[]): [Player, Player][] {
-		const shuffled = shuffle(players);
-		const pairs: [Player, Player][] = [];
-
-		for (let i = 0; i < shuffled.length; i += 2) {
-			if (i + 1 < shuffled.length) {
-				pairs.push([shuffled[i], shuffled[i + 1]]);
-			}
-			else {
-				this.winners.push(shuffled[i]);
-			}
-		}
-
-		return pairs;
-	}
-
-	error(message: string) {
-		const { type, user_id, payload } = JSON.parse(message);
-		if (type !== 'error') return; // Message is not for me
-
-		console.error(`Error in room ${this.id} for player ${user_id}:`, payload);
-		IOInterface.unsubscribe(`ws:all:broadcast:all`);
-		TournamentManager.getInstance().deleteTournament(this.id);
-	}
-
-	deconnexion(message: string) {
-		const { type, user_id } = JSON.parse(message);
-		if (type !== 'disconnected') return; // Message is not for me
-
-		console.log(`Player ${user_id} disconnected from room ${this.id}`);
-		IOInterface.unsubscribe(`ws:all:broadcast:all`);
-		TournamentManager.getInstance().deleteTournament(this.id);
-	}
-
-	toJSON() {
-		return {
-			players: this.players,
-			playerPairs: this.pairs
-		}
-	}
+  toJSON() {
+    return {
+		  rooms: this.matchHistory.map(([p1, p2]) => [p1.toJSON(), p2.toJSON()])
+    }
+  }
 }

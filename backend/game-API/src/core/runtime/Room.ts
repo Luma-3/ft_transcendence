@@ -128,6 +128,7 @@ export class Room {
 
   error(message: string) {
     const { type, user_id, payload } = JSON.parse(message);
+    if (this.players.get(user_id) === undefined) return; // Message is not for me
     if (type !== 'error') return; // Message is not for me
 
     console.error(`Error in room ${this.id} for player ${user_id}:`, payload);
@@ -135,12 +136,12 @@ export class Room {
       JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
       [...this.players.keys()]
     );
-    this.stop(false)
     RoomManager.getInstance().emit('room:error', this.id);
   }
 
   deconnexion(message: string) {
     const { type, user_id } = JSON.parse(message);
+    if (this.players.get(user_id) === undefined) return; // Message is not for me
     if (type !== 'disconnected') return; // Message is not for me
 
     console.log(`Player ${user_id} disconnected from room ${this.id}`);
@@ -148,7 +149,6 @@ export class Room {
       JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
       [...this.players.keys()]
     );
-    this.stop(false);
     RoomManager.getInstance().emit('room:playerleft', this.id);
   }
 

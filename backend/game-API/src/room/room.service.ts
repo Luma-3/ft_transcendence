@@ -25,7 +25,7 @@ export class RoomService {
     // Case for private room with an invited user
     if (privateRoom && userIdInvited && gameType === 'online') {
       roomId = RoomManager.getInstance().createRoom(gameName, gameType, privateRoom);
-      await RoomManager.getInstance().joinRoom(player, roomId);
+      RoomManager.getInstance().joinRoom(player, roomId);
       IOInterface.send(
         JSON.stringify({ action: 'invitation', data: { roomId } }),
         userIdInvited
@@ -34,13 +34,16 @@ export class RoomService {
     }
 
     if (gameType === 'tournament') {
-      let tournamentId = TournamentManager.getInstance().joinTournament(player);
+      let tournamentId = undefined;
+      console.log(`instance => `, TournamentManager.getInstance())
+      tournamentId = TournamentManager.getInstance().joinTournament(player);
 
+      console.log(`tournamentId: ${tournamentId}`);
       if (!tournamentId) {
         tournamentId = TournamentManager.getInstance().createTournament();
         TournamentManager.getInstance().joinTournament(player, tournamentId);
-        return tournamentId;
       }
+      return tournamentId;
     }
 
     // Case for joining an existing room with Matchmaking
@@ -69,7 +72,7 @@ export class RoomService {
     const player = new Player(userId, (user) ? user.data.username : playerName ?? 'Anonymous');
     player.avatar = user.data.preferences.avatar;
 
-    return player
+    return player;
   }
 
   static async createPrivateRoom(player: Player) {

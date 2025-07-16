@@ -6,6 +6,8 @@ import { fetchApiWithNoError } from "../api/fetch";
 import { API_GAME } from "../api/routes";
 import { alertPublic } from "../components/ui/alert/alertPublic";
 
+import { initTournament } from "../pages/Tournament";
+
 export type GameSnapshot = {
   serverTime: number;
   GameData: IGameObject[];
@@ -15,6 +17,7 @@ export type GameSnapshot = {
 export let gameSnapshots: GameSnapshot[] = [];
 
 const socketHandler: {[key: string]: (data: any) => Promise<void>} = {
+  nextPool: initTournament,
   invitation: handleGameInvitation,
   roomReady: GameManager.init,
   playerReady: bouncePlayer,

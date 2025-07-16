@@ -16,11 +16,11 @@ export class RoomManager {
     this.eventEmitter.on('room:end', this.stopRoom.bind(this));
     this.eventEmitter.on('room:error', (roomId: string) => {
       console.error(`Error in room ${roomId}`);
-      this.stopRoom(roomId);
+      this.stopRoom(roomId, false);
     });
     this.eventEmitter.on('room:playerleft', (roomId: string) => {
       console.log(`Player left room ${roomId}`);
-      this.stopRoom(roomId);
+      this.stopRoom(roomId, false);
     });
   }
   
@@ -31,11 +31,11 @@ export class RoomManager {
     return RoomManager.instance;
   }
 
-  public stopRoom (roomId: string) {
+  public stopRoom (roomId: string, stockData?: boolean) {
     const room = this.rooms.get(roomId);
     if (!room) return;
   
-    room.stop()
+    room.stop(stockData)
     this.rooms.delete(roomId);
     
     this.playersInRooms.forEach((room, playerId) => {

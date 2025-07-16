@@ -42,10 +42,10 @@ export async function initGame() {
 }
 
 export async function createRoomInServer(gameFormInfo: IGameFormInfo) {
-   const userPref = await FetchInterface.getUserPrefs();
-  if (!userPref) {
-    return await alertTemporary("error", "Error while getting user theme", 'dark');
-  }
+  // const userPref = await FetchInterface.getUserPrefs();
+  // if (!userPref) {
+  //   return await alertTemporary("error", "Error while getting user theme", 'dark');
+  // }
   const success = await FetchInterface.createGameInServer(gameFormInfo);
 
   // TODO : Traduction
@@ -54,5 +54,5 @@ export async function createRoomInServer(gameFormInfo: IGameFormInfo) {
     return;
   }
   document.getElementById("create-game")?.classList.add("disabled");
-  alertTemporary("success", "game-created-successfully", userPref.theme, true, true);
+  alertTemporary("success", "game-created-successfully", 'dark', true, true);
 }
