@@ -15,7 +15,7 @@ export function headerUserMenu(user: IUserInfo) {
 export function headerOtherUserMenu(user: IOtherUser) {
 	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${user.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
-					<img class="w-full h-full rounded-full" src="${user.avatar}" alt="User profile picture">
+					<img class="w-full h-full rounded-full ${user.online ? 'ring-2 ring-green-500' : 'ring-2 ring-red-700'}" src="${user.avatar}" alt="User profile picture">
 				</div>
 				</div>`;
 }

@@ -3,11 +3,11 @@ import { navbar } from "../components/ui/navbar";
 import { backButton } from "../components/ui/buttons/backButton";
 
 
-import { getFriends } from "../api/getterUser(s)";
 import { IUserInfo } from "../interfaces/IUser";
 import { renderErrorPage } from "../controllers/renderPage";
 import { FetchInterface } from "../api/FetchInterface";
-import { generateLastGames, generateRankBadge } from "./Dashboard/Dashboard";
+import { generateRankBadge } from "./Dashboard/rankBadges";
+import { generateLastGames } from "./Dashboard/gameData";
 
 function avatarBanner(userPref: any) {
 return `

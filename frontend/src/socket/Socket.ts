@@ -1,4 +1,3 @@
-// import { alertWithTimer } from "../components/ui/alert/alertGameReady";
 import { dispatchGameSocketMsg } from "../socket/dispatchGameSocketMsg";
 import { dispatchUserSocketMsg } from "./dispatchUserSocketMsg";
 import { alertWithTimer } from "../components/ui/alert/alertGameReady";
@@ -30,8 +29,7 @@ export async function socketConnection() {
 	});
 
 	socket.addEventListener('error', async () => {
-		//TODO: Traduction
-		await alertWithTimer("ERROR", "Connection with the serveur lost. Auto-Refresh en cour, 2000");
+		await alertWithTimer("ERROR", "Connection with the serveur lost. Auto-Refresh in progress, 2000");
 		socket.close();
 		window.location.href = "/login";
 

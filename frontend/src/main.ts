@@ -1,7 +1,7 @@
 import { renderErrorPage, renderPrivatePage, renderPublicPage } from './controllers/renderPage'
 import { addAllEventListenOnPage } from './controllers/Handler'
-import { verifyEmailUser } from './events/user/userVerif'
 import { FetchInterface } from './api/FetchInterface'
+import { loginTwoFaPage } from './pages/2FA'
 
 const publicPages = ['home', 'login', 'register', 'verifyEmail']
 
@@ -42,7 +42,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 			break;
 
 		case 'verifyEmail':
-			await verifyEmailUser(new URLSearchParams(window.location.search).get('value') || '');
+			await FetchInterface.verifyEmailUser(new URLSearchParams(window.location.search).get('value') || '');
+			break;
+		case '2FA':
+			loginTwoFaPage();
 			break;
 
 		default: 

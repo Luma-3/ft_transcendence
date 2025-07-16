@@ -1,10 +1,14 @@
 import { headerPage } from "../components/ui/headerPage"
 import { startEmailCooldown } from "../components/utils/sendEmail"
-export default async function verifyEmail() {
 
-	startEmailCooldown();
+
+
+
+
+export default async function verifyEmail() {
+startEmailCooldown();
 return `
-<div class="flex flex-col w-full h-full rounded-lg justify-center mt-30">
+<div class="flex flex-col w-full h-full rounded-lg justify-center mt-5">
 	
 	${headerPage("verify-email", "public")}
 	

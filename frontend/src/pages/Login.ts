@@ -104,6 +104,7 @@ export async function loginUser() {
 		await socketConnection();
 		
 		renderPrivatePage('dashboard');
+		return;
 	}
 	
 }

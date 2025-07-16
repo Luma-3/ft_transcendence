@@ -12,7 +12,7 @@ import friends from '../pages/Friends/Friends'
 import documentation from '../pages/Documentation'
 import verifyEmail from '../pages/VerifyEmail'
 import RGPD from '../pages/RGPD'
-import twoFaPage, { loginTwoFaPage, init2FAPage, initLogin2FAPage } from '../pages/2FA'
+import twoFaPage, { init2FAPage } from '../pages/2FA'
 
 /**
  * ! UTILS
@@ -36,7 +36,6 @@ const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
   'home': home,
   'login': login,
   'register': register,
-  '2FA': twoFaPage,
   'documentation': documentation,
   'verifyEmail': verifyEmail,
 };
@@ -56,7 +55,7 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 
     const rendererFunction = rendererPublicPage[page];
     if (!rendererFunction) {
-      return renderErrorPage('404');
+      return window.location.href = '/login';
     }
 		
 		const page_content = await Promise.resolve(rendererFunction());
@@ -85,6 +84,7 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
 	'friends': friends,
 	'documentation': documentation,
 	'rgpd': RGPD,
+	'tournament': tournamentMatches,
 }
 
 /**
@@ -108,7 +108,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		const main_container = document.querySelector<HTMLDivElement>('#app')!
 		const rendererFunction = rendererPrivatePage[page];
 		if (!rendererFunction) {
-			return renderErrorPage('404');
+			return renderErrorPage('404')
 		}
 		
 		const page_content = await Promise.resolve(rendererFunction(user));
@@ -133,6 +133,7 @@ import { redocInit } from '../components/utils/redocInit'
 import { dispatchError } from './DispatchError'
 import { socket, socketConnection } from '../socket/Socket'
 import { FetchInterface } from '../api/FetchInterface'
+import { tournamentMatches } from '../pages/Tournament'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 

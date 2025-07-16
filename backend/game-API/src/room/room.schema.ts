@@ -43,6 +43,15 @@ export const RoomParamIdSchema = Type.Object({
 })
 export type RoomParamIdType = Static<typeof RoomParamIdSchema>;
 
+export const RoomParamUserIdSchema = Type.Object({
+  userId: Type.String({
+    format: "uuid",
+    description: "Unique identifier for the room, formatted as a UUID",
+    examples: ["123e4567-e89b-12d3-a456-426614174000"]
+  }),
+})
+export type RoomParamUserIdType = Static<typeof RoomParamUserIdSchema>;
+
 
 export const RoomResponseSchema = Type.Object({
   id: Type.String({
@@ -66,3 +75,44 @@ export const RoomQuerySchema = Type.Object({
   }))
 })
 export type RoomQueryType = Static<typeof RoomQuerySchema>;
+
+export const RoomData = Type.Object({
+  id: Type.String({
+    format: "uuid",
+    description: "Unique identifier for the room",
+    examples: ["123e4567-e89b-12d3-a456-426614174000"]
+  }),
+  player_1: Type.String({
+    format: "uuid",
+    description: "Unique identifier for the player_1",
+    examples: ["123e4567-e89b-12d3-a456-426614174000"]
+  }),
+  player_2: Type.String({
+    format: "uuid",
+    description: "Unique identifier for the player_2",
+    examples: ["123e4567-e89b-12d3-a456-426614174000"]
+  }),
+  winner: Type.String({
+    format: "uuid",
+    description: "Unique identifier for the winner",
+    examples: ["123e4567-e89b-12d3-a456-426614174000"]
+  }),
+  score_1: Type.Integer({
+    description: "Score of player 1",
+    examples: ["4"]
+  }),
+  score_2: Type.Integer({
+    description: "Score of player 2",
+    examples: ["2"]
+  }),
+  type: Type.String({
+    description: "Type of the game",
+    examples: ["Tournament"]
+  }),
+})
+
+export type RoomDataType = Static<typeof RoomData>;
+
+export const RoomArray = Type.Object({rooms: Type.Array(RoomData)});
+
+export type RommArrayType = Static<typeof RoomArray>;

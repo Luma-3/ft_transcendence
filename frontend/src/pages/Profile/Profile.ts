@@ -13,9 +13,10 @@ import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { alertChangePassword } from "../../components/ui/alert/alertChangePassword";
 import { renderPrivatePage, renderPublicPage } from "../../controllers/renderPage";
 import { userRegisterInfo } from "../Register";
+import { startEmailCooldown } from "../../components/utils/sendEmail";
 	
 let formInstance: Form | null;
-let userNewEmail: string | null = null;
+export let userNewEmail: string | null = null;
 
 async function renderProfilePage(user: IUserInfo) {
 	const inputs = [
@@ -154,6 +155,7 @@ export async function changeUserNameEmail() {
 			console.log("User register info updated with new email:", userRegisterInfo);
 			userNewEmail = values.email;
 			renderPublicPage('verifyEmail');
+			return;
 		}
 	}
 

@@ -25,7 +25,7 @@ const socketHandler: {[key: string]: (data: any) => Promise<void>} = {
   disconnected: handlePlayerDisconnection,
 }
 
-async function handlePlayerDisconnection(data: any) {
+async function handlePlayerDisconnection() {
    await alertPublic("Other Duck disconnected, go back to the dashboard page !", "error");
   window.location.reload();
 }
@@ -50,42 +50,3 @@ export async function dispatchGameSocketMsg(payload: any) {
 
   console.warn(`No handler for action: ${payload.action}`);
 }
-
-// export async function dispatchGameSocketMsg(payload: any) {
-//   switch (payload.action) {
-//
-//     case 'roomReady':
-//       createGame(payload.data);
-//       break;
-//
-//     case 'playerReady':
-//       bouncePlayer(payload.data);
-//       break;
-//
-//     case 'starting':
-//       showGame();
-//       const canvas = document.getElementById("gamePong") as HTMLCanvasElement;
-//       const ctx = canvas.getContext("2d");
-//       startShapeSparkle(ctx!, canvas);
-//       const userid = await FetchInterface.getUserInfo().then(user => user!.id);
-//       game = new Game("gamePong", payload.data.players, userid);
-//
-//       break;
-//     case 'score':
-//       drawExplosion(payload.data.ball.position.x, payload.data.ball.position.y);
-//       changeScore(payload.data.player);
-//       break;
-//
-//     case 'snapshot':
-//       // console.log("dispatchGameSocketMsg snapshot", payload);
-//       game.addSnapshot(payload.data, payload.time)
-//       break;
-//
-//     case 'end':
-//       DisplayGameWinLose(payload.data.player);
-//       break;
-//
-//     default:
-//       break;
-//   }
-// }

@@ -32,7 +32,7 @@ export class UserService {
       username: data.username,
       password: hash_pass,
       email: data.email,
-      validated: process.env.NODE_ENV === 'development' ? true : false
+      // validated: process.env.NODE_ENV === 'development' ? true : false
     }
 
     const user_preferences = {
@@ -52,8 +52,8 @@ export class UserService {
     // Backdor for development purposes
     // if (process.env.NODE_ENV !== 'development') {
 
+      redisCache.setEx(`users:pendingUser:${user_obj.email}`, 660, userID);
       redisCache.setEx(`users:pendingUser:${userID}`, 660, user);
-      redisCache.setEx(`users:pendingUser:${user_obj.username}`, 660, userID);
 
       await fetch(`https://${process.env.AUTH_IP}/internal/2fa/email`, {
         method: 'POST',
@@ -159,6 +159,7 @@ export class UserService {
 
   static async createUserRedis(userId: string) {
 
+    console.log("Creating user from redis cache with ID:", userId);
     const user = await redisCache.get(`users:pendingUser:${userId}`);
     if (!user) {
       throw new NotFoundError('User');
@@ -168,7 +169,7 @@ export class UserService {
     
     const multi = redisCache.multi();
     multi.del(`users:pendingUser:${userId}`);
-    multi.del(`users:pendingUser:${userData.user_obj.username}`)
+    multi.del(`users:pendingUser:${userData.user_obj.email}`)
     multi.exec().catch(console.error);
 
     return await knexInstance.transaction(async (trx: Knex.Transaction) => {

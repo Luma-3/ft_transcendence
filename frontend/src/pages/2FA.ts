@@ -1,19 +1,14 @@
-import { fetchApiWithNoError } from '../api/fetch';
-import { API_2FA } from '../api/routes';
-import { render2FaPages, renderPrivatePage, renderPublicPage } from '../controllers/renderPage';
+import { render2FaPages, renderPrivatePage } from '../controllers/renderPage';
 
 import { headerPage } from '../components/ui/headerPage';
-import { primaryButton } from '../components/ui/buttons/primaryButton';
-import { socketConnection } from '../socket/Socket';
 import { alertPublic } from '../components/ui/alert/alertPublic';
 import { FetchInterface } from '../api/FetchInterface';
-import { alertTemporary } from '../components/ui/alert/alertTemporary';
 import { Button } from '../classes/Button';
 
 let _action = 'enable';
 
 export function loginTwoFaPage() {
-	return twoFaPage('login');
+	return render2FaPages('login');
 }
 
 
@@ -34,8 +29,7 @@ export function get2FACode() {
 	if (!codeInput) {
 		return '';
 	}
-	// Si le champ caché est vide, on tente de le remplir à partir des digits
-	if (!codeInput.value || codeInput.value.length !== 6) {
+	
 		let code = '';
 		for (let i = 1; i <= 6; i++) {
 			const digit = document.getElementById(`digit${i}`) as HTMLInputElement;
@@ -44,7 +38,7 @@ export function get2FACode() {
 			}
 		}
 		codeInput.value = code;
-	}
+	console.log("Code from inputs:", codeInput.value);
 	return codeInput.value.trim();
 }
 
@@ -64,7 +58,6 @@ export async function submit2FACode() {
 	if (success) {
 		renderPrivatePage('dashboard');
 	}
-
 }
 
 /**
@@ -202,17 +195,3 @@ export function init2FAPage() {
 		firstDigit.focus();
 	}
 }
-
-// /**
-//  * Initialize login 2FA inputs after page render
-//  */
-// export function initLogin2FAPage() {
-// 	// Set up login 2FA page inputs
-// 	setup2FAInputs('login');
-	
-// 	// Focus first input
-// 	const firstDigit = document.getElementById('loginDigit1') as HTMLInputElement;
-// 	if (firstDigit) {
-// 		firstDigit.focus();
-// 	}
-// }

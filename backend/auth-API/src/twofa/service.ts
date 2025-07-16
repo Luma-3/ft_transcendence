@@ -102,9 +102,29 @@ export class TwoFaService {
 		if (cooldown > 0) throw new UnauthorizedError(cooldown.toString());
 
 		await sendVerificationEmail(email, token, lang);
-		await redisCache.setEx(`users:check:token:${token}`, 600, email);
-		await redisCache.setEx(`users:check:email:${email}`, 600, token);
-		await redisCache.setEx(`users:email_cooldown:${email}`, TIMEOUT_MAIL, '1');
+
+		const multi = redisCache.multi();
+
+		if (await redisCache.ttl(`users:pendingUser:${email}`) > 0) {
+			const userID = await redisCache.get(`users:pendingUser:${email}`);
+			if (!userID) throw new NotFoundError('User not found');
+
+			const userData = await redisCache.get(`users:pendingUser:${userID}`);
+			if (!userData) throw new NotFoundError('User data not found');
+
+			multi.del(`users:pendingUser:${userID}`);
+			multi.del(`users:pendingUser:${email}`);
+			multi.del(`users:check:email:${email}`);
+			multi.del(`users:check:token:${token}`);
+
+			multi.setEx(`users:pendingUser:${email}`, 600, token);
+			multi.setEx(`users:pendingUser:${token}`, 600, userData);
+		}
+
+		multi.setEx(`users:check:token:${token}`, 600, email);
+		multi.setEx(`users:check:email:${email}`, 600, token);
+		multi.setEx(`users:email_cooldown:${email}`, TIMEOUT_MAIL, '1');
+		multi.exec().catch(console.error);
 	}
 
 	// Génère et envoie le code 2FA

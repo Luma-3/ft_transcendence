@@ -19,6 +19,7 @@ export const SearchDBHydrateSchema = Type.Object({
     username: Type.String({ description: 'Username of the user' }),
     avatar: Type.Optional(Type.String({ description: 'URL of the user\'s avatar' })),
     banner: Type.Optional(Type.String({ description: 'URL of the user\'s banner' })),
+    online: Type.Optional(Type.Boolean({ description: 'Indicates if the user is currently online' }))
 }, {
     description: 'Schema for hydrated search results with additional user information',
     additionalProperties: false
