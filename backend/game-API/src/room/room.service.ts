@@ -1,11 +1,11 @@
+import { UnauthorizedError } from '@transcenduck/error';
 
-import { ForbiddenError } from '@transcenduck/error';
 import { Player } from '../core/runtime/Player.js';
 import { GameType } from './room.schema.js';
 
-import { roomManagerInstance } from '../core/runtime/RoomManager.js';
-import { UnauthorizedError } from '@transcenduck/error';
+import { RoomManager } from '../core/runtime/RoomManager.js';
 import { IOInterface } from '../utils/IOInterface.js';
+import { TournamentManager } from '../tournament/TournamentManager.js';
 
 export class RoomService {
 
@@ -20,32 +20,41 @@ export class RoomService {
     let roomId = undefined;
 
     console.log("data", privateRoom, userIdInvited, gameType);
+    const player = await RoomService.createPlayer(userId, playerName);
 
     // Case for private room with an invited user
     if (privateRoom && userIdInvited && gameType === 'online') {
-      roomId = roomManagerInstance.createRoom(gameName, gameType, privateRoom);
-      await RoomService.joinRoom(userId, playerName, roomId);
+      roomId = RoomManager.getInstance().createRoom(gameName, gameType, privateRoom);
+      await RoomManager.getInstance().joinRoom(player, roomId);
       IOInterface.send(
         JSON.stringify({ action: 'invitation', data: { roomId } }),
         userIdInvited
       );
       return roomId;
-      // TODO: Insert Invitation logic
+    }
+
+    if (gameType === 'tournament') {
+      let tournamentId = TournamentManager.getInstance().joinTournament(player);
+
+      if (!tournamentId) {
+        tournamentId = TournamentManager.getInstance().createTournament();
+        TournamentManager.getInstance().joinTournament(player, tournamentId);
+        return tournamentId;
+      }
     }
 
     // Case for joining an existing room with Matchmaking
-    roomId = await RoomService.joinRoom(userId, playerName);
+    roomId = RoomManager.getInstance().joinRoom(player);
 
     // If no room was found, create a new one
     if (!roomId) {
-      roomId = roomManagerInstance.createRoom(gameName, gameType, false, playerName);
-      await RoomService.joinRoom(userId, undefined, roomId);
+      roomId = RoomManager.getInstance().createRoom(gameName, gameType, false, playerName);
+      RoomManager.getInstance().joinRoom(player, roomId);
     }
     return roomId;
   }
 
-  static async joinRoom(userId: string, playerName?: string, roomId?: string) {
-
+  static async createPlayer(userId: string, playerName?: string) {
     const response = await fetch(`http://${process.env.USER_IP}/users/${userId}?includePreferences=true`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
@@ -60,26 +69,17 @@ export class RoomService {
     const player = new Player(userId, (user) ? user.data.username : playerName ?? 'Anonymous');
     player.avatar = user.data.preferences.avatar;
 
-    return roomManagerInstance.joinRoom(player, roomId);
+    return player
   }
 
   static async createPrivateRoom(player: Player) {
-    const room_id = roomManagerInstance.createRoom(player.id, 'online', true);
-    roomManagerInstance.joinRoom(player, room_id);
+    const room_id = RoomManager.getInstance().createRoom(player.id, 'online', true);
+    RoomManager.getInstance().joinRoom(player, room_id);
     return room_id;
   }
 
-  static async leaveCurrentRoom(player: Player) {
-    const room = roomManagerInstance.findCurrentRoom(player);
-    if (!room) {
-      throw new ForbiddenError("Player isn't in a Room");
-    }
-    roomManagerInstance.leaveRoom(player, room.id);
-  }
-
   static async getRoomById(room_id: string) {
-    const room = roomManagerInstance.getRoomById(room_id);
+    const room = RoomManager.getInstance().getRoomById(room_id);
     return room;
   }
 }
-

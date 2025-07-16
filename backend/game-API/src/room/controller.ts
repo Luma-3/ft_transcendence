@@ -1,6 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
+
 import { RoomBodyType, RoomParamIdType, RoomParamType, HeaderBearerType, RoomQueryType } from "./room.schema.js";
 import { RoomService } from "./room.service.js";
+import { RoomManager } from "../core/runtime/RoomManager.js";
 
 
 export async function PostRoomHandler(
@@ -32,7 +34,8 @@ export async function PostRoomIdHandler(
   const { roomId } = req.params;
   const userId = req.headers['x-user-id'] as string;
 
-  const joinedRoomId = await RoomService.joinRoom(userId, undefined, roomId);
+  const player = await RoomService.createPlayer(userId);
+  const joinedRoomId = RoomManager.getInstance().joinRoom(player, roomId);
 
   return rep.code(200).send({
     message: 'Player joined the room successfully',

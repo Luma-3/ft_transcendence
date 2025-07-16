@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { Player } from "../core/runtime/Player";
-import { IOInterface } from '../utils/IOInterface';
-import { roomManagerInstance } from '../core/runtime/RoomManager';
-import { RoomService } from '../room/room.service';
+import { Player } from "../core/runtime/Player.js";
+import { IOInterface } from '../utils/IOInterface.js';
+import { RoomManager } from '../core/runtime/RoomManager.js';
+
+import { TournamentManager } from './TournamentManager.js';
 
 type StatusType = 'waiting' | 'playing' | 'finished';
 
@@ -21,12 +22,14 @@ function shuffle(array: Player[]) {
 }
 
 export class Tournament {
-	private readonly id : string;
+	public readonly id : string;
 	
 	private players: Player[] = [];
 	private playerTournament: Player[] = [];
 	private activeMatches: Map<string, Player[]> = new Map();
 	private winners: Player[] = [];
+
+	private pairs: [Player, Player][] = [];
 
 	private status: StatusType = 'waiting';
 
@@ -37,6 +40,7 @@ export class Tournament {
 		IOInterface.subscribe(`ws:all:broadcast:all`, this.deconnexion.bind(this));
 	}
 
+	isFinish(): boolean { return this.status === 'finished'; }
 	isJoinable(): boolean { return this.status === 'waiting'; }
 
 	nbPlayers(): number { return this.players.length; }
@@ -56,22 +60,50 @@ export class Tournament {
 	}
 
 	start() {
+		this.status = 'playing';
 		this.playerTournament = this.players;
-		this.NextRound(this.playerTournament);
+		this.NextPool(this.playerTournament);
 	}
 
-	NextRound (players: Player[]) {
-		const pairs = this.createPairs(players);
-		pairs.forEach(async ([p1, p2]) => {
-			const roomId = roomManagerInstance.createRoom('mma in the pound', 'tournament', true);
+	stop() {
+		this.status = 'finished';
+
+		[...this.activeMatches.keys()].forEach(roomId => {
+			RoomManager.getInstance().stopRoom(roomId);
+		})
+
+		this.players = [];
+		this.playerTournament = [];
+		this.activeMatches.clear();
+		this.winners = [];
+		this.pairs = [];
+	}
+
+	NextPool (players: Player[]) {
+		if (this.status === 'finished') {
+			return ;
+		}
+		this.pairs = this.createPairs(players);
+
+		IOInterface.broadcast(
+      JSON.stringify({ action: 'nextPool', data: this.toJSON() }),
+      this.players.map((value) => value.id)
+    );
+
+		setInterval(() => {}, 10000); // waiting 10 seconds to let the player to see his pool
+
+		this.pairs.forEach(async ([p1, p2]) => {
+			const roomId = RoomManager.getInstance().createRoom('mma in the pound', 'tournament', true);
 			await Promise.all([
-				RoomService.joinRoom(p1.id, p1.player_name, roomId),
-				RoomService.joinRoom(p2.id, p2.player_name, roomId)
+				RoomManager.getInstance().joinRoom(p1, roomId),
+				RoomManager.getInstance().joinRoom(p2, roomId)
 			]);
 			this.activeMatches.set(roomId, [p1, p2]);
 		})
 
-		roomManagerInstance.RoomEmitter.on('endGame', (roomId, winner) => {
+		this.pairs = [];
+
+		RoomManager.getInstance().on('room:end', (roomId, winner) => {
 			this.endRoom(roomId, winner);
 		})
 	}
@@ -83,11 +115,13 @@ export class Tournament {
 		if (this.activeMatches.size === 0) {
 			if (this.winners.length === 1) {
 				//TODO : call winner
+				TournamentManager.getInstance().deleteTournament(this.id);
 				return ;
 			}
+
 			this.playerTournament = [...this.winners];
 			this.winners = [];
-			this.NextRound(this.playerTournament);
+			this.NextPool(this.playerTournament);
 		}
 	}
 
@@ -95,7 +129,7 @@ export class Tournament {
 		const shuffled = shuffle(players);
 		const pairs: [Player, Player][] = [];
 
-		for (let i = 0; shuffled.length; i += 2) {
+		for (let i = 0; i < shuffled.length; i += 2) {
 			if (i + 1 < shuffled.length) {
 				pairs.push([shuffled[i], shuffled[i + 1]]);
 			}
@@ -113,7 +147,7 @@ export class Tournament {
 
 		console.error(`Error in room ${this.id} for player ${user_id}:`, payload);
 		IOInterface.unsubscribe(`ws:all:broadcast:all`);
-		//TODO : delete tournament
+		TournamentManager.getInstance().deleteTournament(this.id);
 	}
 
 	deconnexion(message: string) {
@@ -122,12 +156,13 @@ export class Tournament {
 
 		console.log(`Player ${user_id} disconnected from room ${this.id}`);
 		IOInterface.unsubscribe(`ws:all:broadcast:all`);
-		//TODO : delete tournament
+		TournamentManager.getInstance().deleteTournament(this.id);
 	}
 
 	toJSON() {
 		return {
-			// TODO : infos for front
+			players: this.players,
+			playerPairs: this.pairs
 		}
 	}
 }

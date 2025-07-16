@@ -6,8 +6,7 @@ import { Vector2 } from "../core/physics/Vector.js";
 import { IOInterface } from "../utils/IOInterface.js";
 import { AIController } from "./AIController.js"
 
-import { roomManagerInstance } from "../core/runtime/RoomManager.js";
-import { Room } from "../core/runtime/Room.js";
+import { RoomManager } from "../core/runtime/RoomManager.js";
 
 export class Pong extends GameObject {
   private ball: Ball;
@@ -74,8 +73,7 @@ export class Pong extends GameObject {
       JSON.stringify(payload),
       [...SceneContext.get().players.keys()]
     );
-    roomManagerInstance.RoomEmitter.emit('endGame', SceneContext.get().id, this.winner);
-    roomManagerInstance.deleteRoom(SceneContext.get().id);
+    RoomManager.getInstance().emit('room:end', SceneContext.get().id, this.winner);
   }
 
   checkBallGaol() {

@@ -7,7 +7,7 @@ import { Player, IGameInfos } from './Player.js';
 import { game } from '../../game/Pong.js';
 import { InputManager } from '../../game/InputManager.js';
 import { randomNameGenerator } from './randomName.js';
-import { roomManagerInstance } from './RoomManager.js';
+import { RoomManager } from './RoomManager.js';
 
 type StatusType = 'waiting' | 'roomReady' | 'playing' | 'finished';
 
@@ -24,7 +24,7 @@ export class Room {
   public loopManager: LoopManager = new LoopManager();
   public inputManager: InputManager = new InputManager();
 
-  // private readonly createdAt: Date = new Date();
+  private readonly createdAt: Date = new Date();
 
   private privateRoom: boolean = false;
 
@@ -45,7 +45,6 @@ export class Room {
       this.privateRoom = true;
     }
     else if (this.gameType === 'local') {
-      // TODO : gerer le nom du joueur local
       this.players.set('local', new Player('local', gameInfos.localPlayerName));
       const player = this.players.get('local');
       player!.avatar = `https://${process.env.AUTHORIZED_IP}/api/uploads/avatar/default.png`;
@@ -59,6 +58,10 @@ export class Room {
 
   isJoinable(): boolean { return (this.status === 'waiting' && this.nbPlayers() < MAX_PLAYER && this.privateRoom === false); }
   nbPlayers() { return this.players.size; }
+
+  get createdAtDate(): Date {
+    return this.createdAt;
+  }
 
   async addPlayer(player: Player) {
     this.players.set(player.id, player);
@@ -101,47 +104,17 @@ export class Room {
       JSON.stringify({ action: 'playerReady', data: this.toJSON() }),
       [...this.players.keys()]
     );
-
+    
     this.tryStart();
   }
-
+  
   tryStart() {
     for (const player of this.players.values()) {
       if (!player.ready) return;
     }
-
+    
     IOInterface.unsubscribe(`ws:game:room:${this.id}`);
     this.start();
-  }
-
-  error(message: string) {
-    const { type, user_id, payload } = JSON.parse(message);
-    if (type !== 'error') return; // Message is not for me
-
-    console.error(`Error in room ${this.id} for player ${user_id}:`, payload);
-    IOInterface.unsubscribe(`ws:all:broadcast:all`);
-    IOInterface.unsubscribe(`ws:game:room:${this.id}`);
-    IOInterface.broadcast(
-      JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
-      [...this.players.keys()]
-    );
-    this.players.clear();
-    roomManagerInstance.deleteRoom(this.id);
-  }
-
-  deconnexion(message: string) {
-    const { type, user_id } = JSON.parse(message);
-    if (type !== 'disconnected') return; // Message is not for me
-
-    console.log(`Player ${user_id} disconnected from room ${this.id}`);
-    IOInterface.unsubscribe(`ws:all:broadcast:all`);
-    IOInterface.unsubscribe(`ws:game:room:${this.id}`);
-    IOInterface.broadcast(
-      JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
-      [...this.players.keys()]
-    );
-    this.players.clear();
-    roomManagerInstance.deleteRoom(this.id);
   }
 
   start() {
@@ -156,8 +129,39 @@ export class Room {
     SceneContext.run(ctx, game);
   }
 
-  changeStatus(status: StatusType) {
-    this.status = status;
+  error(message: string) {
+    const { type, user_id, payload } = JSON.parse(message);
+    if (type !== 'error') return; // Message is not for me
+
+    console.error(`Error in room ${this.id} for player ${user_id}:`, payload);
+    IOInterface.broadcast(
+      JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
+      [...this.players.keys()]
+    );
+    this.stop()
+    RoomManager.getInstance().emit('room:error', this.id);
+  }
+
+  deconnexion(message: string) {
+    const { type, user_id } = JSON.parse(message);
+    if (type !== 'disconnected') return; // Message is not for me
+
+    console.log(`Player ${user_id} disconnected from room ${this.id}`);
+    IOInterface.broadcast(
+      JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
+      [...this.players.keys()]
+    );
+    this.stop();
+    RoomManager.getInstance().emit('room:playerleft', this.id);
+  }
+
+  public stop() {
+    this.loopManager.stop();
+    this.inputManager.stop();
+    IOInterface.unsubscribe(`ws:all:broadcast:all`);
+    IOInterface.unsubscribe(`ws:game:room:${this.id}`);
+    
+    this.players.clear();
   }
 
   toJSON() {
@@ -170,5 +174,3 @@ export class Room {
     };
   }
 }
-
-
