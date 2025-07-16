@@ -26,6 +26,7 @@ export async function sendEmail() {
 	if (!success) {
 		return alertTemporary("error", "email-already-sent", 'dark', false, true);
 	}
+	stopMainTimer();
 	endEmailCooldown();
 	startEmailCooldown();
 }
@@ -50,8 +51,6 @@ export function startEmailCooldown() {
 }
 
 export function endEmailCooldown() {
-	stopMainTimer();
-	console.log("Ending email cooldown");
 	emailState.isEmailCooldownActive = false;
 
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;

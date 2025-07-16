@@ -29,7 +29,7 @@ export function get2FACode() {
 	if (!codeInput) {
 		return '';
 	}
-	if (!codeInput.value || codeInput.value.length !== 6) {
+	
 		let code = '';
 		for (let i = 1; i <= 6; i++) {
 			const digit = document.getElementById(`digit${i}`) as HTMLInputElement;
@@ -38,7 +38,7 @@ export function get2FACode() {
 			}
 		}
 		codeInput.value = code;
-	}
+	console.log("Code from inputs:", codeInput.value);
 	return codeInput.value.trim();
 }
 

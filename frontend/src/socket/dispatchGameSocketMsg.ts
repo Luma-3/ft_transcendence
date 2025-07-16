@@ -25,7 +25,7 @@ const socketHandler: {[key: string]: (data: any) => Promise<void>} = {
   disconnected: handlePlayerDisconnection,
 }
 
-async function handlePlayerDisconnection(data: any) {
+async function handlePlayerDisconnection() {
    await alertPublic("Other Duck disconnected, go back to the dashboard page !", "error");
   window.location.reload();
 }

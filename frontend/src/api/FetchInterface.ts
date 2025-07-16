@@ -401,12 +401,12 @@ export class FetchInterface {
       method: 'POST',
       body: JSON.stringify({ code })
     });
-    console.log("Response from submit2FACode:", response);
+    console.log("Response from submit2FACode:", response, " Code:", code);
     if (response.status === 'error') {
-      await alertTemporary("error", "invalid-2fa-code", 'dark', true, true);
+      await alertTemporary("error", "invalid-2fa-code", 'dark', false, true);
       return false;
     }
-    await alertTemporary("success", "2fa-code-verified", 'dark', true, true);
+    await alertTemporary("success", "2fa-code-verified", 'dark', false, true);
     return true;
   }
 

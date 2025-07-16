@@ -95,13 +95,3 @@ export function tournamentMatches() {
 	</div>
   `;
 }
-
-export async function tournament() {
-	return `
-	<div class="flex flex-col w-full h-full rounded-lg justify-center mt-5">
-	  <div class="flex font-title text-responsive-size justify-center w-1/2 items-center text-tertiary dark:text-dtertiary">
-		<span translate="tournament-info">Informations sur le tournoi</span>
-	  </div>
-	</div>
-  `;
-}
