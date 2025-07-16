@@ -8,6 +8,7 @@ import { game } from '../../game/Pong.js';
 import { InputManager } from '../../game/InputManager.js';
 import { randomNameGenerator } from './randomName.js';
 import { RoomManager } from './RoomManager.js';
+import { RoomModelInstance } from '../../room/model.js';
 
 type StatusType = 'waiting' | 'roomReady' | 'playing' | 'finished';
 
@@ -59,10 +60,6 @@ export class Room {
   isJoinable(): boolean { return (this.status === 'waiting' && this.nbPlayers() < MAX_PLAYER && this.privateRoom === false); }
   nbPlayers() { return this.players.size; }
 
-  get createdAtDate(): Date {
-    return this.createdAt;
-  }
-
   async addPlayer(player: Player) {
     this.players.set(player.id, player);
     player.side = (this.players.size === 1) ? 'left' : 'right';
@@ -104,15 +101,15 @@ export class Room {
       JSON.stringify({ action: 'playerReady', data: this.toJSON() }),
       [...this.players.keys()]
     );
-    
+
     this.tryStart();
   }
-  
+
   tryStart() {
     for (const player of this.players.values()) {
       if (!player.ready) return;
     }
-    
+
     IOInterface.unsubscribe(`ws:game:room:${this.id}`);
     this.start();
   }
@@ -138,7 +135,7 @@ export class Room {
       JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
       [...this.players.keys()]
     );
-    this.stop()
+    this.stop(false)
     RoomManager.getInstance().emit('room:error', this.id);
   }
 
@@ -151,16 +148,31 @@ export class Room {
       JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
       [...this.players.keys()]
     );
-    this.stop();
+    this.stop(false);
     RoomManager.getInstance().emit('room:playerleft', this.id);
   }
 
-  public stop() {
+  public stop(addData: boolean = true) {
     this.loopManager.stop();
     this.inputManager.stop();
     IOInterface.unsubscribe(`ws:all:broadcast:all`);
     IOInterface.unsubscribe(`ws:game:room:${this.id}`);
-    
+
+    if (addData) {
+      const scene = SceneContext.get();
+      const players = Array.from(this.players.values());
+      const payload = {
+        id: this.id,
+        created_at: this.createdAt,
+        player_1: (players[0].id === "local") ? null : players[0].id,
+        player_2: players[1].id,
+        winner: (players[0].win) ? players[0].id : players[1].id,
+        score_1: players[0].score,
+        score_2: players[1].score,
+        type: scene.gameType,
+      }
+      RoomModelInstance.addMatch(payload)
+    }
     this.players.clear();
   }
 

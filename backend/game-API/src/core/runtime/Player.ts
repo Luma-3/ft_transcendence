@@ -15,7 +15,6 @@ export class Player {
   public score: number = 0;
   public win: boolean = false;
   public side: 'left' | 'right' = 'left';
-  // TODO : mettre le check de score ici ! 
 
   constructor(userId: string, playerName: string) {
     this.id = userId;

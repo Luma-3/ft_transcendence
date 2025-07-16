@@ -82,6 +82,7 @@ export const RoomData = Type.Object({
     description: "Unique identifier for the room",
     examples: ["123e4567-e89b-12d3-a456-426614174000"]
   }),
+  created_at: Type.String(),
   player_1: Type.String({
     format: "uuid",
     description: "Unique identifier for the player_1",
@@ -113,6 +114,6 @@ export const RoomData = Type.Object({
 
 export type RoomDataType = Static<typeof RoomData>;
 
-export const RoomArray = Type.Object({rooms: Type.Array(RoomData)});
+export const RoomArray = Type.Object({ rooms: Type.Array(RoomData) });
 
 export type RommArrayType = Static<typeof RoomArray>;
