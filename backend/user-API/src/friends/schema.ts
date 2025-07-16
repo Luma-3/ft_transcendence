@@ -15,7 +15,8 @@ export const FriendDBHydrateSchema = Type.Object({
   id: Type.String({ format: 'uuid', description: 'ID of the user who is a friend' }),
   username: Type.String({ description: 'Username of the friend' }),
   avatar: Type.Optional(Type.String({ format: 'uri', description: 'URL of the user\'s avatar' })),
-  banner: Type.Optional(Type.String({ format: 'uri', description: 'URL of the user\'s banner' }))
+  banner: Type.Optional(Type.String({ format: 'uri', description: 'URL of the user\'s banner' })),
+  online: Type.Optional(Type.Boolean({ description: 'Indicates if the user is currently online' }))
 });
 
 export const FriendParamSchema = Type.Object({

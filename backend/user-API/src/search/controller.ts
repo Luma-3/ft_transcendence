@@ -1,6 +1,7 @@
 import { SearchService } from "./services.js";
 import { SearchQueryType, UserHeaderIdType } from "./schema.js";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { UserStatus } from "../preferences/status.js";
 
 
 
@@ -20,7 +21,8 @@ export class SearchController {
                 page,
                 limit,
                 total: users.length,
-                users
-            }});
+                users: users.map(user => ({...user, online: UserStatus.isUserOnline(user.id)}))
+            }
+        });
     };
 }
