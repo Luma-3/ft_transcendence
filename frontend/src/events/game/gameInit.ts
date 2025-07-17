@@ -50,7 +50,7 @@ export async function createRoomInServer(gameFormInfo: IGameFormInfo) {
 
   // TODO : Traduction
   if (!success) {
-    // alertTemporary("error", "cannot-create-game-wait-and-retry", userPref.theme, true, true);
+    alertTemporary("error", "cannot-create-game-wait-and-retry", userPref.theme, true, true);
     return;
   }
   document.getElementById("create-game")?.classList.add("disabled");

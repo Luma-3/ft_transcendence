@@ -1,6 +1,7 @@
 import { FetchInterface } from "../../api/FetchInterface";
 import { renderErrorPage } from "../../controllers/renderPage";
 import { allUsersList } from "../../pages/Friends/Lists/allUsersList";
+import { updateAllLists } from "../../pages/Friends/Lists/updatersList";
 
 export async function refuseFriendInvitation(target: HTMLElement, type: "alert" | "page" = "page") {
 	
@@ -19,7 +20,7 @@ export async function refuseFriendInvitation(target: HTMLElement, type: "alert" 
 	}
 	
 	if (type === "page") {
-		await allUsersList();
+		await updateAllLists();
 	} else {
 		target.parentElement?.parentElement?.parentElement?.remove();
 	}

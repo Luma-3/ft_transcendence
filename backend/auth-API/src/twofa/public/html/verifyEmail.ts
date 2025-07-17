@@ -95,6 +95,7 @@ export default function verifyEmail(trad: any, url: string, data: string) {
 						background-color: black;
 						padding: 4px;
 						text-align: center;
+						text-color: white;
 						border-radius: 15px;
 						max-width: 50%;
 						margin: auto;
@@ -106,6 +107,7 @@ export default function verifyEmail(trad: any, url: string, data: string) {
 								font-size: 14px;
 								margin-bottom: 10px;
 								text-align: center;
+								color: white;
 							"
 						>
 							${trad['automaticMessage']}
@@ -126,7 +128,7 @@ export default function verifyEmail(trad: any, url: string, data: string) {
 						alt="LogoTranscenduck-Footer"
 						style="width: 50%;"
 					>
-				</div>
+				
 
 				<p
 					style="
@@ -136,6 +138,7 @@ export default function verifyEmail(trad: any, url: string, data: string) {
 				>
 					${trad['signature']}
 				</p>
+				</div>
 			</div>
 		</body>
 	`;

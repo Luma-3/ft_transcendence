@@ -24,7 +24,6 @@ export class FetchInterface {
 			body: JSON.stringify(userData)
 		});
 		if (response.status !== "success") {
-			console.log("Error in registerUser:", response.message);
 				const trad = await loadTranslation(userData.preferences.lang);
 				alertPublic(trad[response.message] ?? response.message, "error");
 				return false;
@@ -39,7 +38,6 @@ export class FetchInterface {
 
     const confirmResponse = await alert("are-you-sure", "warning");
     if (confirmResponse) {
-      console.log("User confirmed logout");
       const responseApi = await fetchApiWithNoError(API.API_SESSION.DELETE, {
         method: 'DELETE',
         headers: {
@@ -171,7 +169,18 @@ export class FetchInterface {
       window.location.href = '/';
     }
   }
-
+  /**
+   * ! Update Preferences
+   */
+  public static async updatePreferences(elementToUpdate: string, newElementValue: string): Promise<boolean> {
+    const response = await fetchApiWithNoError(API.API_USER.UPDATE.PREF.ALL, {
+      method: "PATCH",
+      body: JSON.stringify({
+        [elementToUpdate]: newElementValue,
+      })
+    });
+    return response.status !== "error";
+  }
   /**
    * ! Change / Update Password
    */
@@ -225,17 +234,14 @@ export class FetchInterface {
   /**
    * ! Update Username
   */
-  public static async updateUsername(newUsername: string ): Promise<boolean> {
+  public static async updateUsername(newUsername: string ): Promise<number | undefined> {
     const response = await fetchApiWithNoError(API.API_USER.UPDATE.USERNAME, {
       method: "PATCH",
       body: JSON.stringify({
         username: newUsername,
       }),
     });
-    if (response.status === "error") {
-      return false;
-    }
-    return true;
+    return response.code;
   }
   /**
    * ! Get all of my friends
@@ -400,7 +406,6 @@ export class FetchInterface {
       method: 'POST',
       body: JSON.stringify({ code })
     });
-    console.log("Response from submit2FACode:", response, " Code:", code);
     if (response.status === 'error') {
       await alertTemporary("error", "invalid-2fa-code", 'dark', false, true);
       return false;

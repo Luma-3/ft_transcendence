@@ -209,7 +209,6 @@ export async function renderDocPages(page: string, index_logo: string) {
 
   const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
 	if (!redoc_container) {
-		console.error('Redoc container not found');
 		return;
 	}
 	redoc_container.classList.remove('hidden');
@@ -228,7 +227,6 @@ export async function renderDocPages(page: string, index_logo: string) {
 
 
 export async function render2FaPages(action: string) {
-	console.log("render2FaPages called with action:", action);
 	
 	let user = undefined;
 	if (action !== 'login') {

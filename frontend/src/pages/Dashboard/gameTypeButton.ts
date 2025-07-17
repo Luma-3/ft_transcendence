@@ -4,7 +4,7 @@ export function onlineSettings() {
   return `
 <div id="online-settings" class="hidden flex-col w-full h-full p-4 space-y-4 mb-10 bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
 <div class="flex flex-col font-title justify-center items-center w-full">
-	<div class="flex flex-col w-full h-full p-2 space-y-2 text-secondary dark:text-dtertiary rounded-lg" translate="click-for-random-opponent">
+	<div class="flex flex-col w-full h-full p-2 space-y-2 text-tertiary dark:text-dtertiary rounded-lg" translate="click-for-random-opponent">
 		
 		Or click directly on play for a random opponent
 	
@@ -20,7 +20,7 @@ export function localPVPSettings() {
   return `
 <div id="local-PVP-settings" class="hidden flex-col w-full h-full p-4 space-y-4 mb-10 bg-zinc-150 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out">
 <div class="flex flex-col font-title justify-center items-center w-full">
-	<div class="flex flex-col w-full h-full p-2 space-y-2 text-secondary dark:text-dtertiary rounded-lg" translate="player2-name">
+	<div class="flex flex-col w-full h-full p-2 space-y-2 text-tertiary dark:text-dtertiary rounded-lg" translate="player2-name">
 
 			Player 2 Name
 		</div> 

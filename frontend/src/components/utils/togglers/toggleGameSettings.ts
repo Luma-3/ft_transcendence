@@ -12,7 +12,6 @@ export function toggleGameSettings(inputValue: DOMStringMap) {
 	
 	const localPVPSettings = document.getElementById('local-PVP-settings');
 	const onlineSettings = document.getElementById('online-settings');
-	console.log("type game", type)
 	switch (type) {
 		
 		case 'local':

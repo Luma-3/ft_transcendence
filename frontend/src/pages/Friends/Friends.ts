@@ -44,8 +44,8 @@ ${backButton()}
 							<img src="/images/duckWaiting.png" alt="Duck Notifications" class="w-20 h-20 invert" />
 						</div>
 						<div class="text-center">
-							<div class="text-2xl font-bold" translate="pending-operations">Opérations en Attente</div>
-							<div class="text-yellow-100 text-sm" translate="manage-your-invitations">Gérez vos invitations</div>
+							<div class="text-2xl font-bold" translate="waiting-operations">Operaciones en Espera</div>
+							<div class="text-yellow-100 text-sm" translate="manage-your-invitations">Gestiona tus invitaciones</div>
 						</div>
 					</div>
 				</div>

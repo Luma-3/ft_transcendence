@@ -50,7 +50,7 @@ export class UserService {
     const userID = uuidV4();
 
     // Backdor for development purposes
-    if (process.env.NODE_ENV !== 'development') {
+    // if (process.env.NODE_ENV !== 'development') {
 
       redisCache.setEx(`users:pendingUser:${user_obj.email}`, 660, userID);
       redisCache.setEx(`users:pendingUser:${userID}`, 660, user);
@@ -66,7 +66,7 @@ export class UserService {
       }).catch(console.error)
       
       return;
-    }
+    // }
 
     // this part is called on developpement environnement only
     const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
