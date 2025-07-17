@@ -1,6 +1,5 @@
 FROM base
 
-COPY ./cert/ ./cert/
 COPY package*.json ./
 COPY tsconfig.json ./
 COPY nodemon.json ./

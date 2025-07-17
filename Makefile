@@ -8,7 +8,20 @@ RESET       := \033[0m
 
 .PHONY: all build-dev run-dev install-dev fclean re init-dev migrate-dev clean-package clean-db
 
-all: install-dev run-dev
+all: dev
+
+migrate:
+	./launch.dev.sh initialize_db
+
+install_local:
+	./launch.dev.sh install_local
+
+install_package:
+	./launch.dev.sh install_package
+
+dev: install_package install_local migrate run-dev
+
+prod: install_local migrate run-prod
 
 build-dev:
 	@echo -e "$(YELLOW)Démarrage du build dev...$(RESET)"
@@ -16,47 +29,21 @@ build-dev:
 	@echo -e "$(GREEN)Build dev terminé !$(RESET)"
 
 run-dev: build-dev
-	@echo -e "$(YELLOW)Lancement du run dev...$(RESET)"
-	@echo -e "$(YELLOW)Reconstruction de base...$(RESET)"
-	@$(COMPOSE) -f ./docker-compose.dev.yml build
 	@echo -e "$(GREEN)Base reconstruite !$(RESET)\n$(YELLOW)Lancement de tous les conteneurs...$(RESET)"
 	@$(COMPOSE) -f ./docker-compose.dev.yml up
 	@echo -e "$(GREEN)Run dev terminé !$(RESET)"
 
-install-dev: init-dev migrate-dev
+build-prod:
+	@echo -e "$(YELLOW)Démarrage du build prod...$(RESET)"
+	@$(COMPOSE) -f ./docker-compose.yml build
+	@echo -e "$(GREEN)Build prod terminé !$(RESET)"
+
+run-prod: build-prod
+	@echo -e "$(GREEN)Base reconstruite !$(RESET)\n$(YELLOW)Lancement de tous les conteneurs...$(RESET)"
+	@$(COMPOSE) -f ./docker-compose.yml up
+	@echo -e "$(GREEN)Run prod terminé !$(RESET)"
 
 fclean: clean-package clean-db
-
-re: fclean install-dev run-dev
-
-init-dev:
-	@echo -e "$(YELLOW)Initialisation des node_modules...$(RESET)"
-	@echo -e "$(YELLOW)Base...$(RESET)"
-	@cd backend/packages/error && npm i && npm run build
-	@cd backend/packages/formatter && npm i && npm run build
-	@$(COMPOSE) -f docker-compose.dev.yml build --no-cache base
-	@echo -e "$(YELLOW)Installation des dépendances pour les APIs...$(RESET)"
-	@echo -e "$(YELLOW)Gateway...$(RESET)"
-	@cd backend/gateway && npm i
-	@echo -e "$(YELLOW)auth-API...$(RESET)"
-	@cd backend/auth-API && mkdir -p data && npm i
-	@echo -e "$(YELLOW)game-API...$(RESET)"
-	@cd backend/game-API && mkdir -p data && npm i
-	@echo -e "$(YELLOW)upload-API...$(RESET)"
-	@cd backend/upload-API && npm i
-	@echo -e "$(YELLOW)user-API...$(RESET)"
-	@cd backend/user-API && mkdir -p data && npm i
-	@echo -e "$(GREEN)Initialisation terminée$(RESET)"
-
-migrate-dev:
-	@echo -e "$(YELLOW)Démarrage des migrations...$(RESET)"
-	@echo -e "$(YELLOW)auth-API...$(RESET)"
-	@cd backend/auth-API && npm run knex migrate:latest
-	@echo -e "$(YELLOW)user-API...$(RESET)"
-	@cd backend/user-API && npm run knex migrate:latest
-	@echo -e "$(YELLOW)game-API...$(RESET)"
-	@cd backend/game-API && npm run knex migrate:latest
-	@echo -e "$(GREEN)Migrations terminées$(RESET)"
 
 clean-package:
 	@echo -e "$(RED)Nettoyage des node_modules et package-lock.json...$(RESET)"
@@ -71,3 +58,7 @@ clean-db:
 	@echo -e "$(RED)Nettoyage des bases de données...$(RESET)"
 	@rm -f backend/*/data/*.db
 	@echo -e "$(GREEN)Nettoyage terminé$(RESET)"
+
+
+front:
+	${COMPOSE} -f ./docker-compose.dev.yml up frontend
