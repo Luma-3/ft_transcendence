@@ -9,7 +9,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
         schema: {
             summary: 'Get pending requests',
             description: 'Endpoint to retrieve pending requests for the current user',
-            tags: ['Friends', 'Pendings'],
+            tags: ['Game'],
             headers: UserHeaderAuthentication,
             querystring: TypePendingQuerySchema,
             response: {
@@ -23,7 +23,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
         schema: {
             summary: 'Accept a pending request',
             description: 'Endpoint to accept a pending request from another user',
-            tags: ['Friends', 'Pendings'],
+            tags: ['Game'],
             headers: UserHeaderAuthentication,
             params: PendingParamSchema,
             response: {
@@ -37,7 +37,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
         schema: {
             summary: 'Accept a pending request',
             description: 'Endpoint to accept a pending request from another user',
-            tags: ['Friends', 'Pendings'],
+            tags: ['Game'],
             headers: UserHeaderAuthentication,
             params: PendingParamSchema,
             response: {
@@ -51,7 +51,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
         schema: {
             summary: 'Add a pending request',
             description: 'Endpoint to add a pending request to another user',
-            tags: ['Friends', 'Pendings'],
+            tags: ['Game'],
             headers: UserHeaderAuthentication,
             params: AcceptParamSchema,
             response: {
@@ -65,7 +65,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
         schema: {
             summary: 'Refuse a pending request',
             description: 'Endpoint to refuse a pending request from another user',
-            tags: ['Friends', 'Pendings'],
+            tags: ['Game'],
             headers: UserHeaderAuthentication,
             params: AcceptParamSchema,
             response: {
