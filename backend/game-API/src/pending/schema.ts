@@ -1,25 +1,27 @@
 import { Type, Static } from '@sinclair/typebox';
 
-export * from '../preferences/schema.js';
-export * from '../users/schema.js';
 
+export const UserHeaderAuthentication = Type.Object({
+  'x-user-id': Type.String({ format: 'uuid' }),
+}, {
+  additionalProperties: true
+});
 
+export type UserHeaderIdType = Static<typeof UserHeaderAuthentication>;
 
 export const PendingDBSchema = Type.Object({
   id: Type.Integer(),
   user_id: Type.String({ format: 'uuid', description: 'ID of the user who received the pending request' }),
-  pending_id: Type.String({ format: 'uuid', description: 'ID of the user who sent the pending request' })
+  pending_id: Type.String({ format: 'uuid', description: 'ID UserHeaderIdType the user who sent the pending request' }),
+  room_id: Type.String({format: 'uuid', description: 'ID of the room associated with the pending request' }),
 }, {
   description: "Pending request schema for database operations",
   additionalProperties: false
 });
 
 export const PendingDBHydrateSchema = Type.Object({
-  id: Type.String({ format: 'uuid' }),
-  username: Type.String(),
-  avatar: Type.Optional(Type.String({ description: 'URL of the user\'s avatar' })),
-  banner: Type.Optional(Type.String({ description: 'URL of the user\'s banner' })),
-  online: Type.Boolean({ description: 'Indicates if the user is currently online' }),
+  id: Type.String({ format: 'uuid', description: 'ID sender or receiver of request pending' }),
+  room_id: Type.String({ format: 'uuid', description: 'ID of the room associated with the pending request' }),
 }, {
   description: "Hydrated pending request schema with user details",
   additionalProperties: false
