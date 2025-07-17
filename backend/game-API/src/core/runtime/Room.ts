@@ -7,7 +7,8 @@ import { Player, IGameInfos } from './Player.js';
 import { game } from '../../game/Pong.js';
 import { InputManager } from '../../game/InputManager.js';
 import { randomNameGenerator } from './randomName.js';
-import { roomManagerInstance } from './RoomManager.js';
+import { RoomManager } from './RoomManager.js';
+import { RoomModelInstance } from '../../room/model.js';
 
 type StatusType = 'waiting' | 'roomReady' | 'playing' | 'finished';
 
@@ -24,7 +25,7 @@ export class Room {
   public loopManager: LoopManager = new LoopManager();
   public inputManager: InputManager = new InputManager();
 
-  // private readonly createdAt: Date = new Date();
+  private readonly createdAt: Date = new Date();
 
   private privateRoom: boolean = false;
 
@@ -45,7 +46,6 @@ export class Room {
       this.privateRoom = true;
     }
     else if (this.gameType === 'local') {
-      // TODO : gerer le nom du joueur local
       this.players.set('local', new Player('local', gameInfos.localPlayerName));
       const player = this.players.get('local');
       player!.avatar = `https://${process.env.AUTHORIZED_IP}/api/uploads/avatar/default.png`;
@@ -114,36 +114,6 @@ export class Room {
     this.start();
   }
 
-  error(message: string) {
-    const { type, user_id, payload } = JSON.parse(message);
-    if (type !== 'error') return; // Message is not for me
-
-    console.error(`Error in room ${this.id} for player ${user_id}:`, payload);
-    IOInterface.unsubscribe(`ws:all:broadcast:all`);
-    IOInterface.unsubscribe(`ws:game:room:${this.id}`);
-    IOInterface.broadcast(
-      JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
-      [...this.players.keys()]
-    );
-    this.players.clear();
-    roomManagerInstance.deleteRoom(this.id);
-  }
-
-  deconnexion(message: string) {
-    const { type, user_id } = JSON.parse(message);
-    if (type !== 'disconnected') return; // Message is not for me
-
-    console.log(`Player ${user_id} disconnected from room ${this.id}`);
-    IOInterface.unsubscribe(`ws:all:broadcast:all`);
-    IOInterface.unsubscribe(`ws:game:room:${this.id}`);
-    IOInterface.broadcast(
-      JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
-      [...this.players.keys()]
-    );
-    this.players.clear();
-    roomManagerInstance.deleteRoom(this.id);
-  }
-
   start() {
     this.status = 'playing';
 
@@ -156,8 +126,54 @@ export class Room {
     SceneContext.run(ctx, game);
   }
 
-  changeStatus(status: StatusType) {
-    this.status = status;
+  error(message: string) {
+    const { type, user_id, payload } = JSON.parse(message);
+    if (this.players.get(user_id) === undefined) return; // Message is not for me
+    if (type !== 'error') return; // Message is not for me
+
+    console.error(`Error in room ${this.id} for player ${user_id}:`, payload);
+    IOInterface.broadcast(
+      JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
+      [...this.players.keys()]
+    );
+    RoomManager.getInstance().emit('room:error', this.id);
+  }
+
+  deconnexion(message: string) {
+    const { type, user_id } = JSON.parse(message);
+    if (this.players.get(user_id) === undefined) return; // Message is not for me
+    if (type !== 'disconnected') return; // Message is not for me
+
+    console.log(`Player ${user_id} disconnected from room ${this.id}`);
+    IOInterface.broadcast(
+      JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
+      [...this.players.keys()]
+    );
+    RoomManager.getInstance().emit('room:playerleft', this.id);
+  }
+
+  public stop(addData: boolean = true) {
+    this.loopManager.stop();
+    this.inputManager.stop();
+    IOInterface.unsubscribe(`ws:all:broadcast:all`);
+    IOInterface.unsubscribe(`ws:game:room:${this.id}`);
+
+    if (addData) {
+      const scene = SceneContext.get();
+      const players = Array.from(this.players.values());
+      const payload = {
+        id: this.id,
+        created_at: this.createdAt,
+        player_1: (players[0].id === "local") ? null : players[0].id,
+        player_2: players[1].id,
+        winner: (players[0].win) ? players[0].id : players[1].id,
+        score_1: players[0].score,
+        score_2: players[1].score,
+        type: scene.gameType,
+      }
+      RoomModelInstance.addMatch(payload)
+    }
+    this.players.clear();
   }
 
   toJSON() {
@@ -170,5 +186,3 @@ export class Room {
     };
   }
 }
-
-

@@ -84,7 +84,6 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
 	'friends': friends,
 	'documentation': documentation,
 	'rgpd': RGPD,
-	'tournament': tournamentMatches,
 }
 
 /**

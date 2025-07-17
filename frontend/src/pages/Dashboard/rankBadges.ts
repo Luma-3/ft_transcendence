@@ -4,7 +4,7 @@ export function generateRankBadge(_user: IUserInfo) {
 	const wins = Math.floor(Math.random() * 50) + 5; // Données d'exemple
 	const losses = Math.floor(Math.random() * 30) + 2; // Données d'exemple
 	const totalGames = wins + losses;
-	
+	//TODO: Traduction
 	let rankInfo = {
 		name: 'Petit Volatile',
 		level: 1,

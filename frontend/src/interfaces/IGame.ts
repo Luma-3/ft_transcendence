@@ -29,6 +29,21 @@ export interface IServerGameData {
   data: IRoomData;
 }
 
+/**
+ * [
+ *  { // ROOM 1
+ *   players: IPlayer[];
+ * },
+ * { ROOM 2
+ *  players: IPlayer[];
+ * }
+ * ]
+*/
+
+export interface ITournamentInfo {
+  players: IPlayer[];
+}
+
 export interface IGameData {
   id: string;
   player_1: string;
@@ -38,12 +53,6 @@ export interface IGameData {
   type: string;
   winner: {
     id: string;
-    // avatar: string;
-    // score: number;
-    // win: boolean;
-    // side: string;
-    // ready: boolean;
-    // player_name: string;
   },
 }
 
