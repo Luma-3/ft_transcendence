@@ -1,26 +1,23 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 
 import { RoomManager } from "../core/runtime/RoomManager.js";
-import { RoomBodyType, RoomParamIdType, RoomParamType, HeaderBearerType, RoomQueryType, RoomParamUserIdType } from "./room.schema.js";
+import { RoomBodyType, RoomParamIdType, RoomParamType, HeaderBearerType, /* RoomQueryType, */ RoomParamUserIdType } from "./room.schema.js";
 import { RoomService } from "./room.service.js";
 import { RoomModelInstance } from "./model.js";
 
 
 export async function PostRoomHandler(
-  req: FastifyRequest<{ Body: RoomBodyType, Params: RoomParamType, Querystring: RoomQueryType, Headers: HeaderBearerType }>, rep: FastifyReply
+  req: FastifyRequest<{ Body: RoomBodyType, Params: RoomParamType,/*  Querystring: RoomQueryType, */ Headers: HeaderBearerType }>, rep: FastifyReply
 ) {
   const { roomType } = req.params;
   const { roomName, playerName } = req.body;
   const userId = req.headers['x-user-id'] as string;
-  const { privateRoom, userIdInvited } = req.query
 
   const roomId = await RoomService.joinOrCreateRoom(
     roomName,
     roomType,
     userId,
-    playerName,
-    privateRoom,
-    userIdInvited
+    playerName
   );
 
   return rep.code(201).send({

@@ -99,7 +99,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const { includePreferences } = req.query;
 
     const data = await UserService.getUserByID(id, includePreferences,
-      USER_PRIVATE_COLUMNS, PREFERENCES_PRIVATE_COLUMNS);
+      USER_PRIVATE_COLUMNS, PREFERENCES_PRIVATE_COLUMNS, true);
     return rep.code(200).send({ message: 'Ok', data: data });
   });
 

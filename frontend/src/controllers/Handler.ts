@@ -104,6 +104,9 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'initGame': () => initGame(),
 	'leaveGame': () => { window.location.href = '/dashboard'; },
 	'toggleStats': () => toggleGameStats(),
+	'accept-invitation-game': (event) => FetchInterface.acceptGameInvitation(event.target as HTMLElement),
+	'refuse-invitation-game': (event) => FetchInterface.refuseGameInvitation(event.target as HTMLElement),
+	'cancel-invitation-game': (event) => FetchInterface.cancelGameInvitation(event.target as HTMLElement),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 🔔 NOTIFICATIONS

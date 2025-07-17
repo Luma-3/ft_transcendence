@@ -116,6 +116,10 @@
 	"apprenti-canard": "Duck Apprentice",
 	"professeur-palmipède": "Professor Palmiped",
 
+	"social": "Social",
+	"game": "Game",
+	"game-invitation-to": "Game invitation to",
+	"refused": "refused",
 	"waiting-operations": "Waiting operations",
 	"manage-your-invitations": "Manage your invitations",
 	"invitations-sent": "Invitations sent",

@@ -186,19 +186,23 @@ export class UserService {
     id: string,
     includePreferences: boolean = false,
     userColumns: string[],
-    preferencesColumns: string[]
+    preferencesColumns: string[],
+    privated: boolean = false
   ): Promise<UserBaseType & { preferences?: PreferencesBaseType }> {
+    console.log(userColumns);
     if (!includePreferences) {
-      const data = await redisCache.getEx(`users:data:${id}`, {type:'EX', value: 3600 });
+      const key = `users:data:${id}` + (privated ? ':private' : ':public');
+      const data = await redisCache.getEx(key, {type:'EX', value: 3600 });
       if (data) {
         return JSON.parse(data);
       }
       const user = await userModelInstance.findByID(id, userColumns);
       if (!user) throw new NotFoundError("User");
-      await redisCache.setEx(`users:data:${id}`, 3600 , JSON.stringify(user));
+      await redisCache.setEx(key, 3600 , JSON.stringify(user));
       return user;
     }
-    const data = await redisCache.getEx(`users:data:${id}:hydrate`, {type:'EX', value: 3600 });
+    const key = `users:data:${id}:hydrate` + (privated ? ':private' : ':public');
+    const data = await redisCache.getEx(key, {type:'EX', value: 3600 });
     if (data) {
       return JSON.parse(data);
     }
@@ -212,7 +216,7 @@ export class UserService {
     if (!preferences) throw new NotFoundError("Preferences");
 
     const userWithPreferences = { ...user, preferences };
-    await redisCache.setEx(`users:data:${id}:hydrate`, 3600 , JSON.stringify(userWithPreferences));
+    await redisCache.setEx(key, 3600 , JSON.stringify(userWithPreferences));
     return userWithPreferences;
   }
 
@@ -241,7 +245,6 @@ export class UserService {
     const hash_pass = await hashPassword(newPassword);
     const [updatedUser] = await userModelInstance.update(id, { password: hash_pass }, USER_PRIVATE_COLUMNS);
 
-    redisCache.DEL(`users:credentials:${updatedUser.username}`).catch(console.error);
     return updatedUser;
   }
 
@@ -285,8 +288,10 @@ export class UserService {
     const multi = redisCache.multi();
     multi.DEL(`users:pendingEmail:${userID}`);
     multi.DEL(`users:pendingEmail:${email}`);
-    multi.DEL(`users:data:${userID}:hydrate`);
-    multi.DEL(`users:data:${userID}`);
+    multi.DEL(`users:data:${userID}:hydrate:private`);
+    multi.DEL(`users:data:${userID}:hydrate:public`);
+    multi.DEL(`users:data:${userID}:private`);
+    multi.DEL(`users:data:${userID}:public`);
     multi.exec().catch(console.error);
     
     return updatedUser;
@@ -305,8 +310,10 @@ export class UserService {
     const [updatedUser] = await userModelInstance.update(id, { username: username }, USER_PRIVATE_COLUMNS);
 
     const multi = redisCache.multi();
-    multi.DEL(`users:data:${id}:hydrate`);
-    multi.DEL(`users:data:${id}`);
+    multi.DEL(`users:data:${id}:hydrate:private`);
+    multi.DEL(`users:data:${id}:hydrate:public`);
+    multi.DEL(`users:data:${id}:private`);
+    multi.DEL(`users:data:${id}:public`);
     multi.exec().catch(console.error);
     return updatedUser;
   }
@@ -315,7 +322,6 @@ export class UserService {
     const user = await userModelInstance.findByUsername(username, undefined, ['password', 'validated', ...USER_PRIVATE_COLUMNS]);
     if (!user) throw new UnauthorizedError("Invalid credentials");
     if(user.password === null) throw new UnauthorizedError("Only OAuth users can login with password");
-    console.table({"passwordSSend": password, ...user} );
     const isValid = await comparePassword(password, user.password);
     if (!isValid) throw new UnauthorizedError("Invalid credentials");
 

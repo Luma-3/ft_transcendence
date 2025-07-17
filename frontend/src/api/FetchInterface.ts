@@ -8,6 +8,7 @@ import { loadTranslation } from "../controllers/Translate";
 import { IOtherUser, IUserInfo, IUserPreferences, UserSearchResult } from "../interfaces/IUser";
 import { IApiResponse } from "../interfaces/IApi";
 import { startEmailCooldown } from "../components/utils/sendEmail";
+import { updateAllLists } from "../pages/Friends/Lists/updatersList";
 
 export class FetchInterface {
   private constructor() { }
@@ -366,6 +367,15 @@ export class FetchInterface {
     return response.data ?? undefined;
   }
 
+  /**
+   * ! Get Game Invitation
+   */
+  public static async getGameInvitations(params: "sender" | "receiver" = "sender") {
+    const response = await fetchApi<{id: string}[]>(API.API_GAME.NOTIFICATIONS + `?action=${params}`, {
+      method: 'GET',
+    });
+    return response.data ?? undefined;
+  }
 
   /**
    * ! Resend Verification Email
@@ -474,11 +484,12 @@ export class FetchInterface {
     return true;
   }
 
-  public static async inviteToPlay(gameFormInfo: IGameFormInfo, user: IUserInfo, invitePlayerId: string) {
-    const response = await fetchApiWithNoError(API.API_GAME.CREATE + `/${gameFormInfo.gameType}?privateRoom=true&userIdInvited=${invitePlayerId}`, {
+  public static async inviteToPlay(_gameFormInfo: IGameFormInfo, user: IUserInfo, invitePlayerId: string) {
+    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/${invitePlayerId}`, {
       method: 'POST',
       body: JSON.stringify({
-        roomName: gameFormInfo.roomName,
+        roomName: _gameFormInfo.roomName,
+        gameType: _gameFormInfo.gameType
       })
     });
     if (response.status === "error") {
@@ -486,6 +497,56 @@ export class FetchInterface {
       return false;
     }
     alertTemporary("success", "player-invited", user.preferences.theme, true, true);
+    return true;
+  }
+
+  public static async acceptGameInvitation(element?: HTMLElement, otherId?: string): Promise<boolean> {
+    const id = element?.dataset.id || otherId;
+    if (!id) {
+      return false;
+    }
+    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/accept/${id}`, {
+      method: 'POST',
+      body: JSON.stringify({})
+    });
+    if (response.status === "error") {
+      await alertTemporary("error", "issues-with-invitation-acceptance", 'dark', true, true);
+      return false;
+    }
+    return true;
+  }
+
+  public static async refuseGameInvitation(element: HTMLElement): Promise<boolean> {
+    const id = element.dataset.id;
+    if (!id) {
+      return false;
+    }
+    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/refuse/${id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({})
+    });
+    if (response.status === "error") {
+      await alertTemporary("error", "issues-with-invitation-refusal", 'dark', true, true);
+      return false;
+    }
+
+    await updateAllLists();
+    return true;
+  }
+
+  public static async cancelGameInvitation(element: HTMLElement): Promise<boolean> {
+    const id = element.dataset.id;
+    if (!id) {
+      return false;
+    }
+    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/${id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({})
+    });
+    if (response.status === "error") {
+      await alertTemporary("error", "issues-with-invitation-cancellation", 'dark', true, true);
+      return false;
+    }
     return true;
   }
 }

@@ -7,6 +7,9 @@ import { API_GAME } from "../api/routes";
 import { alertPublic } from "../components/ui/alert/alertPublic";
 
 import { initTournament } from "../pages/Tournament";
+import { alertNotificationsGames } from "../components/ui/alert/alertNotificationsGame";
+import { cancelGameInvitation, refuseGameInvitation } from "../events/social/gameInvitation";
+import { refuseFriendInvitation } from "../events/social/refusedInvitation";
 
 export type GameSnapshot = {
   serverTime: number;
@@ -17,6 +20,9 @@ export type GameSnapshot = {
 export let gameSnapshots: GameSnapshot[] = [];
 
 const socketHandler: {[key: string]: (data: any) => Promise<void>} = {
+  pendingAdd: alertNotificationsGames,
+  pendingRefuse: refuseGameInvitation,
+  pendingRemoved: cancelGameInvitation,
   nextPool: initTournament,
   invitation: handleGameInvitation,
   roomReady: GameManager.init,

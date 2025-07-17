@@ -21,7 +21,9 @@ export const PendingDBSchema = Type.Object({
 
 export const PendingDBHydrateSchema = Type.Object({
   id: Type.String({ format: 'uuid', description: 'ID sender or receiver of request pending' }),
-  room_id: Type.String({ format: 'uuid', description: 'ID of the room associated with the pending request' }),
+  room_id: Type.Optional(
+    Type.String({ format: 'uuid', description: 'ID of the room associated with the pending request' })
+  )
 }, {
   description: "Hydrated pending request schema with user details",
   additionalProperties: false

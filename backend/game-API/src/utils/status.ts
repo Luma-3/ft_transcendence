@@ -1,4 +1,4 @@
-import { redisSub } from "../utils/redis.js";
+import { redisSubDuplicate } from "../utils/redis.js";
 
 export class UserStatus {
 
@@ -18,7 +18,7 @@ export class UserStatus {
     }
 
     static listenToUserStatusChanges(): void {
-        redisSub.subscribe('ws:all:broadcast:all', (message) => {
+        redisSubDuplicate.subscribe('ws:all:broadcast:all', (message) => {
             console.log(`[Redis] Received user status change: ${message}`);
             const { user_id, type } = JSON.parse(message);
             if (type === 'connected') {

@@ -63,8 +63,7 @@ export class UserModel {
     return await knexInstance<UserBaseType>('users')
       .select(columns)
       .where('id', id)
-      .join('preferences', 'users.id', 'preferences.user_id')
-      .first();
+      .first<UserBaseType>();
   }
 
   async findByUsername(username: string, validated?:boolean, columns = USER_PUBLIC_COLUMNS) {

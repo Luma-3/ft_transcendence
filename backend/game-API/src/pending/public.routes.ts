@@ -3,6 +3,7 @@ import { PendingsController } from './controller.js';
 import { PendingParamSchema, PendingResponseSchema, UserHeaderAuthentication, TypePendingQuerySchema, AcceptParamSchema } from './schema.js';
 import { ResponseSchema } from '../utils/schema.js';
 import { ConflictResponse, InternalServerErrorResponse, NotFoundResponse } from '@transcenduck/error';
+import { RoomBodySchema } from '../room/room.schema.js';
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
     fastify.get('/pending', {
@@ -26,6 +27,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
             tags: ['Game'],
             headers: UserHeaderAuthentication,
             params: PendingParamSchema,
+            body: RoomBodySchema,
             response: {
                 200: ResponseSchema(undefined, 'Pending request accepted successfully'),
                 409: ConflictResponse,

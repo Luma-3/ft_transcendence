@@ -1,5 +1,5 @@
 import { FetchInterface } from "../api/FetchInterface";
-import { alertNotifications } from "../components/ui/alert/alertNotifications";
+import { alertNotificationsFriends } from "../components/ui/alert/alertNotificationsFriends";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
 import { loadTranslation } from "../controllers/Translate";
 import { updateAllLists } from "../pages/Friends/Lists/updatersList";
@@ -26,7 +26,7 @@ export async function dispatchUserSocketMsg(payload: PayloadUserSocketMsg) {
 
 	switch (action) {
 		case 'add':
-			alertNotifications("info", `${trad['new-friend-request']} ${user.username}`, "dark", true)
+			alertNotificationsFriends("info", `${trad['new-friend-request']} ${user.username}`, "dark", true)
 			break;
 		case 'accept':
 			alertTemporary("info", `${trad['your-friend-request-was-accepted']} ${user.username}`, "dark", true, true)

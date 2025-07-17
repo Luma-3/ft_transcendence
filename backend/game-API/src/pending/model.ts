@@ -52,20 +52,24 @@ export class PedingModel {
    * @param pendingId - The ID of the friend to be removed.
    * @returns A promise that resolves when the friend is removed.
    */
-  async delete(trx: Knex.Transaction, id: string, pendingId: string, withRoom = false): Promise<PendingDBHydrateType | null> {
-    let request =  trx<PendingDBType>('pending')
+  async delete(trx: Knex.Transaction, id: string, pendingId: string) {
+    return await trx<PendingDBType>('pending')
       .where('user_id', id)
-      .andWhere('pending_id', pendingId);
-    if (withRoom) {
-      request.returning('room_id').first();
-    }
-    return (await request.del()) as PendingDBHydrateType|null;
+      .andWhere('pending_id', pendingId).del();
   }
 
   async deleteByRoomId(trx: Knex.Transaction, roomId: string): Promise<PendingDBHydrateType | null> {
     return trx<PendingDBType>('pending')
       .where('room_id', roomId)
       .del();
+  }
+
+  async findRoomByUserIdAndPendingId(trx: Knex.Transaction, id: string, pendingId: string): Promise<Omit<PendingDBType, 'user_id' | 'pending_id'> | undefined> {
+    return await trx<PendingDBType>('pending')
+      .select(['room_id'])
+      .where('pending.user_id', id)
+      .andWhere('pending.pending_id', pendingId)
+      .first<Omit<PendingDBType, 'user_id' | 'pending_id'>>();
   }
 
   async findByRoomId(roomId: string): Promise<Omit<PendingDBType, 'room_id'> | undefined> {

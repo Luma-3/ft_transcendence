@@ -5,6 +5,7 @@ import { RoomManager } from "../core/runtime/RoomManager.js";
 import { RoomService } from "../room/room.service.js";
 import { UserStatus } from "../utils/status.js";
 import server from "../fastify.js";
+import { RoomBodyType } from "../room/room.schema.js";
 
 export class PendingService {
 
@@ -48,9 +49,9 @@ export class PendingService {
      * @param pendingId - The user ID who is receiving the request.
      * @returns A promise that resolves to the created pending request.
      */
-    static async addPending(id: string, pendingId: string) {
-        return  await knexInstance.transaction(async (trx) => {
-            if(await PendingService.exists(trx, pendingId, id))
+    static async addPending(id: string, pendingId: string, data: RoomBodyType) {
+        return await knexInstance.transaction(async (trx) => {
+            if (await PendingService.exists(trx, pendingId, id))
                 throw new ConflictError(`You already have a pending request with user ${pendingId}`);
             else if(await PendingService.exists(trx, id, pendingId))
                 throw new ConflictError(`User ${pendingId} has already sent you a pending request`);
@@ -62,12 +63,12 @@ export class PendingService {
                 throw new ConflictError(`You cannot send a pending request to yourself`);
             /* else if(!UserStatus.isUserOnline(pendingId))
                 throw new ConflictError(`You cannot send a pending request to user ${pendingId} because they are offline`); */
-            const player = await RoomService.createPlayer(id);
+            const player = await RoomService.createPlayer(id, data.playerName);
             const roomId = await RoomService.createPrivateRoom(player);
             await pendingModel.create(trx, id, pendingId, roomId);
         });
     }
-
+h
     /**
      * Accepts a pending request and creates a friendship between two users.
      * @param id - The user ID who is accepting the request.
@@ -89,12 +90,12 @@ export class PendingService {
                 await pendingModel.delete(trx, id, pendingId);
                 throw new ConflictError(`You cannot accept a pending request from yourself`);
             } else if(!UserStatus.isUserOnline(id)) {
-                throw new ConflictError(`You cannot accept a pending request from user ${pendingId} because you are offline`);
+                throw new ConflictError(`user sender is offline`);
             }
+            const {room_id} = await pendingModel.findRoomByUserIdAndPendingId(trx, id, pendingId);
             const player = await RoomService.createPlayer(pendingId);
-            
-            const {room_id} = await pendingModel.delete(trx, id, pendingId, true);
             RoomManager.getInstance().joinRoom(player, room_id);
+            await pendingModel.delete(trx, id, pendingId);
         });
     }
 
@@ -110,8 +111,13 @@ export class PendingService {
                 throw new NotFoundError(`Pending request from user ${friendId} not found for user ${id}`);
             }
             if(withRoom) {
-                const {room_id} = await pendingModel.delete(trx, id, friendId, withRoom);
-                RoomManager.getInstance().stopRoom(room_id, true);
+                const {room_id} = await pendingModel.findRoomByUserIdAndPendingId(trx, id, friendId);
+                await pendingModel.delete(trx, id, friendId);
+                try {
+                    RoomManager.getInstance().stopRoom(room_id, false);
+                } catch (error) {
+                    server.log.error(error);
+                }
             }
             else {
                 await pendingModel.delete(trx, id, friendId);
@@ -123,7 +129,11 @@ export class PendingService {
         await knexInstance.transaction(async (trx) => {
             await pendingModel.deleteByRoomId(trx, roomId);
             console.log(`Removed pending requests for room ${roomId}`);
-            RoomManager.getInstance().stopRoom(roomId, true);
+               try {
+                    RoomManager.getInstance().stopRoom(roomId, false);
+                } catch (error) {
+                    server.log.error(error);
+                }
         });
     }
 

@@ -8,8 +8,13 @@ export const redisSub = createClient({
   socket: { host: 'redis', port: 6379 },
 });
 
-export const redisCache = redisSub.duplicate();
+
+export const redisSubDuplicate = redisSub.duplicate();
+
+
+export const redisCache = redisPub.duplicate();
 
 await redisPub.connect();
 await redisSub.connect();
 await redisCache.connect();
+await redisSubDuplicate.connect();

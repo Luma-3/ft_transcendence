@@ -25,10 +25,9 @@ export async function DisplayGameWinLose(data: any) {
 			break;
 		}
 	}
-	console.log(data);
-	if (data.type === 'local' || data.type === 'ia') {
+	if (data.gameType === 'local' || data.gameType === 'ia') {
 	endDiv = `${navbar(user)}
-	${backButton('/dashboard')}
+	${backButton()}
 	<div class="grid grid-cols-2 gap-4 h-full w-full items-center justify-center">
 		${(winnerSide === 'left') ? gameWinContainer() + gameLoseContainer() : gameLoseContainer() + gameWinContainer()}
 	</div>`
@@ -40,7 +39,7 @@ export async function DisplayGameWinLose(data: any) {
 	</div>`
 	} else {
 		endDiv = `${navbar(user)}
-		${backButton('/dashboard')}
+		${backButton()}
 		<div class="flex flex-col w-full items-center justify-center">
 			${(isWin) ? gameWinContainer() : gameLoseContainer()}
 		</div>`;
