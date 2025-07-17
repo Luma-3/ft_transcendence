@@ -95,14 +95,10 @@ export async function saveLanguage(lang_select: string) {
 		return await alertTemporary("error", 'Error while getting user info', 'dark', false, true);
 	}
 	
-	const response = await fetchApi(API_USER.UPDATE.PREF.ALL, {
-		method: "PATCH",
-		body: JSON.stringify({
-			lang: lang_select,
-		})
-	});
-	if (response.status === "error") {
-		return await alertTemporary("error",'Error while updating language' + response.message, 'dark', false, true);
+	const response = await FetchInterface.updatePreferences("lang", lang_select);
+	if (!response) {
+		//TODO: Traduction
+		return await alertTemporary("error",'Error while updating language', 'dark', false, true);
 	}
 	const trad = await loadTranslation(lang_select);
 	alertTemporary("success", trad['language-update'], user.preferences.theme, true, true);

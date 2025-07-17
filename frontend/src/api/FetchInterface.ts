@@ -180,6 +180,7 @@ export class FetchInterface {
         [elementToUpdate]: newElementValue,
       })
     });
+    console.log("Update Preferences response:", response);
     return response.status !== "error";
   }
   /**

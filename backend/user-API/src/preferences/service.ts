@@ -11,13 +11,14 @@ export class PreferencesService {
     columns: string[]
   ): Promise<PreferencesBaseType> {
     const privateColumns = columns.length === PREFERENCES_PRIVATE_COLUMNS.length;
-    const data = await redisPub.getEx(`preferences:data:${userID}` + (privateColumns ? ':private' : ''), { type: 'EX', value: 3600 });
+    const key = `preferences:data:${userID}` + (privateColumns ? ':private' : ':public');
+    const data = await redisPub.getEx(key, { type: 'EX', value: 3600 });
     if (data) {
       return JSON.parse(data) as PreferencesBaseType;
     }
     const preferences = await preferencesModelInstance.findByUserID(userID, columns);
     if (!preferences) throw new NotFoundError('Preferences');
-    await redisPub.setEx(`preferences:data:${userID}`, 3600, JSON.stringify(preferences));
+    await redisPub.setEx(key, 3600, JSON.stringify(preferences));
     return preferences;
   }
 
@@ -28,9 +29,10 @@ export class PreferencesService {
   ): Promise<PreferencesBaseType> {
     const [updatePreferences] = await preferencesModelInstance.update(userID, data, columns);
     const multi = redisPub.multi();
-    multi.del(`preferences:data:${userID}`);
+    multi.del(`preferences:data:${userID}:public`);
     multi.del(`preferences:data:${userID}:private`);
-    multi.del(`users:data:${userID}:hydrate`);
+    multi.del(`users:data:${userID}:hydrate:private`);
+    multi.del(`users:data:${userID}:hydrate:public`);
     multi.exec().catch(console.error);
     return updatePreferences;
   }

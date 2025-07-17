@@ -137,7 +137,6 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 const changeEvent: { [key: string]: () => void } = {
 	'language': () => changeLanguage(""),
 	'switch-component': changeLightMode,
-
 };
 
 /** Si l'utilisateur soumet le formulaire id = key on appelle la fonction associée */
