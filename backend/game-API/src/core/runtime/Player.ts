@@ -33,7 +33,7 @@ export class Player {
   reset() {
     this.ready = false;
     this.score = 0;
-    // this.win = undefined;
+    this.win = undefined;
     this.side = 'left';
   }
 

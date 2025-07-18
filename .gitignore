@@ -138,3 +138,11 @@ dist
 
 # for macOS
 .DS_Store
+.certs/
+
+# Images
+backend/upload-API/uploads/avatar/*.png
+backend/upload-API/uploads/banner/*.png
+!backend/upload-API/uploads/banner/default.png
+!backend/upload-API/uploads/avatar/default.png
+

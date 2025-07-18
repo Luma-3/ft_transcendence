@@ -49,6 +49,7 @@ export class Tournament {
 
   async addPlayer(player: Player) {
     this.players.push(player);
+    this.playerTournament.push(player);
 
     IOInterface.send(
       JSON.stringify({ action: 'joined', data: this.toJSON() }),
@@ -88,23 +89,24 @@ export class Tournament {
   }
 
   NextPool(players: Player[]) {
+    IOInterface.subscribe(`ws:all:broadcast:all`, this.error.bind(this));
+    IOInterface.subscribe(`ws:all:broadcast:all`, this.deconnexion.bind(this));
+
     if (this.status === 'finished') {
       return;
     }
     this.pairs = this.createPairs(players);
-
-    console.log(JSON.stringify(this.toJSON(), null, 2));
+    
     IOInterface.broadcast(
-  		JSON.stringify({ action: 'nextPool', data: this.toJSON() }),
+      JSON.stringify({ action: 'nextPool', data: this.toJSON() }),
       players.map((value) => value.id)
 	  );
-
+    
     players.forEach(player => {
       player.reset();
-    }) 
+    })
 
     setTimeout(() => {
-
       this.pairs.forEach(async ([p1, p2]) => {
         const roomId = RoomManager.getInstance().createRoom('mma in the pound', 'tournament', true);
         await Promise.all([
@@ -120,6 +122,7 @@ export class Tournament {
         this.endRoom(roomId, winner);
       })
     }, 10000); // waiting 10 seconds to let the player to see his pool
+
   }
 
   endRoom(roomId: string, winner: Player) {
@@ -135,6 +138,9 @@ export class Tournament {
 
       this.playerTournament = [...this.winners];
       this.winners = [];
+
+      IOInterface.unsubscribe(`ws:all:broadcast:all`);
+      IOInterface.unsubscribe(`ws:all:broadcast:all`);
       this.NextPool(this.playerTournament);
     }
   }
@@ -158,23 +164,27 @@ export class Tournament {
 
   error(message: string) {
     const { type, user_id, payload } = JSON.parse(message);
-    if (this.players.find(player => player.id === user_id) === undefined) return; // Message is not for me
+    if (this.playerTournament.find(player => player.id === user_id) === undefined) return; // Message is not for me
     if (type !== 'error') return; // Message is not for me
 
     console.error(`Error in tournament ${this.id} for player ${user_id}:`, payload);
+    IOInterface.broadcast(
+      JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
+      this.playerTournament.map((value) => value.id)
+    );
     IOInterface.unsubscribe(`ws:all:broadcast:all`);
     TournamentManager.getInstance().deleteTournament(this.id);
   }
 
   deconnexion(message: string) {
     const { type, user_id } = JSON.parse(message);
-    if (this.players.find(player => player.id === user_id) === undefined) return; // Message is not for me
+    if (this.playerTournament.find(player => player.id === user_id) === undefined) return; // Message is not for me
     if (type !== 'disconnected') return; // Message is not for me
 
-    console.log(`Player ${user_id} disconnected from tournament ${this.id}`);
+    console.error(`Player ${user_id} disconnected from tournament ${this.id}`);
     IOInterface.broadcast(
       JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
-      this.players.map((value) => value.id)
+      this.playerTournament.map((value) => value.id)
     );
     IOInterface.unsubscribe(`ws:all:broadcast:all`);
     TournamentManager.getInstance().deleteTournament(this.id);

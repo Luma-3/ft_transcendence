@@ -1,9 +1,9 @@
-FROM node:22-alpine
+FROM base
 
-WORKDIR /app
-
-COPY . .
+COPY package*.json ./
+COPY nodemon.json ./
+COPY tsconfig.json ./
+# COPY ./cert/ ./cert
 
 RUN npm install
-
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]

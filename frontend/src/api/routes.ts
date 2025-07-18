@@ -1,4 +1,4 @@
-const API_URL = "https://localhost:5173/api";
+const API_URL = `/api`;
 
 const SERVICES = {
   USER: `${API_URL}/user/users`,
@@ -71,7 +71,7 @@ export const API_2FA = {
 }
 
 export const TWOFA = {
-	EMAIL: `${SERVICES.TWOFA}/email`,
-	TWOFA: `${SERVICES.TWOFA}/code`,
+  EMAIL: `${SERVICES.TWOFA}/email`,
+  TWOFA: `${SERVICES.TWOFA}/code`,
 }
 

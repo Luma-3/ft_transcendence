@@ -1,6 +1,8 @@
-import { defineConfig, FSWatcher } from 'vite'
+import { defineConfig } from 'vite'
 import fs from 'fs'
 import tailwindcss from '@tailwindcss/vite'
+
+const isDev = process.env.NODE_ENV === 'development'
 
 export default defineConfig({
   plugins: [
@@ -9,10 +11,12 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
-    https: {
-      key: fs.readFileSync('cert/key.dev.pem'),
-      cert: fs.readFileSync('cert/cert.dev.pem'),
-    },
+    ...(isDev && {
+      https: {
+        key: fs.readFileSync('/etc/certs/www.transcenduck.fr.key'),
+        cert: fs.readFileSync('/etc/certs/www.transcenduck.fr.crt'),
+      }
+    }),
 
     proxy: {
       '/api': {
@@ -23,7 +27,6 @@ export default defineConfig({
         secure: false,
       }
     }
-
   }
 })
 

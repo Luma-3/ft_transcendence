@@ -6,7 +6,6 @@ COPY package*.json ./
 COPY vite.config.mts ./
 COPY tsconfig.json ./
 COPY index.html ./
-COPY cert/ ./cert
 
 RUN npm install
 

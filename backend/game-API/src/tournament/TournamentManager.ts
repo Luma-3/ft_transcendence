@@ -13,7 +13,6 @@ export class TournamentManager {
     if (!this.instance) {
       this.instance = new TournamentManager();
     }
-    console.log(`instance => `, this.instance);
     return this.instance;
   }
 
@@ -32,7 +31,6 @@ export class TournamentManager {
       const tournament = this.tournaments.get(id);
       if (!tournament) throw new NotFoundError('tournament');
 
-      console.log(`Player ${player.id} joining tournament ${id} By set`);
       tournament.addPlayer(player);
       this.playersInTournament.set(player.id, tournament);
       return tournament.id;
@@ -40,9 +38,7 @@ export class TournamentManager {
     
     let tournamentId = undefined;
     this.tournaments.forEach((tournament) => {
-      console.log(`tournament => `, tournament);
       if (tournament.isJoinable()) {
-        console.log(`Player ${player.id} joining tournament ${tournament.id} By Found`);
         tournament.addPlayer(player);
         this.playersInTournament.set(player.id, tournament);
         tournamentId = tournament.id;
