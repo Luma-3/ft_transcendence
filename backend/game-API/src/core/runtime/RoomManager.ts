@@ -23,7 +23,7 @@ export class RoomManager {
       this.stopRoom(roomId, false);
     });
   }
-  
+
   public static getInstance(): RoomManager {
     if (!RoomManager.instance) {
       RoomManager.instance = new RoomManager();
@@ -31,13 +31,13 @@ export class RoomManager {
     return RoomManager.instance;
   }
 
-  public stopRoom (roomId: string, stockData?: boolean) {
+  public stopRoom(roomId: string, stockData?: boolean) {
     const room = this.rooms.get(roomId);
     if (!room) return;
-  
+
     room.stop(stockData)
     this.rooms.delete(roomId);
-    
+
     this.playersInRooms.forEach((room, playerId) => {
       if (room.id === roomId) {
         this.playersInRooms.delete(playerId);
@@ -79,20 +79,20 @@ export class RoomManager {
       const room = this.rooms.get(id);
       if (!room) throw new NotFoundError('room');
 
-      console.log(`Player ${player.id} joining room ${id}`);
       room.addPlayer(player);
       this.playersInRooms.set(player.id, room);
       return room.id;
     }
 
+    let roomId: string | undefined = undefined;
     this.rooms.forEach(room => {
       if (room.isJoinable()) {
         room.addPlayer(player);
         this.playersInRooms.set(player.id, room);
-        return room.id;
+        roomId = room.id;
       }
     });
-    return undefined;
+    return roomId;
   }
 
   public findCurrentRoom(player: Player) {
