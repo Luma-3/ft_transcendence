@@ -213,7 +213,7 @@ export class FetchInterface {
       window.location.href = "/register";
       return;
     }
-    await alertTemporary("success", "email-verified-successfully", 'dark', false, true);
+    await alertTemporary("success", "email-verified-successfully", 'dark', true, true);
     window.location.href = "/login";
   }
 

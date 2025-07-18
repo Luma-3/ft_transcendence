@@ -2,7 +2,7 @@ import { headerPage } from "../components/ui/headerPage";
 
 export default function RGPD() {
 	return `
-	<div class="flex flex-col w-full h-full rounded-lg justify-center mt-30">
+	<div class="flex flex-col w-full h-full rounded-lg justify-center mt-10">
 		${headerPage("rgpd")}
 		
 		<div class="flex flex-col w-full h-full rounded-lg justify-center items-center mt-5 mb-10 dark:bg-dprimary">

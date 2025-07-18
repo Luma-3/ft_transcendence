@@ -14,7 +14,7 @@ async function renderSettingsPage(user: IUserInfo) {
 	const deleteAccount = new Button("deleteAccount", "1/3", "Delete account", "delete-account", "primary", "button");
 
 	return `
-${navbar(user)}
+${await navbar(user)}
 ${headerPage("settings")}
 
 <div class="flex flex-col items-center justify-center space-y-4 space-x-4 pt-10 text-tertiary dark:text-dtertiary">

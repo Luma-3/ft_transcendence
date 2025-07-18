@@ -48,7 +48,7 @@ export function renderLoginPage() {
 	]
 	formInstance = new Form("LoginForm", inputs, buttons)
 return `
-<div class="flex flex-col font-title text-responsive-size dark:text-dtertiary justify-center items-center mt-40">
+<div class="flex flex-col font-title text-responsive-size dark:text-dtertiary justify-center items-center mt-15 mb-10">
 
 	${headerPage("login", "public")}
 	${formInstance.toHtml()}
@@ -104,6 +104,7 @@ export async function loginUser() {
 		await socketConnection();
 		
 		renderPrivatePage('dashboard');
+		localStorage.removeItem('lang');
 		return;
 	}
 	

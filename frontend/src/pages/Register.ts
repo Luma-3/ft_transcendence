@@ -42,7 +42,7 @@ const inputs = [
 			"Verify Password",
 			"current-password",
 			true,
-			"password"),
+			"verif-password"),
 	]
 
 	const button = [ new Button(
@@ -58,7 +58,7 @@ formInstance = new Form("registerForm", inputs, button)
 
 
 return `
-<div class="flex flex-col font-title text-responsive-size dark:text-dtertiary justify-center items-center mt-40">
+<div class="flex flex-col font-title text-responsive-size dark:text-dtertiary justify-center items-center mt-10 mb-10">
 
 	${headerPage("register", "public")}
 
@@ -97,10 +97,10 @@ export async function registerUser() {
 		passwordVerif: values.passwordVerif,
 		email: values.email,
 		preferences: {
-			lang: sessionStorage.getItem('lang') ?? 'en'
+			lang: localStorage.getItem('lang') ?? 'en'
 		}
 	}
-	sessionStorage.removeItem('lang');
+	// sessionStorage.removeItem('lang');
 
 	/**
 	 * Creation de l'utilisateur

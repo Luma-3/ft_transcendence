@@ -8,7 +8,7 @@ function selectorOptions(lang: string) {
 		{value: 'es', name: 'Spanish'}
 	];
 
-	const langAlreadySelected = sessionStorage.getItem('lang') || 'en';
+	const langAlreadySelected = localStorage.getItem('lang') || 'en';
 	
 	const predefine_lang = `<option class="font-title"
 							value='${langAlreadySelected}'>${all_langs.find(langObj => langObj.value === langAlreadySelected)?.name}
@@ -27,7 +27,7 @@ function selectorOptions(lang: string) {
 
 export function languageSelectorHome() {
 
-	const lang = sessionStorage.getItem('lang') || 'en';
+	const lang = localStorage.getItem('lang') || 'en';
 
 return `
 <div class="flex flex-col items-center font-title justify-center mt-5 mb-15 space-y-2 text-secondary dark:text-dtertiary">

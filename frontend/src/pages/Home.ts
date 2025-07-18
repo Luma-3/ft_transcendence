@@ -7,7 +7,7 @@ return `
 
 	<div class="flex w-3/4 justify-center items-center animate-fade-in-down">
 
-		<img class="w-full" src='/images/logo-dark-optimized.svg' alt='Transcenduck Logo'/>
+		<img class="w-full" src='/images/logo-dark-optimized.webp' alt='Transcenduck Logo'/>
 
 	</div>
 	${languageSelectorHome()}

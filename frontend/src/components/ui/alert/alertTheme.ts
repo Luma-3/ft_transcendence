@@ -13,7 +13,7 @@ export async function getCustomAlertTheme(
 	confirmButtonColor: string;
 	cancelButtonColor: string;
 } | undefined> {
-	let lang = sessionStorage.getItem('lang') || 'en';
+	let lang = localStorage.getItem('lang') || 'en';
 	
 	if (needUser) {
 		const user = await FetchInterface.getUserInfo()

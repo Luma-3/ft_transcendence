@@ -10,7 +10,7 @@ import settings from '../pages/Settings'
 import profile from '../pages/Profile/Profile'
 import friends from '../pages/Friends/Friends'
 import documentation from '../pages/Documentation'
-import verifyEmail from '../pages/VerifyEmail'
+import { verifyEmailPrivate } from '../pages/VerifyEmail'
 import RGPD from '../pages/RGPD'
 import twoFaPage, { init2FAPage } from '../pages/2FA'
 
@@ -37,7 +37,8 @@ const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
   'login': login,
   'register': register,
   'documentation': documentation,
-  'verifyEmail': verifyEmail,
+	'rgpd': RGPD,
+  'verifyEmail': verifyEmailPublic,
 };
 
 /**
@@ -46,7 +47,7 @@ const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
 export async function renderPublicPage(page: string, updateHistory: boolean = true) {
 
   const main_container = document.querySelector<HTMLDivElement>('#app')!
-  const lang = sessionStorage.getItem('lang') || 'en';
+  const lang = localStorage.getItem('lang') || 'en';
 
   setupColorTheme('dark');
 
@@ -69,7 +70,7 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 		
 		fadeIn();
 
-		document.querySelector("footer")?.classList.add("hidden");
+		// document.querySelector("footer")?.classList.add("hidden");
 	}
 	, 200);
 }
@@ -84,6 +85,7 @@ const rendererPrivatePage: { [key: string]: (user: IUserInfo) => string | Promis
 	'friends': friends,
 	'documentation': documentation,
 	'rgpd': RGPD,
+	'verifyEmail': verifyEmailPrivate,
 }
 
 /**
@@ -132,6 +134,7 @@ import { redocInit } from '../components/utils/redocInit'
 import { dispatchError } from './DispatchError'
 import { socket, socketConnection } from '../socket/Socket'
 import { FetchInterface } from '../api/FetchInterface'
+import verifyEmailPublic from '../pages/VerifyEmail'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 
