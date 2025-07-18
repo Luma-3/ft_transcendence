@@ -66,6 +66,7 @@ export class Pong extends GameObject {
     const payload = {
       action: 'end',
       data: {
+        type: SceneContext.get().gameType,
         roomId: SceneContext.get().id,
         players: Array.from(SceneContext.get().players.values()).map(player => player.toJSON())
       }

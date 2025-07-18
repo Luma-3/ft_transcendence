@@ -10,8 +10,8 @@ export class Ball extends GameObject implements Circle {
   public position: Vector2 = new Vector2(0, 0);
   public readonly radius: number = 10;
 
-  private readonly minSpeed: number = 150;
-  private readonly maxSpeed: number = 400;
+  private readonly minSpeed: number = 350;
+  private readonly maxSpeed: number = 700;
 
   private readonly paddleDirectionModifier: number = 0.25;
   private readonly paddleSpeedModifier: number = 0.15;

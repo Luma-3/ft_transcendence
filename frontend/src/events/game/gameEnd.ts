@@ -7,34 +7,34 @@ import { translatePage } from "../../controllers/Translate";
 
 export async function DisplayGameWinLose(data: any) {
 
-	const user = await FetchInterface.getUserInfo();
-	if (!user) {
-		return await alertTemporary("error", "error-while-fetching-user-info", "dark", false, true);
-	}
+  const user = await FetchInterface.getUserInfo();
+  if (!user) {
+    return await alertTemporary("error", "error-while-fetching-user-info", "dark", false, true);
+  }
 
-	const myId = user.id;
-	let isWin = false;
-	let winnerId = '';
-	let winnerSide = 'right';
-	let endDiv = '';
-	for (const player of data.players) {
-		if (player.id === myId && player.score === 5) {
-			isWin = true;
-			winnerSide = 'left';
-			winnerId = player.id;
-			break;
-		}
-	}
-	if (data.gameType === 'local' || data.gameType === 'ia') {
-	endDiv = `${await navbar(user)}
+  const myId = user.id;
+  let isWin = false;
+  let winnerId = '';
+  let winnerSide = 'right';
+  let endDiv = '';
+  for (const player of data.players) {
+    if (player.id === myId && player.score === 5) {
+      isWin = true;
+      winnerSide = 'left';
+      winnerId = player.id;
+      break;
+    }
+  }
+  if (data.type === 'local') {
+    endDiv = `${navbar(user)}
 	${backButton()}
 	<div class="grid grid-cols-2 gap-4 h-full w-full items-center justify-center">
 		${(winnerSide === 'left') ? gameWinContainer() + gameLoseContainer() : gameLoseContainer() + gameWinContainer()}
 	</div>`
 
-	const EndButton = new Button('loaddashboard', "1/2", 'Back to Dashboard', 'back-to-dashboard', 'secondary', 'button');
+    const EndButton = new Button('loaddashboard', "1/2", 'Back to Dashboard', 'back-to-dashboard', 'secondary', 'button');
 
-	endDiv += 	`<div class="flex space-y-4 justify-center items-center w-full h-full p-4">
+    endDiv += `<div class="flex space-y-4 justify-center items-center w-full h-full p-4">
 		${EndButton.primaryButton()}
 	</div>`
 	} else {
@@ -44,27 +44,27 @@ export async function DisplayGameWinLose(data: any) {
 			${(isWin) ? gameWinContainer() : gameLoseContainer()}
 		</div>`;
 
-		const EndButton = new Button('loaddashboard', "1/2", 'Back to Dashboard', 'back-to-dashboard', 'secondary', 'button');
+    const EndButton = new Button('loaddashboard', "1/2", 'Back to Dashboard', 'back-to-dashboard', 'secondary', 'button');
 
-		endDiv += `<div class="flex space-y-4 justify-center items-center w-full h-full p-4">
+    endDiv += `<div class="flex space-y-4 justify-center items-center w-full h-full p-4">
 			${EndButton.primaryButton()}
 		</div>`;
-	}
+  }
 
 
-	const game = document.getElementById("hiddenGame") as HTMLDivElement;
-	game.classList.replace("opacity-100", "opacity-0");
-	setTimeout(() => {
-		game.classList.add("hidden");
-		document.getElementById("gameWin")!.innerHTML = endDiv;
-		translatePage(user.preferences.lang);
-	}, 500);
+  const game = document.getElementById("hiddenGame") as HTMLDivElement;
+  game.classList.replace("opacity-100", "opacity-0");
+  setTimeout(() => {
+    game.classList.add("hidden");
+    document.getElementById("gameWin")!.innerHTML = endDiv;
+    translatePage(user.preferences.lang);
+  }, 500);
 
-	
+
 }
 function gameWinContainer() {
 
-return `
+  return `
 <div class="flex flex-col justify-center items-center w-full h-full">
 	<div class="flex flex-col items-center justify-center">
 		<img src="/images/duckWin.png" alt="Duck Happy" class="w-140 h-140" />
@@ -78,7 +78,7 @@ return `
 
 function gameLoseContainer() {
 
-return `
+  return `
 <div class="flex flex-col justify-center items-center w-full h-full">
 	<div class="flex flex-col items-center justify-center">
 		<img src="/images/duckLose.png" alt="Duck Sad" class="w-140 h-140" />

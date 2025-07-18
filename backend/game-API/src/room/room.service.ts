@@ -13,23 +13,13 @@ export class RoomService {
     gameName: string,
     gameType: GameType,
     userId: string,
-    playerName?: string/* ,
-    privateRoom: boolean = false,
-    userIdInvited: string = undefined */
+    playerName?: string
   ) {
     let roomId = undefined;
 
-    console.log("data", /* privateRoom, userIdInvited, */ gameType);
+    console.log("data", gameType);
     const player = await RoomService.createPlayer(userId, playerName);
 
-    // Case for private room with an invited user
-/*     if (privateRoom && userIdInvited && gameType === 'online') {
-      PendingService.addPending(userId, userIdInvited, {
-        roomName: gameName,
-        playerName: playerName
-      }).catch(console.error);
-      return roomId;
-    } */
 
     if (gameType === 'tournament') {
       let tournamentId = undefined;
@@ -44,14 +34,18 @@ export class RoomService {
       return tournamentId;
     }
 
-    // Case for joining an existing room with Matchmaking
-    roomId = RoomManager.getInstance().joinRoom(player);
-
-    // If no room was found, create a new one
-    if (!roomId) {
-      roomId = RoomManager.getInstance().createRoom(gameName, gameType, false, playerName);
-      RoomManager.getInstance().joinRoom(player, roomId);
+    if (gameType === 'online') {
+      // Case for joining an existing room with Matchmaking
+      roomId = RoomManager.getInstance().joinRoom(player);
+      if (!roomId) {
+        roomId = RoomManager.getInstance().createRoom(gameName, gameType, false, playerName);
+        RoomManager.getInstance().joinRoom(player, roomId);
+      }
+      return roomId;
     }
+
+    roomId = RoomManager.getInstance().createRoom(gameName, gameType, true, playerName);
+    RoomManager.getInstance().joinRoom(player, roomId);
     return roomId;
   }
 
