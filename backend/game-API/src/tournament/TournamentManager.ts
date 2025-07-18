@@ -16,6 +16,10 @@ export class TournamentManager {
     return this.instance;
   }
 
+  public findCurrentTournament(player: Player) : Tournament {
+    return this.playersInTournament.get(player.id);
+  }
+
   public createTournament() {
     const tournament = new Tournament();
     this.tournaments.set(tournament.id, tournament);
@@ -46,6 +50,11 @@ export class TournamentManager {
       }
     })
     return tournamentId; 
+  }
+
+  public removePlayer(player: Player) {
+    this.playersInTournament.get(player.id).removePlayer(player);
+    this.playersInTournament.delete(player.id);
   }
 
   public deleteTournament(id: string) {

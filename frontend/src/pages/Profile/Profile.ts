@@ -64,7 +64,7 @@ async function renderProfilePage(user: IUserInfo) {
 	const cancelImage = new Button("cancel-image", "1/2", "Cancel", "cancel", "secondary", "button");
 	
 return `
-${navbar(user)}
+${await navbar(user)}
 ${backButton()}
 <div id="divImage" class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
 	
@@ -155,7 +155,7 @@ export async function changeUserNameEmail() {
 			return alertTemporary("error", trad["email-already-in-use"], user.preferences.theme, true, true);
 		} else {
 			userNewEmail = values.email;
-			renderPublicPage('verifyEmail');
+			renderPrivatePage('verifyEmail');
 			return;
 		}
 	}

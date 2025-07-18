@@ -107,6 +107,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'accept-invitation-game': (event) => FetchInterface.acceptGameInvitation(event.target as HTMLElement),
 	'refuse-invitation-game': (event) => FetchInterface.refuseGameInvitation(event.target as HTMLElement),
 	'cancel-invitation-game': (event) => FetchInterface.cancelGameInvitation(event.target as HTMLElement),
+	'cancel-waiting-game': () => FetchInterface.cancelWaitingGame(),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 🔔 NOTIFICATIONS

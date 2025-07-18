@@ -1,4 +1,4 @@
-import { UnauthorizedError } from '@transcenduck/error';
+import { UnauthorizedError, NotFoundError, ConflictError } from '@transcenduck/error';
 
 import { Player } from '../core/runtime/Player.js';
 import { GameType } from './room.schema.js';
@@ -77,4 +77,49 @@ export class RoomService {
     const room = RoomManager.getInstance().getRoomById(room_id);
     return room;
   }
+
+  static async findPlayer(userId: string, roomType: string) {
+    const tmpPlayer = await this.createPlayer(userId);
+
+    if (roomType === 'online') {
+      const room = RoomManager.getInstance().findCurrentRoom(tmpPlayer);
+      if (room === undefined) {
+        throw new NotFoundError('User');
+      }
+      if (!room.isJoinable()) {
+        throw new ConflictError('User is playing');
+      }
+    } else if (roomType === 'tournament') {
+      const tournament = TournamentManager.getInstance().findCurrentTournament(tmpPlayer);
+      if (tournament === undefined) {
+        throw new NotFoundError('User');
+      }
+      if (!tournament.isJoinable()) {
+        throw new ConflictError('User is playing');
+      }
+    }
+  }
+
+  static async removePlayer(userId: string, roomType: string) {
+    const tmpPlayer = await this.createPlayer(userId);
+    if (roomType === 'online') {
+      const room = RoomManager.getInstance().findCurrentRoom(tmpPlayer);
+      if (room === undefined) {
+        throw new NotFoundError('User');
+      }
+      if (room.getStatus() !== 'waiting') {
+        throw new ConflictError('User is playing');
+      }
+      RoomManager.getInstance().stopRoom(room.id, false);
+    } else if (roomType === 'tournament') {
+      const tournament = TournamentManager.getInstance().findCurrentTournament(tmpPlayer);
+      if (tournament === undefined) {
+        throw new NotFoundError('User');
+      }
+      if (tournament.getStatus() !== 'waiting') {
+        throw new ConflictError('User is playing');
+      }
+      TournamentManager.getInstance().removePlayer(tmpPlayer);
+    }
+  }  
 }

@@ -57,6 +57,8 @@ export class Room {
     IOInterface.subscribe(`ws:all:broadcast:all`, this.deconnexion.bind(this));
   }
 
+  getStatus(): string { return this.status };
+
   isJoinable(): boolean { return (this.status === 'waiting' && this.nbPlayers() < MAX_PLAYER && this.privateRoom === false); }
   nbPlayers() { return this.players.size; }
 

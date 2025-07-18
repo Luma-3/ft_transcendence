@@ -37,8 +37,8 @@ export async function DisplayGameWinLose(data: any) {
     endDiv += `<div class="flex space-y-4 justify-center items-center w-full h-full p-4">
 		${EndButton.primaryButton()}
 	</div>`
-  } else {
-    endDiv = `${navbar(user)}
+	} else {
+		endDiv = `${await navbar(user)}
 		${backButton()}
 		<div class="flex flex-col w-full items-center justify-center">
 			${(isWin) ? gameWinContainer() : gameLoseContainer()}
