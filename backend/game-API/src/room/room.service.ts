@@ -4,8 +4,8 @@ import { Player } from '../core/runtime/Player.js';
 import { GameType } from './room.schema.js';
 
 import { RoomManager } from '../core/runtime/RoomManager.js';
-import { IOInterface } from '../utils/IOInterface.js';
 import { TournamentManager } from '../tournament/TournamentManager.js';
+import { randomNameGenerator } from '../core/runtime/randomName.js';
 
 export class RoomService {
 
@@ -13,25 +13,23 @@ export class RoomService {
     gameName: string,
     gameType: GameType,
     userId: string,
-    playerName?: string,
+    playerName?: string/* ,
     privateRoom: boolean = false,
-    userIdInvited: string = undefined
+    userIdInvited: string = undefined */
   ) {
     let roomId = undefined;
 
-    console.log("data", privateRoom, userIdInvited, gameType);
+    console.log("data", /* privateRoom, userIdInvited, */ gameType);
     const player = await RoomService.createPlayer(userId, playerName);
 
     // Case for private room with an invited user
-    if (privateRoom && userIdInvited && gameType === 'online') {
-      roomId = RoomManager.getInstance().createRoom(gameName, gameType, privateRoom);
-      RoomManager.getInstance().joinRoom(player, roomId);
-      IOInterface.send(
-        JSON.stringify({ action: 'invitation', data: { roomId } }),
-        userIdInvited
-      );
+/*     if (privateRoom && userIdInvited && gameType === 'online') {
+      PendingService.addPending(userId, userIdInvited, {
+        roomName: gameName,
+        playerName: playerName
+      }).catch(console.error);
       return roomId;
-    }
+    } */
 
     if (gameType === 'tournament') {
       let tournamentId = undefined;
@@ -76,7 +74,7 @@ export class RoomService {
   }
 
   static async createPrivateRoom(player: Player) {
-    const room_id = RoomManager.getInstance().createRoom(player.id, 'online', true);
+    const room_id = RoomManager.getInstance().createRoom(randomNameGenerator(), 'online', true);
     RoomManager.getInstance().joinRoom(player, room_id);
     return room_id;
   }

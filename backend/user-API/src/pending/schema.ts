@@ -4,6 +4,7 @@ export * from '../preferences/schema.js';
 export * from '../users/schema.js';
 
 
+
 export const PendingDBSchema = Type.Object({
   id: Type.Integer(),
   user_id: Type.String({ format: 'uuid', description: 'ID of the user who received the pending request' }),

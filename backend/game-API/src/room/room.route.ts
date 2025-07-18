@@ -3,7 +3,7 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { ResponseSchema } from '../utils/schema.js';
 import { InternalServerErrorResponse, NotFoundResponse } from '@transcenduck/error';
 import { GetRoomsHandler, PostRoomHandler, PostRoomIdHandler } from './controller.js';
-import { RoomResponseSchema, RoomParamSchema, RoomBodySchema, HeaderBearerSchema, RoomQuerySchema, RoomParamIdSchema, RoomParamUserIdSchema, RoomArray } from './room.schema.js';
+import { RoomResponseSchema, RoomParamSchema, RoomBodySchema, HeaderBearerSchema, /* RoomQuerySchema, */ RoomParamIdSchema, RoomParamUserIdSchema, RoomArray } from './room.schema.js';
 
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
@@ -13,7 +13,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       body: RoomBodySchema,
       headers: HeaderBearerSchema,
       params: RoomParamSchema,
-      querystring: RoomQuerySchema,
+/*    querystring: RoomQuerySchema, */
       response: {
         201: ResponseSchema(RoomResponseSchema, 'Player added to room'),
         404: NotFoundResponse,

@@ -1,6 +1,6 @@
 import { FetchInterface, IGameFormInfo } from "../api/FetchInterface";
 import { renderErrorPage } from "./renderPage";
-import { IOtherUser, IUserInfo } from "../interfaces/IUser";
+import { IOtherUser } from "../interfaces/IUser";
 import { addFriendButton } from "../pages/Friends/Lists/allUsersList";
 import { createRoomInServer } from "../events/game/gameInit";
 

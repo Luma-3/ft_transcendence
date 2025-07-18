@@ -63,7 +63,7 @@ export const RoomResponseSchema = Type.Object({
 
 export type RoomResponseType = Static<typeof RoomResponseSchema>;
 
-
+/* 
 export const RoomQuerySchema = Type.Object({
   privateRoom: Type.Optional(Type.Boolean({
     description: "Indicates if the room is private",
@@ -74,7 +74,7 @@ export const RoomQuerySchema = Type.Object({
     examples: ["123e4567-e89b-12d3-a456-426614174000"]
   }))
 })
-export type RoomQueryType = Static<typeof RoomQuerySchema>;
+export type RoomQueryType = Static<typeof RoomQuerySchema>; */
 
 export const RoomData = Type.Object({
   id: Type.String({

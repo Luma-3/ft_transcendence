@@ -3,6 +3,7 @@ import { gameType } from "../../room/player.schema.js";
 import { LoopManager } from "../loop/LoopManager.js";
 import { Player } from "./Player.js";
 import { AsyncLocalStorage } from "async_hooks";
+import { NotFoundError } from "@transcenduck/error";
 
 export class SceneContext {
   private static storage = new AsyncLocalStorage<SceneContext>();
@@ -33,7 +34,7 @@ export class SceneContext {
 
   static get(): SceneContext {
     const ctx = this.storage.getStore();
-    if (!ctx) throw new Error("SceneContext not initialized. Use SceneContext.run() to create a context.");
+    if (!ctx) throw new NotFoundError("SceneContext not initialized. Use SceneContext.run() to create a context.");
     return ctx
   }
 }

@@ -2,8 +2,8 @@ import { FetchInterface } from "../api/FetchInterface";
 import { fadeIn, fadeOut } from "../components/utils/fade";
 import { removeLoadingScreen } from "../components/utils/removeLoadingScreen";
 import { setupColorTheme } from "../components/utils/setColorTheme";
+import { truncateText } from "../components/utils/truncateText";
 import { translatePage } from "../controllers/Translate";
-import { ITournamentInfo } from "../interfaces/IGame";
 import { sendInSocket } from "../socket/Socket";
 
 export async function initTournament(data: any) {
@@ -17,8 +17,8 @@ export async function initTournament(data: any) {
 	fadeOut();
 	setTimeout(async () => {
 		const main_container = document.querySelector<HTMLDivElement>('#app')!;
-		main_container.innerHTML = tournamentHtml(data, user.id);
-		
+		main_container.innerHTML = tournamentHtml(data);
+
 		setupColorTheme(user.preferences.theme);
 		translatePage(user.preferences.lang);
 		window.scrollTo(0, 0);
@@ -30,7 +30,7 @@ export async function initTournament(data: any) {
 }
 
 
-export function tournamentHtml(data: any, userId: string) {
+export function tournamentHtml(data: any) {
 	console.log("Rendering tournament matches", data);
   // Dimensions fixes pour garantir l'alignement
   const boxWidth = 300;
@@ -63,11 +63,14 @@ export function tournamentHtml(data: any, userId: string) {
   }
 
 	const winners = ["?", "?"];
+	const winnerImages = ["/images/duckHappy.png", "/images/duckHappy.png"];
 	if (data.rooms[0][0].win !== undefined || data.rooms[0][1].win !== undefined) {
 		winners[0] = (data.rooms[0][0].win !== undefined) ? data.rooms[0][0].player_name : data.rooms[0][1].player_name;
+		winnerImages[0] = (data.rooms[0][0].win !== undefined) ? data.rooms[0][0].avatar : data.rooms[0][1].avatar;
 	} 
 	if (data.rooms[1][0].win !== undefined || data.rooms[1][1].win !== undefined) {
 		winners[1] = (data.rooms[1][0].win != undefined) ? data.rooms[1][0].player_name : data.rooms[1][1].player_name;
+		winnerImages[1] = (data.rooms[1][0].win != undefined) ? data.rooms[1][0].avatar : data.rooms[1][1].avatar;
 	}
 
   return `
@@ -76,28 +79,31 @@ export function tournamentHtml(data: any, userId: string) {
 	</div>
 	<div class="relative mx-auto" style="width:${containerWidth}px; height:${containerHeight}px;">
 	  <svg class="absolute left-0 top-0 pointer-events-none" width="${containerWidth}" height="${containerHeight}" style="z-index:0">
+		
 		<!-- Match 1 -->
 		<polyline points="${match1.x},${match1.y} ${midX},${match1.y} ${midX},${finalY} ${finalX},${finalY}" fill="none" stroke="#888" stroke-width="3" />
 		<!-- Badge gagnant match 1 -->
-		<circle cx="${midX}" cy="${match1.y}" r="18" fill="#fff" stroke="#888" stroke-width="3" />
-		<text x="${midX}" y="${match1.y + 6}" text-anchor="middle" font-size="20" fill="#744FAC" font-family="Arial">${winners[0]}</text>
+		<rect x="${midX - 40}" y="${match1.y - 15}" width="80" height="30" rx="15" fill="#744FAC" stroke="#fff" stroke-width="2" />
+		<text x="${midX}" y="${match1.y + 5}" text-anchor="middle" font-size="12" fill="#fff" font-family="Arial, sans-serif" font-weight="bold">${truncateText(winners[0], 10)}</text>
+		
 		<!-- Match 2 -->
 		<polyline points="${match2.x},${match2.y} ${midX},${match2.y} ${midX},${finalY} ${finalX},${finalY}" fill="none" stroke="#888" stroke-width="3" />
+		
 		<!-- Badge gagnant match 2 -->
-		<circle cx="${midX}" cy="${match2.y}" r="18" fill="#fff" stroke="#888" stroke-width="3" />
-		<text x="${midX}" y="${match2.y + 6}" text-anchor="middle" font-size="20" fill="#744FAC" font-family="Arial">${winners[1]}</text>
+		<rect x="${midX - 40}" y="${match2.y - 15}" width="80" height="30" rx="15" fill="#744FAC" stroke="#fff" stroke-width="2" />
+		<text x="${midX}" y="${match2.y + 5}" text-anchor="middle" font-size="12" fill="#fff" font-family="Arial, sans-serif" font-weight="bold">${truncateText(winners[1], 10)}</text>
 	  </svg>
 	  <div class="absolute" style="top:${match1Top}px; left:${leftCol}px; width:${boxWidth}px; height:${boxHeight}px;">
 		<div class="flex flex-col items-center bg-primary dark:bg-dprimary text-secondary dark:text-dtertiary border rounded-lg p-6 w-full min-h-[200px] shadow-lg">
-		  <div class="font-title text-xl mb-2">Match actuel</div>
+		  <div class="font-title text-xl mb-2" translate="semi-finals1">Match actuel</div>
 		  <div class="flex flex-row gap-2 justify-center items-center">
 			<div class="flex flex-col items-center">
-			  <img src="/images/duckHappy.png" alt="Match Image" class="w-24 h-24 rounded-full mb-2">
+			  <img src=${data.rooms[0][0].avatar} alt="Match Image" class="w-24 h-24 rounded-full mb-2">
 			  <span class="truncate">${data.rooms[0][0].player_name}</span>
 			</div>
 			<span class="text-center text-md text-gray-400">vs</span>
 			<div class="flex flex-col items-center">
-			  <img src="/images/duckHappy.png" alt="Match Image" class="w-24 h-24 rounded-full mb-2">
+			  <img src=${data.rooms[0][1].avatar} alt="Match Image" class="w-24 h-24 rounded-full mb-2">
 			  <span class="truncate">${data.rooms[0][1].player_name}</span>
 			</div>
 		  </div>
@@ -105,14 +111,15 @@ export function tournamentHtml(data: any, userId: string) {
 	  </div>
 	  <div class="absolute" style="top:${match2Top}px; left:${leftCol}px; width:${boxWidth}px; height:${boxHeight}px;">
 		<div class="flex flex-col items-center bg-secondary dark:bg-dsecondary text-primary dark:text-dprimary border rounded-lg p-6 w-full min-h-[200px] shadow-lg">
+			<div class="font-title text-xl mb-2" translate="semi-finals2">Match actuel</div>
 		  <div class="flex flex-row gap-2 items-center">
 			<div class="flex flex-col items-center">
-			  <img src="/images/duckHappy.png" alt="Match Image" class="w-24 h-24 rounded-full mb-2">
+			  <img src=${data.rooms[1][0].avatar} alt="Match Image" class="w-24 h-24 rounded-full mb-2">
 			  <span class="truncate">${data.rooms[1][0].player_name}</span>
 			</div>
 			<span class="text-center text-md text-gray-400">vs</span>
 			<div class="flex flex-col items-center">
-			  <img src="/images/duckHappy.png" alt="Match Image" class="w-24 h-24 rounded-full mb-2">
+			  <img src=${data.rooms[1][1].avatar} alt="Match Image" class="w-24 h-24 rounded-full mb-2">
 			  <span class="truncate">${data.rooms[1][1].player_name}</span>
 			</div>
 		  </div>
@@ -120,15 +127,15 @@ export function tournamentHtml(data: any, userId: string) {
 	  </div>
 	  <div class="absolute" style="top:${finalTop}px; left:${finalLeft}px; width:${finalBoxWidth}px; height:${boxHeight}px;">
 		<div class="flex flex-col items-center bg-primary dark:bg-dprimary text-secondary dark:text-dtertiary border rounded-lg p-6 w-full min-h-[200px] shadow-lg">
-		  <div class="font-title text-xl mb-2">Final</div>
+		  <div class="font-title text-xl mb-2" translate="final">Final</div>
 		  <div class="flex flex-row gap-2 justify-center items-center">
 			<div class="flex flex-col items-center">
-				<img src="/images/duckHappy.png" alt="Match Image" class="w-24 h-24 rounded-full mb-2">
+				<img src=${winnerImages[0]} alt="Match Image" class="w-24 h-24 rounded-full mb-2">
 				<span class="truncate">${finalPlayer1}</span>
 			</div>
 			<span class="text-center text-md text-gray-400">vs</span>
 			<div class="flex flex-col items-center">
-			  <img src="/images/duckHappy.png" alt="Match Image" class="w-24 h-24 rounded-full mb-2">
+			  <img src=${winnerImages[1]} alt="Match Image" class="w-24 h-24 rounded-full mb-2">
 			  <span class="truncate">${finalPlayer2}</span>
 			</div>
 		  </div>

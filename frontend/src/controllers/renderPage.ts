@@ -132,7 +132,6 @@ import { redocInit } from '../components/utils/redocInit'
 import { dispatchError } from './DispatchError'
 import { socket, socketConnection } from '../socket/Socket'
 import { FetchInterface } from '../api/FetchInterface'
-import { tournamentMatches } from '../pages/Tournament'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 
@@ -201,7 +200,7 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 const logoDoc: { [key: string]: string } = {
   'user': '/images/duckHandsUp.png',
   'upload': '/images/duckUpload.png',
-  'game': '/images/dashboard.png',
+  'game': '/images/logoGameApi.png',
   'auth': '/images/duckPolice.png',
 };
 
@@ -209,7 +208,6 @@ export async function renderDocPages(page: string, index_logo: string) {
 
   const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
 	if (!redoc_container) {
-		console.error('Redoc container not found');
 		return;
 	}
 	redoc_container.classList.remove('hidden');
@@ -228,7 +226,6 @@ export async function renderDocPages(page: string, index_logo: string) {
 
 
 export async function render2FaPages(action: string) {
-	console.log("render2FaPages called with action:", action);
 	
 	let user = undefined;
 	if (action !== 'login') {

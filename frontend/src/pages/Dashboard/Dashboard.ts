@@ -29,7 +29,7 @@ ${navbar(user)}
 		<div class="flex flex-col w-full justify-center items-center space-y-4 text-primary dark:text-dtertiary mb-10 ">
 			<div class="flex flex-col w-full mb-10 max-w-[1000px] items-center justify-center pt-5">
 				<!-- Badge de rang trop cool -->
-				${generateRankBadge(user)}
+				${await generateRankBadge(user)}
 			</div>
 		</div>
 
@@ -42,8 +42,6 @@ ${navbar(user)}
 		
 		${gameTypes()}
 		
-
-
 		<!-- Bloc stats animé -->
 		<div class="flex w-full justify-center items-center mb-10">
 		${playButton.primaryButton()}

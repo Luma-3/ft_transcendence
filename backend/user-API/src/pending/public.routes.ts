@@ -3,9 +3,8 @@ import { PendingsController } from './controller.js';
 import { PendingParamSchema, PendingResponseSchema, UserHeaderAuthentication, TypePendingQuerySchema, AcceptParamSchema } from './schema.js';
 import { ResponseSchema } from '../utils/schema.js';
 import { ConflictResponse, InternalServerErrorResponse, NotFoundResponse } from '@transcenduck/error';
-import { FastifyInstance } from 'fastify';
 
-const route: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance) => {
+const route: FastifyPluginAsyncTypebox = async (fastify) => {
     fastify.get('/pending', {
         schema: {
             summary: 'Get pending requests',

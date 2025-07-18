@@ -8,6 +8,7 @@ import { loadTranslation } from "../controllers/Translate";
 import { IOtherUser, IUserInfo, IUserPreferences, UserSearchResult } from "../interfaces/IUser";
 import { IApiResponse } from "../interfaces/IApi";
 import { startEmailCooldown } from "../components/utils/sendEmail";
+import { updateAllLists } from "../pages/Friends/Lists/updatersList";
 
 export class FetchInterface {
   private constructor() { }
@@ -24,7 +25,6 @@ export class FetchInterface {
 			body: JSON.stringify(userData)
 		});
 		if (response.status !== "success") {
-			console.log("Error in registerUser:", response.message);
 				const trad = await loadTranslation(userData.preferences.lang);
 				alertPublic(trad[response.message] ?? response.message, "error");
 				return false;
@@ -39,7 +39,6 @@ export class FetchInterface {
 
     const confirmResponse = await alert("are-you-sure", "warning");
     if (confirmResponse) {
-      console.log("User confirmed logout");
       const responseApi = await fetchApiWithNoError(API.API_SESSION.DELETE, {
         method: 'DELETE',
         headers: {
@@ -171,7 +170,19 @@ export class FetchInterface {
       window.location.href = '/';
     }
   }
-
+  /**
+   * ! Update Preferences
+   */
+  public static async updatePreferences(elementToUpdate: string, newElementValue: string): Promise<boolean> {
+    const response = await fetchApiWithNoError(API.API_USER.UPDATE.PREF.ALL, {
+      method: "PATCH",
+      body: JSON.stringify({
+        [elementToUpdate]: newElementValue,
+      })
+    });
+    console.log("Update Preferences response:", response);
+    return response.status !== "error";
+  }
   /**
    * ! Change / Update Password
    */
@@ -184,9 +195,9 @@ export class FetchInterface {
       }),
     });
     if (response.status === "error") {
-      return await alertTemporary("error", trad['wrong-password'] ?? response.message, customTheme.theme, true);
+      return alertTemporary("error", 'wrong-password', customTheme.theme, true, true);
     }
-    return await alertTemporary("success", trad['password-updated'], customTheme.theme, true, true);
+    return alertTemporary("success", 'password-updated', customTheme.theme, true, true);
 	}
 
   /**
@@ -225,22 +236,18 @@ export class FetchInterface {
   /**
    * ! Update Username
   */
-  public static async updateUsername(newUsername: string ): Promise<boolean> {
+  public static async updateUsername(newUsername: string ): Promise<number | undefined> {
     const response = await fetchApiWithNoError(API.API_USER.UPDATE.USERNAME, {
       method: "PATCH",
       body: JSON.stringify({
         username: newUsername,
       }),
     });
-    if (response.status === "error") {
-      return false;
-    }
-    return true;
+    return response.code;
   }
   /**
    * ! Get all of my friends
    */
-  //TODO: Verifier si response.data est toujours present, pour mieux gerer les erreurs serveur
   public static async getFriends() {
     const response = await fetchApi<IOtherUser[]>(API.API_USER.SOCIAL.FRIENDS);
     return response.data ?? undefined;
@@ -266,13 +273,14 @@ export class FetchInterface {
     });
 
     if (response.status === "error") {
-      (action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true)
-        : alertTemporary("error", "issues-with-friend-acceptance", user.preferences!.theme, true, true);
+      (action === "send") 
+      ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true)
+        : alertTemporary("error", "issues-with-friend-acceptance", user.preferences.theme, true, true);
       return false;
     }
 
     if (action === "send") {
-      alertTemporary("success", "friend-invitation-sent", user.preferences!.theme, true, true);
+      alertTemporary("success", "friend-invitation-sent", user.preferences.theme, true, true);
       return true
     }
 
@@ -289,7 +297,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      await alertTemporary("error", "issues-with-invitation-cancelled", user.preferences.theme, true, true);
+      alertTemporary("error", "issues-with-invitation-cancelled", user.preferences.theme, true, true);
       return false;
     }
     return true;
@@ -305,7 +313,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      await alertTemporary("error", "issues-with-invitation-refused", user.preferences!.theme, true, true);
+      alertTemporary("error", "issues-with-invitation-refused", user.preferences.theme, true, true);
       return false;
     }
     return true;
@@ -360,6 +368,15 @@ export class FetchInterface {
     return response.data ?? undefined;
   }
 
+  /**
+   * ! Get Game Invitation
+   */
+  public static async getGameInvitations(params: "sender" | "receiver" = "sender") {
+    const response = await fetchApi<{id: string}[]>(API.API_GAME.NOTIFICATIONS + `?action=${params}`, {
+      method: 'GET',
+    });
+    return response.data ?? undefined;
+  }
 
   /**
    * ! Resend Verification Email
@@ -382,7 +399,7 @@ export class FetchInterface {
       method: state ? 'PUT' : 'DELETE',
     });
     if (response.status === "error") {
-      await alertTemporary("error", state ? "cannot-activate-2fa" : "cannot-desactivate-2fa", "dark", true, true);
+      alertTemporary("error", state ? "cannot-activate-2fa" : "cannot-desactivate-2fa", "dark", true, true);
       return false;
     }
     return true;
@@ -400,12 +417,11 @@ export class FetchInterface {
       method: 'POST',
       body: JSON.stringify({ code })
     });
-    console.log("Response from submit2FACode:", response, " Code:", code);
     if (response.status === 'error') {
-      await alertTemporary("error", "invalid-2fa-code", 'dark', false, true);
+      alertTemporary("error", "invalid-2fa-code", 'dark', false, true);
       return false;
     }
-    await alertTemporary("success", "2fa-code-verified", 'dark', false, true);
+    alertTemporary("success", "2fa-code-verified", 'dark', false, true);
     return true;
   }
 
@@ -431,7 +447,7 @@ export class FetchInterface {
       headers: { "Content-Type": "text/plain" }
     });
     if (response.status === "error") {
-      await alertTemporary("error", "cannot-activate-2fa", "dark", true, true);
+      alertTemporary("error", "cannot-activate-2fa", "dark", true, true);
       return false;
     }
     return true;
@@ -446,7 +462,7 @@ export class FetchInterface {
       headers: { "Content-Type": "text/plain" }
     });
     if (response.status === "error") {
-      await alertTemporary("error", "cannot-desactivate-2fa", "dark", true, true);
+      alertTemporary("error", "cannot-desactivate-2fa", "dark", true, true);
       return false;
     }
     return true;
@@ -469,11 +485,12 @@ export class FetchInterface {
     return true;
   }
 
-  public static async inviteToPlay(gameFormInfo: IGameFormInfo, user: IUserInfo, invitePlayerId: string) {
-    const response = await fetchApiWithNoError(API.API_GAME.CREATE + `/${gameFormInfo.gameType}?privateRoom=true&userIdInvited=${invitePlayerId}`, {
+  public static async inviteToPlay(_gameFormInfo: IGameFormInfo, user: IUserInfo, invitePlayerId: string) {
+    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/${invitePlayerId}`, {
       method: 'POST',
       body: JSON.stringify({
-        roomName: gameFormInfo.roomName,
+        roomName: _gameFormInfo.roomName,
+        gameType: _gameFormInfo.gameType
       })
     });
     if (response.status === "error") {
@@ -481,6 +498,56 @@ export class FetchInterface {
       return false;
     }
     alertTemporary("success", "player-invited", user.preferences.theme, true, true);
+    return true;
+  }
+
+  public static async acceptGameInvitation(element?: HTMLElement, otherId?: string): Promise<boolean> {
+    const id = element?.dataset.id || otherId;
+    if (!id) {
+      return false;
+    }
+    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/accept/${id}`, {
+      method: 'POST',
+      body: JSON.stringify({})
+    });
+    if (response.status === "error") {
+      alertTemporary("error", "issues-with-invitation-acceptance", 'dark', true, true);
+      return false;
+    }
+    return true;
+  }
+
+  public static async refuseGameInvitation(element: HTMLElement): Promise<boolean> {
+    const id = element.dataset.id;
+    if (!id) {
+      return false;
+    }
+    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/refuse/${id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({})
+    });
+    if (response.status === "error") {
+      alertTemporary("error", "issues-with-invitation-refusal", 'dark', true, true);
+      return false;
+    }
+
+    await updateAllLists();
+    return true;
+  }
+
+  public static async cancelGameInvitation(element: HTMLElement): Promise<boolean> {
+    const id = element.dataset.id;
+    if (!id) {
+      return false;
+    }
+    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/${id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({})
+    });
+    if (response.status === "error") {
+      alertTemporary("error", "issues-with-invitation-cancellation", 'dark', true, true);
+      return false;
+    }
     return true;
   }
 }
