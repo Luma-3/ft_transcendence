@@ -57,6 +57,7 @@ clean-package:
 clean-db:
 	@echo -e "$(RED)Nettoyage des bases de données...$(RESET)"
 	@rm -f backend/*/data/*.db
+	@rm -f redis/data/*
 	@echo -e "$(GREEN)Nettoyage terminé$(RESET)"
 
 

@@ -18,7 +18,7 @@ const plugin: FastifyPluginCallback<JWTOptions> = (fastify, opts, done) => {
   if (fastify.jwt) return done();
   fastify.register(jwt, opts);
 
-  fastify.addHook('onRequest', async function(req, _) {
+  fastify.addHook('onRequest', async function(req, rep) {
     console.log('JWT:' + req.url);
     const isPublic = opts.publicRoutes.some(route => {
       const nethodMatch = route.method.toUpperCase() === req.method.toUpperCase();
@@ -40,6 +40,7 @@ const plugin: FastifyPluginCallback<JWTOptions> = (fastify, opts, done) => {
     try {
       const user = fastify.jwt.verify<JWTPayload>(token);
       if (!user || !user.sub) {
+        rep.clearCookie('accessToken');
         throw new UnauthorizedError('Invalid token payload');
       }
 
@@ -47,6 +48,7 @@ const plugin: FastifyPluginCallback<JWTOptions> = (fastify, opts, done) => {
       // req.headers['x-user-username'] = user.username;
     }
     catch (error) {
+      rep.clearCookie('accessToken');
       throw new UnauthorizedError('Invalid or expired token');
     }
   });
