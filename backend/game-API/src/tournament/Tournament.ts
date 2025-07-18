@@ -69,7 +69,6 @@ export class Tournament {
     }
   }
 
-
   start() {
     this.status = 'playing';
     this.playerTournament = this.players;
@@ -154,6 +153,10 @@ export class Tournament {
     }
 
     this.players = this.players.filter(aPlayer => aPlayer !== player);
+    if (this.players.length === 0) {
+      this.stop();
+      return;
+    }
     this.playerTournament = [...this.players];
   }
 
