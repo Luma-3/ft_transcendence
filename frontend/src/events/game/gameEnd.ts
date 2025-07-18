@@ -25,7 +25,6 @@ export async function DisplayGameWinLose(data: any) {
       break;
     }
   }
-  console.log("DATA:", data);
   if (data.type === 'local') {
     endDiv = `${navbar(user)}
 	${backButton()}
