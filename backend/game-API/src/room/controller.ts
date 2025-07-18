@@ -26,6 +26,32 @@ export async function PostRoomHandler(
   });
 }
 
+export async function GetRoomHandler (
+  req: FastifyRequest<{ Headers: HeaderBearerType, Params: RoomParamType }>, rep: FastifyReply
+) {
+  const { roomType } = req.params;
+  const user_id = req.headers['x-user-id'] as string;
+
+  await RoomService.findPlayer(user_id, roomType);
+
+  return rep.code(200).send({
+    message: 'Player is waiting for a match'
+  });
+}
+
+export async function DeleteRoomHandler(
+  req: FastifyRequest<{ Headers: HeaderBearerType, Params: RoomParamType }>, rep: FastifyReply
+) {
+  const { roomType } = req.params;
+  const user_id = req.headers['x-user-id'] as string;
+
+  await RoomService.removePlayer(user_id, roomType);
+
+  return rep.code(200).send({
+    message: 'Player is waiting for a match'
+  });
+}
+
 export async function PostRoomIdHandler(
   req: FastifyRequest<{ Body: RoomBodyType, Params: RoomParamIdType, Headers: HeaderBearerType }>, rep: FastifyReply
 ) {

@@ -9,6 +9,7 @@ import { IOtherUser, IUserInfo, IUserPreferences, UserSearchResult } from "../in
 import { IApiResponse } from "../interfaces/IApi";
 import { startEmailCooldown } from "../components/utils/sendEmail";
 import { updateAllLists } from "../pages/Friends/Lists/updatersList";
+import { updateNavbar } from "../components/ui/navbar";
 
 export class FetchInterface {
   private constructor() { }
@@ -366,6 +367,39 @@ export class FetchInterface {
   public static async getNotifications(params: "sender" | "receiver" = "sender") {
     const response = await fetchApi<IOtherUser[]>(API.API_USER.SOCIAL.NOTIFICATIONS + `?action=${params}`);
     return response.data ?? undefined;
+  }
+  /**
+   * ! Get Waiting Game
+   */
+  public static async getWaitingGame(typeGame: string | null) { 
+    if (!typeGame) {
+      return false;
+    }
+    const response = await fetchApiWithNoError(API.API_GAME.GET_ALL_DATA + `player/${typeGame}`, {
+      method: 'GET',
+    });
+    return response.status === "success";  
+  }
+  
+  /**
+   * ! Cancel Waiting Game
+   */
+  public static async cancelWaitingGame() {
+    const gameType = sessionStorage.getItem("gameType");
+    if (!gameType) {
+      return false;
+    }
+    const response = await fetchApiWithNoError(API.API_GAME.GET_ALL_DATA + `player/${gameType}`, {
+      method: 'DELETE',
+      body: JSON.stringify({})
+    });
+    if (response.status === "success") {
+      sessionStorage.removeItem("gameType");
+      if (await updateNavbar()) {
+        alertTemporary("success", "Game cancelled successfully!", 'dark', true, true);
+      }
+    }
+    return response.status === "success";
   }
 
   /**

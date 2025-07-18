@@ -4,6 +4,7 @@ import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { FetchInterface, IGameFormInfo } from "../../api/FetchInterface";
 import { invitePlayerToPlay } from "../../controllers/searchHandler";
 import { socket, socketConnection } from "../../socket/Socket";
+import { updateNavbar } from "../../components/ui/navbar";
 
 function getPlayer2Name() {
   const inputValue = (document.getElementById("player2-name") as HTMLInputElement).value;
@@ -23,6 +24,7 @@ export async function initGame() {
   if (!gameType) {
     return alert("no-gametype-selected", "error");
   }
+  sessionStorage.setItem("gameType", gameType.id);
 
   const player2 = (gameType.id === "local") ? getPlayer2Name() : "";
   if (player2 === undefined) {
@@ -34,6 +36,10 @@ export async function initGame() {
     roomName: "MMA in Pound !",
     gameType: gameType.id,
   }
+  if (gameType.id === "online" || gameType.id === "tournament") {
+    updateNavbar();
+  }
+  
   if(gameType.id === "online" && gameFormInfo.playerName === "") {
     invitePlayerToPlay(gameFormInfo);
     return;

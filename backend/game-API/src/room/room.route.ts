@@ -1,12 +1,25 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 
 import { ResponseSchema } from '../utils/schema.js';
-import { InternalServerErrorResponse, NotFoundResponse } from '@transcenduck/error';
-import { GetRoomsHandler, PostRoomHandler, PostRoomIdHandler } from './controller.js';
+import { InternalServerErrorResponse, NotFoundResponse, ConflictResponse } from '@transcenduck/error';
+import { GetRoomsHandler, GetRoomHandler, PostRoomHandler, DeleteRoomHandler, PostRoomIdHandler } from './controller.js';
 import { RoomResponseSchema, RoomParamSchema, RoomBodySchema, HeaderBearerSchema, /* RoomQuerySchema, */ RoomParamIdSchema, RoomParamUserIdSchema, RoomArray } from './room.schema.js';
 
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
+
+  fastify.get('/rooms/player/:roomType', {
+    schema: {
+      headers: HeaderBearerSchema,
+      params: RoomParamSchema,
+      response: {
+        200: ResponseSchema(),
+        404: NotFoundResponse,
+        409: ConflictResponse,
+        500: InternalServerErrorResponse
+      }
+    }
+  }, GetRoomHandler);
 
   fastify.post('/rooms/:roomType', {
     schema: {
@@ -22,6 +35,19 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, PostRoomHandler);
 
+  fastify.delete('/rooms/player/:roomType', {
+    schema: {
+      headers: HeaderBearerSchema,
+      params: RoomParamSchema,
+      response: {
+        200: ResponseSchema(),
+        404: NotFoundResponse,
+        409: ConflictResponse,
+        500: InternalServerErrorResponse
+      }
+    }
+  }, DeleteRoomHandler)
+
   fastify.get('/rooms/:userId', {
      schema: {
       headers: HeaderBearerSchema,
@@ -33,6 +59,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       }
     }
   }, GetRoomsHandler);
+
 
 
   // fastify.get('/rooms/:game_id', {

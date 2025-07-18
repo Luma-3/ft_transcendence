@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { ConflictError } from '@transcenduck/error'
 
 import { Player } from "../core/runtime/Player.js";
 import { IOInterface } from '../utils/IOInterface.js';
@@ -41,6 +42,8 @@ export class Tournament {
     IOInterface.subscribe(`ws:all:broadcast:all`, this.error.bind(this));
     IOInterface.subscribe(`ws:all:broadcast:all`, this.deconnexion.bind(this));
   }
+
+  getStatus(): string { return this.status };
 
   isFinish(): boolean { return this.status === 'finished'; }
   isJoinable(): boolean { return this.status === 'waiting'; }
@@ -143,6 +146,15 @@ export class Tournament {
       IOInterface.unsubscribe(`ws:all:broadcast:all`);
       this.NextPool(this.playerTournament);
     }
+  }
+
+  removePlayer(player: Player) {
+    if (this.activeMatches.get(player.id) !== undefined || this.status !== 'waiting') {
+      throw new ConflictError('User Already playing');
+    }
+
+    this.players = this.players.filter(aPlayer => aPlayer !== player);
+    this.playerTournament = [...this.players];
   }
 
   createPairs(players: Player[]): [Player, Player][] {
