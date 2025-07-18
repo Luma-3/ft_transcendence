@@ -62,7 +62,7 @@ export async function alertChangePassword() {
 			}
 			return { oldPassword, newPassword };
 		}
-	}).then(async (result) => {
+	}).then(async (result: { isConfirmed: boolean; value: { oldPassword: string; newPassword: string } } ) => {
 		if (result.isConfirmed) {
 			await FetchInterface.updatePassword(result.value.oldPassword, result.value.newPassword, trad, customTheme)
 		}

@@ -19,7 +19,7 @@ export function headerPage(titlePage: string, typePage: string = "private") {
 			${logoSvg}
 		</div>`;
 	}
-	const backArrow = typePage === "public" ? backButtonPublicPage(titlePage) : backButton();
+	const backArrow = (typePage === "public") ? backButtonPublicPage(titlePage) : backButton();
 	
 return `
 <div class="flex flex-col w-full justify-center items-left">

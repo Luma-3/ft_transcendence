@@ -9,8 +9,8 @@ import { notificationList } from "./Lists/notificationsList";
 
 async function renderFriendsPage(user: IUserInfo) {
 return `
-${navbar(user)}
-${backButton()}
+${await navbar(user)}
+${backButton("dashboard")}
 
 
 <div class="flex flex-col justify-center items-center p-6 min-h-screen font-title">

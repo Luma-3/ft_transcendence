@@ -10,7 +10,7 @@ async function renderDashboard(user: IUserInfo) {
 	const playButton = new Button('initGame', "1/2", "Play", "play", "primary", "button" );
 
 return `
-${navbar(user)}
+${await navbar(user)}
 <div class="flex flex-col h-full w-full lg:flex-row space-y-4 justify-center items-center pt-10 mb-10">
 
 	<div class="flex flex-col transition-all duration-300 ease-in-outlg:flex-row max-w-[1200px]">

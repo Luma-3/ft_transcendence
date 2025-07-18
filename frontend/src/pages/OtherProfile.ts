@@ -71,7 +71,7 @@ export async function renderOtherProfile(container: HTMLElement, myUser: IUserIn
 	}
 
 	return `
-${navbar(myUser)}
+${await navbar(myUser)}
 ${backButton()}
 <div class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
 	${avatarBanner(user.preferences)}
@@ -79,7 +79,7 @@ ${backButton()}
 	<div class="flex flex-col w-full justify-center items-center space-y-4 text-primary dark:text-dtertiary mb-10 ">
 			<div class="flex flex-col w-full mb-10 max-w-[1000px] items-center justify-center pt-5">
 				<!-- Badge de rang trop cool -->
-				${generateRankBadge(user)}
+				${await generateRankBadge(user)}
 			</div>
 		</div>
 			<div class="flex w-full justify-center mb-4">
@@ -91,7 +91,7 @@ ${backButton()}
 				<!-- Bloc stats animé -->
 				<div id="lastGamesContainer" class="w-full flex justify-center items-center pointer-events-none">
 					<div id="lastGamesPanel" class="flex w-full justify-center pointer-events-auto transform translate-x-full opacity-0 transition-all duration-500">
-						${generateLastGames(user)}
+						${await generateLastGames(user)}
 					</div>
 				</div>
 </div>`

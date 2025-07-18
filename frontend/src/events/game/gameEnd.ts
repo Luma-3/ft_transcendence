@@ -26,7 +26,7 @@ export async function DisplayGameWinLose(data: any) {
 		}
 	}
 	if (data.gameType === 'local' || data.gameType === 'ia') {
-	endDiv = `${navbar(user)}
+	endDiv = `${await navbar(user)}
 	${backButton()}
 	<div class="grid grid-cols-2 gap-4 h-full w-full items-center justify-center">
 		${(winnerSide === 'left') ? gameWinContainer() + gameLoseContainer() : gameLoseContainer() + gameWinContainer()}
@@ -38,7 +38,7 @@ export async function DisplayGameWinLose(data: any) {
 		${EndButton.primaryButton()}
 	</div>`
 	} else {
-		endDiv = `${navbar(user)}
+		endDiv = `${await navbar(user)}
 		${backButton()}
 		<div class="flex flex-col w-full items-center justify-center">
 			${(isWin) ? gameWinContainer() : gameLoseContainer()}

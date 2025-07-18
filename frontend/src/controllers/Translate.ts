@@ -62,7 +62,7 @@ export function changeLanguage(lang: string) {
 	let language;
 	if (!lang) {
 		language = (document.getElementById('language') as HTMLSelectElement).value;
-		sessionStorage.setItem('lang', language);
+		localStorage.setItem('lang', language);
 	} else {
 		language = lang;
 	}
