@@ -132,7 +132,6 @@ import { redocInit } from '../components/utils/redocInit'
 import { dispatchError } from './DispatchError'
 import { socket, socketConnection } from '../socket/Socket'
 import { FetchInterface } from '../api/FetchInterface'
-import { tournamentMatches } from '../pages/Tournament'
 
 export async function renderOtherProfilePage(target: HTMLElement) {
 
@@ -201,7 +200,7 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 const logoDoc: { [key: string]: string } = {
   'user': '/images/duckHandsUp.png',
   'upload': '/images/duckUpload.png',
-  'game': '/images/dashboard.png',
+  'game': '/images/logoGameApi.png',
   'auth': '/images/duckPolice.png',
 };
 

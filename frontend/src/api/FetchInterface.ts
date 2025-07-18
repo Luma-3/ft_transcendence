@@ -195,9 +195,9 @@ export class FetchInterface {
       }),
     });
     if (response.status === "error") {
-      return await alertTemporary("error", trad['wrong-password'] ?? response.message, customTheme.theme, true);
+      return alertTemporary("error", 'wrong-password', customTheme.theme, true, true);
     }
-    return await alertTemporary("success", trad['password-updated'], customTheme.theme, true, true);
+    return alertTemporary("success", 'password-updated', customTheme.theme, true, true);
 	}
 
   /**
@@ -248,7 +248,6 @@ export class FetchInterface {
   /**
    * ! Get all of my friends
    */
-  //TODO: Verifier si response.data est toujours present, pour mieux gerer les erreurs serveur
   public static async getFriends() {
     const response = await fetchApi<IOtherUser[]>(API.API_USER.SOCIAL.FRIENDS);
     return response.data ?? undefined;
@@ -274,13 +273,14 @@ export class FetchInterface {
     });
 
     if (response.status === "error") {
-      (action === "send") ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true)
-        : alertTemporary("error", "issues-with-friend-acceptance", user.preferences!.theme, true, true);
+      (action === "send") 
+      ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true)
+        : alertTemporary("error", "issues-with-friend-acceptance", user.preferences.theme, true, true);
       return false;
     }
 
     if (action === "send") {
-      alertTemporary("success", "friend-invitation-sent", user.preferences!.theme, true, true);
+      alertTemporary("success", "friend-invitation-sent", user.preferences.theme, true, true);
       return true
     }
 
@@ -297,7 +297,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      await alertTemporary("error", "issues-with-invitation-cancelled", user.preferences.theme, true, true);
+      alertTemporary("error", "issues-with-invitation-cancelled", user.preferences.theme, true, true);
       return false;
     }
     return true;
@@ -313,7 +313,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      await alertTemporary("error", "issues-with-invitation-refused", user.preferences!.theme, true, true);
+      alertTemporary("error", "issues-with-invitation-refused", user.preferences.theme, true, true);
       return false;
     }
     return true;
@@ -399,7 +399,7 @@ export class FetchInterface {
       method: state ? 'PUT' : 'DELETE',
     });
     if (response.status === "error") {
-      await alertTemporary("error", state ? "cannot-activate-2fa" : "cannot-desactivate-2fa", "dark", true, true);
+      alertTemporary("error", state ? "cannot-activate-2fa" : "cannot-desactivate-2fa", "dark", true, true);
       return false;
     }
     return true;
@@ -418,10 +418,10 @@ export class FetchInterface {
       body: JSON.stringify({ code })
     });
     if (response.status === 'error') {
-      await alertTemporary("error", "invalid-2fa-code", 'dark', false, true);
+      alertTemporary("error", "invalid-2fa-code", 'dark', false, true);
       return false;
     }
-    await alertTemporary("success", "2fa-code-verified", 'dark', false, true);
+    alertTemporary("success", "2fa-code-verified", 'dark', false, true);
     return true;
   }
 
@@ -447,7 +447,7 @@ export class FetchInterface {
       headers: { "Content-Type": "text/plain" }
     });
     if (response.status === "error") {
-      await alertTemporary("error", "cannot-activate-2fa", "dark", true, true);
+      alertTemporary("error", "cannot-activate-2fa", "dark", true, true);
       return false;
     }
     return true;
@@ -462,7 +462,7 @@ export class FetchInterface {
       headers: { "Content-Type": "text/plain" }
     });
     if (response.status === "error") {
-      await alertTemporary("error", "cannot-desactivate-2fa", "dark", true, true);
+      alertTemporary("error", "cannot-desactivate-2fa", "dark", true, true);
       return false;
     }
     return true;
@@ -511,7 +511,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      await alertTemporary("error", "issues-with-invitation-acceptance", 'dark', true, true);
+      alertTemporary("error", "issues-with-invitation-acceptance", 'dark', true, true);
       return false;
     }
     return true;
@@ -527,7 +527,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      await alertTemporary("error", "issues-with-invitation-refusal", 'dark', true, true);
+      alertTemporary("error", "issues-with-invitation-refusal", 'dark', true, true);
       return false;
     }
 
@@ -545,7 +545,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      await alertTemporary("error", "issues-with-invitation-cancellation", 'dark', true, true);
+      alertTemporary("error", "issues-with-invitation-cancellation", 'dark', true, true);
       return false;
     }
     return true;

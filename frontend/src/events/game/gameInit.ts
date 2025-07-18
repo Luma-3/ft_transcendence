@@ -48,11 +48,10 @@ export async function createRoomInServer(gameFormInfo: IGameFormInfo) {
   }
   const success = await FetchInterface.createGameInServer(gameFormInfo);
 
-  // TODO : Traduction
   if (!success) {
     alertTemporary("error", "cannot-create-game-wait-and-retry", userPref.theme, true, true);
     return;
   }
   document.getElementById("create-game")?.classList.add("disabled");
-  alertTemporary("success", "game-created-successfully", 'dark', true, true);
+  alertTemporary("success", "game-created-successfully", userPref.theme, true, true);
 }
