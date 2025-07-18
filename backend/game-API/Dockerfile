@@ -1,11 +1,14 @@
 FROM base
 
-WORKDIR /app
+COPY package.json ./
+COPY tsconfig.json ./ 
+COPY ./src ./src/
+COPY ./migrations ./migrations/
+COPY ./knexfile.ts ./knexfile.ts
 
-COPY package*.json ./
-COPY tsconfig.json ./
-COPY nodemon.json ./
+RUN npm i -g knex && \
+    npm install && \
+    npm run build
 
-RUN npm install
+ENTRYPOINT ["bash", "-c", "npm run migrate && npm run start"]
 
-CMD ["npm", "run", "dev"]

@@ -8,8 +8,10 @@ import swagger from "./plugin/swagger.js";
 import formatter from "@transcenduck/formatter";
 import { destroyKnex } from "./utils/knex.js";
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const server = fastify({
-  logger: true,
+  ...(isDev && { logger: true }),
   https: {
     key: fs.readFileSync('/etc/certs/www.transcenduck.fr.key'),
     cert: fs.readFileSync('/etc/certs/www.transcenduck.fr.crt'),

@@ -25,7 +25,6 @@ services:
     container_name: gateway
     env_file: ".env"
     volumes:
-      - ./backend/gateway/src:/app/src:z
       - ./.certs:/etc/certs:z
     depends_on:
       - base
@@ -45,8 +44,7 @@ services:
     container_name: auth-API
     env_file: ".env"
     volumes:
-      - ./backend/auth-API/data:/app/data:z
-      - ./backend/auth-API/src:/app/src:z
+      - auth-db:/app/data:z
       - ./.certs:/etc/certs:z
     depends_on:
       - base
@@ -64,8 +62,7 @@ services:
     container_name: user-API
     env_file: ".env"
     volumes:
-      - ./backend/user-API/data:/app/data:z
-      - ./backend/user-API/src:/app/src:z
+      - user-db:/app/data:z
     depends_on:
       - gateway
     expose:
@@ -81,8 +78,7 @@ services:
     container_name: upload-API
     env_file: ".env"
     volumes:
-      - ./backend/upload-API/uploads:/app/uploads:z
-      - ./backend/upload-API/src:/app/src:z
+      - uploads:/app/uploads:z
     depends_on:
       - base
     expose:
@@ -98,8 +94,7 @@ services:
     container_name: game-API
     env_file: ".env"
     volumes:
-      - ./backend/game-API/data:/app/data:z
-      - ./backend/game-API/src:/app/src:z
+      - game-db:/app/data:z
     depends_on:
       - base
       - redis
@@ -116,13 +111,24 @@ services:
     container_name: frontend
     env_file: ".env"
     volumes:
-      - ./.certs:/etc/certs
+      - ./.certs:/etc/certs:z
     ports:
       - "5173:5173"
     expose: 
       - "5173"
     networks:
       - frontend-net
+
+volumes:
+  user-db:
+    driver: local
+  game-db:
+    driver: local
+  auth-db:
+    driver: local
+  uploads:
+    driver: local
+
 
 networks:
   redis-net:

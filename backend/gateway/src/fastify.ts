@@ -10,8 +10,10 @@ import process from "node:process";
 
 dotenv.config();
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const server = fastify({
-  logger: true,
+  ...(isDev && { logger: true }),
   https: {
     key: fs.readFileSync('/etc/certs/www.transcenduck.fr.key'),
     cert: fs.readFileSync('/etc/certs/www.transcenduck.fr.crt'),

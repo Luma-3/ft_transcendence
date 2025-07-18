@@ -21,7 +21,7 @@ install_package:
 
 dev: install_package install_local migrate run-dev
 
-prod: install_local migrate run-prod
+prod: run-prod
 
 build-dev:
 	@echo -e "$(YELLOW)Démarrage du build dev...$(RESET)"

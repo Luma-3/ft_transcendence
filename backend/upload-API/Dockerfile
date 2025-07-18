@@ -1,10 +1,12 @@
 FROM base
 
-WORKDIR /app
+COPY package.json ./
+COPY tsconfig.json ./ 
+COPY ./src ./src/
 
-COPY package*.json ./
-COPY tsconfig.json ./
-COPY nodemon.json ./
-RUN npm install
+RUN npm i -g knex && \
+    npm install && \
+    npm run build
 
-CMD ["npm", "run", "dev"]
+ENTRYPOINT ["bash", "-c", "npm run start"]
+

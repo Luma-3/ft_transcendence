@@ -10,7 +10,7 @@
     "migrate:rollback": "npm run knex migrate:rollback",
     "migrate:make": "npm run knex migrate:make",
     "build": "tsc",
-    "start": "node src/index.js",
+    "start": "node dist/index.js",
     "stop": ""
   },
   "repository": {

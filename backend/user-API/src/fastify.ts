@@ -8,8 +8,10 @@ import swagger from "./plugins/swagger.js";
 import formatter from "@transcenduck/formatter";
 import { destroyKnex } from "./utils/knex.js";
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const server = fastify({
-  logger: true,
+  ...(isDev && { logger: true }),
 }).withTypeProvider<TypeBoxTypeProvider>();
 
 await server.register(cookie);

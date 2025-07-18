@@ -20,10 +20,10 @@ const config: { [key: string]: Knex.Config } = {
   production: {
     client: 'sqlite3',
     connection: {
-      filename: './data/Session.db',
+      filename: '/app/data/Session.db',
     },
     migrations: {
-      directory: path.resolve(__dirname, '../../migrations'),
+      directory: path.resolve(__dirname, '/app/migrations'),
       tableName: 'knex_schema_history',
     },
     useNullAsDefault: true
@@ -31,7 +31,7 @@ const config: { [key: string]: Knex.Config } = {
 };
 
 
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV ?? 'development';
 const knexInstance: Knex = knex(config[env]);
 
 const destroyKnex = async () => {

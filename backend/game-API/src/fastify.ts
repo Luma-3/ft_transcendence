@@ -1,4 +1,4 @@
-import Fastify from 'fastify'
+import fastify from 'fastify'
 
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import websocketPlugin from '@fastify/websocket';
@@ -6,11 +6,10 @@ import websocketPlugin from '@fastify/websocket';
 import swagger from './plugin/swagger.js'
 import formatter from '@transcenduck/formatter'
 
-// import knex from '../plugins/knex.js'
-// import knex_config from './knex.config.js'
+const isDev = process.env.NODE_ENV === 'development';
 
-export const server = Fastify({
-  logger: true,
+const server = fastify({
+  ...(isDev && { logger: true }),
 }).withTypeProvider<TypeBoxTypeProvider>();
 
 await server.register(websocketPlugin);
@@ -23,19 +22,19 @@ await server.register(swagger, {
   route: '/doc/json',
   version: '1.0.0',
   servers: [
-      { url: '/game/', description: 'Game Service' }
+    { url: '/game/', description: 'Game Service' }
   ],
   tags: [
     { name: 'Room', description: 'Endpoints for managing room.' }
   ],
   components: {
-      securitySchemes: {
-          bearerAuth: {
-              type: 'http',
-              scheme: 'bearer',
-              bearerFormat: 'JWT'
-          }
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT'
       }
+    }
   }
 });
 
