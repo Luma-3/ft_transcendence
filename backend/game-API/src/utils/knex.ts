@@ -9,7 +9,18 @@ const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/User.db',
+      filename: './data/Game.db',
+    },
+    migrations: {
+      directory: path.resolve(__dirname, '../../migrations'),
+      tableName: 'knex_schema_history',
+    },
+    useNullAsDefault: true
+  },
+  production: {
+    client: 'sqlite3',
+    connection: {
+      filename: './data/Game.db',
     },
     migrations: {
       directory: path.resolve(__dirname, '../../migrations'),
