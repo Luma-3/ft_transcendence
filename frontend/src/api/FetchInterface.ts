@@ -534,7 +534,6 @@ export class FetchInterface {
     await updateAllLists();
     return true;
   }
-
   public static async cancelGameInvitation(element: HTMLElement): Promise<boolean> {
     const id = element.dataset.id;
     if (!id) {
