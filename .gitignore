@@ -139,3 +139,8 @@ dist
 # for macOS
 .DS_Store
 .certs/
+
+# Images
+upload-API/uploads/**/*.png 
+!upload-API/uploads/**/default.png
+

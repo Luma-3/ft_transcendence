@@ -1,9 +1,0 @@
-[phases.setup]
-cmds = ["echo 'Forcing NodeJS build'"]
-
-[phases.build]
-cmds = ["npm install", "npm run build"]
-
-[phases.start]
-cmds = ["npm run start"]
-port = 3000

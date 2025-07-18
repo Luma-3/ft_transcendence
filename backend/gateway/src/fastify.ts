@@ -13,8 +13,8 @@ dotenv.config();
 const server = fastify({
   logger: true,
   https: {
-    key: fs.readFileSync('./cert/key.dev.pem'),
-    cert: fs.readFileSync('./cert/cert.dev.pem'),
+    key: fs.readFileSync('/etc/certs/www.transcenduck.fr.key'),
+    cert: fs.readFileSync('/etc/certs/www.transcenduck.fr.crt'),
   }
 });
 
