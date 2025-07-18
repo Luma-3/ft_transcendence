@@ -31,8 +31,7 @@ export class UserService {
     const user_obj = {
       username: data.username,
       password: hash_pass,
-      email: data.email,
-      // validated: process.env.NODE_ENV === 'development' ? true : false
+      email: data.email
     }
 
     const user_preferences = {
@@ -49,35 +48,18 @@ export class UserService {
 
     const userID = uuidV4();
 
-    // Backdor for development purposes
-    if (process.env.NODE_ENV !== 'development') {
+    redisCache.setEx(`users:pendingUser:${user_obj.email}`, 660, userID);
+    redisCache.setEx(`users:pendingUser:${userID}`, 660, user);
 
-      redisCache.setEx(`users:pendingUser:${user_obj.email}`, 660, userID);
-      redisCache.setEx(`users:pendingUser:${userID}`, 660, user);
-
-      await fetch(`https://${process.env.AUTH_IP}/internal/2fa/email`, {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          'accept': 'application/json'
-        },
-        body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang, token: userID }),
-        agent: httpsAgent
-      }).catch(console.error)
-      
-      return;
-    }
-
-    // this part is called on developpement environnement only
-    const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
-      const [user] = await userModelInstance.create(trx, userID, user_obj);
-
-      const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
-
-      return { ...user, preferences }
-    });
-    await userModelInstance.update(userID, { validated: true }, USER_PRIVATE_COLUMNS);
-    return transactionData;
+    await fetch(`https://${process.env.AUTH_IP}/internal/2fa/email`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang, token: userID }),
+      agent: httpsAgent
+    }).catch(console.error)
   }
   
   static async createUserO2Auth(data: { username: string, email: string, avatar?: string }) {
