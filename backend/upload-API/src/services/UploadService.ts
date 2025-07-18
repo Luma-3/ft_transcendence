@@ -157,6 +157,8 @@ public async getProxyFile(url: string) {
     if (!pathJoin.startsWith(path.join(this._uploadPath, typePath))) {
       throw new ForbiddenError();
     }
+    if(pathJoin === (typePath === TypeUpload.avatar ? UploadService.defaultAvatar : UploadService.defaultBanner))
+      return ;
     try {
       fs.unlinkSync(pathJoin);
     }catch(err) {
