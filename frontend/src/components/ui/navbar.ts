@@ -14,11 +14,11 @@ export async function navbar(user: IUserInfo) {
 	return `
 	<nav class="flex flex-row navbar-responsive-size items-center w-full mt-2 flex-wrap justify-between p-2">
 			${navbarLogo()}
-			${gameInProgress ? `<div class="flex flex-col space-y-2">
+			${gameInProgress ? `<div class="flex flex-col space-y-1">
 				<div class="flex flex-row items-center justify-center text-responsive-size space-x-2 text-dsecondary">
 			Recherche d'une partie en cours...
 			</div>
-			<button class="px-4 py-2 text-responsive-size rounded bg-dprimary text-white shadow hover:bg-dsecondary transition-colors duration-200">
+			<button class="px-2 py-1 text-sm rounded bg-dprimary text-white shadow hover:bg-dsecondary transition-colors duration-200">
 				Annuler
 			</button>
 			</div>` : ""}
