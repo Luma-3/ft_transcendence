@@ -77,6 +77,7 @@ function handleError(socket: WebSocket, error: Error) {
     user_id: socket.user_id,
     payload: { error: error.message }
   }));
+  socket.close(1011, 'Internal Server Error');
 }
 
 function handleClose(socket: WebSocket, code?: number, reason?: string) {
@@ -85,6 +86,7 @@ function handleClose(socket: WebSocket, code?: number, reason?: string) {
     type: 'disconnected',
     user_id: socket.user_id,
   }));
+
 }
 
 const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
@@ -99,6 +101,13 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
 
       const user_id = req.headers['x-user-id'] as string;
       socket.user_id = user_id;
+      if (fastify.ws_clients.has(user_id)) {
+        console.warn(`[WS] client ${user_id} already connected, closing previous connection`);
+        const existingSocket = fastify.ws_clients.get(user_id);
+        if (existingSocket) {
+          existingSocket.close(1000, 'Replaced by new connection');
+        }
+      }
       fastify.ws_clients.set(user_id, socket);
       console.log(`[WS] client ${user_id} connected`);
       redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
@@ -112,6 +121,7 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
 
       socket.on('error', (error: Error) => {
         handleError(socket, error);
+        fastify.ws_clients.delete(user_id);
       });
 
       socket.on('close', () => {
