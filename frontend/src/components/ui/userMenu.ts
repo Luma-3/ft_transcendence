@@ -8,8 +8,8 @@ export function headerUserMenu(user: IUserInfo) {
 	return `<div class="flex flex-row py-3 px-2 items-center gap-2 rounded-sm bg-cover bg-center" style="background-image: url('${user.preferences!.banner}')">
 	<div class="relative w-14 h-14 flex-shrink-0">
 					<img class="w-full h-full rounded-full" src="${user.preferences!.avatar}" alt="User profile picture">
-				</div>
-				</div>`;
+	</div>
+	</div>`;
 }
 
 export function headerOtherUserMenu(user: IOtherUser) {
@@ -110,17 +110,17 @@ Notifications
 
 export function userMenu(user: IUserInfo) {
 return `
-<div id="user-menu" class="hidden transition-all duration-500 transform translate-y-10 opacity-0 pointer-events-none absolute right-0 z-50 my-2 mx-4 w-56 md:w-70 lg:w-80text-tertiary rounded dark:text-dtertiary
+<div id="user-menu" class="hidden transition-all duration-500 transform opacity-0 pointer-events-none absolute right-0 top-full z-50 my-2 mx-4 w-56 md:w-70 lg:w-80 text-tertiary rounded dark:text-dtertiary
 bg-gradient-to-r dark:from-dprimary dark:to-gray-800 dark:to-grey-700 from-primary/80 to-primary">
 
-	${headerUserMenu(user)}
-	${UserMenuOptions()}
-	<ul class="font-title text-tertiary dark:text-dsecondary md:mr-2 lg:mr-4 aria-labelledby="dropdown">
-	
-	<div> ${notifications()}</div>
-		<div> ${darkMode(user.preferences!.theme)}</div>
-		<div> ${logout()}</div>
-	</ul>
+    ${headerUserMenu(user)}
+    ${UserMenuOptions()}
+    <ul class="font-title text-tertiary dark:text-dsecondary md:mr-2 lg:mr-4 aria-labelledby="dropdown">
+    
+    <div> ${notifications()}</div>
+        <div> ${darkMode(user.preferences!.theme)}</div>
+        <div> ${logout()}</div>
+    </ul>
 
 </div>`
 }
