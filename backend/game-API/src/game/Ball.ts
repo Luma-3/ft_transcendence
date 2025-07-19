@@ -5,12 +5,12 @@ import { SceneContext } from "../core/runtime/SceneContext.js";
 import { Paddle } from "./Paddle.js";
 
 export class Ball extends GameObject implements Circle {
-  private velocity: Vector2 = new Vector2(-1, 1);
+  private velocity: Vector2 = new Vector2(0, 0);
 
   public position: Vector2 = new Vector2(0, 0);
   public readonly radius: number = 10;
 
-  private readonly minSpeed: number = 350;
+  private readonly minSpeed: number = 300;
   private readonly maxSpeed: number = 700;
 
   private readonly paddleDirectionModifier: number = 0.25;
@@ -20,6 +20,7 @@ export class Ball extends GameObject implements Circle {
 
   constructor(size: Vector2) {
     super();
+
     this.clampedPositionY = size.y;
     this.enabled = false;
   }

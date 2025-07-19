@@ -40,7 +40,7 @@ export class Pong extends GameObject {
 
   start() {
     setTimeout(() => {
-      this.ball.resetBall(this.size);
+      this.ball.resetBall(this.size, Math.random() > 0.5 ? this.paddleLeft : this.paddleRight);
       this.ball.enabled = true;
       this.paddleLeft.enabled = true;
       this.paddleRight.enabled = true;
