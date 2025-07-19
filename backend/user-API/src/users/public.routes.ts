@@ -46,17 +46,19 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async (req, rep) => {
     const userId = req.headers['x-user-id'];
-    const {blocked, friends, pending, page = 1, limit = 10, hydrate} = req.query;
+    const { blocked, friends, pending, page = 1, limit = 10, hydrate } = req.query;
     const users = await UserService.getAllUsers(userId, blocked, friends, pending, page, limit, hydrate);
-    return rep.code(200).send({ message: 'All User result for the given query', data: {
-                page,
-                limit,
-                total: users.length,
-                users: users.map(user => ({
-                  ...user,
-                  online: UserStatus.isUserOnline(user.id)
-                }))
-            } });
+    return rep.code(200).send({
+      message: 'All User result for the given query', data: {
+        page,
+        limit,
+        total: users.length,
+        users: users.map(user => ({
+          ...user,
+          online: UserStatus.isUserOnline(user.id)
+        }))
+      }
+    });
   });
 
   // ---------- GET USER BY ID ----------
@@ -77,7 +79,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const { includePreferences } = req.query;
 
     const user = await UserService.getUserByID(id, includePreferences, USER_PUBLIC_COLUMNS, PREFERENCES_PUBLIC_COLUMNS);
-    return rep.code(200).send({ message: 'Ok', data: {...user, online: UserStatus.isUserOnline(id)} })
+    return rep.code(200).send({ message: 'Ok', data: { ...user, online: UserStatus.isUserOnline(id) } })
   });
 
   // ---------- GET CURRENT USER ----------
@@ -98,8 +100,15 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const id = req.headers['x-user-id'];
     const { includePreferences } = req.query;
 
-    const data = await UserService.getUserByID(id, includePreferences,
-      USER_PRIVATE_COLUMNS, PREFERENCES_PRIVATE_COLUMNS, true);
+    let data;
+    try {
+      data = await UserService.getUserByID(id, includePreferences,
+        USER_PRIVATE_COLUMNS, PREFERENCES_PRIVATE_COLUMNS, true);
+    }
+    catch (error) {
+      rep.clearCookie('accessToken').clearCookie('refreshToken');
+      throw error;
+    }
     return rep.code(200).send({ message: 'Ok', data: data });
   });
 

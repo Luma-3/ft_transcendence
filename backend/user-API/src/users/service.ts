@@ -36,8 +36,8 @@ export class UserService {
 
     const user_preferences = {
       lang: data.preferences?.lang ?? 'en',
-      avatar: process.env.REDIRECT_URI +`/api/uploads/avatar/default.png`,
-      banner: process.env.REDIRECT_URI +`/api/uploads/banner/default.png`,
+      avatar: process.env.REDIRECT_URI + `/api/uploads/avatar/default.png`,
+      banner: process.env.REDIRECT_URI + `/api/uploads/banner/default.png`,
       theme: data.preferences?.theme ?? 'dark',
     }
 
@@ -61,7 +61,7 @@ export class UserService {
       agent: httpsAgent
     }).catch(console.error)
   }
-  
+
   static async createUserO2Auth(data: { username: string, email: string, avatar?: string }) {
 
     await verifyConflict(data.username, data.email);
@@ -73,13 +73,13 @@ export class UserService {
       validated: true
     }
 
-    if( data.avatar && data.avatar.indexOf('googleusercontent.com/') !== -1) {
-      data.avatar = process.env.REDIRECT_URI +`/api/uploads/proxy?url=` + encodeURIComponent(data.avatar.substring(0, data.avatar.lastIndexOf('=')));
+    if (data.avatar && data.avatar.indexOf('googleusercontent.com/') !== -1) {
+      data.avatar = process.env.REDIRECT_URI + `/api/uploads/proxy?url=` + encodeURIComponent(data.avatar.substring(0, data.avatar.lastIndexOf('=')));
     }
     const user_preferences: Omit<PreferencesBaseType, 'user_id'> = {
       lang: 'en',
-      avatar: data.avatar ?? (process.env.REDIRECT_URI +`/api/uploads/avatar/default.png`),
-      banner: process.env.REDIRECT_URI +`/api/uploads/banner/default.png`,
+      avatar: data.avatar ?? (process.env.REDIRECT_URI + `/api/uploads/avatar/default.png`),
+      banner: process.env.REDIRECT_URI + `/api/uploads/banner/default.png`,
       theme: 'dark',
     }
 
@@ -100,8 +100,8 @@ export class UserService {
     const user_preferences = { // TODO: preferences rework for simplify system
       lang: data.lang || 'en',
 
-      avatar: process.env.REDIRECT_URI +`/api/uploads/avatar/default.png`,
-      banner: process.env.REDIRECT_URI +`/api/uploads/banner/default.png`,
+      avatar: process.env.REDIRECT_URI + `/api/uploads/avatar/default.png`,
+      banner: process.env.REDIRECT_URI + `/api/uploads/banner/default.png`,
       theme: 'dark' as 'dark'
     }
     const user_obj = {
@@ -115,11 +115,11 @@ export class UserService {
       const [user] = await userModelInstance.create(trx, userID, user_obj);
 
       const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
-			return { ...user, preferences }
+      return { ...user, preferences }
     });
   }
 
-  static async getAllUsers(userId: string, blocked: ("you" | "another"| "all" | "none") = "all", friends: boolean = false, pending: boolean = false, page: number = 1, limit: number = 10, hydrate: boolean = true) {
+  static async getAllUsers(userId: string, blocked: ("you" | "another" | "all" | "none") = "all", friends: boolean = false, pending: boolean = false, page: number = 1, limit: number = 10, hydrate: boolean = true) {
     return await userModelInstance.findAll(userId, blocked, friends, pending, page, limit, hydrate, USER_PUBLIC_COLUMNS);
   }
 
@@ -148,7 +148,7 @@ export class UserService {
     }
 
     const userData = JSON.parse(user) as UserRedisType;
-    
+
     const multi = redisCache.multi();
     multi.del(`users:pendingUser:${userId}`);
     multi.del(`users:pendingUser:${userData.user_obj.email}`)
@@ -174,17 +174,17 @@ export class UserService {
     console.log(userColumns);
     if (!includePreferences) {
       const key = `users:data:${id}` + (privated ? ':private' : ':public');
-      const data = await redisCache.getEx(key, {type:'EX', value: 3600 });
+      const data = await redisCache.getEx(key, { type: 'EX', value: 3600 });
       if (data) {
         return JSON.parse(data);
       }
       const user = await userModelInstance.findByID(id, userColumns);
       if (!user) throw new NotFoundError("User");
-      await redisCache.setEx(key, 3600 , JSON.stringify(user));
+      await redisCache.setEx(key, 3600, JSON.stringify(user));
       return user;
     }
     const key = `users:data:${id}:hydrate` + (privated ? ':private' : ':public');
-    const data = await redisCache.getEx(key, {type:'EX', value: 3600 });
+    const data = await redisCache.getEx(key, { type: 'EX', value: 3600 });
     if (data) {
       return JSON.parse(data);
     }
@@ -198,7 +198,7 @@ export class UserService {
     if (!preferences) throw new NotFoundError("Preferences");
 
     const userWithPreferences = { ...user, preferences };
-    await redisCache.setEx(key, 3600 , JSON.stringify(userWithPreferences));
+    await redisCache.setEx(key, 3600, JSON.stringify(userWithPreferences));
     return userWithPreferences;
   }
 
@@ -258,7 +258,7 @@ export class UserService {
     }).catch(console.error);
   }
 
-  static async updateUserEmailRedis ( userID: string ) {
+  static async updateUserEmailRedis(userID: string) {
 
     const email = await redisCache.get(`users:pendingEmail:${userID}`);
     if (!email) {
@@ -275,7 +275,7 @@ export class UserService {
     multi.DEL(`users:data:${userID}:private`);
     multi.DEL(`users:data:${userID}:public`);
     multi.exec().catch(console.error);
-    
+
     return updatedUser;
   }
 
@@ -286,7 +286,7 @@ export class UserService {
     const user = await userModelInstance.findByID(id);
     if (!user) throw new NotFoundError("User");
 
-    const existingUsername = await userModelInstance.findByUsername(username, );
+    const existingUsername = await userModelInstance.findByUsername(username,);
     if (existingUsername) throw new ConflictError("Username already in use");
 
     const [updatedUser] = await userModelInstance.update(id, { username: username }, USER_PRIVATE_COLUMNS);
@@ -303,11 +303,11 @@ export class UserService {
   static async verifyCredentials(username: string, password: string): Promise<UserBaseType> {
     const user = await userModelInstance.findByUsername(username, undefined, ['password', 'validated', ...USER_PRIVATE_COLUMNS]);
     if (!user) throw new UnauthorizedError("Invalid credentials");
-    if(user.password === null) throw new UnauthorizedError("Only OAuth users can login with password");
+    if (user.password === null) throw new UnauthorizedError("Only OAuth users can login with password");
     const isValid = await comparePassword(password, user.password);
     if (!isValid) throw new UnauthorizedError("Invalid credentials");
 
-    if(user.validated === false)
+    if (user.validated === false)
       throw new EmailConfirmError('Email not already confirmed');
     return user;
   }
