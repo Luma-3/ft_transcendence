@@ -30,7 +30,14 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     }
   }, async (req, rep) => {
     const user_id = req.headers['x-user-id'];
-    const preferences = await PreferencesService.getPreferences(user_id, PREFERENCES_PRIVATE_COLUMNS);
+    let preferences;
+    try {
+      preferences = await PreferencesService.getPreferences(user_id, PREFERENCES_PRIVATE_COLUMNS);
+    }
+    catch (error) {
+      rep.clearCookie('accessToken').clearCookie('refreshToken');
+      throw error;
+    }
     return rep.code(200).send({ message: 'Ok', data: preferences });
   });
 
@@ -73,7 +80,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
         200: ResponseSchema(PreferencesPublicResponse, 'Ok'),
       }
     }
-  }, updateBannerPreferences );  
+  }, updateBannerPreferences);
 
 
   fastify.get('/users/:user_id/preferences', {
