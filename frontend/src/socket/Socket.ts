@@ -8,7 +8,7 @@ export async function socketConnection() {
 	socket = new WebSocket('/api/ws');
 
 	socket.addEventListener("open", () => {
-		console.log("WebSocket connection established.");
+		// console.log("WebSocket connection established.");
 	});
 
 	socket.addEventListener("message", (e) => {

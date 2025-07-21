@@ -94,6 +94,7 @@
 	"enter-both-players-names": "Enter both players names",
 	"enter-name-player2": "Enter name of player 2",
 	"game-created-successfully": "Game created successfully. Waiting for players to join...",
+	"cannot-create-game-wait-and-retry": "Cannot create game, please cancel the ongoing search and try again.",
 	"click-for-random-opponent": "Or click directly on play for a random opponent",
 	"game-creation-failed": "Game creation failed",
 	"connecting-game": "Connecting to game...",

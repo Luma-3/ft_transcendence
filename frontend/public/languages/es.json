@@ -94,6 +94,7 @@
 	"enter-both-players-names": "Ingresa los nombres de ambos jugadores",
 	"enter-name-player2": "Ingresa el nombre del jugador 2",
 	"game-created-successfully": "Juego creado con éxito. Esperando a que los jugadores se unan...",
+	"cannot-create-game-wait-and-retry": "No se puede crear el juego, cancela la búsqueda en curso y vuelve a intentarlo.",
 	"click-for-random-opponent": "O haga clic directamente en jugar para un oponente aleatorio",
 	"game-creation-failed": "Error al crear el juego",
 	"connecting-game": "Conectando al juego...",

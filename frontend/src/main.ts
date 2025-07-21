@@ -33,8 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	const page = window.location.pathname.substring(1) || 'home'
 
-	console.log(page);
-
 	switch (page) {
 
 		case 'error': 
@@ -44,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		case 'verifyEmail':
 			await FetchInterface.verifyEmailUser(new URLSearchParams(window.location.search).get('value') || '');
 			break;
+
 		case '2FA':
 			loginTwoFaPage();
 			break;

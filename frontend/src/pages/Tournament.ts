@@ -31,7 +31,6 @@ export async function initTournament(data: any) {
 
 
 export function tournamentHtml(data: any) {
-	console.log("Rendering tournament matches", data);
   // Dimensions fixes pour garantir l'alignement
   const boxWidth = 300;
   const boxHeight = 200;

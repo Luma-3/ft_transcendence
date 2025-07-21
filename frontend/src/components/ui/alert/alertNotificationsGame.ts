@@ -8,7 +8,6 @@ import { FetchInterface } from "../../../api/FetchInterface";
 import { updateNotificationsList } from "../../../pages/Friends/Lists/updatersList";
 
 export async function alertNotificationsGames(data: any) {
-	console.log("alertNotificationsGames data:", data);
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
 		return alertTemporary("error", "error-while-getting-user-info", 'dark', false, false);

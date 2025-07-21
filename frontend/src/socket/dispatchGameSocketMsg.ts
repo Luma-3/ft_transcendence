@@ -47,8 +47,11 @@ async function handleGameInvitation(data:any) {
       roomName: 'online',
     })
   });
-  console.log("Game invitation response:", response);
-} 
+  if (response.status === "error") {
+    return await alertPublic("error", "Error while creating the game room");
+  }
+}
+
 export async function dispatchGameSocketMsg(payload: any) {
   const handler = socketHandler[payload.action];
 
