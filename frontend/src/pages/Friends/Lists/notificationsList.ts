@@ -32,7 +32,7 @@ export async function notificationList() {
 	const gameInvitationsSent = resultGameInvitations[0] ?? [];
 	const gameInvitationsReceived = resultGameInvitations[1] ?? [];
 	container += `<div class="flex justify-center items-center w-full font-title" translate="game">
-			Game
+			${trad['game']}
 		</div>`
 
 	for (const invitation of gameInvitationsSent) {
@@ -112,7 +112,7 @@ export async function notificationList() {
 			-----------------
 		</div>`;
 	container += `<div class="flex justify-center items-center w-full font-title" translate="social">
-				Social
+				${trad['social']}
 			</div>`
 
 

@@ -55,6 +55,7 @@
 	"cannot-verify-email-too-old-mail-or-retry-registration-process": "Cannot verify email, too old mail or retry registration process",
 	"email-verified-successfully": "Email verified successfully",
 	"email-already-send": "Email already sent",
+	"email-already-in-use": "Email already in use",
 	"email-sent-successfully": "Email sent successfully",
 	"profil": "Profile",
 	"profile": "Profile",

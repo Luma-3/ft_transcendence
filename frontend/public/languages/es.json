@@ -53,6 +53,7 @@
 	"cannot-activate-2fa": "No se puede activar 2FA",
 	"2fa-code-verified": "Código 2FA verificado",
 	"cannot-verify-email-too-old-mail-or-retry-registration-process": "No se puede verificar el correo electrónico, el correo es demasiado antiguo o se debe volver a intentar el proceso de registro.",
+	"email-already-in-use": "Correo electrónico ya en uso.",
 	"email-verified-successfully": "Correo electrónico verificado con éxito.",
 	"email-already-send": "Correo electrónico ya enviado",
 	"email-sent-successfully": "Correo electrónico enviado con éxito",

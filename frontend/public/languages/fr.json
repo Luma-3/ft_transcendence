@@ -54,6 +54,7 @@
 	"validate-2fa-code": "Valider le code",
 	"cannot-verify-email-too-old-mail-or-retry-registration-process": "Impossible de vérifier l'email, l'email est trop ancien ou il faut réessayer le processus d'inscription.",
 	"email-verified-successfully": "Email vérifié avec succès",
+	"email-already-in-use": "Email déjà utilisé",
 	"email-already-send": "Email déjà envoyé",
 	"email-sent-successfully": "Email envoyé avec succès",
 	"profil": "Profil",

@@ -10,7 +10,7 @@ import { generateRankBadge } from "./Dashboard/rankBadges";
 import { generateLastGames } from "./Dashboard/gameData";
 
 function avatarBanner(userPref: any) {
-return `
+	return `
 <div class="flex flex-col mb-20 items-center justify-center space-y-2 pt-4">
 	
 	<div id="banner-div" class="relative w-[1000px] h-64 editor-select ">
@@ -41,7 +41,7 @@ return `
 }
 
 function userInfo(user: IUserInfo) {
-return `
+	return `
 <div class=flex flex-col justify-center w-full max-w-[800px] space-y-4">
 
 	<div class="flex">
@@ -53,10 +53,10 @@ return `
 		
 		</div>
 		</div>`
-	}
-	// <span class="font-title text-2xl text-secondary dark:text-dtertiary ml-4">
-	// ${user.created_at}
-	// </span>
+}
+// <span class="font-title text-2xl text-secondary dark:text-dtertiary ml-4">
+// ${user.created_at}
+// </span>
 
 export async function renderOtherProfile(container: HTMLElement, myUser: IUserInfo) {
 
@@ -79,7 +79,7 @@ ${backButton()}
 	<div class="flex flex-col w-full justify-center items-center space-y-4 text-primary dark:text-dtertiary mb-10 ">
 			<div class="flex flex-col w-full mb-10 max-w-[1000px] items-center justify-center pt-5">
 				<!-- Badge de rang trop cool -->
-				${await generateRankBadge(user)}
+				${await generateRankBadge(user, myUser.preferences.lang)}
 			</div>
 		</div>
 			<div class="flex w-full justify-center mb-4">
@@ -91,7 +91,7 @@ ${backButton()}
 				<!-- Bloc stats animé -->
 				<div id="lastGamesContainer" class="w-full flex justify-center items-center pointer-events-none">
 					<div id="lastGamesPanel" class="flex w-full justify-center pointer-events-auto transform translate-x-full opacity-0 transition-all duration-500">
-						${await generateLastGames(user)}
+						${await generateLastGames(user, myUser.preferences.lang)}
 					</div>
 				</div>
 </div>`

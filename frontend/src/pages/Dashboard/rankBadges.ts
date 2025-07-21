@@ -1,9 +1,9 @@
 import { loadTranslation } from "../../controllers/Translate";
 import { IUserInfo } from "../../interfaces/IUser";
 
-export async function generateRankBadge(_user: IUserInfo) {
+export async function generateRankBadge(_user: IUserInfo, myUserLang: string = 'en') {
 
-	const trad = await loadTranslation(_user.preferences.lang);
+	const trad = await loadTranslation(myUserLang);
 	const wins = Math.floor(Math.random() * 50) + 5; // Données d'exemple
 	const losses = Math.floor(Math.random() * 30) + 2; // Données d'exemple
 	const totalGames = wins + losses;
@@ -13,7 +13,7 @@ export async function generateRankBadge(_user: IUserInfo) {
 		level: 1,
 		image: 'petitVolatile2.png',
 		colors: 'from-[#744FAC] via-[#8B5CF6] to-[#744FAC]', // violet principal
-	   textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+		textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
 		shadowColor: '[#744FAC]'
 	};
 
@@ -23,7 +23,7 @@ export async function generateRankBadge(_user: IUserInfo) {
 			level: Math.floor(wins / 10),
 			image: 'duckKing.png',
 			colors: 'from-[#FF8904] via-yellow-400 to-[#744FAC]', // orange -> jaune -> violet
-		   textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+			textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
 			shadowColor: '[#FF8904]'
 		};
 	} else if (totalGames >= 30 && wins >= 20) {
@@ -32,7 +32,7 @@ export async function generateRankBadge(_user: IUserInfo) {
 			level: Math.floor(wins / 8),
 			image: 'duckLearning2.png',
 			colors: 'from-[#FF8904] via-[#744FAC] to-[#FF8904]', // orange -> violet -> orange
-		   textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+			textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
 			shadowColor: '[#FF8904]'
 		};
 	} else if (totalGames >= 20 && wins >= 12) {
@@ -41,11 +41,11 @@ export async function generateRankBadge(_user: IUserInfo) {
 			level: Math.floor(wins / 5),
 			image: 'duckProf.png',
 			colors: 'from-[#744FAC] via-[#FF8904] to-yellow-400', // violet -> orange -> jaune
-		   textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+			textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
 			shadowColor: '[#FF8904]'
 		};
 	}
-	
+
 	return `
 		<div class="flex flex-col items-center justify-center group">
 			<div class="relative flex justify-center items-center">
@@ -71,4 +71,4 @@ export async function generateRankBadge(_user: IUserInfo) {
 				</div>
 				</div>
 				`;
-			}
+}
