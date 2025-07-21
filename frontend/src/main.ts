@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 		default: 
 			const activeSession = await FetchInterface.verifySession();
+			console.log("Active session:", activeSession);
 			if (!activeSession) {
 				return renderPublicPage(page);
 			}

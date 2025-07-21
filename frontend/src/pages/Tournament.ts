@@ -13,7 +13,7 @@ export async function initTournament(data: any) {
 		window.location.href = '/';
 		return;
 	}
-
+	sessionStorage.removeItem("gameType");
 	fadeOut();
 	setTimeout(async () => {
 		const main_container = document.querySelector<HTMLDivElement>('#app')!;
