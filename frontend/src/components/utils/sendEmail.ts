@@ -32,7 +32,6 @@ export async function sendEmail() {
 }
 
 export function startEmailCooldown() {
-	console.log("Starting email cooldown");
 	emailState.isEmailCooldownActive = true;
 
 	const sendEmailButton = document.getElementById('send-email') as HTMLButtonElement;

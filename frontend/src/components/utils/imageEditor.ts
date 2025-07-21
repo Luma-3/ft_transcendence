@@ -75,7 +75,6 @@ export async function saveNewPicture() {
 	});
 	const formData = new FormData();
 	formData.append('tmp', dataURLToBlob(new_image), 'tmp.png');
-	console.log("New image data URL:", formData);
 	const response = await fetchApi(API_USER.UPDATE.PREF[statusEditor], {
 		method: 'PATCH',
 		headers: {},

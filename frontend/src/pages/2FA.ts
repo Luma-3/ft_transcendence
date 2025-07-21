@@ -38,7 +38,6 @@ export function get2FACode() {
 			}
 		}
 		codeInput.value = code;
-	console.log("Code from inputs:", codeInput.value);
 	return codeInput.value.trim();
 }
 

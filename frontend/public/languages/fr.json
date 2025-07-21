@@ -91,7 +91,7 @@
 	"search-friend": "Rechercher un ami",
 	"enter-username": "Entrez le nom d'utilisateur",
 	"no-gametype-selected": "Aucun type de jeu sélectionné",
-	"cannot-create-game-wait-and-retry": "Impossible de créer le jeu, veuillez patienter et réessayer.",
+	"cannot-create-game-wait-and-retry": "Impossible de créer le jeu, annulez la recherche en cours et réessayez.",
 	"enter-both-players-names": "Entrez les noms des deux joueurs",
 	"enter-name-player2": "Entrez le nom du joueur 2",
 	"game-created-successfully": "Jeu créé avec succès. En attente de la connexion des joueurs...",

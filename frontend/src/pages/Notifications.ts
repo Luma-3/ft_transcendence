@@ -15,7 +15,6 @@ export async function showNotificationDiv() {
 			alertTemporary("error", "Error while getting user theme", 'dark');
 			return;
 		}
-		console.log("customTheme in notificationsDiv", customTheme);
 		const trad = await loadTranslation(customTheme.lang);
 	
 		Swal.fire({

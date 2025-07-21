@@ -138,7 +138,6 @@ export async function changeUserNameEmail() {
 	 */
 	if (values.username !== user.username) {
 		const code = await FetchInterface.updateUsername(values.username);
-		console.log("Update username response code:", code);
 		if (code === 409) {
 			return alertTemporary("error", trad["Username already Exist"], user.preferences.theme, true, true);
 		} else if (code === 400) {

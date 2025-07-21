@@ -5,6 +5,7 @@ import { FetchInterface, IGameFormInfo } from "../../api/FetchInterface";
 import { invitePlayerToPlay } from "../../controllers/searchHandler";
 import { socket, socketConnection } from "../../socket/Socket";
 import { updateNavbar } from "../../components/ui/navbar";
+import { randomRoomNameGenerator } from "../../components/utils/randomRoomNameGenerator";
 
 function getPlayer2Name() {
   const inputValue = (document.getElementById("player2-name") as HTMLInputElement).value;
@@ -33,7 +34,7 @@ export async function initGame() {
 
   const gameFormInfo = {
     playerName: player2 ?? "",
-    roomName: "MMA in Pound !",
+    roomName: randomRoomNameGenerator(),
     gameType: gameType.id,
   }
   if (gameType.id === "online" || gameType.id === "tournament") {
