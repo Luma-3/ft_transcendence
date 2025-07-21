@@ -267,7 +267,7 @@ export class FetchInterface {
    * ! Search Users in all users
    */
   public static async getSearchUsers(q: string, page: number = 1, limit: number = 10, hydrate: boolean = true): Promise<IApiResponse<UserSearchResult>> {
-    const response = await fetchApi<UserSearchResult>(API.API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}&blocked="you"`);
+    const response = await fetchApi<UserSearchResult>(API.API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}&blocked="all"`);
     return response;
   }
 
@@ -275,11 +275,11 @@ export class FetchInterface {
    * ! Accept Friend Request
    */
   public static async acceptFriendRequest(friendId: string, action: "send" | "accept") {
-    const response = await fetchApiWithNoError(API.API_USER.SOCIAL.NOTIFICATIONS + `${(action == "send" ? "" : "/accept")}/${friendId}`, {
+    const response = await fetchApiWithNoError(API.API_USER.SOCIAL.NOTIFICATIONS + `${(action == "send" ? "" : "/receiver")}/${friendId}`, {
       method: "POST",
-      body: JSON.stringify({
+      body: JSON.stringify(action == "send" ? {
         friendId: friendId,
-      })
+      } : {})
     });
 
     if (response.status === "error") {
@@ -318,7 +318,7 @@ export class FetchInterface {
    */
   public static async removeFriendRequest(friendId: string) {
 
-    const response = await fetchApiWithNoError(API.API_USER.SOCIAL.NOTIFICATIONS + `/refuse/${friendId}`, {
+    const response = await fetchApiWithNoError(API.API_USER.SOCIAL.NOTIFICATIONS + `/receiver/${friendId}`, {
       method: "DELETE",
       body: JSON.stringify({})
     });
@@ -550,7 +550,7 @@ export class FetchInterface {
     if (!id) {
       return false;
     }
-    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/accept/${id}`, {
+    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/receiver/${id}`, {
       method: 'POST',
       body: JSON.stringify({})
     });
@@ -566,7 +566,7 @@ export class FetchInterface {
     if (!id) {
       return false;
     }
-    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/refuse/${id}`, {
+    const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/receiver/${id}`, {
       method: 'DELETE',
       body: JSON.stringify({})
     });

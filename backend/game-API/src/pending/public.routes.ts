@@ -49,7 +49,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
             },
         },
     }, PendingsController.removePending);
-    fastify.post('/pending/accept/:senderId', {
+    fastify.post('/pending/receiver/:senderId', {
         schema: {
             summary: 'Add a pending request',
             description: 'Endpoint to add a pending request to another user',
@@ -63,7 +63,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
             },
         }
     }, PendingsController.acceptPending);
-    fastify.delete('/pending/refuse/:senderId', {
+    fastify.delete('/pending/receiver/:senderId', {
         schema: {
             summary: 'Refuse a pending request',
             description: 'Endpoint to refuse a pending request from another user',
