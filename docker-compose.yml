@@ -110,6 +110,8 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     env_file: ".env"
+    depends_on:
+      - gateway
     volumes:
       - ./.certs:/etc/certs:z
     ports:
