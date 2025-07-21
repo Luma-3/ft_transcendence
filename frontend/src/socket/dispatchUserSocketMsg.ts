@@ -12,7 +12,7 @@ export interface PayloadUserSocketMsg {
 
 export async function dispatchUserSocketMsg(payload: PayloadUserSocketMsg) {
 	const { type, action, data } = payload;
-	
+
 	const myUser = await FetchInterface.getUserInfo();
 	if (myUser === undefined) {
 		return window.location.href = '/login';
@@ -38,6 +38,8 @@ export async function dispatchUserSocketMsg(payload: PayloadUserSocketMsg) {
 			break;
 		default:
 			break;
-		}
+	}
+	setTimeout(() => {
 		updateAllLists();
+	}, 1000);
 }

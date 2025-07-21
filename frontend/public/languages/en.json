@@ -8,10 +8,8 @@
 	"delete": "Delete",
 	"save": "Save",
 	"get-started": "Get started !",
-
 	"lang-choice": "Choose your language: ",
 	"warning-language-default": "This language will be set as the default for navigation and your first login",
-
 	"username": "Username",
 	"password": "Password",
 	"email": "Email",
@@ -42,7 +40,6 @@
 	"new-password-and-confirm-password-are-different": "New password and confirm password are different",
 	"password-changed": "Password changed",
 	"new-password-must-be-different-from-old-password": "New password must be different from old password",
-
 	"activate-2fa": "Activate 2FA",
 	"disable-2fa": "Disable 2FA",
 	"2fa-auth": "Two factor authentication",
@@ -51,15 +48,15 @@
 	"2fa-code": "Enter your 2FA verification code",
 	"invalid-2fa-code": "Invalid 2FA code",
 	"2fa-code-sent": "2FA code sent",
-	"submit-2fa-code": "Submit 2FA code",
+	"validate-2fa-code": "Validate code",
 	"cannot-desactivate-2fa": "Cannot deactivate 2FA",
 	"cannot-activate-2fa": "Cannot activate 2FA",
 	"2fa-code-verified": "2FA code verified",
 	"cannot-verify-email-too-old-mail-or-retry-registration-process": "Cannot verify email, too old mail or retry registration process",
 	"email-verified-successfully": "Email verified successfully",
 	"email-already-send": "Email already sent",
+	"email-already-in-use": "Email already in use",
 	"email-sent-successfully": "Email sent successfully",
-
 	"profil": "Profile",
 	"profile": "Profile",
 	"your-informations": "Your informations",
@@ -72,13 +69,12 @@
 	"dark-mode": "Dark mode",
 	"light-mode": "Light mode",
 	"theme-cannot-be-updated": "Theme cannot be updated",
-
 	"are-you-sure": "Are you sure ?",
 	"dangerous-action": "Dangerous actions",
 	"delete-account": "Delete account",
 	"cannot-delete-user": "Cannot delete user",
 	"user-deleted": "User deleted",
-
+	"goToActionGame": "Press any key to start",
 	"play": "Play",
 	"player1": "Player 1",
 	"player2": "Player 2",
@@ -116,7 +112,6 @@
 	"roi-de-la-mare": "King of the Pond",
 	"apprenti-canard": "Duck Apprentice",
 	"professeur-palmipède": "Professor Palmiped",
-
 	"social": "Social",
 	"game": "Game",
 	"game-invitation-to": "Game invitation to",
@@ -161,18 +156,16 @@
 	"manage-your-block-list": "Manage Your Block List",
 	"new-friend-request": "New friend request from",
 	"your-friend-request-was-accepted": "Your friend request was accepted by ",
-
 	"api-doc-transcenduck-services": "API Documentation",
 	"auth-doc": "Authentication service",
 	"user-doc": "User service",
 	"upload-doc": "File upload service",
 	"game-doc": "Game service",
-
 	"load": "Load",
 	"custom ": "Custom",
 	"square ": "Square",
-	"flip x" : "Flip horizontally",
-	"flip y" : "Flip vertically",
+	"flip x": "Flip horizontally",
+	"flip y": "Flip vertically",
 	"reset": "Reset",
 	"bold ": "Bold",
 	"circle ": "Circle",
@@ -199,7 +192,6 @@
 	"left ": "Left",
 	"right ": "Right",
 	"center ": "Center",
-
 	"error-while-fetching-user-infos": "Error while fetching your informations",
 	"error-clean-your-cache": "Error, clean your cache, reload the page and try again.",
 	"no-changes-detected": "No changes detected",
@@ -212,7 +204,6 @@
 	"forbidden": "Forbidden",
 	"not-found": "Page not found",
 	"go-back-to-safe-place": "Go back to a safe place",
-
 	"version": "Version",
 	"no-duck-hurt": "No duck was hurt",
 	"during-development": "during the development of this website",

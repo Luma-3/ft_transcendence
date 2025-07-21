@@ -1,8 +1,8 @@
 import { headerPage } from "../components/ui/headerPage";
 
 export default function RGPD() {
-	return `
-	<div class="flex flex-col w-full h-full rounded-lg justify-center mt-10">
+  return `
+	<div class="flex flex-col w-full h-full rounded-lg justify-center mt-10 p-12">
 		${headerPage("rgpd")}
 		
 		<div class="flex flex-col w-full h-full rounded-lg justify-center items-center mt-5 mb-10 dark:bg-dprimary">
@@ -18,7 +18,9 @@ export default function RGPD() {
     Cette politique de confidentialité décrit les types de données collectées, leur finalité,
     la base légale du traitement, la durée de conservation, ainsi que vos droits en tant qu’utilisateur.
   </p>
-
+  <div class="flex justify-center items-center mb-4">
+  <img src="/images/duckCollect.png" alt="Politique de confidentialité" class="w-40 h-40 rounded-lg mb-4" />
+  </div>
   <h2 class="text-xl font-semibold mt-6 mb-2">Collecte et utilisation des données personnelles</h2>
   <p class="mb-2">
     Notre application de jeu en ligne (jeu Pong) permet aux utilisateurs de créer un compte et de se connecter.
@@ -28,13 +30,14 @@ export default function RGPD() {
 
   <ul class="list-disc list-inside mb-4 space-y-1">
     <li><strong>Pseudonyme</strong> : votre identifiant public dans le jeu.</li>
-    <li><strong>Adresse e-mail</strong> : utilisée pour la communication (réinitialisation de mot de passe, notifications) et la gestion du compte.</li>
+    <li><strong>Adresse e-mail</strong> : utilisée pour la vérification du compte et l'activation de l'authentification à deux facteurs.</li>
     <li><strong>Mot de passe</strong> : stocké sous forme hachée (non lisible) pour garantir la sécurité.</li>
-    <li><strong>Photo de profil Google</strong> : récupérée uniquement si vous vous inscrivez via Google. Aucune autre donnée Google n’est collectée.</li>
+    <li><strong>Photo de profil Google</strong> : Aucune photos n'est récupérée, seulement un lien vers votre photo sur Google. Cela s'applique uniquement si vous vous inscrivez via Google.</li>
+    <li><strong>Photo de profil / Bannière</strong> : Si vous téléchargez une photo de profil ou une bannière, celles-ci seront stockées sur nos serveurs. Si vous la modifier, la nouvelle image écrasera l'ancienne sur le serveur.</li>
   </ul>
 
   <p class="mb-4">
-    Ces données sont collectées et traitées par <em>(Nom de votre société ou du responsable)</em>,
+    Ces données sont collectées et traitées par TheDucksCompany,
     responsable du traitement de vos données. La finalité de la collecte est la gestion de votre compte utilisateur
     et l’accès aux fonctionnalités du jeu (exécution du contrat de service, gestion des scores, etc.).
     La base légale est l’exécution de votre contrat d’inscription (ou votre consentement).
@@ -66,11 +69,13 @@ export default function RGPD() {
   </ul>
 
   <p class="mb-4">
-    Pour exercer vos droits, utilisez votre espace de profil ou contactez le responsable du traitement
-    (voir la section "Contact"). Pour plus d’informations, consultez le site de la CNIL : 
+    Pour exercer vos droits, vous pouvez supprimer votre compte dans vos reglages ou contacter notre responsable du traitement a l'adresse mail suivante :
+    <a href="mailto:contact@theduckscompany.com" class="text-blue-600 hover:underline">contact@theduckscompany.com</a>. Pour plus d’informations, consultez le site de la CNIL :
     <a href="https://www.cnil.fr" class="text-blue-600 hover:underline" target="_blank">cnil.fr</a>.
   </p>
-
+  <div class="flex justify-center items-center mb-4">
+  <img src="/images/duckPolice.png" alt="Politique de confidentialité" class="w-40 h-40 rounded-lg mb-4" />
+  </div>
   <h2 class="text-xl font-semibold mt-6 mb-2">Sécurité et conservation des données</h2>
 
   <p class="mb-4">
@@ -95,9 +100,9 @@ export default function RGPD() {
 
   <p class="mb-4">
     Pour toute question ou demande relative à vos données personnelles,
-    contactez le responsable du traitement : <em>(Nom et coordonnées du responsable)</em>.<br>
+    contactez le responsable du traitement : <em>duckDataTreatment@theduckscompany.com</em>.<br>
     Le cas échéant, notre délégué à la protection des données (DPO) est joignable à l’adresse :
-    <em>(e-mail DPO)</em>.<br>
+    <em>duckDPO@theduckscompany.com</em>.<br>
     Si vous estimez que vos droits ne sont pas respectés, vous pouvez déposer une réclamation
     auprès de la CNIL : <a href="https://www.cnil.fr" class="text-blue-600 hover:underline" target="_blank">cnil.fr</a>.
   </p>

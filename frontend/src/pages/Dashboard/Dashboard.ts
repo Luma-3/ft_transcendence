@@ -7,9 +7,9 @@ import { generateRankBadge } from "./rankBadges";
 
 async function renderDashboard(user: IUserInfo) {
 
-	const playButton = new Button('initGame', "1/2", "Play", "play", "primary", "button" );
+	const playButton = new Button('initGame', "1/2", "Play", "play", "primary", "button");
 
-return `
+	return `
 ${await navbar(user)}
 <div class="flex flex-col h-full w-full lg:flex-row space-y-4 justify-center items-center pt-10 mb-10">
 
@@ -29,13 +29,13 @@ ${await navbar(user)}
 		<div class="flex flex-col w-full justify-center items-center space-y-4 text-primary dark:text-dtertiary mb-10 ">
 			<div class="flex flex-col w-full mb-10 max-w-[1000px] items-center justify-center pt-5">
 				<!-- Badge de rang trop cool -->
-				${await generateRankBadge(user)}
+				${await generateRankBadge(user, user.preferences.lang)}
 			</div>
 		</div>
 
 		<div id="lastGamesContainer" class="w-full flex justify-center items-center pointer-events-none">
 			<div id="lastGamesPanel" class="flex font-title w-full justify-center pointer-events-auto transform translate-x-0 opacity-100 transition-all duration-500">
-				${await generateLastGames(user)}
+				${await generateLastGames(user, user.preferences.lang)}
 			</div>
 		</div>
 		<!-- Bouton voir les stats -->

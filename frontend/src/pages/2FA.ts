@@ -29,15 +29,15 @@ export function get2FACode() {
 	if (!codeInput) {
 		return '';
 	}
-	
-		let code = '';
-		for (let i = 1; i <= 6; i++) {
-			const digit = document.getElementById(`digit${i}`) as HTMLInputElement;
-			if (digit) {
-				code += digit.value || '';
-			}
+
+	let code = '';
+	for (let i = 1; i <= 6; i++) {
+		const digit = document.getElementById(`digit${i}`) as HTMLInputElement;
+		if (digit) {
+			code += digit.value || '';
 		}
-		codeInput.value = code;
+	}
+	codeInput.value = code;
 	return codeInput.value.trim();
 }
 
@@ -63,15 +63,15 @@ export async function submit2FACode() {
  * ! Contenu html de la page 2FA
  */
 export default async function twoFaPage(target: string = 'login') {
-	
+
 	_action = target;
-	const formButton = new Button('submit2faCode', "1/4", 'Submit 2FA Code', 'submit-2fa-code','primary', 'submit' )
-	
-	return `<div class="flex flex-col w-full h-full rounded-lg justify-center mt-30">
+	const formButton = new Button('submit2faCode', "1/4", 'Submit 2FA Code', 'validate-2fa-code', 'primary', 'submit')
 
-	${headerPage("2fa-auth", (target === 'login') ? 'public' : 'private')}
+	return `<div class="flex flex-col w-full h-full rounded-lg justify-center mt-4">
 
-	<div class="flex flex-col w-full h-full rounded-lg justify-center items-center mt-5 mb-10">
+	${headerPage("2fa-auth", (target === 'login') ? 'public' : 'private', "settings")}
+
+	<div class="flex flex-col w-full h-full rounded-lg justify-center items-center mt-5 mb-4">
 
 		<div class="flex font-title text-responsive-size justify-center w-1/2 items-center text-tertiary dark:text-dtertiary">
 			<span translate="2fa-description">To secure your account, please enter the 2FA code received via email.</span>
@@ -163,22 +163,22 @@ export function setup2FAInputs(prefix: string = '') {
  * Update the hidden input with the combined 6-digit code
  */
 function updateHiddenInput(prefix: string) {
-// Correction : on cible explicitement le bon champ caché
-let hiddenId = '2faCodeForm';
-// if (prefix === 'login') {
-// 	hiddenId = '2faCodeLoginInput';
-// }
-const hiddenInput = document.getElementById(hiddenId) as HTMLInputElement;
-if (!hiddenInput) return;
+	// Correction : on cible explicitement le bon champ caché
+	let hiddenId = '2faCodeForm';
+	// if (prefix === 'login') {
+	// 	hiddenId = '2faCodeLoginInput';
+	// }
+	const hiddenInput = document.getElementById(hiddenId) as HTMLInputElement;
+	if (!hiddenInput) return;
 
-let code = '';
-for (let i = 1; i <= 6; i++) {
-	const digit = document.getElementById(`${prefix}digit${i}`) as HTMLInputElement;
-	if (digit) {
-		code += digit.value || '';
+	let code = '';
+	for (let i = 1; i <= 6; i++) {
+		const digit = document.getElementById(`${prefix}digit${i}`) as HTMLInputElement;
+		if (digit) {
+			code += digit.value || '';
+		}
 	}
-}
-hiddenInput.value = code;
+	hiddenInput.value = code;
 }
 
 /**
@@ -187,7 +187,7 @@ hiddenInput.value = code;
 export function init2FAPage() {
 	// Set up regular 2FA page inputs
 	setup2FAInputs();
-	
+
 	// Focus first input
 	const firstDigit = document.getElementById('digit1') as HTMLInputElement;
 	if (firstDigit) {

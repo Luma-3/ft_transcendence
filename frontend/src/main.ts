@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	switch (page) {
 
-		case 'error': 
+		case 'error':
 			renderErrorPage(new URLSearchParams(window.location.search).get('status') || '500');
 			break;
 
@@ -47,15 +47,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 			loginTwoFaPage();
 			break;
 
-		default: 
+		default:
 			const activeSession = await FetchInterface.verifySession();
-			console.log("Active session:", activeSession);
 			if (!activeSession) {
 				return renderPublicPage(page);
 			}
-			(publicPages.includes(page)) 
-			? window.location.href = '/dashboard' 
-			: renderPrivatePage(page);
+			(publicPages.includes(page))
+				? window.location.href = '/dashboard'
+				: renderPrivatePage(page);
 	}
 
 });

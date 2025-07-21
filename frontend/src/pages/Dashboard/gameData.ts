@@ -6,7 +6,7 @@ import { loadTranslation } from "../../controllers/Translate";
 import { IUserInfo } from "../../interfaces/IUser";
 
 
-export async function generateLastGames(user: IUserInfo, userId: string = user.id) {
+export async function generateLastGames(user: IUserInfo, myUserlang: string, userId: string = user.id) {
 
 	const response = await fetchApi(API_GAME.GET_ALL_DATA + `/${userId}`, {
 		method: 'GET'
@@ -14,12 +14,12 @@ export async function generateLastGames(user: IUserInfo, userId: string = user.i
 	if (!response || !response.data) {
 		return alertTemporary("error", "error-game-data", user.preferences.theme, true, true);
 	}
-	
+
 	const games = response.data.rooms;
-	const trad = await loadTranslation(user.preferences.lang);
+	const trad = await loadTranslation(myUserlang);
 
 	if (games.length === 0) {
-	return `<div class="w-full font-title max-w-[600px] h-64 bg-white/80 dark:bg-black/5 rounded-lg shadow-inner flex flex-col items-center justify-center mb-6 overflow-y-auto">
+		return `<div class="w-full font-title max-w-[600px] h-64 bg-white/80 dark:bg-black/5 rounded-lg shadow-inner flex flex-col items-center justify-center mb-6 overflow-y-auto">
 		<div class="text-gray-400 italic">${trad['no-recent-games']}</div>
 	</div>`;
 	}
@@ -28,10 +28,10 @@ export async function generateLastGames(user: IUserInfo, userId: string = user.i
 		<ul class="flex flex-col gap-2">`;
 
 	for (const game of games) {
-		
+
 		let win = false;
-	let opponent = '';
-		
+		let opponent = '';
+
 		win = (game.winner === user.id) ? true : false;
 		(game.player_1 === user.id) ? opponent = game.player_2 : opponent = game.player_1;
 		switch (game.type) {
@@ -63,8 +63,8 @@ export async function generateLastGames(user: IUserInfo, userId: string = user.i
 				</span>
 				</div>
 				</li>`;
-		}
-			// <span class="text-xs text-gray-500">${game.date}</span>
+	}
+	// <span class="text-xs text-gray-500">${game.date}</span>
 
 	container += `
 		</ul>

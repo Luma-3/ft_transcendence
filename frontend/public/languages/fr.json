@@ -8,10 +8,8 @@
 	"delete": "Supprimer",
 	"save": "Sauvegarder",
 	"get-started": "Commencer !",
-
 	"lang-choice": "Choisissez votre langue: ",
 	"warning-language-default": "Cette langue sera définie comme langue par défaut pour la navigation et votre première connexion",
-
 	"username": "Nom d'utilisateur",
 	"password": "Mot de passe",
 	"email": "Email",
@@ -42,7 +40,6 @@
 	"new-password-and-confirm-password-are-different": "Le nouveau mot de passe et la confirmation du mot de passe sont différents",
 	"password-changed": "Mot de passe changé",
 	"new-password-must-be-different-from-old-password": "Le nouveau mot de passe doit être différent de l'ancien mot de passe",
-
 	"activate-2fa": "Activer 2FA",
 	"disable-2fa": "Désactiver 2FA",
 	"2fa-auth": "Authentification à deux facteurs",
@@ -54,12 +51,12 @@
 	"cannot-desactivate-2fa": "Impossible de désactiver 2FA",
 	"cannot-activate-2fa": "Impossible d'activer 2FA",
 	"2fa-code-verified": "Code 2FA vérifié",
-	"submit-2fa-code": "Envoyer le code 2FA",
+	"validate-2fa-code": "Valider le code",
 	"cannot-verify-email-too-old-mail-or-retry-registration-process": "Impossible de vérifier l'email, l'email est trop ancien ou il faut réessayer le processus d'inscription.",
 	"email-verified-successfully": "Email vérifié avec succès",
+	"email-already-in-use": "Email déjà utilisé",
 	"email-already-send": "Email déjà envoyé",
 	"email-sent-successfully": "Email envoyé avec succès",
-
 	"profil": "Profil",
 	"profile": "Profil",
 	"your-informations": "Vos informations",
@@ -72,14 +69,13 @@
 	"dark-mode": "Mode sombre",
 	"light-mode": "Mode clair",
 	"theme-cannot-be-updated": "Le thème ne peut pas être mis à jour",
-
 	"are-you-sure": "Êtes-vous sûr ?",
 	"dangerous-action": "Actions dangereuses",
 	"delete-account": "Supprimer le compte",
 	"cannot-delete-user": "Impossible de supprimer l'utilisateur",
 	"user-deleted": "Utilisateur supprimé",
-
 	"play": "Jouer",
+	"goToActionGame": "Pressez n'importe quelle touche pour commencer",
 	"player1": "Joueur 1",
 	"player2": "Joueur 2",
 	"player2-name": "Nom du joueur 2",
@@ -116,7 +112,6 @@
 	"roi-de-la-mare": "Roi de la Mare",
 	"apprenti-canard": "Apprenti Canard",
 	"professeur-palmipède": "Professeur Palmipède",
-
 	"social": "Social",
 	"game": "Jeux",
 	"game-invitation-to": "Invitation de jeu à",
@@ -161,18 +156,16 @@
 	"manage-your-block-list": "Gérer votre liste de blocage",
 	"new-friend-request": "Nouvelle demande d'ami de",
 	"your-friend-request-was-accepted": "Votre demande d'ami a été acceptée par ",
-
 	"api-doc-transcenduck-services": "Documentation de l'API",
 	"auth-doc": "Service d'authentification",
 	"user-doc": "Service utilisateur",
 	"upload-doc": "Service de téléchargement de fichiers",
 	"game-doc": "Service de jeu",
-
 	"load": "Charger",
 	"custom ": "Personnalisé",
 	"square ": "Carré",
-	"flip x" : "Retourner horizontalement",
-	"flip y" : "Retourner verticalement",
+	"flip x": "Retourner horizontalement",
+	"flip y": "Retourner verticalement",
 	"reset": "Réinitialiser",
 	"bold ": "Gras",
 	"circle ": "Cercle",
@@ -199,7 +192,6 @@
 	"left ": "Gauche",
 	"right ": "Droite",
 	"center ": "Centre",
-
 	"error-while-fetching-user-infos": "Erreur lors de la récupération de vos informations",
 	"error-clean-your-cache": "Erreur, nettoyez votre cache, rechargez la page et réessayez.",
 	"no-changes-detected": "Aucun changement détecté",
@@ -212,7 +204,6 @@
 	"forbidden": "Interdit",
 	"not-found": "Page ou ressource introuvable",
 	"go-back-to-safe-place": "Retourner en lieu sûr",
-
 	"version": "Version",
 	"no-duck-hurt": "Aucun canard n'a été blessé",
 	"during-development": "durant le développement de ce site web",

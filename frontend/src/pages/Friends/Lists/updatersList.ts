@@ -23,7 +23,6 @@ export async function updateNotificationsList() {
 export async function updateFriendsList() {
 	const friendDiv = document.getElementById("friends-div");
 	const friendsHtml = await friendsList();
-	console.warn("Friends HTML:", friendsHtml);
 	if (friendDiv && friendsHtml) {
 		friendDiv.innerHTML = friendsHtml;
 	}

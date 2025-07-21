@@ -7,8 +7,8 @@ const logosSvg: { [key: string]: string } = {
 	"rgpd": `<img src="/images/duckRGPD.png" alt="rgpdIcon" class="flex h-70 w-70 icon-responsive-size" />`,
 };
 
-export function headerPage(titlePage: string, typePage: string = "private") {
-	
+export function headerPage(titlePage: string, typePage: string = "private", backButtonPage?: string) {
+
 	let logoSvg: string = "";
 	let logo: string = "";
 
@@ -19,16 +19,16 @@ export function headerPage(titlePage: string, typePage: string = "private") {
 			${logoSvg}
 		</div>`;
 	}
-	const backArrow = (typePage === "public") ? backButtonPublicPage(titlePage) : backButton();
-	
-return `
+	const backArrow = (typePage === "public") ? backButtonPublicPage(titlePage) : backButton(backButtonPage ?? "");
+
+	return `
 <div class="flex flex-col w-full justify-center items-left">
 	${backArrow}
 </div>
 
 ${logo}
 
-<div class="flex header-responsive-size p-7 font-title items-center justify-center text-tertiary dark:text-dtertiary overflow truncate" translate="${titlePage}">
+<div class="flex header-responsive-size p-7 font-title items-center justify-center text-tertiary dark:text-dtertiary overflow-truncate" translate="${titlePage}">
 ${titlePage}
 </div>`;
 }
