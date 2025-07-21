@@ -10,7 +10,7 @@ import { randomRoomNameGenerator } from "../../components/utils/randomRoomNameGe
 function getPlayer2Name() {
   const inputValue = (document.getElementById("player2-name") as HTMLInputElement).value;
   if (!inputValue || inputValue.trim() === "") {
-    alert("enter-name-player2", "error");
+    alert("error", "enter-name-player2", true);
     return undefined;
   }
   return inputValue;
@@ -23,7 +23,7 @@ export async function initGame() {
 
   const gameType = document.querySelector('input[name="game-type"]:checked') as HTMLInputElement;
   if (!gameType) {
-    return alert("no-gametype-selected", "error");
+    return alert("error", "no-gametype-selected", true);
   }
   sessionStorage.setItem("gameType", gameType.id);
 
@@ -40,8 +40,8 @@ export async function initGame() {
   if (gameType.id === "online" || gameType.id === "tournament") {
     updateNavbar();
   }
-  
-  if(gameType.id === "online" && gameFormInfo.playerName === "") {
+
+  if (gameType.id === "online" && gameFormInfo.playerName === "") {
     invitePlayerToPlay(gameFormInfo);
     return;
   }
@@ -49,16 +49,15 @@ export async function initGame() {
 }
 
 export async function createRoomInServer(gameFormInfo: IGameFormInfo) {
-   const userPref = await FetchInterface.getUserPrefs();
+  const userPref = await FetchInterface.getUserPrefs();
   if (!userPref) {
-    return await alertTemporary("error", "Error while getting user theme", 'dark', false, true);
-  }
-  const success = await FetchInterface.createGameInServer(gameFormInfo);
-
-  if (!success) {
-    alertTemporary("error", "cannot-create-game-wait-and-retry", userPref.theme, true, true);
     return;
   }
-  document.getElementById("create-game")?.classList.add("disabled"); 
-  alertTemporary("success", "game-created-successfully", userPref.theme, true, true);
+  const success = await FetchInterface.createGameInServer(gameFormInfo);
+  if (!success) {
+    alertTemporary("error", "cannot-create-game-wait-and-retry", true);
+    return;
+  }
+  document.getElementById("create-game")?.classList.add("disabled");
+  alertTemporary("success", "game-created-successfully", true);
 }

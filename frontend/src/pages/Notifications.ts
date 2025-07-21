@@ -1,7 +1,6 @@
-import { alertTemporary } from "../components/ui/alert/alertTemporary";
+import Swal from "sweetalert2";
 import { getCustomAlertTheme } from "../components/ui/alert/alertTheme";
 import { loadTranslation } from "../controllers/Translate";
-import Swal from "sweetalert2";
 import { notificationList } from "./Friends/Lists/notificationsList";
 import { acceptGameInvitation, friendRequest } from "../events/social/acceptInvitation";
 import { cancelFriendInvitation } from "../events/social/cancelInvitation";
@@ -14,7 +13,6 @@ export async function showNotificationDiv() {
 
 	const customTheme = await getCustomAlertTheme();
 	if (!customTheme) {
-		alertTemporary("error", "Error while getting user theme", 'dark');
 		return;
 	}
 	const trad = await loadTranslation(customTheme.lang);

@@ -61,6 +61,7 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 
 		const page_content = await Promise.resolve(rendererFunction());
 		main_container.innerHTML = page_content;
+
 		translatePage(lang);
 		if (updateHistory) {
 			addToHistory(page, updateHistory);
@@ -71,7 +72,6 @@ export async function renderPublicPage(page: string, updateHistory: boolean = tr
 
 		fadeIn();
 
-		// document.querySelector("footer")?.classList.add("hidden");
 	}
 		, 200);
 }
@@ -119,15 +119,14 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		setupColorTheme(user.preferences.theme);
 
 		translatePage(user.preferences.lang);
+
 		addToHistory(page, updateHistory);
 
 		window.scrollTo(0, 0);
+
 		removeLoadingScreen();
 
 		fadeIn();
-		document.querySelector("footer")?.classList.remove("hidden");
-
-
 	}, 200);
 }
 
@@ -162,6 +161,7 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 		translatePage(user.preferences.lang);
 
 		removeLoadingScreen();
+		window.scrollTo(0, 0);
 
 		fadeIn();
 	}
@@ -193,7 +193,7 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 		main_container.innerHTML = page_content;
 		translatePage(lang);
 
-		addToHistory(code, false);
+		window.scrollTo(0, 0);
 
 		removeLoadingScreen();
 

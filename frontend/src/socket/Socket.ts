@@ -29,14 +29,13 @@ export async function socketConnection() {
 	});
 
 	socket.addEventListener('error', async () => {
-		await alertWithTimer("ERROR", "Connection with the serveur lost. Auto-Refresh in progress, 2000");
 		socket.close();
 		window.location.href = "/login";
 
 
-	socket.addEventListener('close', () => {
-		window.location.href = "/login";
-	});
+		socket.addEventListener('close', () => {
+			window.location.href = "/login";
+		});
 	});
 
 }
@@ -52,4 +51,3 @@ export function sendInSocket(service: string, scope: string, target: string, act
 		},
 	}));
 }
-	

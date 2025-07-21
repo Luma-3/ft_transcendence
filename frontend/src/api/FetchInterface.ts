@@ -1,7 +1,6 @@
 import { fetchApi, fetchApiWithNoError } from "./fetch";
 import * as API from "./routes";
 import { alert } from "../components/ui/alert/alert";
-import { alertPublic } from "../components/ui/alert/alertPublic";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
 import { render2FaPages, renderPublicPage } from "../controllers/renderPage";
 import { loadTranslation } from "../controllers/Translate";
@@ -27,7 +26,7 @@ export class FetchInterface {
     });
     if (response.status !== "success") {
       const trad = await loadTranslation(userData.preferences.lang);
-      alertPublic(trad[response.message] ?? response.message, "error");
+      alert("error", trad[response.message] ?? response.message);
       return false;
     }
     return true;
@@ -38,7 +37,7 @@ export class FetchInterface {
    */
   public static async logOutUser() {
 
-    const confirmResponse = await alert("are-you-sure", "warning");
+    const confirmResponse = await alert("warning", "are-you-sure", true);
     if (confirmResponse) {
       const responseApi = await fetchApiWithNoError(API.API_SESSION.DELETE, {
         method: 'DELETE',
@@ -49,8 +48,7 @@ export class FetchInterface {
         body: "",
       });
       if (responseApi.status === "error") {
-        return alert(responseApi.message, "error");
-
+        return alert("error", "cannot-log-out", true);
       }
       window.location.href = "/";
     }
@@ -77,13 +75,14 @@ export class FetchInterface {
 
       default:
         if (response.status === "error") {
-          alertPublic("username-or-password-incorrect", "error");
+          alert("error", "username-or-password-incorrect");
           renderPublicPage('login');
           return false;
         }
         return true;
     }
   }
+
   /**
    * ! Verification de la session 
    */
@@ -105,6 +104,7 @@ export class FetchInterface {
     })
     return (response.status !== "error");
   }
+
   /**
    * ! Verification de session + Recuperation des informations du user
    */
@@ -118,15 +118,22 @@ export class FetchInterface {
     const response = await fetchApi<IUserInfo>(API.API_USER.BASIC.INFOS + "?includePreferences=true", {
       method: "GET",
     });
-
-    return response.data ?? undefined;
+    if (response.status === "error" || !response.data) {
+      await alertTemporary("error", "error-while-fetching-user-infos", false);
+      return undefined;
+    }
+    return response.data;
   }
 
   public static async getUserPrefs() {
     const response = await fetchApiWithNoError<IUserPreferences>(API.API_USER.BASIC.ONLY_PREFERENCES, {
       method: "GET",
     });
-    return response.data ?? undefined;
+    if (response.status === "error" || !response.data) {
+      await alertTemporary("error", "error-while-fetching-user-infos", false);
+      return undefined;
+    }
+    return response.data;
   }
 
   /**
@@ -155,7 +162,7 @@ export class FetchInterface {
    */
   public static async deleteUser() {
 
-    const confirmResponse = await alert("are-you-sure", "warning");
+    const confirmResponse = await alert("warning", "are-you-sure", true);
 
     if (confirmResponse) {
       const response = await fetchApi(API.API_USER.BASIC.DELETE, {
@@ -166,11 +173,12 @@ export class FetchInterface {
       });
 
       if (response.status === "error") {
-        return alert("cannot-delete-user", "error");
+        return alert("error", "cannot-delete-user", true);
       }
       window.location.href = '/';
     }
   }
+
   /**
    * ! Update Preferences
    */
@@ -183,10 +191,11 @@ export class FetchInterface {
     });
     return response.status !== "error";
   }
+
   /**
    * ! Change / Update Password
    */
-  public static async updatePassword(oldPassword: string, newPassword: string, trad: any, customTheme: any) {
+  public static async updatePassword(oldPassword: string, newPassword: string) {
     const response = await fetchApiWithNoError(API.API_USER.UPDATE.PASSWORD, {
       method: "PATCH",
       body: JSON.stringify({
@@ -195,9 +204,9 @@ export class FetchInterface {
       }),
     });
     if (response.status === "error") {
-      return alertTemporary("error", 'wrong-password', customTheme.theme, true, true);
+      return alertTemporary("error", 'wrong-password', true);
     }
-    return alertTemporary("success", 'password-updated', customTheme.theme, true, true);
+    return alertTemporary("success", 'password-updated', true);
   }
 
   /**
@@ -209,11 +218,11 @@ export class FetchInterface {
       method: "GET",
     });
     if (response.status === "error") {
-      await alertPublic("cannot-verify-email-too-old-mail-or-retry-registration-process", "error");
+      await alert("error", "cannot-verify-email-too-old-mail-or-retry-registration-process");
       window.location.href = "/register";
       return;
     }
-    await alertTemporary("success", "email-verified-successfully", 'dark', true, true);
+    await alertTemporary("success", "email-verified-successfully");
     window.location.href = "/login";
   }
 
@@ -245,6 +254,7 @@ export class FetchInterface {
     });
     return response.code;
   }
+
   /**
    * ! Get all of my friends
    */
@@ -264,7 +274,7 @@ export class FetchInterface {
   /**
    * ! Accept Friend Request
    */
-  public static async acceptFriendRequest(user: IUserInfo, friendId: string, action: "send" | "accept") {
+  public static async acceptFriendRequest(friendId: string, action: "send" | "accept") {
     const response = await fetchApiWithNoError(API.API_USER.SOCIAL.NOTIFICATIONS + `${(action == "send" ? "" : "/accept")}/${friendId}`, {
       method: "POST",
       body: JSON.stringify({
@@ -274,13 +284,13 @@ export class FetchInterface {
 
     if (response.status === "error") {
       (action === "send")
-        ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true)
-        : alertTemporary("error", "issues-with-friend-acceptance", user.preferences.theme, true, true);
+        ? alertTemporary("error", "issues-with-friend-invitation", true)
+        : alertTemporary("error", "issues-with-friend-acceptance", true);
       return false;
     }
 
     if (action === "send") {
-      alertTemporary("success", "friend-invitation-sent", user.preferences.theme, true, true);
+      alertTemporary("success", "friend-invitation-sent", true);
       return true
     }
 
@@ -290,14 +300,14 @@ export class FetchInterface {
   /**
    * ! Refuse Friend Request
    */
-  public static async cancelFriendRequest(user: IUserInfo, friendId: string) {
+  public static async cancelFriendRequest(friendId: string) {
 
     const response = await fetchApiWithNoError(API.API_USER.SOCIAL.NOTIFICATIONS + `/${friendId}`, {
       method: "DELETE",
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      alertTemporary("error", "issues-with-invitation-cancelled", user.preferences.theme, true, true);
+      alertTemporary("error", "issues-with-invitation-cancelled", true);
       return false;
     }
     return true;
@@ -306,14 +316,14 @@ export class FetchInterface {
   /**
    * ! Cancel Friend Request
    */
-  public static async removeFriendRequest(user: IUserInfo, friendId: string) {
+  public static async removeFriendRequest(friendId: string) {
 
     const response = await fetchApiWithNoError(API.API_USER.SOCIAL.NOTIFICATIONS + `/refuse/${friendId}`, {
       method: "DELETE",
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      alertTemporary("error", "issues-with-invitation-refused", user.preferences.theme, true, true);
+      alertTemporary("error", "issues-with-invitation-refused", true);
       return false;
     }
     return true;
@@ -322,33 +332,33 @@ export class FetchInterface {
   /**
    * ! Remove Friend
    */
-  public static async removeFriend(user: IUserInfo, friendId: string) {
+  public static async removeFriend(friendId: string) {
 
     const response = await fetchApiWithNoError(API.API_USER.SOCIAL.FRIENDS + `/${friendId}`, {
       method: "DELETE",
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      return alertTemporary("error", "issues-with-friend-removal", user.preferences.theme, true, true);
+      return alertTemporary("error", "issues-with-friend-removal", true);
     }
 
-    alertTemporary("success", "friend-removed", user.preferences!.theme, true, true);
+    alertTemporary("success", "friend-removed", true);
   }
 
   /**
    * ! Block User
    */
-  public static async blockUser(user: IUserInfo, blockId: string, isBlocking: boolean) {
+  public static async blockUser(blockId: string, isBlocking: boolean) {
 
     const response = await fetchApiWithNoError(API.API_USER.SOCIAL.BLOCKED + `/${blockId}`, {
       method: isBlocking ? "DELETE" : "POST",
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      alertTemporary("error", "issues-with-user-blocked", user.preferences.theme, true, true);
+      alertTemporary("error", "issues-with-user-blocked", true);
       return false;
     }
-    alertTemporary("success", isBlocking ? "user-unblocked" : "user-blocked", user.preferences.theme, true, true);
+    alertTemporary("success", isBlocking ? "user-unblocked" : "user-blocked", true);
     return true;
   }
 
@@ -367,6 +377,7 @@ export class FetchInterface {
     const response = await fetchApi<IOtherUser[]>(API.API_USER.SOCIAL.NOTIFICATIONS + `?action=${params}`);
     return response.data ?? undefined;
   }
+
   /**
    * ! Get Waiting Game
    */
@@ -395,7 +406,7 @@ export class FetchInterface {
     if (response.status === "success") {
       sessionStorage.removeItem("gameType");
       if (await updateNavbar()) {
-        alertTemporary("success", "Game cancelled successfully!", 'dark', true, true);
+        alertTemporary("success", "game-cancelled-successfully", true);
       }
     }
     return response.status === "success";
@@ -421,7 +432,7 @@ export class FetchInterface {
       body: JSON.stringify({ email, lang })
     });
     if (response.status === "error") {
-      await alertPublic("error", "email-already-sent");
+      await alert("error", "email-already-sent", false);
       return false;
     }
     return true;
@@ -432,7 +443,7 @@ export class FetchInterface {
       method: state ? 'PUT' : 'DELETE',
     });
     if (response.status === "error") {
-      alertTemporary("error", state ? "cannot-activate-2fa" : "cannot-desactivate-2fa", "dark", true, true);
+      alertTemporary("error", state ? "cannot-activate-2fa" : "cannot-desactivate-2fa", true);
       return false;
     }
     return true;
@@ -451,10 +462,10 @@ export class FetchInterface {
       body: JSON.stringify({ code })
     });
     if (response.status === 'error') {
-      alertTemporary("error", "invalid-2fa-code", 'dark', false, true);
+      alertTemporary("error", "invalid-2fa-code", false);
       return false;
     }
-    alertTemporary("success", "2fa-code-verified", 'dark', false, true);
+    alertTemporary("success", "2fa-code-verified", false);
     return true;
   }
 
@@ -480,7 +491,7 @@ export class FetchInterface {
       headers: { "Content-Type": "text/plain" }
     });
     if (response.status === "error") {
-      alertTemporary("error", "cannot-activate-2fa", "dark", true, true);
+      alertTemporary("error", "cannot-activate-2fa", true);
       return false;
     }
     return true;
@@ -495,7 +506,7 @@ export class FetchInterface {
       headers: { "Content-Type": "text/plain" }
     });
     if (response.status === "error") {
-      alertTemporary("error", "cannot-desactivate-2fa", "dark", true, true);
+      alertTemporary("error", "cannot-desactivate-2fa", true);
       return false;
     }
     return true;
@@ -518,7 +529,7 @@ export class FetchInterface {
     return true;
   }
 
-  public static async inviteToPlay(_gameFormInfo: IGameFormInfo, user: IUserInfo, invitePlayerId: string) {
+  public static async inviteToPlay(_gameFormInfo: IGameFormInfo, invitePlayerId: string) {
     const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/${invitePlayerId}`, {
       method: 'POST',
       body: JSON.stringify({
@@ -527,10 +538,10 @@ export class FetchInterface {
       })
     });
     if (response.status === "error") {
-      alertTemporary("error", "failed-to-send-invitation", user.preferences.theme, true, true);
+      alertTemporary("error", "failed-to-send-invitation", true);
       return false;
     }
-    alertTemporary("success", "player-invited", user.preferences.theme, true, true);
+    alertTemporary("success", "player-invited", true);
     return true;
   }
 
@@ -544,7 +555,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      alertTemporary("error", "issues-with-invitation-acceptance", 'dark', true, true);
+      alertTemporary("error", "issues-with-invitation-acceptance", true);
       return false;
     }
     return true;
@@ -560,7 +571,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      alertTemporary("error", "issues-with-invitation-refusal", 'dark', true, true);
+      alertTemporary("error", "issues-with-invitation-refusal", true);
       return false;
     }
 
@@ -573,12 +584,13 @@ export class FetchInterface {
     if (!id) {
       return false;
     }
+
     const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/${id}`, {
       method: 'DELETE',
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      alertTemporary("error", "issues-with-invitation-cancellation", 'dark', true, true);
+      alertTemporary("error", "issues-with-invitation-cancellation", true);
       return false;
     }
     return true;

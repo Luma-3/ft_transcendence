@@ -1,6 +1,5 @@
 import { navbar } from "../components/ui/navbar";
 
-import { animateButton } from "../components/ui/buttons/animateButton";
 
 import { languageSelectorSettings } from "../components/ui/languageSelectors";
 import { headerPage } from "../components/ui/headerPage";
@@ -35,6 +34,7 @@ ${headerPage("settings")}
 	
 	</div>`
 }
+//TODO: Verif
 // <div class="flex flex-col items-center justify-center space-y-4 pt-20 pb-20">
 
 // ${animateButton("logout", "logout", "`<img src='/images/duckSad.png' class='w-20 h-2- mr-2' alt='Duck sad icon'>`")}

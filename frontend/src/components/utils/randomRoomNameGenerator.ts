@@ -1,5 +1,5 @@
 export function randomRoomNameGenerator() {
-  const allRoomNames = [
+	const allRoomNames = [
 		"Duck’n Smash",
 		"Quack Stadium",
 		"Coincoin Chaos",
@@ -9,7 +9,7 @@ export function randomRoomNameGenerator() {
 		"Duck VS Duck",
 	];
 
-  const randomName = allRoomNames[Math.floor(Math.random() * allRoomNames.length)];
+	const randomName = allRoomNames[Math.floor(Math.random() * allRoomNames.length)];
 
-  return randomName;
+	return randomName;
 }

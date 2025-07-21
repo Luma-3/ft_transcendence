@@ -5,20 +5,19 @@ import { Button } from "../classes/Button";
 import { verifRegexPassword } from "../components/utils/regex";
 import { renderErrorPage, renderPublicPage } from "../controllers/renderPage";
 import { FetchInterface } from "../api/FetchInterface";
-import { alertPublic } from "../components/ui/alert/alertPublic";
-import { startEmailCooldown } from "../components/utils/sendEmail";
+import { alert } from "../components/ui/alert/alert";
 
 let formInstance: Form | null;
 
 function renderRegisterPage() {
-const inputs = [
-	new InputField(
-		"username",
-		"text",
-		"Username",
-		"username",
-		true,
-		"username"),
+	const inputs = [
+		new InputField(
+			"username",
+			"text",
+			"Username",
+			"username",
+			true,
+			"username"),
 
 		new InputField(
 			"email",
@@ -27,7 +26,7 @@ const inputs = [
 			"email",
 			true,
 			"email"),
-		
+
 		new InputField(
 			"password",
 			"password",
@@ -45,19 +44,19 @@ const inputs = [
 			"verif-password"),
 	]
 
-	const button = [ new Button(
-			"registerForm",
-			"full",
-			"Register",
-			"register",
-			"primary",
-			"submit")
-		]
+	const button = [new Button(
+		"registerForm",
+		"full",
+		"Register",
+		"register",
+		"primary",
+		"submit")
+	]
 
-formInstance = new Form("registerForm", inputs, button)
+	formInstance = new Form("registerForm", inputs, button)
 
 
-return `
+	return `
 <div class="flex flex-col font-title text-responsive-size dark:text-dtertiary justify-center items-center mt-10 mb-10">
 
 	${headerPage("register", "public")}
@@ -79,10 +78,11 @@ export async function registerUser() {
 	const values = formInstance?.getValues("registerForm");
 	if (!values) { return }
 
+
 	/**
 	 * Verification des valeurs du formulaire directement avec les entrees
 	 */
-	if (verifValueForm(values) === false || 	verifRegexPassword(values.password) === false) {
+	if (verifValueForm(values) === false || verifRegexPassword(values.password) === false) {
 		return;
 	}
 
@@ -109,11 +109,11 @@ export async function registerUser() {
 	if (!success) {
 		return;
 	}
-		userRegisterInfo = {
-			email: userData.email,
-			lang: userData.preferences.lang,
-		};
-		renderPublicPage('verifyEmail');
+	userRegisterInfo = {
+		email: userData.email,
+		lang: userData.preferences.lang,
+	};
+	renderPublicPage('verifyEmail');
 }
 
 export function verifValueForm(userData: Record<string, string>) {
@@ -128,7 +128,8 @@ export function verifValueForm(userData: Record<string, string>) {
 	 * Verification si les mots de passe sont identiques
 	 */
 	if (userData.password !== userData.passwordVerif) {
-		return alertPublic("passwords-dont-match", "error"), false;
+		alert("error", "passwords-dont-match");
+		return false;
 	}
 	return true;
 }

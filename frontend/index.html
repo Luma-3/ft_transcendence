@@ -1,75 +1,85 @@
 <!doctype html>
 <html lang="en" class="dark">
-	<head>
-		<meta charset="UTF-8" />
-		<link rel="icon" type="image/x-icon" href="icons/favicon.ico" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		
-		<!-- If Javascript available load script -->
-		<link rel="preload" href="src/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-		<!-- If no Javascript available load css like this -->
-		<noscript><link rel="stylesheet" href="src/css/style.css"></noscript>
-		
-		<link rel="stylesheet" href="/node_modules/tui-image-editor/dist/tui-image-editor.css">
-		<script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
-		<title>Transcenduck</title>
-	</head>
-	<body class="min-h-screen flex flex-col">
-		<!--- Loading Page-->
-		<div id="loading" class="absolute inset-0 h-screen flex items-center justify-center z-10">
-			<div class="flex flex-col items-center justify-center">
-				<div class="animate-spin rounded-full h-46 w-46 border-t-4 border-primary dark:border-dprimary"></div>
-				<p class="text-white font-title text-lg mt-4">Loading...</p>
-			</div>
-		</div>
 
-		<!--- Main div-->
-		<div id="app" class="flex-col z-10 opacity-0 scale-95 transition-all duration-200 flex-grow"></div>
-		<script type="module" src="src/main.ts" defer></script>
-		
+<head>
+	<meta charset="UTF-8" />
+	<link rel="icon" type="image/x-icon" href="icons/favicon.ico" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- If Javascript available load script -->
+	<link rel="preload" href="src/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+	<!-- If no Javascript available load css like this -->
+	<noscript>
+		<link rel="stylesheet" href="src/css/style.css">
+	</noscript>
+
+	<link rel="stylesheet" href="/node_modules/tui-image-editor/dist/tui-image-editor.css">
+	<script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+	<title>Transcenduck</title>
+</head>
+
+<body class="min-h-screen flex flex-col">
+	<!--- Loading Page-->
+	<div id="loading" class="absolute inset-0 h-screen flex items-center justify-center z-10">
+		<div class="flex flex-col items-center justify-center">
+			<div class="animate-spin rounded-full h-46 w-46 border-t-4 border-primary dark:border-dprimary"></div>
+			<p class="text-white font-title text-lg mt-4">Loading...</p>
+		</div>
+	</div>
+
+	<!--- Main div-->
+	<div id="app" class="flex-col z-10 opacity-0 scale-95 transition-all duration-200 flex-grow"></div>
+	<script type="module" src="src/main.ts" defer></script>
+
 	<!--- Footer -->
 	<footer id="footer" class="w-full mt-auto z-50">
-		<div class="flex w-full md:h-40 lg:h-30 bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary items-center justify-between border-t border-gray-300 dark:border-gray-600">
-		
-		<div class="flex max-w-[1000px] w-full mx-auto justify-between items-center">
-			<div class="text-responsive-size justify-start ml-2 font-title">
-				<div class="p-2">Transcenduck <br> </div>
-				<div class="text-xs space-y-2 p-2">
-					<span translate="version">Version</span> 0.0.0 <br> 
-					<span translate="no-duck-hurt">No duck was hurt</span>
-					<span translate="during-development">during development</span>
-				</div>
-			</div>
-			<div class="flex justify-middle items-center font-title hover:cursor-pointer">
-				<div class="text-xs p-2">
-					<a class="text-responsive-size underline" href="https://github.com/Luma-3"> Github</a> <br>
-					<a class="hover:underline" href="https://github.com/Luma-3" target="_blank"> Jean-Baptiste BROUSSE</a> <br>
-					<a class="hover:underline" href="https://github.com/SenseiTarzan" target="_blank"> Gabriel CAPTARI </a> <br>
-					<a class="hover:underline" href="https://github.com/LeSabreDeDieu" target="_blank"> Sayf-Allah GABSI </a> <br>
-					<a class="hover:underline" href="https://github.com/Ajap75" target="_blank"> Antoine ASTRUC </a> <br>
-					<a class="hover:underline" href="https://github.com/monsieurCanard" target="_blank"> Anthony GABRIEL </a> <br>
-			</div>
-			</div>
-		<div class="flex justify-end items-center font-title">
-				<div class="text-md p-2 mr-4 space-y-2">
-					<div class="group">
-						<a href="https://localhost:5173/rgpd" class="inline-flex items-center px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-primary dark:hover:border-dprimary transition-all duration-200 shadow-sm hover:shadow-md" >
-						<img src="images/rgpd.png" alt="RGPD Icon" class="w-8 h-8 mr-2">
-						<div translate="rgpd">
-							RGPD
-						</div>
-						</a>
+		<div
+			class="flex w-full md:h-40 lg:h-30 bg-primary dark:bg-dprimary text-tertiary dark:text-dtertiary items-center justify-between border-t border-gray-300 dark:border-gray-600">
+
+			<div class="flex max-w-[1000px] w-full mx-auto justify-between items-center">
+				<div class="text-responsive-size justify-start ml-2 font-title">
+					<div class="p-2">Transcenduck <br> </div>
+					<div class="text-xs space-y-2 p-2">
+						<span translate="version">Version</span> 1.0.0 <br>
+						<span translate="no-duck-hurt">No duck was hurt</span>
+						<span translate="during-development">during development</span>
 					</div>
-					<div class="group">
-						<a href="https://localhost:5173/documentation" class="inline-flex w-full items-center px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-primary dark:hover:border-dprimary transition-all duration-200 shadow-sm hover:shadow-md">
-						<img src="images/api.png" alt="API Icon" class="w-8 h-8 mr-2">
-						<div translate="api-doc">
-							API Doc
-						</div>
-					</a>
 				</div>
-			</div>
-		</div>
+				<div class="flex justify-middle items-center font-title hover:cursor-pointer">
+					<div class="text-xs p-2">
+						<a class="text-responsive-size underline" href="https://github.com/Luma-3"> Github</a> <br>
+						<a class="hover:underline" href="https://github.com/Luma-3" target="_blank"> Jean-Baptiste BROUSSE</a> <br>
+						<a class="hover:underline" href="https://github.com/SenseiTarzan" target="_blank"> Gabriel CAPTARI </a> <br>
+						<a class="hover:underline" href="https://github.com/LeSabreDeDieu" target="_blank"> Sayf-Allah GABSI </a>
+						<br>
+						<a class="hover:underline" href="https://github.com/Ajap75" target="_blank"> Antoine ASTRUC </a> <br>
+						<a class="hover:underline" href="https://github.com/monsieurCanard" target="_blank"> Anthony GABRIEL </a>
+						<br>
+					</div>
+				</div>
+				<div class="flex justify-end items-center font-title">
+					<div class="text-md p-2 mr-4 space-y-2">
+						<div class="group">
+							<a href="https://localhost:5173/rgpd"
+								class="inline-flex items-center px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-primary dark:hover:border-dprimary transition-all duration-200 shadow-sm hover:shadow-md">
+								<img src="images/rgpd.png" alt="RGPD Icon" class="w-8 h-8 mr-2">
+								<div translate="rgpd">
+									RGPD
+								</div>
+							</a>
+						</div>
+						<div class="group">
+							<a href="https://localhost:5173/documentation"
+								class="inline-flex w-full items-center px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-primary dark:hover:border-dprimary transition-all duration-200 shadow-sm hover:shadow-md">
+								<img src="images/api.png" alt="API Icon" class="w-8 h-8 mr-2">
+								<div translate="api-doc">
+									API Doc
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
 	</footer>
-	</body>
+</body>
+
 </html>

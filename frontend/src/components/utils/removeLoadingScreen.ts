@@ -3,7 +3,7 @@
  */
 export function removeLoadingScreen() {
 	const loading = document.querySelector<HTMLDivElement>('#loading')!;
-			if (loading) {
-				loading.classList.add('hidden');
-			}
+	if (loading) {
+		loading.classList.add('hidden');
+	}
 }

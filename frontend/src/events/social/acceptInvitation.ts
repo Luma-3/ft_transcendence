@@ -14,7 +14,7 @@ export async function friendRequest(target: HTMLElement, action: "send" | "accep
 		return;
 	}
 
-	const success = await FetchInterface.acceptFriendRequest(user, targetId, action);
+	const success = await FetchInterface.acceptFriendRequest(targetId, action);
 	if (!success) {
 		return;
 	}

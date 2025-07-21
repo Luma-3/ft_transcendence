@@ -14,7 +14,7 @@ export interface IUserPreferences {
 	banner: string;
 }
 
-export interface IOtherUser { 
+export interface IOtherUser {
 	id: string;
 	username: string;
 	online: boolean;

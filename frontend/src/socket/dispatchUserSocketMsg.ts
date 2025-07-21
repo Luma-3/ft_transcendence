@@ -21,20 +21,15 @@ export async function dispatchUserSocketMsg(payload: PayloadUserSocketMsg) {
 
 	const user = await FetchInterface.getOtherUserInfo(data);
 	if (user === undefined) {
-		return alertTemporary("error", trad['user-undefined'], myUser.preferences.theme)
+		return alertTemporary("error", trad['user-undefined'], true)
 	}
 
 	switch (action) {
 		case 'add':
-			alertNotificationsFriends("info", `${trad['new-friend-request']} ${user.username}`, "dark", true)
+			alertNotificationsFriends("info", `${trad['new-friend-request']} ${user.username}`, 5000)
 			break;
 		case 'accept':
-			alertTemporary("info", `${trad['your-friend-request-was-accepted']} ${user.username}`, "dark", true, true)
-			// const friendDiv = document.getElementById("friends-div");
-			// 	const friendsHtml = await friendsList();
-			// 	if (friendDiv && friendsHtml) {
-			// 			friendDiv.innerHTML = friendsHtml;
-			// 	}
+			alertTemporary("info", `${trad['your-friend-request-was-accepted']} ${user.username}`, true);
 			break;
 		default:
 			break;

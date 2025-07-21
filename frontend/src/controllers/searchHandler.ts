@@ -19,7 +19,7 @@ export async function handleSearchUserGame(value: string) {
 		container!.innerHTML = `<li class="font-title">No users found</li>`;
 		return;
 	}
-	
+
 	container.innerHTML = "";
 	for (const user of searchData.data!.users) {
 		container!.innerHTML += `
@@ -67,7 +67,7 @@ export async function handleSearchOpponent(value: string) {
 		container!.innerHTML = `<li class="font-title">No users found</li>`;
 		return;
 	}
-	
+
 	container.innerHTML = "";
 	for (const user of searchData.data!.users) {
 		const radioId = `${user.id}`;
@@ -105,10 +105,10 @@ export async function invitePlayerToPlay(gameFormInfo: IGameFormInfo) {
 	if (!choice) {
 		return createRoomInServer(gameFormInfo);
 	}
-	
+
 	const player_select = choice.id;
-	
-	const success = await FetchInterface.inviteToPlay(gameFormInfo, user, player_select);
+
+	const success = await FetchInterface.inviteToPlay(gameFormInfo, player_select);
 	if (!success) {
 		return;
 	}
