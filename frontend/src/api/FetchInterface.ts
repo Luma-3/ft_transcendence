@@ -14,24 +14,24 @@ import { updateNavbar } from "../components/ui/navbar";
 export class FetchInterface {
   private constructor() { }
 
-	/**
-	 * ! Register
-	 */
-	public static async registerUser(userData: {
-		username: string, password: string, passwordVerif: string, email: string, preferences: { lang: string }
-	}): Promise<Boolean> {
-		
-		const response = await fetchApiWithNoError(API.API_USER.BASIC.REGISTER, {
-			method: 'POST',
-			body: JSON.stringify(userData)
-		});
-		if (response.status !== "success") {
-				const trad = await loadTranslation(userData.preferences.lang);
-				alertPublic(trad[response.message] ?? response.message, "error");
-				return false;
-			}
-		return true;
-	}
+  /**
+   * ! Register
+   */
+  public static async registerUser(userData: {
+    username: string, password: string, passwordVerif: string, email: string, preferences: { lang: string }
+  }): Promise<Boolean> {
+
+    const response = await fetchApiWithNoError(API.API_USER.BASIC.REGISTER, {
+      method: 'POST',
+      body: JSON.stringify(userData)
+    });
+    if (response.status !== "success") {
+      const trad = await loadTranslation(userData.preferences.lang);
+      alertPublic(trad[response.message] ?? response.message, "error");
+      return false;
+    }
+    return true;
+  }
 
   /**
    * ! Log Out User
@@ -72,7 +72,7 @@ export class FetchInterface {
 
       case 461:
         renderPublicPage('verifyEmail');
-	      startEmailCooldown();
+        startEmailCooldown();
         return false;
 
       default:
@@ -149,7 +149,7 @@ export class FetchInterface {
 
     return response.data ?? undefined;
   }
-	
+
   /**
    * ! Delete User
    */
@@ -198,13 +198,13 @@ export class FetchInterface {
       return alertTemporary("error", 'wrong-password', customTheme.theme, true, true);
     }
     return alertTemporary("success", 'password-updated', customTheme.theme, true, true);
-	}
+  }
 
   /**
    * ! Verify Email
    */
   public static async verifyEmailUser(token: string) {
-  
+
     const response = await fetchApiWithNoError(API.TWOFA.EMAIL + `/${token}`, {
       method: "GET",
     });
@@ -220,7 +220,7 @@ export class FetchInterface {
   /**
    * ! Update Email
    */
-  public static async updateEmail(newEmail: string ): Promise<boolean> {
+  public static async updateEmail(newEmail: string): Promise<boolean> {
     const response = await fetchApiWithNoError(API.API_USER.UPDATE.EMAIL, {
       method: "PATCH",
       body: JSON.stringify({
@@ -236,7 +236,7 @@ export class FetchInterface {
   /**
    * ! Update Username
   */
-  public static async updateUsername(newUsername: string ): Promise<number | undefined> {
+  public static async updateUsername(newUsername: string): Promise<number | undefined> {
     const response = await fetchApiWithNoError(API.API_USER.UPDATE.USERNAME, {
       method: "PATCH",
       body: JSON.stringify({
@@ -257,7 +257,7 @@ export class FetchInterface {
    * ! Search Users in all users
    */
   public static async getSearchUsers(q: string, page: number = 1, limit: number = 10, hydrate: boolean = true): Promise<IApiResponse<UserSearchResult>> {
-    const response = await fetchApi<UserSearchResult>(API.API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}`);
+    const response = await fetchApi<UserSearchResult>(API.API_USER.SEARCH + `?q=${q}&page=${page}&limit=${limit}&hydrate=${hydrate}&blocked="you"`);
     return response;
   }
 
@@ -273,8 +273,8 @@ export class FetchInterface {
     });
 
     if (response.status === "error") {
-      (action === "send") 
-      ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true)
+      (action === "send")
+        ? alertTemporary("error", "issues-with-friend-invitation", user.preferences.theme, true)
         : alertTemporary("error", "issues-with-friend-acceptance", user.preferences.theme, true, true);
       return false;
     }
@@ -370,16 +370,16 @@ export class FetchInterface {
   /**
    * ! Get Waiting Game
    */
-  public static async getWaitingGame(typeGame: string | null) { 
+  public static async getWaitingGame(typeGame: string | null) {
     if (!typeGame) {
       return false;
     }
     const response = await fetchApiWithNoError(API.API_GAME.GET_ALL_DATA + `player/${typeGame}`, {
       method: 'GET',
     });
-    return response.status === "success";  
+    return response.status === "success";
   }
-  
+
   /**
    * ! Cancel Waiting Game
    */
@@ -405,7 +405,7 @@ export class FetchInterface {
    * ! Get Game Invitation
    */
   public static async getGameInvitations(params: "sender" | "receiver" = "sender") {
-    const response = await fetchApi<{id: string}[]>(API.API_GAME.NOTIFICATIONS + `?action=${params}`, {
+    const response = await fetchApi<{ id: string }[]>(API.API_GAME.NOTIFICATIONS + `?action=${params}`, {
       method: 'GET',
     });
     return response.data ?? undefined;
@@ -458,9 +458,9 @@ export class FetchInterface {
     return true;
   }
 
-    /**
-   * ! 2FA Verification
-   */
+  /**
+ * ! 2FA Verification
+ */
   public static async verify2FA(): Promise<boolean> {
     const response = await fetchApiWithNoError<{ twofa: boolean }>(API.API_USER.TWOFA, {
       method: 'GET',
@@ -567,6 +567,7 @@ export class FetchInterface {
     await updateAllLists();
     return true;
   }
+
   public static async cancelGameInvitation(element: HTMLElement): Promise<boolean> {
     const id = element.dataset.id;
     if (!id) {

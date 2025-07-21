@@ -24,7 +24,7 @@ ${headerPage("settings")}
 	${await change2FA()}
 	<br>
 	
-	<div class="flex flex-col w-full max-w-[800px] font-title border-red-600 border-2 space-y-2 p-2 justify-center items-center rounded-lg">
+	<div class="flex flex-col w-full max-w-[800px] font-title border-red-600 border-2 space-y-2 p-2 justify-center items-center rounded-lg mb-10">
 		
 		<span class="title-responsive-size" translate="dangerous-action"> Dangerous Actions 
 		</span>
@@ -33,13 +33,13 @@ ${headerPage("settings")}
 	
 	</div>
 	
-	<div class="flex flex-col items-center justify-center space-y-4 pt-20 pb-20">
-	
-	${animateButton("logout", "logout", "`<img src='/images/duckSad.png' class='w-20 h-2- mr-2' alt='Duck sad icon'>`")}
-	
-	</div>
-</div>`
+	</div>`
 }
+// <div class="flex flex-col items-center justify-center space-y-4 pt-20 pb-20">
+
+// ${animateButton("logout", "logout", "`<img src='/images/duckSad.png' class='w-20 h-2- mr-2' alt='Duck sad icon'>`")}
+
+// </div>
 
 export default function settingsPage(user: IUserInfo) {
 	return renderSettingsPage(user);
@@ -57,7 +57,7 @@ export async function change2FA() {
 	}
 	const activate_button = new Button(id, "1/4", translate, translate, "primary", "button");
 	let container = `
-	<div class="grid sm:grid-cols-2 gap-4 items-center">
+	<div class="grid dm:grid-cols-2 gap-4 items-center">
 
 		<div class="title-responsive-size font-title justify-center" translate="2fa-auth">
 
@@ -71,14 +71,17 @@ export async function change2FA() {
 
 	if (id === 'enable2fa') {
 		container += `
-		<div class="flex flex-col p-2 max-w-[800px] justify-center items-center w-full text-responsive-size font-title" translate="2fa-warning">
-			
+		<div class="flex flex-row w-full justify-center items-center">
+			<img src="/images/duckWarning.png" class="w-20 h-20" alt="Warning duck">
+			<div class="flex flex-col p-2 max-w-[800px] justify-center items-center text-responsive-size font-title" translate="2fa-warning">
+
 			Warning !
 			No 2FA reduces security
 			(as anyone can access your account)<br> and increases the
 			risk of accidental actions.<br> This is not recommended !
 
-		</div>`
+		</div>
+	</div>`
 	}
 	return container;
 }

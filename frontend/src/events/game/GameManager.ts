@@ -11,7 +11,7 @@ import { DisplayGameWinLose } from "./gameEnd";
 export class GameManager {
 	private static instance: Game | null = null;
 
-	static async init(data: IGame) : Promise<void> {
+	static async init(data: IGame): Promise<void> {
 
 		const user = await FetchInterface.getUserInfo();
 		if (!user) {
@@ -25,7 +25,7 @@ export class GameManager {
 		setTimeout(async () => {
 			const main_container = document.querySelector<HTMLDivElement>('#app')!;
 			main_container.innerHTML = await gameHtml(data, user.id);
-			
+
 			setupColorTheme(user.preferences.theme);
 			translatePage(user.preferences.lang);
 			window.scrollTo(0, 0);
@@ -54,7 +54,7 @@ export class GameManager {
 			return;
 		}
 		GameManager.instance.addScore(data);
-		
+
 	}
 
 	static stop() {

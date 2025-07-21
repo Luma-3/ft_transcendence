@@ -4,7 +4,7 @@ import { truncateText } from "../components/utils/truncateText";
 
 async function showPlayer(playerGameInfos: IPlayer, color: 'blue' | 'red') {
 
-  return `
+	return `
 <div id=${playerGameInfos.id} class="flex flex-col p-4 justify-center items-center transition-transform duration-800 ease-in-out">
 	<div class="flex flex-col justify-center items-center">
 
@@ -19,14 +19,14 @@ async function showPlayer(playerGameInfos: IPlayer, color: 'blue' | 'red') {
 </div>`;
 }
 export default async function gameHtml(gameInfo: IGame, userId: string) {
-  const playerLeft = gameInfo.players.find(player => player.id === userId)!;
-  const playerRight = gameInfo.players.find(player => player.id !== userId)!;
+	const playerLeft = gameInfo.players.find(player => player.id === userId)!;
+	const playerRight = gameInfo.players.find(player => player.id !== userId)!;
 
-  const leftOpponentDiv = await showPlayer(playerLeft, 'blue');
-  const rightOpponentDiv = await showPlayer(playerRight, 'red');
+	const leftOpponentDiv = await showPlayer(playerLeft, 'blue');
+	const rightOpponentDiv = await showPlayer(playerRight, 'red');
 
 
-  return `
+	return `
 <div class="flex flex-col justify-center items-center text-tertiary dark:text-dtertiary">
 	
 	<div id="startGameInfos" class="flex flex-col justify-center items-center pt-10 animate-transition opacity-100 duration-500 ease-in-out">
@@ -44,7 +44,7 @@ export default async function gameHtml(gameInfo: IGame, userId: string) {
 			${rightOpponentDiv}
 		
 		</div>
-		<div id = "goToActionGame" class="flex flex-col text-responsive-size justify-center items-center pt-10" >
+		<div id="goToActionGame" translate="goToActionGame" class="flex flex-col text-responsive-size justify-center items-center pt-10" >
 
 			Press any key to start
 

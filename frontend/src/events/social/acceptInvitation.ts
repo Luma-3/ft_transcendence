@@ -7,26 +7,49 @@ export async function friendRequest(target: HTMLElement, action: "send" | "accep
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
 		return renderErrorPage('401');
-		
 	}
 
 	const targetId = target.dataset.id;
 	if (!targetId) {
 		return;
 	}
-	
+
 	const success = await FetchInterface.acceptFriendRequest(user, targetId, action);
 	if (!success) {
 		return;
 	}
-	if (type === "page") {
+	target.parentElement?.parentElement?.parentElement?.remove();
+	setTimeout(async () => {
+		if (type === "page") {
+			await updateNotificationsList();
+			await updateFriendsList();
+			await updateAllLists();
+
+		}
+	}, 1000);
+}
+
+export async function acceptGameInvitation(target: HTMLElement) {
+
+	const user = await FetchInterface.getUserInfo();
+	if (!user) {
+		return renderErrorPage('401');
+	}
+
+	const invitationId = target.dataset.id;
+	if (!invitationId) {
+		return;
+	}
+
+	const success = await FetchInterface.acceptGameInvitation(target);
+	if (!success) {
+		return;
+	}
+
+	target.parentElement?.parentElement?.parentElement?.remove();
+	setTimeout(async () => {
 		await updateNotificationsList();
 		await updateFriendsList();
 		await updateAllLists();
-		target.parentElement?.parentElement?.parentElement?.remove();
-
-	} else {
-		target.parentElement?.parentElement?.parentElement?.remove();
-	}
-
+	}, 1000);
 }

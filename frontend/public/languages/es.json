@@ -8,10 +8,8 @@
 	"delete": "Eliminar",
 	"save": "Guardar",
 	"get-started": "¡Comienza!",
-
 	"lang-choice": "Elige tu idioma: ",
 	"warning-language-default": "Este idioma se establecerá como predeterminado para la navegación y tu primer inicio de sesión",
-
 	"username": "Nombre de usuario",
 	"password": "Contraseña",
 	"email": "Correo electrónico",
@@ -42,13 +40,12 @@
 	"new-password-and-confirm-password-are-different": "La nueva contraseña y la confirmación de la contraseña son diferentes",
 	"password-changed": "Contraseña cambiada",
 	"new-password-must-be-different-from-old-password": "La nueva contraseña debe ser diferente de la antigua",
-
 	"activate-2fa": "Activar 2FA",
 	"disable-2fa": "Desactivar 2FA",
 	"2fa-auth": "Autenticación de dos factores",
 	"2fa-warning": "¡Advertencia! <br> No usar 2FA reduce la seguridad (ya que cualquiera puede acceder a tu cuenta)<br> y aumenta el riesgo de acciones accidentales.<br> ¡No se recomienda!",
 	"2fa-description": "La autenticación de dos factores (2FA) agrega una capa de seguridad adicional a su cuenta. Además de su contraseña, deberá proporcionar un código de verificación recibido por correo electrónico.",
-	"submit-2fa-code": "Enviar código 2FA",
+	"validate-2fa-code": "Validar código",
 	"2fa-code": "Ingrese su código de verificación 2FA",
 	"invalid-2fa-code": "Código 2FA inválido",
 	"2fa-code-sent": "Código 2FA enviado",
@@ -59,7 +56,6 @@
 	"email-verified-successfully": "Correo electrónico verificado con éxito.",
 	"email-already-send": "Correo electrónico ya enviado",
 	"email-sent-successfully": "Correo electrónico enviado con éxito",
-
 	"profil": "Perfil",
 	"profile": "Perfil",
 	"your-informations": "Tu información",
@@ -72,13 +68,12 @@
 	"dark-mode": "Modo oscuro",
 	"light-mode": "Modo claro",
 	"theme-cannot-be-updated": "El tema no se puede actualizar",
-
 	"are-you-sure": "¿Estás seguro?",
 	"dangerous-action": "Acciones peligrosas",
 	"delete-account": "Eliminar cuenta",
 	"cannot-delete-user": "No se puede eliminar el usuario",
 	"user-deleted": "Usuario eliminado",
-
+	"goToActionGame": "Presiona cualquier tecla para comenzar",
 	"play": "Jugar",
 	"player1": "Jugador 1",
 	"player2": "Jugador 2",
@@ -116,7 +111,6 @@
 	"roi-de-la-mare": "Rey del Estanque",
 	"apprenti-canard": "Aprendiz de Pato",
 	"professeur-palmipède": "Profesor Palmípede",
-
 	"social": "Social",
 	"game": "Juego",
 	"game-invitation-to": "Invitación de juego a",
@@ -161,18 +155,16 @@
 	"manage-your-block-list": "Gestionar tu lista de bloqueo",
 	"new-friend-request": "Nueva solicitud de amistad de",
 	"your-friend-request-was-accepted": "Tu solicitud de amistad ha sido aceptada por ",
-
 	"api-doc-transcenduck-services": "Documentación de la API",
 	"auth-doc": "Servicio de autenticación",
 	"user-doc": "Servicio de usuario",
 	"upload-doc": "Servicio de carga de archivos",
 	"game-doc": "Servicio de juego",
-
 	"load": "Cargar",
 	"custom ": "Personalizado",
 	"square ": "Cuadrado",
-	"flip x" : "Voltear horizontalmente",
-	"flip y" : "Voltear verticalmente",
+	"flip x": "Voltear horizontalmente",
+	"flip y": "Voltear verticalmente",
 	"reset": "Restablecer",
 	"bold ": "Negrita",
 	"circle ": "Círculo",
@@ -199,7 +191,6 @@
 	"left ": "Izquierda",
 	"right ": "Derecha",
 	"center ": "Centro",
-
 	"error-while-fetching-user-infos": "Error al obtener tu información",
 	"error-clean-your-cache": "Error, limpia tu caché, recarga la página y vuelve a intentarlo.",
 	"no-changes-detected": "No se detectaron cambios",
@@ -212,7 +203,6 @@
 	"forbidden": "Prohibido",
 	"not-found": "Página o recurso no encontrado",
 	"go-back-to-safe-place": "Regresar a un lugar seguro",
-
 	"version": "Versión",
 	"no-duck-hurt": "No se hirió a ningún pato",
 	"during-development": "durante el desarrollo de este sitio web",

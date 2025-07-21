@@ -8,8 +8,8 @@ export default function documentation() {
 	const uploadApi = new Button("showUploadDoc", "full", "Upload Doc", "upload-doc", "primary", "button");
 	const gameApi = new Button("showGameDoc", "full", "Game Doc", "game-doc", "primary", "button");
 
-return `
-${backButton()}
+	return `
+${backButton("dashboard")}
 
 <div class="flex flex-col items-center justify-center">
 

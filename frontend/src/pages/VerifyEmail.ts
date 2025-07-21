@@ -2,8 +2,8 @@ import { headerPage } from "../components/ui/headerPage"
 import { startEmailCooldown } from "../components/utils/sendEmail"
 
 export default async function verifyEmailPublic() {
-startEmailCooldown();
-return `
+	startEmailCooldown();
+	return `
 <div class="flex flex-col w-full h-full rounded-lg justify-center mt-5">
 	
 	${headerPage("verify-email", "public")}
@@ -44,11 +44,11 @@ return `
 }
 
 export async function verifyEmailPrivate() {
-startEmailCooldown();
-return `
+	startEmailCooldown();
+	return `
 <div class="flex flex-col w-full h-full rounded-lg justify-center mt-5">
 	
-	${headerPage("verify-email")}
+	${headerPage("verify-email", "private", "settings")}
 	
 	<div class="flex flex-col w-full h-full rounded-lg justify-center items-center mt-5 mb-10">
 		

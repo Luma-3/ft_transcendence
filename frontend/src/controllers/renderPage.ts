@@ -33,12 +33,12 @@ import { IUserInfo } from '../interfaces/IUser'
  * Associe les pages publics aux fonctions de rendu
 */
 const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
-  'home': home,
-  'login': login,
-  'register': register,
-  'documentation': documentation,
+	'home': home,
+	'login': login,
+	'register': register,
+	'documentation': documentation,
 	'rgpd': RGPD,
-  'verifyEmail': verifyEmailPublic,
+	'verifyEmail': verifyEmailPublic,
 };
 
 /**
@@ -46,33 +46,34 @@ const rendererPublicPage: { [key: string]: () => string | Promise<string> } = {
  */
 export async function renderPublicPage(page: string, updateHistory: boolean = true) {
 
-  const main_container = document.querySelector<HTMLDivElement>('#app')!
-  const lang = localStorage.getItem('lang') || 'en';
+	const main_container = document.querySelector<HTMLDivElement>('#app')!
+	const lang = localStorage.getItem('lang') || 'en';
 
-  setupColorTheme('dark');
+	setupColorTheme('dark');
 
-  fadeOut();
-  setTimeout(async () => {
+	fadeOut();
+	setTimeout(async () => {
 
-    const rendererFunction = rendererPublicPage[page];
-    if (!rendererFunction) {
-      return window.location.href = '/login';
-    }
-		
+		const rendererFunction = rendererPublicPage[page];
+		if (!rendererFunction) {
+			return window.location.href = '/login';
+		}
+
 		const page_content = await Promise.resolve(rendererFunction());
 		main_container.innerHTML = page_content;
 		translatePage(lang);
 		if (updateHistory) {
 			addToHistory(page, updateHistory);
 		}
-		
+
+		window.scrollTo(0, 0);
 		removeLoadingScreen();
-		
+
 		fadeIn();
 
 		// document.querySelector("footer")?.classList.add("hidden");
 	}
-	, 200);
+		, 200);
 }
 
 /**
@@ -111,7 +112,7 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		if (!rendererFunction) {
 			return renderErrorPage('404')
 		}
-		
+
 		const page_content = await Promise.resolve(rendererFunction(user));
 
 		main_container.innerHTML = page_content;
@@ -120,7 +121,8 @@ export async function renderPrivatePage(page: string, updateHistory: boolean = t
 		translatePage(user.preferences.lang);
 		addToHistory(page, updateHistory);
 
-    removeLoadingScreen();
+		window.scrollTo(0, 0);
+		removeLoadingScreen();
 
 		fadeIn();
 		document.querySelector("footer")?.classList.remove("hidden");
@@ -143,11 +145,11 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 		return;
 	}
 
-  fadeOut();
+	fadeOut();
 
-  setTimeout(async () => {
+	setTimeout(async () => {
 
-    const main_container = document.querySelector<HTMLDivElement>('#app')!
+		const main_container = document.querySelector<HTMLDivElement>('#app')!
 
 		const newContainer = await renderOtherProfile(target, user);
 		if (!newContainer) {
@@ -159,7 +161,7 @@ export async function renderOtherProfilePage(target: HTMLElement) {
 
 		translatePage(user.preferences.lang);
 
-    removeLoadingScreen();
+		removeLoadingScreen();
 
 		fadeIn();
 	}
@@ -171,10 +173,10 @@ export async function renderOtherProfilePage(target: HTMLElement) {
  */
 export async function renderErrorPage(code: string, messageServer?: string) {
 
-  const main_container = document.querySelector<HTMLDivElement>('#app')!
+	const main_container = document.querySelector<HTMLDivElement>('#app')!
 
-  let lang = 'en';
-  let theme = 'dark';
+	let lang = 'en';
+	let theme = 'dark';
 
 	const userPreferences = await FetchInterface.getUserPrefs();
 	if (userPreferences !== undefined) {
@@ -182,18 +184,18 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 		theme = userPreferences.theme;
 	}
 
-  setupColorTheme(theme);
-  fadeOut();
+	setupColorTheme(theme);
+	fadeOut();
 
 	setTimeout(async () => {
 		const page_content = dispatchError(code, messageServer || '');
 
-    main_container.innerHTML = page_content;
-    translatePage(lang);
+		main_container.innerHTML = page_content;
+		translatePage(lang);
 
-    addToHistory(code, false);
+		addToHistory(code, false);
 
-    removeLoadingScreen();
+		removeLoadingScreen();
 
 		fadeIn();
 	}
@@ -201,35 +203,35 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 }
 
 const logoDoc: { [key: string]: string } = {
-  'user': '/images/duckHandsUp.png',
-  'upload': '/images/duckUpload.png',
-  'game': '/images/logoGameApi.png',
-  'auth': '/images/duckPolice.png',
+	'user': '/images/duckHandsUp.png',
+	'upload': '/images/duckUpload.png',
+	'game': '/images/logoGameApi.png',
+	'auth': '/images/duckPolice.png',
 };
 
 export async function renderDocPages(page: string, index_logo: string) {
 
-  const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
+	const redoc_container = document.getElementById('redoc-container') as HTMLDivElement;
 	if (!redoc_container) {
 		return;
 	}
 	redoc_container.classList.remove('hidden');
-  redoc_container.innerHTML = '';
-  fetch(`${page}`)
-    .then(res => res.json())
-    .then(spec => {
-      spec.info['x-logo'] = {
-        url: logoDoc[index_logo],
-        backgroundColor: '#FFFFFF',
-        altText: 'Logo de l\'API',
-      };
-      redocInit(spec, redoc_container);
-    });
+	redoc_container.innerHTML = '';
+	fetch(`${page}`)
+		.then(res => res.json())
+		.then(spec => {
+			spec.info['x-logo'] = {
+				url: logoDoc[index_logo],
+				backgroundColor: '#FFFFFF',
+				altText: 'Logo de l\'API',
+			};
+			redocInit(spec, redoc_container);
+		});
 }
 
 
 export async function render2FaPages(action: string) {
-	
+
 	let user = undefined;
 	if (action !== 'login') {
 		user = await FetchInterface.getUserInfo();
@@ -250,11 +252,12 @@ export async function render2FaPages(action: string) {
 		}
 
 		main_container.innerHTML = newContainer;
-			
+
 		init2FAPage();
 		setupColorTheme((user === undefined) ? 'dark' : user.preferences.theme);
 		translatePage((user === undefined) ? 'en' : user.preferences.lang);
 
+		window.scrollTo(0, 0);
 		removeLoadingScreen();
 
 		fadeIn();
