@@ -72,8 +72,7 @@ export async function GetRoomsHandler(
 ) {
   const { userId } = req.params;
 
-  const rooms = await RoomModelInstance.findByID(userId)
-  console.log(rooms);
+  const rooms = await RoomModelInstance.findByID(userId);
 
   return rep.code(200).send({
     message: 'OK',

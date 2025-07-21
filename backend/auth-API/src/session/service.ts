@@ -130,7 +130,6 @@ export class SessionService {
       throw new UnauthorizedError('Username and password are required for login');
     }
     const preferences = (await (await fetch(`http://${process.env.USER_IP}/users/${userInfo.id}/preferences`)).json());
-    console.log(preferences);
     if (userInfo.validated === false) {
       TwoFaService.generateSendToken(userInfo.email, preferences!.lang);
       throw new EmailConfirmError()

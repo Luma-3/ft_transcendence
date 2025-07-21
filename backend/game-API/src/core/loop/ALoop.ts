@@ -18,11 +18,9 @@ export abstract class ALoop {
     this.tickRate = tickRate;
     this.tickInterval = 1000 / this.tickRate; // Convert ticks per second to milliseconds per tick
     this.deltaTime = this.tickInterval / 1000; // Convert milliseconds to second
-    console.log(`Loop initialized with tick rate: ${this.tickRate} ticks/sec`);
   }
 
   public start() {
-    console.log("Starting loop...");
     this.lastTick = Date.now();
     this.accumulator = 0;
     this.isRunning = true;
@@ -31,7 +29,6 @@ export abstract class ALoop {
   }
 
   public stop() {
-    console.log("Stopping loop...");
     this.lastTick = Date.now();
     this.accumulator = 0;
     this.isRunning = false;
@@ -39,21 +36,17 @@ export abstract class ALoop {
 
   public addObject(obj: GameObject) {
     if (this.objects.includes(obj)) {
-      console.warn(`Object already exists in the loop. type: ${obj.constructor.name}`);
       return;
     }
     this.objects.push(obj);
-    console.log(`Object added to loop: ${obj.constructor.name}`);
   }
 
   public removeObject(obj: GameObject) {
     const index = this.objects.indexOf(obj);
     if (index === -1) {
-      console.warn(`Object not found in the loop. type: ${obj.constructor.name}`);
       return;
     }
     this.objects.splice(index, 1);
-    console.log(`Object removed from loop: ${obj.constructor.name}`);
   }
 
   public get objectsPublic() {

@@ -15,14 +15,12 @@ export class PedingModel {
    */
   async findByID(id: string, action: ("sender" | "receiver") = "sender"): Promise<PendingDBHydrateType[] | undefined> {
       if (action === "sender") {
-      console.log(`Fetching pending requests for user ${id} as sender`);
         return await knexInstance<PendingDBHydrateType[]>('pending')
           .select(PENDING_SENDER_HYDRATE_COLUMNS)
           .where('pending.user_id', id)
           .join('users', 'pending.pending_id', 'users.id')
           .join('preferences', 'pending.pending_id', 'preferences.user_id');
       }
-      console.log(`Fetching pending requests for user ${id} as receiver`);
       return await knexInstance<PendingDBHydrateType[]>('pending').
         select(PENDING_RECEIVER_HYDRATE_COLUMNS)
         .where('pending.pending_id', id)
@@ -63,14 +61,12 @@ export class PedingModel {
   }
 
   async exists(trx: Knex.Transaction, id: string, pendingId: string): Promise<boolean> {
-            console.log(`Checking if pending request exists for user ${id} and pending ID ${pendingId}`);
     const count = await trx('pending')
       .select('id')
       .where('user_id', id)
       .andWhere('pending_id', pendingId)
       .count('id as count')
       .first();
-    console.log(count);
     return count !== undefined && (count.count as number) > 0;
   }
 

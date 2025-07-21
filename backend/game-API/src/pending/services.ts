@@ -128,12 +128,11 @@ h
     async removePendingFromRoom(roomId: string) {
         await knexInstance.transaction(async (trx) => {
             await pendingModel.deleteByRoomId(trx, roomId);
-            console.log(`Removed pending requests for room ${roomId}`);
-               try {
-                    RoomManager.getInstance().stopRoom(roomId, false);
-                } catch (error) {
-                    server.log.error(error);
-                }
+            try {
+                RoomManager.getInstance().stopRoom(roomId, false);
+            } catch (error) {
+                server.log.error(error);
+            }
         });
     }
 

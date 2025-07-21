@@ -17,16 +17,13 @@ export class RoomService {
   ) {
     let roomId = undefined;
 
-    console.log("data", gameType);
     const player = await RoomService.createPlayer(userId, playerName);
 
 
     if (gameType === 'tournament') {
       let tournamentId = undefined;
-      console.log(`instance => `, TournamentManager.getInstance())
       tournamentId = TournamentManager.getInstance().joinTournament(player);
 
-      console.log(`tournamentId: ${tournamentId}`);
       if (!tournamentId) {
         tournamentId = TournamentManager.getInstance().createTournament();
         TournamentManager.getInstance().joinTournament(player, tournamentId);
