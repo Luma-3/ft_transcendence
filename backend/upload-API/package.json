@@ -1,12 +1,16 @@
 {
-  "name": "transcenduck_upload-api",
+  "name": "transcenduck_upload-services",
   "version": "0.0.1",
   "description": "",
-  "main": "index.mjs",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "node --watch main.mjs",
-    "start": "node main.mjs",
-    "stop": ""
+    "dev": "nodemon",
+    "knex": "tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts",
+    "migrate": "npm run knex migrate:latest",
+    "migrate:rollback": "npm run knex migrate:rollback",
+    "migrate:make": "npm run knex migrate:make",
+    "start": "node dist/index.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -19,16 +23,29 @@
   },
   "homepage": "https://github.com/Luma-3/ft_transcendence#readme",
   "devDependencies": {
-    "@fastify/cors": "^10.0.2"
+    "@fastify/cors": "^10.0.2",
+    "@types/mime-types": "^3.0.1",
+    "@types/redis": "^4.0.10",
+    "nodemon": "^3.1.10",
+    "tsx": "^4.19.4"
   },
   "dependencies": {
     "@fastify/multipart": "^9.0.3",
     "@fastify/static": "^8.1.1",
     "@fastify/swagger": "^9.4.2",
+    "@fastify/type-provider-typebox": "^5.1.0",
+    "@sinclair/typebox": "^0.34.33",
+    "@transcenduck/error": "file:./packages/error",
+    "@transcenduck/formatter": "file:./packages/formatter",
+    "@types/node": "^22.15.30",
     "dotenv": "^16.5.0",
     "fastify": "^5.2.2",
     "fs": "^0.0.1-security",
-    "sharp": "^0.34.1"
+    "mime-types": "^3.0.1",
+    "node-cache": "^5.1.2",
+    "redis": "^5.5.6",
+    "sharp": "^0.34.1",
+    "snappy": "^7.2.2"
   },
   "type": "module"
 }

@@ -1,0 +1,25 @@
+{
+  "name": "@transcenduck/formatter",
+  "version": "0.1.0",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.24",
+    "@types/sanitize-html": "^2.16.0",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@fastify/type-provider-typebox": "^5.1.0",
+    "@sinclair/typebox": "^0.34.37",
+    "@transcenduck/error": "file:../error",
+    "fastify": "^5.2.2",
+    "fastify-plugin": "^5.0.1",
+    "sanitize-html": "^2.17.0"
+  }
+}

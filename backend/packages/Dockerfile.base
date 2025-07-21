@@ -1,0 +1,16 @@
+FROM node:22
+
+RUN apt-get update
+WORKDIR /app
+
+# Install dependencies
+
+COPY . ./packages/
+
+WORKDIR /app/packages/error
+RUN npm install && npm run build
+
+WORKDIR /app/packages/formatter
+RUN npm install && npm run build
+
+WORKDIR /app

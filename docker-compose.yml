@@ -1,51 +1,139 @@
 services:
 
-# ! Main Server frontend static files and BACKEND reverse proxy
+  redis:
+    build:
+      context: ./redis/
+      dockerfile: Dockerfile
+    container_name: redis
+    expose:
+      - "6379"
+    networks:
+      - redis-net
+  
+  base:
+    build:
+      context: ./backend/packages/
+      dockerfile: Dockerfile.base
+    image: base
+    entrypoint: ["true"]
+
+
   gateway:
-    container_name: nginx-gateway
     build:
-      context: ./frontend
+      context: ./backend/gateway/
       dockerfile: Dockerfile
+    container_name: gateway
+    env_file: ".env"
+    volumes:
+      - ./.certs:/etc/certs:z
+    depends_on:
+      - base
     ports:
-      - 7777:443
-      - 8080:80
-    # env_file:
-    #   - .env
-    networks:
-      - gateway_back_front
-
-# ! Main Server Backend APIS Reverse Proxy
-
-  back_gateway:
-    container_name: node-gateway
-    build: 
-      context: ./backend/gateway
-      dockerfile: Dockerfile
-    env_file:
-      - ./backend/gateway/.env
+      - "3000:3000"
     expose:
-      - 3000
+      - "3000"
     networks:
-      - gateway_back_front
-      - apis
+      - backend-net
+      - redis-net
+      - frontend-net
 
-  user_api:
-    container_name: user_api
+  auth-api:
     build:
-      context: ./backend/user-API
+      context: ./backend/auth-API/
       dockerfile: Dockerfile
-    env_file:
-      - ./backend/user-API/.env
+    container_name: auth-API
+    env_file: ".env"
+    volumes:
+      - auth-db:/app/data:z
+      - ./.certs:/etc/certs:z
+    depends_on:
+      - base
+      - redis
     expose:
-      - 3001
-    networks: 
-      - apis
+      - "3005"
+    networks:
+      - backend-net
+      - redis-net
+
+  user-api:
+    build:
+      context: ./backend/user-API/
+      dockerfile: Dockerfile
+    container_name: user-API
+    env_file: ".env"
+    volumes:
+      - user-db:/app/data:z
+    depends_on:
+      - gateway
+    expose:
+      - "3001"
+    networks:
+      - backend-net
+      - redis-net
+
+  upload-api:
+    build:
+      context: ./backend/upload-API/
+      dockerfile: Dockerfile
+    container_name: upload-API
+    env_file: ".env"
+    volumes:
+      - uploads:/app/uploads:z
+    depends_on:
+      - base
+    expose:
+      - "3002"
+    networks:
+      - backend-net
+      - redis-net
+
+  game-api:
+    build:
+      context: ./backend/game-API/
+      dockerfile: Dockerfile
+    container_name: game-API
+    env_file: ".env"
+    volumes:
+      - game-db:/app/data:z
+    depends_on:
+      - base
+      - redis
+    expose:
+      - "3003"
+    networks:
+      - backend-net
+      - redis-net
+
+  frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    container_name: frontend
+    env_file: ".env"
+    volumes:
+      - ./.certs:/etc/certs:z
+    ports:
+      - "5173:5173"
+    expose: 
+      - "5173"
+    networks:
+      - frontend-net
+
+volumes:
+  user-db:
+    driver: local
+  game-db:
+    driver: local
+  auth-db:
+    driver: local
+  uploads:
+    driver: local
 
 
 networks:
-  apis:
-    name: apis
+  redis-net:
     driver: bridge
-  gateway_back_front:
-    name: gateway_back_front
+  backend-net:
+    driver: bridge
+  frontend-net:
     driver: bridge

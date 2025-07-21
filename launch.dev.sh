@@ -1,68 +1,36 @@
 #!/bin/bash
-set -e
 
-ARG=$1
+declare -a backend_dir=("user-API" "game-API" "auth-API" "upload-API")
+declare -a backend_db_dir=("user-API/data" "game-API/data" "auth-API/data")
+declare -a package_dir=("packages/error" "packages/formatter")
 
-install() {
-  echo "📦 Installing dev dependencies..."
-
-  echo "➡️ Frontend"
-  cd frontend/website && npm install && cd ../..
-
-  echo "➡️ Backend"
-  cd backend && bash ./utils.dev.sh install && cd ..
-
-  echo "✅ All dev dependencies installed!"
+install_local() {
+  for dir in "${backend_dir[@]}"; do
+    echo " Installing $dir for local development"
+    cd "backend/$dir" || exit
+    npm install
+    cd "../.."
+  done
 }
 
-run() {
-  echo "🚀 Running dev server..."
-
-  cd frontend/website
-  npm run dev &
-  cd ../..
-  echo "➡️ Frontend started"
-
-  cd "backend"
-  bash ./utils.dev.sh run &
-  echo "➡️ Backend started"
-  cd ..
-
-  echo "✅ All dev servers running!"
-  echo "📝 Logs are available in the logs directory."
-  echo "📝 To stop the servers, CTRL+C"
-
-  wait
+install_package() {
+  for dir in "${package_dir[@]}"; do
+    echo " Installing $dir for local development"
+    cd "backend/$dir" || exit
+    npm install
+    npm run build
+    cd "../../.."
+  done
 }
 
-fclean() {
-  echo " Cleanning all..."
-
-  cd "backend"
-  bash ./utils.dev.sh fclean
-  echo "Backend cleared"
-  cd ..
+initialize_db() {
+  for dir in "${backend_db_dir[@]}"; do
+    echo "Initializing database in $dir"
+    mkdir -p "backend/$dir"
+    cd "backend/$dir/.."
+    npm run knex migrate:latest
+    cd "../.."
+  done
 }
 
-migrate() {
-  echo " Migrating all data..."
-
-  cd "backend"
-  bash ./utils.dev.sh migrate
-  echo "Backend migrated"
-  cd ..
-}
-
-case $ARG in
-install) install ;;
-run) run ;;
-fclean) fclean ;;
-migrate) migrate ;;
-*)
-  echo "Usage: $0 {install|run}"
-  exit 1
-  ;;
-esac
-
-exit 0
-
+"$@"
