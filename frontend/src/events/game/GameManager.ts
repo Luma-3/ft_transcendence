@@ -21,7 +21,7 @@ export class GameManager {
 		}
 
 		fadeOut();
-	
+		sessionStorage.removeItem("gameType");
 		setTimeout(async () => {
 			const main_container = document.querySelector<HTMLDivElement>('#app')!;
 			main_container.innerHTML = await gameHtml(data, user.id);

@@ -1,6 +1,6 @@
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
 import { getCustomAlertTheme } from "../components/ui/alert/alertTheme";
-import { loadTranslation, translatePage } from "../controllers/Translate";
+import { loadTranslation } from "../controllers/Translate";
 import Swal from "sweetalert2";
 import { notificationList } from "./Friends/Lists/notificationsList";
 import { friendRequest } from "../events/social/acceptInvitation";
@@ -40,7 +40,7 @@ export async function showNotificationDiv() {
 				attachNotificationEvents();
 			},
 			willClose: () => {
-				window.location.reload();
+				// window.location.reload();
 			}
 		});
 	}
