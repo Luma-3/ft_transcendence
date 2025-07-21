@@ -14,6 +14,24 @@ export class RoomModel {
     return await knexInstance('matches')
       .insert(data)
   }
+
+  async getKDStats(userId: string) {
+    return await knexInstance('kd_stats')
+      .where('user_id', userId)
+      .first();
+  }
+
+  async addKDStats(userId: string, wins: number, losses: number) {
+    return await knexInstance('kd_stats')
+      .insert({
+        user_id: userId,
+        wins: wins,
+        losses: losses,
+        total_games: wins + losses
+      })
+      .onConflict('user_id')
+      .merge();
+  }
 }
 
 

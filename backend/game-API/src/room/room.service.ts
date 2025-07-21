@@ -6,6 +6,7 @@ import { GameType } from './room.schema.js';
 import { RoomManager } from '../core/runtime/RoomManager.js';
 import { TournamentManager } from '../tournament/TournamentManager.js';
 import { randomNameGenerator } from '../core/runtime/randomName.js';
+import { RoomModelInstance } from './model.js';
 
 export class RoomService {
 
@@ -121,5 +122,41 @@ export class RoomService {
       }
       TournamentManager.getInstance().removePlayer(tmpPlayer);
     }
-  }  
+  }
+
+  static async getRank(userId: string) {
+    const kd_stats = await RoomModelInstance.getKDStats(userId);
+
+    if (!kd_stats) {
+      throw new NotFoundError('User KD stats not found');
+    }
+
+    const rank = Math.abs(kd_stats.wins / kd_stats.total_games * (1 - Math.pow(2.71828, kd_stats.total_games / 10)));
+    console.log(`User ${userId} has a rank of ${rank}`);
+    console.log(`Wins: ${kd_stats.wins}, Losses: ${kd_stats.losses}, Total Games: ${kd_stats.total_games}`);
+    return {
+      wins: kd_stats.wins,
+      losses: kd_stats.losses,
+      total_games: kd_stats.total_games,
+      rank: rank
+    };
+  }
+
+  static async addRank(userId: string, win_loss: 'win' | 'loss') {
+    const stats = await RoomModelInstance.getKDStats(userId);
+    if (!stats) {
+      // If stats do not exist, create them with initial values
+      return await RoomModelInstance.addKDStats(userId, win_loss === 'win' ? 1 : 0, win_loss === 'loss' ? 1 : 0);
+    }
+
+    if (win_loss === 'win') {
+      stats.wins += 1;
+    } else {
+      stats.losses += 1;
+    }
+    stats.total_games = stats.wins + stats.losses;
+
+    return await RoomModelInstance.addKDStats(userId, stats.wins, stats.losses);
+  }
+
 }

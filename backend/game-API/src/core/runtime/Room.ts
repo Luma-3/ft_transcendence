@@ -9,6 +9,7 @@ import { InputManager } from '../../game/InputManager.js';
 import { randomNameGenerator } from './randomName.js';
 import { RoomManager } from './RoomManager.js';
 import { RoomModelInstance } from '../../room/model.js';
+import { RoomService } from '../../room/room.service.js';
 
 type StatusType = 'waiting' | 'roomReady' | 'playing' | 'finished';
 
@@ -174,8 +175,10 @@ export class Room {
         type: scene.gameType,
       }
       RoomModelInstance.addMatch(payload)
+      RoomService.addRank(players[0].id, players[0].win ? 'win' : 'loss');
+      RoomService.addRank(players[1].id, players[1].win ? 'win' : 'loss');
+      this.players.clear();
     }
-    this.players.clear();
   }
 
   toJSON() {

@@ -64,6 +64,7 @@ services:
     volumes:
       - user-db:/app/data:z
     depends_on:
+      - base
       - gateway
     expose:
       - "3001"
