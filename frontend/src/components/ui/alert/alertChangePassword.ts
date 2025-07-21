@@ -1,18 +1,16 @@
 import Swal from "sweetalert2";
 
-import { alertTemporary } from "./alertTemporary";
 import { getCustomAlertTheme } from "./alertTheme";
 import { loadTranslation } from "../../../controllers/Translate";
 import { verifRegexNewPassword } from "../../utils/regex";
 import { FetchInterface } from "../../../api/FetchInterface";
 
 export async function alertChangePassword() {
-	
+
 	const customTheme = await getCustomAlertTheme();
 	if (!customTheme) {
-		return await alertTemporary("error", "Error while getting user theme", 'dark', false, false);
+		return;
 	}
-
 	const trad = await loadTranslation(customTheme.lang);
 	let messageError = "";
 	Swal.fire({
@@ -26,7 +24,7 @@ export async function alertChangePassword() {
 		confirmButtonText: trad['confirm'],
 		cancelButtonText: trad['cancel'],
 		cancelButtonColor: customTheme.cancelButtonColor,
-		
+
 		html: `
 		<div class="flex text-sm justify-center items-center font-title m-4 mt-0 ">
 		${trad['change-your-password-description']}
@@ -42,7 +40,7 @@ export async function alertChangePassword() {
 		`,
 		showCancelButton: true,
 		showLoaderOnConfirm: true,
-	
+
 		preConfirm: () => {
 			const oldPassword = (document.getElementById('oldPassword') as HTMLInputElement).value;
 			const newPassword = (document.getElementById('newPassword') as HTMLInputElement).value;
@@ -53,7 +51,7 @@ export async function alertChangePassword() {
 			} else if (newPassword !== repeatNewPassword) {
 				messageError = trad['new-password-and-confirm-password-are-different'];
 				Swal.showValidationMessage(messageError);
-			} else if(verifRegexNewPassword(newPassword) === false) {
+			} else if (verifRegexNewPassword(newPassword) === false) {
 				messageError = trad['password-must-include'];
 				Swal.showValidationMessage(messageError);
 			} else if (oldPassword === newPassword) {
@@ -62,9 +60,9 @@ export async function alertChangePassword() {
 			}
 			return { oldPassword, newPassword };
 		}
-	}).then(async (result: { isConfirmed: boolean; value: { oldPassword: string; newPassword: string } } ) => {
+	}).then(async (result: { isConfirmed: boolean; value: { oldPassword: string; newPassword: string } }) => {
 		if (result.isConfirmed) {
-			await FetchInterface.updatePassword(result.value.oldPassword, result.value.newPassword, trad, customTheme)
+			await FetchInterface.updatePassword(result.value.oldPassword, result.value.newPassword);
 		}
 	});
 }

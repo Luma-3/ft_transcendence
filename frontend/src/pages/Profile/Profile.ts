@@ -11,59 +11,57 @@ import { FetchInterface } from "../../api/FetchInterface";
 import { loadTranslation } from "../../controllers/Translate";
 import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { alertChangePassword } from "../../components/ui/alert/alertChangePassword";
-import { renderPrivatePage, renderPublicPage } from "../../controllers/renderPage";
-import { userRegisterInfo } from "../Register";
-import { startEmailCooldown } from "../../components/utils/sendEmail";
-	
+import { renderPrivatePage } from "../../controllers/renderPage";
+
 let formInstance: Form | null;
 export let userNewEmail: string | null = null;
 
 async function renderProfilePage(user: IUserInfo) {
 	const inputs = [
-			new InputField(
-				"username",
-				"text",
-				"username",
-				"username",
-				true,
-				"username",
-				user.username
-			),
-			new InputField(
-				"email",
-				"email",
-				"email",
-				"email",
-				true,
-				"email",
-				user.email,
-			)
-		]
-	
-		const buttons = [
-			new Button(
-				"changeUserInfo",
-				"1/2",
-				"Save changes",
-				"save-changes",
-				"primary",
-				"submit"
-			),
-			new Button(
-				"change-password",
-				"1/2",
-				"Change password",
-				"change-password",
-				"secondary",
-				"button",
-			)
-		]
-		formInstance = new Form("updateInfosUserForm", inputs, buttons );
+		new InputField(
+			"username",
+			"text",
+			"username",
+			"username",
+			true,
+			"username",
+			user.username
+		),
+		new InputField(
+			"email",
+			"email",
+			"email",
+			"email",
+			true,
+			"email",
+			user.email,
+		)
+	]
+
+	const buttons = [
+		new Button(
+			"changeUserInfo",
+			"1/2",
+			"Save changes",
+			"save-changes",
+			"primary",
+			"submit"
+		),
+		new Button(
+			"change-password",
+			"1/2",
+			"Change password",
+			"change-password",
+			"secondary",
+			"button",
+		)
+	]
+	formInstance = new Form("updateInfosUserForm", inputs, buttons);
 
 	const saveImage = new Button("save-image", "1/2", "Save", "change-image", "primary", "button");
 	const cancelImage = new Button("cancel-image", "1/2", "Cancel", "cancel", "secondary", "button");
-	
-return `
+
+	return `
 ${await navbar(user)}
 ${backButton()}
 <div id="divImage" class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
@@ -111,7 +109,7 @@ export default function profilePage(user: IUserInfo) {
 
 export async function changeUserPassword() {
 	await alertChangePassword();
-	return ;
+	return;
 }
 
 export async function changeUserNameEmail() {
@@ -122,15 +120,15 @@ export async function changeUserNameEmail() {
 	}
 
 	const trad = await loadTranslation(user.preferences.lang);
-	
+
 	const values = formInstance?.getValues("updateInfosUserForm");
-	if(!values) { return; }
-	
+	if (!values) { return; }
+
 	/**
 	 * Verifie si il n'y a pas de changement
 	 */
 	if (user.username === values.username && user.email === values.email) {
-		return alertTemporary("info", trad["no-changes-detected"], user.preferences.theme, true, true);
+		return alertTemporary("info", trad["no-changes-detected"], true);
 	}
 
 	/**
@@ -139,9 +137,9 @@ export async function changeUserNameEmail() {
 	if (values.username !== user.username) {
 		const code = await FetchInterface.updateUsername(values.username);
 		if (code === 409) {
-			return alertTemporary("error", trad["Username already Exist"], user.preferences.theme, true, true);
+			return alertTemporary("error", trad["Username already Exist"], true);
 		} else if (code === 400) {
-			return alertTemporary("error", trad["username-incorrect"], user.preferences.theme, true, true);
+			return alertTemporary("error", trad["username-incorrect"], true);
 		}
 	}
 
@@ -151,7 +149,7 @@ export async function changeUserNameEmail() {
 	if (values.email !== user.email) {
 		const success = await FetchInterface.updateEmail(values.email);
 		if (!success) {
-			return alertTemporary("error", trad["email-already-in-use"], user.preferences.theme, true, true);
+			return alertTemporary("error", trad["email-already-in-use"], true);
 		} else {
 			userNewEmail = values.email;
 			renderPrivatePage('verifyEmail');
@@ -159,5 +157,5 @@ export async function changeUserNameEmail() {
 		}
 	}
 
-	alertTemporary("success", trad["user-info-updated"], user.preferences.theme, true, true);
+	alertTemporary("success", trad["user-info-updated"], true);
 }

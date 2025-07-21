@@ -31,48 +31,48 @@ export async function initTournament(data: any) {
 
 
 export function tournamentHtml(data: any) {
-  // Dimensions fixes pour garantir l'alignement
-  const boxWidth = 300;
-  const boxHeight = 200;
-  const boxGap = 60;
-  const finalBoxWidth = 420;
-  const containerWidth = 900;
-  const containerHeight = 2 * boxHeight + boxGap + 80;
+	// Dimensions fixes pour garantir l'alignement
+	const boxWidth = 300;
+	const boxHeight = 200;
+	const boxGap = 60;
+	const finalBoxWidth = 420;
+	const containerWidth = 900;
+	const containerHeight = 2 * boxHeight + boxGap + 80;
 
-  // Positions absolues
-  const match1Top = 40;
-  const match2Top = match1Top + boxHeight + boxGap;
-  const leftCol = 40;
-  const finalTop = (match1Top + match2Top + boxHeight) / 2 - boxHeight / 2;
-  const finalLeft = leftCol + boxWidth + 220;
+	// Positions absolues
+	const match1Top = 40;
+	const match2Top = match1Top + boxHeight + boxGap;
+	const leftCol = 40;
+	const finalTop = (match1Top + match2Top + boxHeight) / 2 - boxHeight / 2;
+	const finalLeft = leftCol + boxWidth + 220;
 
-  // Coordonnées pour SVG et points d'angle droit
-  const match1 = { x: leftCol + boxWidth, y: match1Top + boxHeight / 2 };
-  const match2 = { x: leftCol + boxWidth, y: match2Top + boxHeight / 2 };
-  const finalX = finalLeft;
-  const finalY = finalTop + boxHeight / 2;
-  // Point d'arrêt horizontal (avant la verticale)
-  const midX = finalX - 60;
+	// Coordonnées pour SVG et points d'angle droit
+	const match1 = { x: leftCol + boxWidth, y: match1Top + boxHeight / 2 };
+	const match2 = { x: leftCol + boxWidth, y: match2Top + boxHeight / 2 };
+	const finalX = finalLeft;
+	const finalY = finalTop + boxHeight / 2;
+	// Point d'arrêt horizontal (avant la verticale)
+	const midX = finalX - 60;
 
-  let finalPlayer1 = "?";
+	let finalPlayer1 = "?";
 	let finalPlayer2 = "?";
-  if (data.rooms[2] !== undefined) {
+	if (data.rooms[2] !== undefined) {
 		finalPlayer1 = data.rooms[2][0].player_name;
 		finalPlayer2 = data.rooms[2][1].player_name;
-  }
+	}
 
 	const winners = ["?", "?"];
 	const winnerImages = ["/images/duckHappy.png", "/images/duckHappy.png"];
 	if (data.rooms[0][0].win !== undefined || data.rooms[0][1].win !== undefined) {
 		winners[0] = (data.rooms[0][0].win !== undefined) ? data.rooms[0][0].player_name : data.rooms[0][1].player_name;
 		winnerImages[0] = (data.rooms[0][0].win !== undefined) ? data.rooms[0][0].avatar : data.rooms[0][1].avatar;
-	} 
+	}
 	if (data.rooms[1][0].win !== undefined || data.rooms[1][1].win !== undefined) {
 		winners[1] = (data.rooms[1][0].win != undefined) ? data.rooms[1][0].player_name : data.rooms[1][1].player_name;
 		winnerImages[1] = (data.rooms[1][0].win != undefined) ? data.rooms[1][0].avatar : data.rooms[1][1].avatar;
 	}
 
-  return `
+	return `
 	<div class="flex font-title text-6xl mt-4 mb-10 justify-center w-full items-center text-tertiary dark:text-dtertiary">
 	  Tournament Matches
 	</div>

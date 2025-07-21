@@ -6,7 +6,7 @@ import { updateAllLists } from "../../pages/Friends/Lists/updatersList";
 export async function cancelGameInvitation(data: any) {
 	const user = await FetchInterface.getOtherUserInfo(data);
 	//TODO: Traduction
-	await alertTemporary("info", "Game invitation to " + user?.username + " canceled", 'dark', true, true);
+	await alertTemporary("info", "Game invitation to " + user?.username + " canceled", true);
 	const createGameButton = document.getElementById('initGame');
 	if (!createGameButton) {
 		return;
@@ -26,8 +26,8 @@ export async function refuseGameInvitation(data: any) {
 		return;
 	}
 	const trad = await loadTranslation(user?.preferences.lang);
-	const message = trad["game-invitation-to"] + " " + user?.username + " " +trad['refused'];
-	alertTemporary("info",message, 'dark', true, true);
+	const message = trad["game-invitation-to"] + " " + user?.username + " " + trad['refused'];
+	alertTemporary("info", message, true);
 	const createGameButton = document.getElementById('initGame');
 	if (!createGameButton) {
 		return;

@@ -15,7 +15,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 			description: 'Send an email with a 2FA code (for internal usage).',
 			tags: ['2FA', 'Internal'],
 			body: sendEmailBody,
-			response: { 
+			response: {
 				200: ResponseSchema()
 			},
 		}

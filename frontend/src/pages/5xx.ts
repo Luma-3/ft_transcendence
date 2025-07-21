@@ -17,7 +17,7 @@ export default function errorPage(code?: string, message?: string, messageServer
 	const error_code = code || '500';
 	const message_error = message || 'internal-server-error';
 
-return `
+	return `
 <div class="flex flex-col font-title justify-center items-center mt-20 mb-20 text-center  text-secondary dark:text-dtertiary">
 
 	<div class="flex w-3/4 max-w-[400px] justify-center items-center animate-fade-in-down mb-4">

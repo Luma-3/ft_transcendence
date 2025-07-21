@@ -11,7 +11,7 @@ import { FetchInterface } from '../../api/FetchInterface';
  */
 function showEditor() {
 	const editor = document.getElementById('hidden-main-image-editor');
-	
+
 	if (editor) {
 		editor.classList.remove('hidden');
 		void editor.offsetWidth; // Trigger reflow
@@ -22,11 +22,11 @@ function showEditor() {
 
 function hideEditor() {
 	const editor = document.getElementById('hidden-main-image-editor');
-	
+
 	if (editor) {
 		editor.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
 		editor.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
-		
+
 		setTimeout(() => {
 			editor.classList.add('hidden');
 			document.getElementById("profile-header")?.classList.replace("hidden", "flex")
@@ -52,7 +52,7 @@ export async function showEditorPicture(type: TypeImageEditor = "AVATAR") {
 	statusEditor = type;
 	main_editor = await initImageEditor();
 	if (!main_editor) {
-		alertTemporary("error", "Error while initializing image editor", 'dark');
+		alertTemporary("error", "Error while initializing image editor", true);
 		return;
 	}
 	for (const child of document.getElementsByClassName("editor-select") as HTMLCollectionOf<HTMLElement>) {
@@ -80,10 +80,10 @@ export async function saveNewPicture() {
 		headers: {},
 		body: formData
 	});
-	(response.status === "error") ? alertTemporary("error", "Error while saving new picture: " + response.message, 'dark', true, true) : alertTemporary("success", "New picture saved successfully!", 'dark', true, true);
+	(response.status === "error") ? alertTemporary("error", "Error while saving new picture: " + response.message, true) : alertTemporary("success", "New picture saved successfully!", true);
 	setTimeout(() => {
 		window.location.reload();
-	}, 1000); 
+	}, 1000);
 }
 
 /**
@@ -96,12 +96,12 @@ async function initImageEditor(): Promise<ImageEditor | null> {
 
 	const div_editor = document.getElementById('tui-image-editor-container') as HTMLDivElement;
 	if (!div_editor) {
-		return await alertTemporary("error", "Error while initializing image editor", 'dark', true, true), null;
+		return await alertTemporary("error", "Error while initializing image editor", true), null;
 	}
-	
+
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
-		return await alertTemporary("error", "Error while fetching user info", 'dark', true, true), null;
+		return await alertTemporary("error", "Error while fetching user info", true), null;
 	}
 
 	const theme = user.preferences!.theme;
@@ -155,7 +155,7 @@ async function initImageEditor(): Promise<ImageEditor | null> {
 async function translateImageEditorLabel() {
 	const userPrefs = await FetchInterface.getUserPrefs();
 	if (!userPrefs) {
-		return await alertTemporary("error", "Error while fetching user info", 'dark', false, true);
+		return await alertTemporary("error", "Error while fetching user info", false);
 	}
 	const lang = userPrefs.lang;
 	if (lang === "en") {

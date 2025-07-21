@@ -1,9 +1,3 @@
-import { IGameObject } from "../../interfaces/IGame";
-import { Ball, IBall } from "./draw/Ball";
-import { Paddle, IPaddle } from "./draw/Paddle";
-import { alpha } from "./draw/lerping";
-
-
 export class AlphaGraph {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
