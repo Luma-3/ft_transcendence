@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://github.com/user-attachments/assets/6e4908e5-ad33-4b7d-917b-33aa24b9d51e"/> /><br>
+	<img src="https://github.com/Luma-3/ft_transcendence/blob/dev/Frame%208.svg"/> /><br>
 	<h1 align="center"> 🦆🦆🦆🦆 Transcenduck 🦆🦆🦆🦆 </h1>
 </p>
 <h2>
