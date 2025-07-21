@@ -30,7 +30,7 @@ export default function RGPD() {
 
   <ul class="list-disc list-inside mb-4 space-y-1">
     <li><strong>Pseudonyme</strong> : votre identifiant public dans le jeu.</li>
-    <li><strong>Adresse e-mail</strong> : utilisée pour la vérification du compte.</li>
+    <li><strong>Adresse e-mail</strong> : utilisée pour la vérification du compte et l'activation de l'authentification à deux facteurs.</li>
     <li><strong>Mot de passe</strong> : stocké sous forme hachée (non lisible) pour garantir la sécurité.</li>
     <li><strong>Photo de profil Google</strong> : Aucune photos n'est récupérée, seulement un lien vers votre photo sur Google. Cela s'applique uniquement si vous vous inscrivez via Google.</li>
     <li><strong>Photo de profil / Bannière</strong> : Si vous téléchargez une photo de profil ou une bannière, celles-ci seront stockées sur nos serveurs. Si vous la modifier, la nouvelle image écrasera l'ancienne sur le serveur.</li>
