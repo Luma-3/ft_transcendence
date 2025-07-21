@@ -12,6 +12,7 @@ import server from '../fastify.js';
 
 const PATH_PUBLIC = 'src/twofa/public';
 const TIMEOUT_MAIL = 60; // seconds
+const TIMEOUT_TOKEN = 10; // seconds
 
 // Charge le fichier de langue
 async function loadLanguage(language: string) {
@@ -131,10 +132,15 @@ export class TwoFaService {
 	static async generateSendCode(email: string, lang: string, code?: string) {
 		code ??= generateCode();
 
-		const multi = redisCache.multi();
+		const cooldown = await redisCache.ttl(`users:token_cooldown:${email}`);
+		if (cooldown > 0) throw new UnauthorizedError(cooldown.toString());
+
 		await send2FACode(email, code, lang);
-		await multi.setEx(`users:check:code:${code}`, 600, email);
-		await multi.setEx(`users:check:email:${email}`, 600, code);
+
+		const multi = redisCache.multi();
+		multi.setEx(`users:check:code:${code}`, 600, email);
+		multi.setEx(`users:check:email:${email}`, 600, code);
+		multi.setEx(`users:token_cooldown:${email}`, TIMEOUT_TOKEN, '1');
 		multi.exec().catch(console.error);
 	}
 
