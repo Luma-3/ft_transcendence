@@ -601,8 +601,7 @@ export class FetchInterface {
     const response = await fetchApiWithNoError(API.API_GAME.RANK + `/${userID}`, {
       method: 'GET'
     });
-    if (response.status === "error" || !response.data) {
-      alertTemporary("error", "issues-with-rank-retrieval", 'dark', true, true);
+    if (response.status === "error") {
       return undefined;
     }
     return response.data;
