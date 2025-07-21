@@ -136,7 +136,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 				email: req.body.email,
 				avatar: req.body.avatar ?? '',
 			});
-			console.log(user);
 			return rep.code(201).send({ message: 'User created from OAuth2', data: user });
 		}
 

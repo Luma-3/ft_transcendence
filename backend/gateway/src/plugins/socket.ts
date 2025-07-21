@@ -56,7 +56,6 @@ interface WebSocket extends globalThis.WebSocket {
 function handleMessage(socket: WebSocket, raw: string) {
   try {
     const { service, scope, target, payload } = JSON.parse(raw);
-    console.log(`[WS] client ${socket.user_id} -> ${service}:${scope}:${target}`, payload);
     if (!service || !scope || !target || !payload) {
       throw new Error('Invalid message format');
     }
@@ -71,7 +70,6 @@ function handleMessage(socket: WebSocket, raw: string) {
 }
 
 function handleError(socket: WebSocket, error: Error) {
-  console.error(`[WS] Error on client ${socket.user_id}:`, error);
   redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
     type: 'error',
     user_id: socket.user_id,
@@ -81,7 +79,6 @@ function handleError(socket: WebSocket, error: Error) {
 }
 
 function handleClose(socket: WebSocket, code?: number, reason?: string) {
-  console.log(`[WS] client ${socket.user_id} disconnected: code=${code}, reason=${reason}`);
   redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
     type: 'disconnected',
     user_id: socket.user_id,
@@ -102,14 +99,12 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
       const user_id = req.headers['x-user-id'] as string;
       socket.user_id = user_id;
       if (fastify.ws_clients.has(user_id)) {
-        console.warn(`[WS] client ${user_id} already connected, closing previous connection`);
         const existingSocket = fastify.ws_clients.get(user_id);
         if (existingSocket) {
           existingSocket.close(1000, 'Replaced by new connection');
         }
       }
       fastify.ws_clients.set(user_id, socket);
-      console.log(`[WS] client ${user_id} connected`);
       redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
         type: 'connected',
         user_id: user_id,
@@ -137,8 +132,7 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
       const payload = JSON.parse(message);
 
       const user_id = target;
-
-      // console.log(`[Redis] Received: ${channel} -> ${user_id} `, payload);
+      
       const socket = fastify.ws_clients.get(user_id);
       if (socket) {
         socket.send(JSON.stringify({

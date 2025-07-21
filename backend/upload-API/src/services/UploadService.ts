@@ -33,7 +33,6 @@ export class UploadService {
   }
 
   async uploadFile(typePath: string, data?: MultipartFile) {
-    console.log(data)
     if (!data) {
       throw new ForbiddenError("file not send");
     }
@@ -45,19 +44,7 @@ export class UploadService {
     if (!isImage) {
       throw new InvalidTypeError(`Invalid type ${data.mimetype}`, { what: 'image/* mimetype required' });
     }
-    /*
-        if (typePath === 'avatar') {
-      webpBuffer = await sharp(buffer)
-        .resize(256, 256) //TODO: A voir
-        .webp({ quality: 80 })
-        .toBuffer();
-    } else if (typePath === 'banner') {
-      webpBuffer = await sharp(buffer)
-        .resize(1200, 675) // banniere de twitter (X) //TODO: A voir
-        .webp({ quality: 80 })
-        .toBuffer();
-    }
-    */
+
     const extension = mine.extension(data.mimetype);
     const filename = `${randomUUID()}.${extension}`;
     const outputPath = path.join(this._uploadPath, typePath, filename);
@@ -83,7 +70,6 @@ export class UploadService {
    */
   async getFile(typePath: string, realPath: string, options: CdnQueryType) {
     let pathJoin = path.join(this._uploadPath, realPath);
-		console.log(pathJoin, path.join(this._uploadPath, typePath));
     if (!pathJoin.startsWith(path.join(this._uploadPath, typePath))) {
       throw new ForbiddenError();
     }
@@ -142,7 +128,7 @@ public async getProxyFile(url: string) {
         console.log("File cached in Redis");
       }).catch((err) => {
         console.error("Error caching file in Redis", err);
-      }); // Cache for 24 hours
+      });
     });
     
     return buffer;
@@ -153,7 +139,6 @@ public async getProxyFile(url: string) {
       throw new ForbiddenError("Cannot delete file from Google Cloud Storage");
     }
     const pathJoin = path.join(this._uploadPath, realPath);
-    console.log(pathJoin, path.join(this._uploadPath, typePath));
     if (!pathJoin.startsWith(path.join(this._uploadPath, typePath))) {
       throw new ForbiddenError();
     }

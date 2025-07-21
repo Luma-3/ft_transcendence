@@ -7,9 +7,7 @@ export class InputManager {
 
   public start() {
     const playersId = [...SceneContext.get().players.keys()];
-    console.log("InputManager: onInstantiate", playersId);
     if (SceneContext.get().gameType === "local") {
-      console.log("WHAT GAME TYPE" + SceneContext.get().gameType);
       this.playersInput.set(playersId[1], Vector2.zero());
       this.playersInput.set("local", Vector2.zero());
       IOInterface.subscribe(`ws:game:player:${playersId[1]}`, handleInput.bind(SceneContext.get()));
@@ -43,7 +41,6 @@ export class InputManager {
 function handleInput(message: string, channel: string): void {
   const payload = JSON.parse(message);
   const [, playerId] = channel.split(':').slice(-2);
-  console.log(`InputManager: handleInput`, payload, playerId);
 
   if (playerId !== payload.user_id) return; // UID mismatch, ignore the message
   if (payload.action !== 'input') return;

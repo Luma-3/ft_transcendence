@@ -25,7 +25,6 @@ export class UserService {
   static async createUser(data: UserCreateBodyType) {
 
     await verifyConflict(data.username, data.email);
-    console.table(data);
 
     const hash_pass = await hashPassword(data.password);
     const user_obj = {
@@ -136,12 +135,11 @@ export class UserService {
         'accept': 'application/json'
       },
       agent: new https.Agent({ rejectUnauthorized: false })
-    }).then(() => console.log("hsdkjfhsdfkj")).catch(console.error);
+    }).catch(console.error);
   }
 
   static async createUserRedis(userId: string) {
 
-    console.log("Creating user from redis cache with ID:", userId);
     const user = await redisCache.get(`users:pendingUser:${userId}`);
     if (!user) {
       throw new NotFoundError('User');
@@ -171,7 +169,6 @@ export class UserService {
     preferencesColumns: string[],
     privated: boolean = false
   ): Promise<UserBaseType & { preferences?: PreferencesBaseType }> {
-    console.log(userColumns);
     if (!includePreferences) {
       const key = `users:data:${id}` + (privated ? ':private' : ':public');
       const data = await redisCache.getEx(key, { type: 'EX', value: 3600 });

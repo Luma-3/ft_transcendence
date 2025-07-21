@@ -19,7 +19,6 @@ const plugin: FastifyPluginCallback<JWTOptions> = (fastify, opts, done) => {
   fastify.register(jwt, opts);
 
   fastify.addHook('onRequest', async function(req, rep) {
-    console.log('JWT:' + req.url);
     const isPublic = opts.publicRoutes.some(route => {
       const nethodMatch = route.method.toUpperCase() === req.method.toUpperCase();
       const urlMatch = route.url instanceof RegExp

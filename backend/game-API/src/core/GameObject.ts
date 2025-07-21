@@ -10,7 +10,6 @@ export abstract class GameObject {
     ...args: any[]
   ): T {
     const newObject = new Ctor(...args);
-    console.log(`Instantiating game object of type: ${Ctor.name}`);
     const loopManager = SceneContext.get().loopManager;
     loopManager.addGameObject(newObject);
     loopManager.addNetworkObject(newObject);

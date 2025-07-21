@@ -37,7 +37,6 @@ await server.register(swagger, {
 });
 server.addHook('onSend', (request, reply, payload, done) => {
   const contentEncoding = reply.getHeader('Content-Encoding');
-  console.log(`Content-Encoding: ${contentEncoding}`);
   done();
 });
 

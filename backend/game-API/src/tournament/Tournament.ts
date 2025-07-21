@@ -182,7 +182,6 @@ export class Tournament {
     if (this.playerTournament.find(player => player.id === user_id) === undefined) return; // Message is not for me
     if (type !== 'error') return; // Message is not for me
 
-    console.error(`Error in tournament ${this.id} for player ${user_id}:`, payload);
     IOInterface.broadcast(
       JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
       this.playerTournament.map((value) => value.id)
@@ -195,8 +194,7 @@ export class Tournament {
     const { type, user_id } = JSON.parse(message);
     if (this.playerTournament.find(player => player.id === user_id) === undefined) return; // Message is not for me
     if (type !== 'disconnected') return; // Message is not for me
-
-    console.error(`Player ${user_id} disconnected from tournament ${this.id}`);
+    
     IOInterface.broadcast(
       JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
       this.playerTournament.map((value) => value.id)

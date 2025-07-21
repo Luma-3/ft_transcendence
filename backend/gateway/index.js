@@ -21,16 +21,6 @@ const fastify = Fastify({
   },
 });
 
-// fastify.addHook('onRequest', (req, rep, done) => {
-//   if (req.url.startsWith('/api/')) {
-//     console.log('SALUT')
-//     let url = req.url;
-//     req.url = url.replace('/api', '');
-//     console.log(req.url);
-//   }
-//   done();
-// });
-
 const Services = [
   {
     name: 'Users Services', prefix: '/user',
@@ -49,7 +39,6 @@ const Services = [
 gateway_config(fastify, Services);
 
 Services.forEach((value) => {
-  console.log(value);
   fastify.register(http_proxy, value);
 })
 

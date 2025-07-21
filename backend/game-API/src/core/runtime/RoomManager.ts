@@ -15,11 +15,9 @@ export class RoomManager {
   private constructor() {
     this.eventEmitter.on('room:end', this.stopRoom.bind(this));
     this.eventEmitter.on('room:error', (roomId: string) => {
-      console.error(`Error in room ${roomId}`);
       this.stopRoom(roomId, false);
     });
     this.eventEmitter.on('room:playerleft', (roomId: string) => {
-      console.log(`Player left room ${roomId}`);
       this.stopRoom(roomId, false);
     });
   }

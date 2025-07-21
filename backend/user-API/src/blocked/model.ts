@@ -58,7 +58,6 @@ export class BlockedModel {
   }
 
   async exists(trx: Knex.Transaction, id: string, pendingId: string): Promise<boolean> {
-    console.log(`Checking if pending request exists for user ${id} and pending ID ${pendingId}`);
     const count = await trx('blocked')
       .select('id')
       .where('user_id', id)
@@ -67,8 +66,6 @@ export class BlockedModel {
       .first();
     return count !== undefined && (count.count as number) > 0;
   }
-
 }
-
 
 export const blockedModel = new BlockedModel();

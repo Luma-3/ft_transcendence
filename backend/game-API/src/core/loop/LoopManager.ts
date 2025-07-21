@@ -19,14 +19,12 @@ export class LoopManager {
   }
 
   public start() {
-    console.log("Starting LoopManager...");
     this.networkLoop.start();
     this.gameLoop.start();
     this.aiLoop.start();
   }
 
   public stop() {
-    console.log("Stopping LoopManager...");
     this.networkLoop.stop();
     this.gameLoop.stop();
     this.aiLoop.stop();
