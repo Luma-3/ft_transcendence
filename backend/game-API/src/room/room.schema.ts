@@ -63,19 +63,6 @@ export const RoomResponseSchema = Type.Object({
 
 export type RoomResponseType = Static<typeof RoomResponseSchema>;
 
-/* 
-export const RoomQuerySchema = Type.Object({
-  privateRoom: Type.Optional(Type.Boolean({
-    description: "Indicates if the room is private",
-  })),
-  userIdInvited: Type.Optional(Type.String({
-    format: "uuid",
-    description: "Unique identifier for the user invited to the private room",
-    examples: ["123e4567-e89b-12d3-a456-426614174000"]
-  }))
-})
-export type RoomQueryType = Static<typeof RoomQuerySchema>; */
-
 export const RoomData = Type.Object({
   id: Type.String({
     format: "uuid",
@@ -117,3 +104,23 @@ export type RoomDataType = Static<typeof RoomData>;
 export const RoomArray = Type.Object({ rooms: Type.Array(RoomData) });
 
 export type RommArrayType = Static<typeof RoomArray>;
+
+export const RankResponseSchema = Type.Object({
+  wins: Type.Integer({
+    description: "Number of wins",
+    examples: [10]
+  }),
+  losses: Type.Integer({
+    description: "Number of losses",
+    examples: [5]
+  }),
+  total_games: Type.Integer({
+    description: "Total number of games played",
+    examples: [15]
+  }),
+  rank: Type.Number({
+    description: "Calculated rank based on wins and total games",
+    examples: [0.6667]
+  })
+});
+export type RankResponseType = Static<typeof RankResponseSchema>;
