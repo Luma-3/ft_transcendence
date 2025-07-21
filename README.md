@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://github.com/user-attachments/assets/e4c03e25-58a4-44c7-ac64-25a611172768" /><br>
+	<img src="https://github.com/user-attachments/assets/6e4908e5-ad33-4b7d-917b-33aa24b9d51e"/> /><br>
 	<h1 align="center"> 🦆🦆🦆🦆 Transcenduck 🦆🦆🦆🦆 </h1>
 </p>
 <h2>
