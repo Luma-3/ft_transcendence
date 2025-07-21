@@ -2,7 +2,7 @@
 import { UnauthorizedError } from '@transcenduck/error'
 import { FastifyPluginAsyncTypebox, Type } from "@fastify/type-provider-typebox";
 
-import { SessionPostBody, UserHeaderAuthentication, FamilyId, FamiliesResponse, twoFaBody, UserId } from "./schema.js";
+import { SessionPostBody, UserHeaderAuthentication, FamilyId, FamiliesResponse, twoFaBody } from "./schema.js";
 
 import { SessionService } from "./service.js";
 
@@ -171,22 +171,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     rep.code(200).send({ message: 'Session deleted successfully' })
   });
 
-  fastify.delete('/internal/session/:userId', {
-    schema: {
-      summary: 'Delete current user session',
-      description: 'This endpoint allows users to delete their current session.',
-      tags: ['Sessions'],
-      params: UserId,
-      response: {
-        200: ResponseSchema(undefined, 'Session deleted successfully')
-      }
-    }
-  }, async (req, rep) => {
-    const userID = req.params.userId;
-    await SessionService.deleteById(userID);
-    rep.code(200).send({ message: 'Session deleted successfully' })
-  });
-
   // ! Public ( TODO Move )
   fastify.get('/session/accessToken', {
     schema: {
@@ -235,22 +219,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       }
       );
   })
-
 }
 
 export default route;
-
-// ! Public ( TODO Move )
-// fastify.get('session/refreshToken', {
-//   schema: {
-//     summary: 'Verify Refresh token',
-//     description: 'This endpoint retrieves the refresh token from the cookies.',
-//     tags: ['Sessions'],
-//     headers: UserHeaderAuthentication,
-//     response: {
-//       200: ResponseSchema(undefined, 'Still eating cookies')
-//     }
-//   }
-// }, async (_, rep) => {
-//   rep.code(200).send({message: 'Still eating cookies'});
-// });

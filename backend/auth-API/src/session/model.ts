@@ -59,36 +59,6 @@ class RefreshTokenModel {
   async deleteAllTokensByUserId(userId: string): Promise<void> {
     await this.knex('token').where({ user_id: userId }).delete();
   }
-
 }
 
 export const refreshTokenModelInstance = new RefreshTokenModel(knexInstance);
-
-
-/*
-
-User : [Sessions[family_id, {Token[]}]]
-
-
-Session :
-  family_id : (id unique de la session)
-
-Map Token : [
-  ...
-  [OLD] refresh Token
-  [Current] refresh Token
-]
-
-Refresh Token : {
-  user_id: 
-  family_id:  identifiant de la famille de token
-}
-
-Access Token : {
-  jti : identifiant (family_id)
-}
-
-\-
-
-
-*/
