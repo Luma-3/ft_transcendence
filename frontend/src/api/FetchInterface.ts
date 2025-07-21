@@ -9,6 +9,7 @@ import { IApiResponse } from "../interfaces/IApi";
 import { startEmailCooldown } from "../components/utils/sendEmail";
 import { updateAllLists } from "../pages/Friends/Lists/updatersList";
 import { updateNavbar } from "../components/ui/navbar";
+import { IRankInfo } from "../pages/Dashboard/rankBadges";
 
 export class FetchInterface {
   private constructor() { }
@@ -594,6 +595,17 @@ export class FetchInterface {
       return false;
     }
     return true;
+  }
+
+  public static async getRank(userID: string) {
+    const response = await fetchApiWithNoError(API.API_GAME.RANK + `/${userID}`, {
+      method: 'GET'
+    });
+    if (response.status === "error" || !response.data) {
+      alertTemporary("error", "issues-with-rank-retrieval", 'dark', true, true);
+      return undefined;
+    }
+    return response.data;
   }
 }
 

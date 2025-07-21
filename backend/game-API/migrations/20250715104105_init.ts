@@ -20,10 +20,19 @@ export async function up(knex: Knex): Promise<void> {
     t.uuid('room_id');
     t.unique(['user_id', 'pending_id'], 'unique_pending_pair');
   })
+
+  await knex.schema.createTable('kd_stats', (t) => {
+    t.uuid('user_id').primary();
+    t.integer('wins').defaultTo(0);
+    t.integer('losses').defaultTo(0);
+    t.integer('total_games').defaultTo(0);
+  })
 }
 
 export async function down(knex: Knex): Promise<void> {
   await knex.schema.dropTableIfExists('matches');
+  await knex.schema.dropTableIfExists('pending');
+  await knex.schema.dropTableIfExists('kd_stats');
 }
 
 // 
