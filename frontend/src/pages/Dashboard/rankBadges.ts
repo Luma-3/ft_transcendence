@@ -15,7 +15,7 @@ export async function generateRankBadge(_user: IUserInfo, myUserLang: string = '
 
   const ranks = await FetchInterface.getRank(_user.id) as IRankInfo;
 
-  //TODO: Traduction
+  // TODO: Traduction
   let rankInfo = {
     name: trad['petit-volatile'],
     level: 0,
@@ -26,16 +26,7 @@ export async function generateRankBadge(_user: IUserInfo, myUserLang: string = '
   };
 
   if (ranks) {
-    if (ranks.rank > 0.75) {
-      rankInfo = {
-        name: trad['roi-de-la-mare'],
-        level: 0,
-        image: 'duckKing.png',
-        colors: 'from-[#FF8904] via-yellow-400 to-[#744FAC]', // orange -> jaune -> violet
-        textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
-        shadowColor: '[#FF8904]'
-      };
-    } else if (ranks.rank > 0.25) {
+    if (ranks.rank > 0.25) {
       rankInfo = {
         name: trad['apprenti-canard'],
         level: 0,
@@ -50,6 +41,15 @@ export async function generateRankBadge(_user: IUserInfo, myUserLang: string = '
         level: 0,
         image: 'duckProf.png',
         colors: 'from-[#744FAC] via-[#FF8904] to-yellow-400', // violet -> orange -> jaune
+        textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+        shadowColor: '[#FF8904]'
+      };
+    } else if (ranks.rank > 0.75) {
+      rankInfo = {
+        name: trad['roi-de-la-mare'],
+        level: 0,
+        image: 'duckKing.png',
+        colors: 'from-[#FF8904] via-yellow-400 to-[#744FAC]', // orange -> jaune -> violet
         textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
         shadowColor: '[#FF8904]'
       };
