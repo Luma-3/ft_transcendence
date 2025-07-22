@@ -3,7 +3,7 @@ export default function twoFaEmail(trad: any, code: string) {
 		<body 
 			style="
 				text-align: center;
-				color: white;
+				color: black;
 				background-image: url('cid:backgroundImg');
 				background-repeat: no-repeat;
 				margin: auto;
@@ -105,6 +105,7 @@ export default function twoFaEmail(trad: any, code: string) {
 								font-size: 14px;
 								margin-bottom: 10px;
 								text-align: center;
+								color: white;
 							"
 						>
 							${trad['automaticMessage']}
@@ -125,16 +126,16 @@ export default function twoFaEmail(trad: any, code: string) {
 						alt="LogoTranscenduck-Footer"
 						style="width: 50%;"
 					>
-				</div>
-
-				<p
+					
+					<p
 					style="
-						font-size: 14px;
-						margin: 0;
+					font-size: 14px;
+					margin: 0;
 					"
-				>
+					>
 					${trad['signature']}
-				</p>
+					</p>
+				</div>
 			</div>
 		</body>
 	`;

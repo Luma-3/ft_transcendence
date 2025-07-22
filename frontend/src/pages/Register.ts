@@ -92,7 +92,7 @@ export async function registerUser() {
 	 * et les preferences par defaut
 	 */
 	const userData = {
-		username: values.username,
+		username: values.username.trim(),
 		password: values.password,
 		passwordVerif: values.passwordVerif,
 		email: values.email,

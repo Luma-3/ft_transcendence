@@ -1,6 +1,5 @@
 import { navbar } from "../components/ui/navbar";
 
-
 import { languageSelectorSettings } from "../components/ui/languageSelectors";
 import { headerPage } from "../components/ui/headerPage";
 import { IUserInfo } from "../interfaces/IUser";
@@ -23,7 +22,7 @@ ${headerPage("settings")}
 	${await change2FA()}
 	<br>
 	
-	<div class="flex flex-col w-full max-w-[800px] font-title border-red-600 border-2 space-y-2 p-2 justify-center items-center rounded-lg mb-10">
+	<div class="flex flex-col w-full max-w-[800px] font-title border-red-600 border-2 space-y-2 p-2 justify-center items-center rounded-lg mb-4">
 		
 		<span class="title-responsive-size" translate="dangerous-action"> Dangerous Actions 
 		</span>
@@ -34,12 +33,6 @@ ${headerPage("settings")}
 	
 	</div>`
 }
-//TODO: Verif
-// <div class="flex flex-col items-center justify-center space-y-4 pt-20 pb-20">
-
-// ${animateButton("logout", "logout", "`<img src='/images/duckSad.png' class='w-20 h-2- mr-2' alt='Duck sad icon'>`")}
-
-// </div>
 
 export default function settingsPage(user: IUserInfo) {
 	return renderSettingsPage(user);
