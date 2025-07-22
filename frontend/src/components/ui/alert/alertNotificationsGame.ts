@@ -14,7 +14,6 @@ export async function alertNotificationsGames(data: any) {
 	await updateNotificationsList();
 	const trad = await loadTranslation(customTheme.lang);
 
-	//TODO: Traduction
 	return Swal.fire({
 		position: "top-end",
 		toast: true,

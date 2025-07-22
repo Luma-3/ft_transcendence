@@ -55,10 +55,10 @@ function UserMenuOptions() {
 		</li>`;
 	}).join('');
 
-return `<ul class=" text-tertiary dark:text-dtertiary" aria-labelledby="menu-dropdown">
+	return `<ul class=" text-tertiary dark:text-dtertiary" aria-labelledby="menu-dropdown">
 			${allOptions}
 		</ul>`;
-		
+
 }
 
 /**
@@ -67,7 +67,7 @@ return `<ul class=" text-tertiary dark:text-dtertiary" aria-labelledby="menu-dro
 function darkMode(theme: string) {
 	const isChecked = theme === 'light' ? 'checked' : '';
 
-return `
+	return `
 <div class="flex items-center text-responsive-size justify-between py-2 px-4">
 	<div translate="light-mode">
 	
@@ -93,7 +93,7 @@ return `
 
 
 function logout() {
-return `<button id="logout" translate="logout" 
+	return `<button id="logout" translate="logout" 
 class="flex py-2 px-4 text-responsive-size w-full justify-left items-left
 dark:text-dsecondary dark:hover:text-white hover:text-dtertiary hover:cursor-pointer">
 Sign out
@@ -101,7 +101,7 @@ Sign out
 }
 
 function notifications() {
-return `<button id="notifications" class="flex py-2 pl-4 text-responsive-size w-full justify-left items-left
+	return `<button id="notifications" class="flex py-2 pl-4 text-responsive-size w-full justify-left items-left
 dark:text-dsecondary dark:hover:text-white hover:text-dtertiary hover:cursor-pointer">
 Notifications
 </button>`;
@@ -109,7 +109,7 @@ Notifications
 
 
 export function userMenu(user: IUserInfo) {
-return `
+	return `
 <div id="user-menu" class="hidden transition-all duration-500 transform opacity-0 pointer-events-none absolute right-0 top-full z-50 my-2 mx-4 w-56 md:w-70 lg:w-80 text-tertiary rounded dark:text-dtertiary
 bg-gradient-to-r dark:from-dprimary dark:to-gray-800 dark:to-grey-700 from-primary/80 to-primary">
 

@@ -15,10 +15,8 @@ export async function generateRankBadge(_user: IUserInfo, myUserLang: string = '
 
   const ranks = await FetchInterface.getRank(_user.id) as IRankInfo;
 
-  // TODO: Traduction
   let rankInfo = {
     name: trad['petit-volatile'],
-    level: 0,
     image: 'petitVolatile2.png',
     colors: 'from-[#744FAC] via-[#8B5CF6] to-[#744FAC]', // violet principal
     textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
@@ -29,7 +27,6 @@ export async function generateRankBadge(_user: IUserInfo, myUserLang: string = '
     if (ranks.rank > 0.25) {
       rankInfo = {
         name: trad['apprenti-canard'],
-        level: 0,
         image: 'duckLearning2.png',
         colors: 'from-[#FF8904] via-[#744FAC] to-[#FF8904]', // orange -> violet -> orange
         textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
@@ -38,7 +35,6 @@ export async function generateRankBadge(_user: IUserInfo, myUserLang: string = '
     } else if (ranks.rank > 0.5) {
       rankInfo = {
         name: trad['professeur-palmipède'],
-        level: 0,
         image: 'duckProf.png',
         colors: 'from-[#744FAC] via-[#FF8904] to-yellow-400', // violet -> orange -> jaune
         textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
@@ -47,7 +43,6 @@ export async function generateRankBadge(_user: IUserInfo, myUserLang: string = '
     } else if (ranks.rank > 0.75) {
       rankInfo = {
         name: trad['roi-de-la-mare'],
-        level: 0,
         image: 'duckKing.png',
         colors: 'from-[#FF8904] via-yellow-400 to-[#744FAC]', // orange -> jaune -> violet
         textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
@@ -76,9 +71,10 @@ export async function generateRankBadge(_user: IUserInfo, myUserLang: string = '
 					${rankInfo.name}
 				</h3>
 				<p class="text-sm text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-300">
-					Level ${rankInfo.level}
+					<img src="/images/trophy.png" alt="Trophy Icon" class="inline-block invert w-4 h-4 mr-1" />
+					${(ranks && ranks.wins) ? ranks.wins : 0}
 				</p>
-				</div>
-				</div>
-				`;
+  </div>
+  </div>
+    `;
 }

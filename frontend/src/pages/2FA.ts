@@ -74,7 +74,7 @@ export default async function twoFaPage(target: string = 'login') {
 	<div class="flex flex-col w-full h-full rounded-lg justify-center items-center mt-5 mb-4">
 
 		<div class="flex font-title text-responsive-size justify-center w-1/2 items-center text-tertiary dark:text-dtertiary">
-			<span translate="2fa-description">To secure your account, please enter the 2FA code received via email.</span>
+			<div translate="2fa-description">To secure your account, please enter the 2FA code received via email.</div>
 
 		</div>
 
