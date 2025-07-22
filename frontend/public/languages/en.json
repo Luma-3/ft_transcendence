@@ -33,7 +33,7 @@
 	"username-or-password-incorrect": "Username or password incorrect",
 	"Validation Error": "Username incorrect, minimum 3 characters and maximum 32 characters",
 	"username-incorrect": "Username incorrect, minimum 3 characters and maximum 32 characters",
-	"password-must-include": "Password must be at least 3 characters long and include at least: 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
+	"password-must-include": "Password must be at least 8 characters long and include at least: 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
 	"change-your-password": "Change your password",
 	"change-your-password-description": "Change your password to secure your account.",
 	"change-password": "Change password",

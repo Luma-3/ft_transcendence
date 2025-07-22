@@ -63,7 +63,7 @@ async function renderProfilePage(user: IUserInfo) {
 
 	return `
 ${await navbar(user)}
-${backButton()}
+${backButton('dashboard')}
 <div id="divImage" class="flex flex-col font-title w-full justify-center items-center text-tertiary dark:text-dtertiary space-y-2 ">
 	
 	${profileHeader({ avatar: user.preferences!.avatar, banner: user.preferences!.banner || 'default.webp' })}
