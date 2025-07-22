@@ -126,6 +126,8 @@
 	"social": "Social",
 	"game": "Jeux",
 	"game-invitation-canceled": "Invitation de jeu annulée",
+	"accept-invitation-game": "Accepter l'invitation de jeu",
+	"someone-invited-you-to-play-a-game": "Quelqu'un vous a invité à jouer à un jeu",
 	"game-invitation-to": "Invitation de jeu à",
 	"refused": "refusée",
 	"waiting-operations": "Opérations en attente",
