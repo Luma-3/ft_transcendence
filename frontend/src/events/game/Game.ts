@@ -3,7 +3,6 @@ import { Ball, IBall } from "./draw/Ball";
 import { LineBuilder } from "./draw/LineBuilder";
 import { sendInSocket } from "../../socket/Socket";
 import { onKeyDown, onKeyUp } from "./gameInput";
-import { AlphaGraph } from "./AlphaGraph";
 
 export interface IGame {
   id: string;
@@ -52,7 +51,6 @@ export class Game {
   // ------------- Game Interpolation ---------------//
   private startTime: number | null = null;
   private snapshots: ISnapshot[] = [];
-  private alphaGraph: AlphaGraph = new AlphaGraph("alphaGraph");
 
   private id: string;
   public userId: string;
@@ -87,7 +85,6 @@ export class Game {
     data.players.forEach((paddle) => {
       this.paddles.set(paddle.id, new Paddle(paddle.id));
     });
-
     this.addEventListener();
   }
 
@@ -163,10 +160,6 @@ export class Game {
     }
 
     const t = snapshotsA.time === snapshotsB.time ? 0 : (renderTime - snapshotsA.time) / (snapshotsB.time - snapshotsA.time);
-
-
-    this.alphaGraph.add(t);
-    this.alphaGraph.draw();
 
     for (let i = 0; i < snapshotsA.objects.length; i++) {
       switch (snapshotsA.objects[i].type) {

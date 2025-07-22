@@ -12,7 +12,7 @@ export class GameManager {
 	private static instance: Game | null = null;
 
 	static async init(data: IGame): Promise<void> {
-
+		console.warn("Initializing game with data:", data);
 		const user = await FetchInterface.getUserInfo();
 		if (!user) {
 			sendInSocket("game", "room", data.id, "error", "User not found");

@@ -36,7 +36,6 @@ export async function translatePage(lang: string = 'en') {
 			}
 			else {
 				element.innerHTML = translations[key]
-				console.log(`Translated ${key} to ${translations[key]}`)
 			}
 		}
 	})

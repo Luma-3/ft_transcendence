@@ -19,7 +19,6 @@ export function addToHistory(page: string, updateHistory: boolean = true) {
 		const currentPath = window.location.pathname.substring(1) || 'home';
 		if (page !== currentPath) {
 			history.pushState({ page }, '', `/${page}`);
-			console.log(`Page ${page} added to history`);
 		}
 	}
 }

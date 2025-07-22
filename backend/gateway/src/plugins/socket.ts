@@ -79,7 +79,7 @@ function handleError(socket: WebSocket, error: Error) {
 }
 
 function handleClose(socket: WebSocket, code?: number, reason?: string) {
-  console.log(`[WS] client ${socket.user_id} disconnected: code=${code}, reason=${reason}`);
+  console.warn(`[WS] client ${socket.user_id} disconnected: code=${code}, reason=${reason}`);
   redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
     type: 'disconnected',
     user_id: socket.user_id,

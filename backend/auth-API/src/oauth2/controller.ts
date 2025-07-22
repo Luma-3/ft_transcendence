@@ -22,7 +22,6 @@ export class Oauth2Controller {
       throw new UnauthorizedError('User-Agent header is required');
 
     const parser = new UAParser(userAgent);
-    console.log(dataUser);
     try {
       const { accessToken, refreshToken } = await SessionService.login({
         username: dataUser.name!,
