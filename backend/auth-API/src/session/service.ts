@@ -129,9 +129,11 @@ export class SessionService {
     if(!userInfo){
       throw new UnauthorizedError('Username and password are required for login');
     }
+
     const preferences = (await (await fetch(`http://${process.env.USER_IP}/users/${userInfo.id}/preferences`)).json());
+
     if (userInfo.validated === false) {
-      TwoFaService.generateSendToken(userInfo.email, preferences!.lang);
+      TwoFaService.generateSendToken(userInfo.email, preferences.data.lang);
       throw new EmailConfirmError()
     }
 
@@ -142,11 +144,11 @@ export class SessionService {
     const family_id = crypto.randomBytes(16).toString('hex');
 
     const email = userInfo.email;
-    const lang = preferences?.lang;
+    const lang = preferences.data.lang;
     const code = generateCode();
-    
-    await TwoFaService.generateSendCode(email, lang, code)
-    
+
+    TwoFaService.generateSendCode(email, lang, code);
+
     const multi = redisCache.multi();
     multi.setEx('users:userIds:' + code + ':userId', 600, userInfo.id);
     multi.setEx('users:userIds:' + code + ':family_id', 600, family_id);
