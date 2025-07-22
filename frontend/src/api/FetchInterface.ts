@@ -404,11 +404,9 @@ export class FetchInterface {
       method: 'DELETE',
       body: JSON.stringify({})
     });
-    if (response.status === "success") {
-      sessionStorage.removeItem("gameType");
-      if (await updateNavbar()) {
-        alertTemporary("success", "game-cancelled-successfully", true);
-      }
+    sessionStorage.removeItem("gameType");
+    if (await updateNavbar()) {
+      alertTemporary("success", "game-cancelled-successfully", true);
     }
     return response.status === "success";
   }

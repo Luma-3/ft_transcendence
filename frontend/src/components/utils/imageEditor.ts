@@ -64,7 +64,6 @@ export async function showEditorPicture(type: TypeImageEditor = "AVATAR") {
 
 /**
  * Fonction qui permet de recuperer l'image editee et de l'envoyer
- * TODO: FAIRE UN POST ENVOYANT L'IMAGE
  */
 export async function saveNewPicture() {
 	if (!main_editor) {
@@ -73,6 +72,10 @@ export async function saveNewPicture() {
 	const new_image = main_editor.toDataURL({
 		format: 'png'
 	});
+	if (new_image.length === 1594) {
+		//TODO: Traduction
+		return alertTemporary("error", "image-is-empty", true);
+	}
 	const formData = new FormData();
 	formData.append('tmp', dataURLToBlob(new_image), 'tmp.png');
 	const response = await fetchApi(API_USER.UPDATE.PREF[statusEditor], {

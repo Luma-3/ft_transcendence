@@ -65,6 +65,7 @@
 	"profil": "Profil",
 	"profile": "Profil",
 	"your-informations": "Vos informations",
+	"image-is-empty": "Impossible de sauvegarder l'image : L'image est vide",
 	"save-changes": "Sauvegarder les modifications",
 	"change-image": "Changer l'image",
 	"stats": "Statistiques de jeux",
