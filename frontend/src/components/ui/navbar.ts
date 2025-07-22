@@ -1,4 +1,5 @@
 import { FetchInterface } from "../../api/FetchInterface";
+import { translatePage } from "../../controllers/Translate";
 import { IUserInfo } from "../../interfaces/IUser";
 import { userMenu } from "./userMenu";
 
@@ -14,9 +15,12 @@ export async function updateNavbar() {
 	if (user) {
 		setTimeout(async () => {
 			navbarDiv.innerHTML = await navbar(user);
+			console.log("Navbar updated for user:", user.preferences.lang);
+			translatePage(user.preferences.lang);
 		}, 50);
 		status = true;
 	}
+
 	return status;
 }
 
@@ -38,7 +42,7 @@ export async function navbar(user: IUserInfo) {
 								<div class="flex flex-row items-center justify-center text-responsive-size space-x-2 text-dsecondary">
 										<div class="dot-anim" translate="searching-for-game"> Recherche d'une partie en cours...</div>
 								</div>
-								<button id="cancel-waiting-game" translate="cancel" class="px-2 py-1 text-sm rounded bg-dprimary text-white shadow hover:bg-dsecondary transition-colors duration-200">
+								<button id="cancel-waiting-game" translate="cancel" class="w-full px-2 py-1 text-sm rounded bg-dprimary text-white shadow hover:bg-dsecondary transition-colors duration-200">
 										Annuler
 								</button>
 						</div>` : ""}

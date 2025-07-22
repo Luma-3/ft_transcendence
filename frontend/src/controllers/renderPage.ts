@@ -252,10 +252,10 @@ export async function render2FaPages(action: string) {
 		}
 
 		main_container.innerHTML = newContainer;
-
+		const lang = user ? user.preferences.lang : localStorage.getItem('lang') || 'en';
 		init2FAPage();
 		setupColorTheme((user === undefined) ? 'dark' : user.preferences.theme);
-		translatePage((user === undefined) ? 'en' : user.preferences.lang);
+		translatePage(lang);
 
 		window.scrollTo(0, 0);
 		removeLoadingScreen();
