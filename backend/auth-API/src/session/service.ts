@@ -146,9 +146,9 @@ export class SessionService {
     const email = userInfo.email;
     const lang = preferences.data.lang;
     const code = generateCode();
-    
-    await TwoFaService.generateSendCode(email, lang, code)
-    
+
+    TwoFaService.generateSendCode(email, lang, code);
+
     const multi = redisCache.multi();
     multi.setEx('users:userIds:' + code + ':userId', 600, userInfo.id);
     multi.setEx('users:userIds:' + code + ':family_id', 600, family_id);
