@@ -127,6 +127,8 @@
 	"other-duck-disconnected": "Un otro pato se ha desconectado, volviendo a la página de inicio",
 	"game-invitation-to": "Invitación de juego a",
 	"game-invitation-canceled": "Invitación de juego cancelada",
+	"accept-invitation-game": "Aceptar invitación de juego",
+	"someone-invited-you-to-play-a-game": "Alguien te ha invitado a jugar un juego",
 	"refused": "rechazada",
 	"waiting-operations": "Operaciones en espera",
 	"manage-your-invitations": "Gestionar tus invitaciones",

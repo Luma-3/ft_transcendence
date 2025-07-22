@@ -125,6 +125,8 @@
 	"social": "Social",
 	"game": "Game",
 	"other-duck-disconnected": "Another duck disconnected, going back to home",
+	"accept-invitation-game": "Accept game invitation",
+	"someone-invited-you-to-play-a-game": "Someone invited you to play a game",
 	"game-invitation-to": "Game invitation to",
 	"game-invitation-canceled": "Game invitation cancelled",
 	"refused": "refused",
