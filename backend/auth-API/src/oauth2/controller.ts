@@ -11,14 +11,14 @@ export class Oauth2Controller {
     rep.redirect(authorizationUrl);
   }
 
-  static callback = async (req: FastifyRequest<{ Querystring: QueryCallbackType, Headers: {'x-forwarded-for': string} }>, rep: FastifyReply) => {
+  static callback = async (req: FastifyRequest<{ Querystring: QueryCallbackType, Headers: { 'x-forwarded-for': string } }>, rep: FastifyReply) => {
     const query = req.query;
     const dataUser = await Oauth2Service.callback(query);
-    if(!dataUser.email || !dataUser.name)
+    if (!dataUser.email || !dataUser.name)
       throw new UnauthorizedError('No user data returned from OAuth2 callback');
 
     const userAgent = req.headers["user-agent"] ?? "unknown";
-    if(userAgent === "unknown")
+    if (userAgent === "unknown")
       throw new UnauthorizedError('User-Agent header is required');
 
     const parser = new UAParser(userAgent);
@@ -46,11 +46,11 @@ export class Oauth2Controller {
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
         path: '/'
       }
-      ).redirect(`${process.env.REDIRECT_URI}/dashboard`);
+      ).redirect(`https://localhost:5173/dashboard`);
     } catch (error) {
-      if(error instanceof TwoFaError) {
-        rep.redirect(`${process.env.REDIRECT_URI}/2FA`);
-      }else{
+      if (error instanceof TwoFaError) {
+        rep.redirect(`https://localhost:5173/2FA`);
+      } else {
         throw error;
       }
     }
