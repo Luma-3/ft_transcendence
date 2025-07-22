@@ -61,7 +61,7 @@ export class UserService {
     }).catch(console.error)
   }
 
-  static async createUserO2Auth(data: { username: string, email: string, googleId: string,  avatar?: string }) {
+  static async createUserO2Auth(data: { username: string, email: string, googleId: string, avatar?: string }) {
 
     await verifyConflict(data.username, data.email);
 
@@ -97,7 +97,7 @@ export class UserService {
   static async createUserInternal(data: UserCreateBodyInternalType) {
     await verifyConflict(data.username, data.email);
 
-    const user_preferences = { // TODO: preferences rework for simplify system
+    const user_preferences = {
       lang: data.lang || 'en',
 
       avatar: process.env.REDIRECT_URI + `/api/uploads/avatar/default.png`,

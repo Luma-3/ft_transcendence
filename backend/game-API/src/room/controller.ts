@@ -48,7 +48,7 @@ export async function DeleteRoomHandler(
   await RoomService.removePlayer(user_id, roomType);
 
   return rep.code(200).send({
-    message: 'Player is waiting for a match'
+    message: 'Player removed from the room successfully'
   });
 }
 

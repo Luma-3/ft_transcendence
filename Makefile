@@ -35,6 +35,7 @@ run-dev: build-dev
 
 build-prod:
 	@echo -e "$(YELLOW)Démarrage du build prod...$(RESET)"
+	@$(COMPOSE) -f ./docker-compose.yml build base
 	@$(COMPOSE) -f ./docker-compose.yml build
 	@echo -e "$(GREEN)Build prod terminé !$(RESET)"
 
@@ -63,3 +64,10 @@ clean-db:
 
 front:
 	${COMPOSE} -f ./docker-compose.dev.yml up frontend
+
+fclean-front:
+	@echo -e "$(RED)Nettoyage du front...$(RESET)"
+	@docker system prune -f -a 
+	@docker volume prune -f -a
+	@echo -e "$(GREEN)Nettoyage du front terminé$(RESET)"
+
