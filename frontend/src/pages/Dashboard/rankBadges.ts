@@ -1,52 +1,62 @@
+import { FetchInterface } from "../../api/FetchInterface";
 import { loadTranslation } from "../../controllers/Translate";
 import { IUserInfo } from "../../interfaces/IUser";
 
+export interface IRankInfo {
+  wins: number;
+  losses: number;
+  totalGames: number;
+  rank: number;
+}
+
 export async function generateRankBadge(_user: IUserInfo, myUserLang: string = 'en') {
 
-	const trad = await loadTranslation(myUserLang);
-	const wins = Math.floor(Math.random() * 50) + 5; // Données d'exemple
-	const losses = Math.floor(Math.random() * 30) + 2; // Données d'exemple
-	const totalGames = wins + losses;
-	//TODO: Traduction
-	let rankInfo = {
-		name: trad['petit-volatile'],
-		level: 1,
-		image: 'petitVolatile2.png',
-		colors: 'from-[#744FAC] via-[#8B5CF6] to-[#744FAC]', // violet principal
-		textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
-		shadowColor: '[#744FAC]'
-	};
+  const trad = await loadTranslation(myUserLang);
 
-	if (totalGames >= 50 && wins >= 30) {
-		rankInfo = {
-			name: trad['roi-de-la-mare'],
-			level: Math.floor(wins / 10),
-			image: 'duckKing.png',
-			colors: 'from-[#FF8904] via-yellow-400 to-[#744FAC]', // orange -> jaune -> violet
-			textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
-			shadowColor: '[#FF8904]'
-		};
-	} else if (totalGames >= 30 && wins >= 20) {
-		rankInfo = {
-			name: trad['apprenti-canard'],
-			level: Math.floor(wins / 8),
-			image: 'duckLearning2.png',
-			colors: 'from-[#FF8904] via-[#744FAC] to-[#FF8904]', // orange -> violet -> orange
-			textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
-			shadowColor: '[#FF8904]'
-		};
-	} else if (totalGames >= 20 && wins >= 12) {
-		rankInfo = {
-			name: trad['professeur-palmipède'],
-			level: Math.floor(wins / 5),
-			image: 'duckProf.png',
-			colors: 'from-[#744FAC] via-[#FF8904] to-yellow-400', // violet -> orange -> jaune
-			textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
-			shadowColor: '[#FF8904]'
-		};
-	}
+  const ranks = await FetchInterface.getRank(_user.id) as IRankInfo;
 
-	return `
+  // TODO: Traduction
+  let rankInfo = {
+    name: trad['petit-volatile'],
+    level: 0,
+    image: 'petitVolatile2.png',
+    colors: 'from-[#744FAC] via-[#8B5CF6] to-[#744FAC]', // violet principal
+    textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+    shadowColor: '[#744FAC]'
+  };
+
+  if (ranks) {
+    if (ranks.rank > 0.25) {
+      rankInfo = {
+        name: trad['apprenti-canard'],
+        level: 0,
+        image: 'duckLearning2.png',
+        colors: 'from-[#FF8904] via-[#744FAC] to-[#FF8904]', // orange -> violet -> orange
+        textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+        shadowColor: '[#FF8904]'
+      };
+    } else if (ranks.rank > 0.5) {
+      rankInfo = {
+        name: trad['professeur-palmipède'],
+        level: 0,
+        image: 'duckProf.png',
+        colors: 'from-[#744FAC] via-[#FF8904] to-yellow-400', // violet -> orange -> jaune
+        textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+        shadowColor: '[#FF8904]'
+      };
+    } else if (ranks.rank > 0.75) {
+      rankInfo = {
+        name: trad['roi-de-la-mare'],
+        level: 0,
+        image: 'duckKing.png',
+        colors: 'from-[#FF8904] via-yellow-400 to-[#744FAC]', // orange -> jaune -> violet
+        textColors: 'from-gray-800 via-gray-900 to-black dark:from-white dark:via-gray-200 dark:to-dtertiary',
+        shadowColor: '[#FF8904]'
+      };
+    }
+  }
+
+  return `
 		<div class="flex flex-col items-center justify-center group">
 			<div class="relative flex justify-center items-center">
 				<!-- Cercle extérieur avec effet de lueur -->

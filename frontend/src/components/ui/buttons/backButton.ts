@@ -1,4 +1,5 @@
 export function backButton(pageToLoad: string = "") {
+
 	let id = "loadBackPage";
 	if (pageToLoad !== "") {
 		id = `load${pageToLoad}`;

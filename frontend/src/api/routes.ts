@@ -57,7 +57,8 @@ export const API_GAME = {
   CREATE: `${SERVICES.GAME}/rooms`,
   GET_ALL_DATA: `${SERVICES.GAME}/rooms/`,
   NOTIFICATIONS: `${SERVICES.GAME}/pending`,
-  INVITE: `${SERVICES.GAME}/pending`
+  INVITE: `${SERVICES.GAME}/pending`,
+  RANK: `${SERVICES.GAME}/rank`,
 }
 
 export const API_CDN = {

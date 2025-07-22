@@ -6,7 +6,6 @@ export class UserStatus {
 
     static addUser(userId: string): void {
         this._connectedUsers.add(userId);
-        console.table(this._connectedUsers.values());
     }
 
     static removeUser(userId: string): void {
@@ -19,7 +18,6 @@ export class UserStatus {
 
     static listenToUserStatusChanges(): void {
         redisSub.subscribe('ws:all:broadcast:all', (message) => {
-            console.log(`[Redis] Received user status change: ${message}`);
             const { user_id, type } = JSON.parse(message);
             if (type === 'connected') {
                 UserStatus.addUser(user_id);

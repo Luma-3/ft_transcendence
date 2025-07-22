@@ -1,6 +1,5 @@
 import { FetchInterface } from "../../api/FetchInterface";
 import { Button } from "../../classes/Button";
-import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { backButton } from "../../components/ui/buttons/backButton";
 import { navbar } from "../../components/ui/navbar";
 import { translatePage } from "../../controllers/Translate";
@@ -9,7 +8,7 @@ export async function DisplayGameWinLose(data: any) {
 
   const user = await FetchInterface.getUserInfo();
   if (!user) {
-    return await alertTemporary("error", "error-while-fetching-user-info", "dark", false, true);
+    return;
   }
 
   const myId = user.id;
@@ -37,8 +36,8 @@ export async function DisplayGameWinLose(data: any) {
     endDiv += `<div class="flex space-y-4 justify-center items-center w-full h-full p-4">
 		${EndButton.primaryButton()}
 	</div>`
-	} else {
-		endDiv = `${await navbar(user)}
+  } else {
+    endDiv = `${await navbar(user)}
 		${backButton('dashboard')}
 		<div class="flex flex-col w-full items-center justify-center">
 			${(isWin) ? gameWinContainer() : gameLoseContainer()}

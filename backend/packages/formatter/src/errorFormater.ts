@@ -18,7 +18,6 @@ export default function errorformater(err: BaseError | FastifyCustomError, _: Fa
       details: err.details
     });
   }
-  console.error(err);
   return rep.status(500).send({
     status: 'error',
     statusCode: 500,

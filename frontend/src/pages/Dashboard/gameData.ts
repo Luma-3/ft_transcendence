@@ -12,7 +12,7 @@ export async function generateLastGames(user: IUserInfo, myUserlang: string, use
 		method: 'GET'
 	});
 	if (!response || !response.data) {
-		return alertTemporary("error", "error-game-data", user.preferences.theme, true, true);
+		return alertTemporary("error", "error-game-data", true);
 	}
 
 	const games = response.data.rooms;
@@ -64,7 +64,6 @@ export async function generateLastGames(user: IUserInfo, myUserlang: string, use
 				</div>
 				</li>`;
 	}
-	// <span class="text-xs text-gray-500">${game.date}</span>
 
 	container += `
 		</ul>

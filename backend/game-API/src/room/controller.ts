@@ -26,7 +26,7 @@ export async function PostRoomHandler(
   });
 }
 
-export async function GetRoomHandler (
+export async function GetRoomHandler(
   req: FastifyRequest<{ Headers: HeaderBearerType, Params: RoomParamType }>, rep: FastifyReply
 ) {
   const { roomType } = req.params;
@@ -72,11 +72,22 @@ export async function GetRoomsHandler(
 ) {
   const { userId } = req.params;
 
-  const rooms = await RoomModelInstance.findByID(userId)
-  console.log(rooms);
+  const rooms = await RoomModelInstance.findByID(userId);
 
   return rep.code(200).send({
     message: 'OK',
     data: { rooms: rooms }
+  });
+}
+
+export async function GetKDStatsHandler(
+  req: FastifyRequest<{ Params: RoomParamUserIdType }>, rep: FastifyReply
+) {
+  const { userId } = req.params;
+
+  const kdStats = await RoomService.getRank(userId);
+  return rep.code(200).send({
+    message: 'OK',
+    data: kdStats
   });
 }

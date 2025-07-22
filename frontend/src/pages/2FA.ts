@@ -1,9 +1,9 @@
 import { render2FaPages, renderPrivatePage } from '../controllers/renderPage';
 
 import { headerPage } from '../components/ui/headerPage';
-import { alertPublic } from '../components/ui/alert/alertPublic';
 import { FetchInterface } from '../api/FetchInterface';
 import { Button } from '../classes/Button';
+import { alert } from '../components/ui/alert/alert';
 
 let _action = 'enable';
 
@@ -45,7 +45,7 @@ export async function submit2FACode() {
 
 	const code = get2FACode();
 	if (!code) {
-		return await alertPublic("error", "enter-valid-2fa-code");
+		return await alert("error", "enter-valid-2fa-code");
 	}
 	const methods: { [key: string]: 'GET' | 'DELETE' | 'PUT' } = {
 		'enable': 'PUT',
@@ -163,11 +163,7 @@ export function setup2FAInputs(prefix: string = '') {
  * Update the hidden input with the combined 6-digit code
  */
 function updateHiddenInput(prefix: string) {
-	// Correction : on cible explicitement le bon champ caché
 	let hiddenId = '2faCodeForm';
-	// if (prefix === 'login') {
-	// 	hiddenId = '2faCodeLoginInput';
-	// }
 	const hiddenInput = document.getElementById(hiddenId) as HTMLInputElement;
 	if (!hiddenInput) return;
 
@@ -185,10 +181,8 @@ function updateHiddenInput(prefix: string) {
  * Initialize 2FA inputs after page render
  */
 export function init2FAPage() {
-	// Set up regular 2FA page inputs
 	setup2FAInputs();
 
-	// Focus first input
 	const firstDigit = document.getElementById('digit1') as HTMLInputElement;
 	if (firstDigit) {
 		firstDigit.focus();

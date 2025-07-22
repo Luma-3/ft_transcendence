@@ -119,6 +119,8 @@ services:
       dockerfile: Dockerfile.dev
     container_name: frontend
     env_file: "./.env.dev"
+    depends_on:
+      - gateway
     volumes:
       - ./frontend/src:/app/src:z
       - ./frontend/public:/app/public:z

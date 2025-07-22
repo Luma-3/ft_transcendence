@@ -2,8 +2,8 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 
 import { ResponseSchema } from '../utils/schema.js';
 import { InternalServerErrorResponse, NotFoundResponse, ConflictResponse } from '@transcenduck/error';
-import { GetRoomsHandler, GetRoomHandler, PostRoomHandler, DeleteRoomHandler, PostRoomIdHandler } from './controller.js';
-import { RoomResponseSchema, RoomParamSchema, RoomBodySchema, HeaderBearerSchema, /* RoomQuerySchema, */ RoomParamIdSchema, RoomParamUserIdSchema, RoomArray } from './room.schema.js';
+import { GetRoomsHandler, GetRoomHandler, PostRoomHandler, DeleteRoomHandler, PostRoomIdHandler, GetKDStatsHandler } from './controller.js';
+import { RoomResponseSchema, RoomParamSchema, RoomBodySchema, HeaderBearerSchema, RoomParamIdSchema, RoomParamUserIdSchema, RoomArray, RankResponseSchema } from './room.schema.js';
 
 
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
@@ -26,7 +26,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       body: RoomBodySchema,
       headers: HeaderBearerSchema,
       params: RoomParamSchema,
-/*    querystring: RoomQuerySchema, */
+      /*    querystring: RoomQuerySchema, */
       response: {
         201: ResponseSchema(RoomResponseSchema, 'Player added to room'),
         404: NotFoundResponse,
@@ -49,7 +49,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
   }, DeleteRoomHandler)
 
   fastify.get('/rooms/:userId', {
-     schema: {
+    schema: {
       headers: HeaderBearerSchema,
       params: RoomParamUserIdSchema,
       response: {
@@ -59,51 +59,6 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       }
     }
   }, GetRoomsHandler);
-
-
-
-  // fastify.get('/rooms/:game_id', {
-  //   schema: {
-  //     params: GameIdSchema,
-  //     response: {
-  //       200: ResponseSchema(RoomInfoSchema, 'Room info retrieved'),
-  //       500: InternalServerErrorResponse
-  //     }
-  //   }
-  // }, async (req, rep) => {
-  //   const roomId = req.params.id;
-  //   const room = RoomService.getRoomById(roomId);
-  //
-  //   return rep.code(200).send({
-  //     message: 'Room info retrieved',
-  //     data: room.toJSON()
-  //   });
-  // });
-
-
-  // TODO : Remmettre pour les invite le principe de room privée
-  // fastify.post('/rooms/',
-  //   {
-  //     schema: {
-  //       body: PlayerInitialSchema,
-  //       headers: HeaderBearer,
-  //       response: {
-  //         201: ResponseSchema(GameIdSchema, 'Private room created'),
-  //         500: InternalServerErrorResponse
-  //       }
-  //     }
-  //   }, async (req: FastifyRequest<{ Body: PlayerInitialType }>, rep: FastifyReply) => {
-  //     const { playerName } = req.body;
-  //     const user_id = req.headers['x-user-id'] as string;
-  //
-  //     const player = new Player(user_id, playerName);
-  //     const room = RoomService.createPrivateRoom(player);
-  //
-  //     return rep.code(201).send({
-  //       message: 'Private room created',
-  //       data: { id: room }
-  //     });
-  //   });
 
 
   fastify.post('/rooms/id/:roomId', {
@@ -117,7 +72,20 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
         500: InternalServerErrorResponse
       }
     }
+
   }, PostRoomIdHandler);
+
+
+  fastify.get('/rank/:userId', {
+    schema: {
+      params: RoomParamUserIdSchema,
+      response: {
+        200: ResponseSchema(RankResponseSchema, 'Player rank retrieved'),
+        404: NotFoundResponse,
+        500: InternalServerErrorResponse
+      }
+    }
+  }, GetKDStatsHandler);
 }
 
 export default route;

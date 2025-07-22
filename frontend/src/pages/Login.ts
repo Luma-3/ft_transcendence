@@ -18,7 +18,7 @@ export function renderLoginPage() {
 			"username",
 			true,
 			"username"),
-		
+
 		new InputField(
 			"password",
 			"password",
@@ -37,17 +37,17 @@ export function renderLoginPage() {
 			"submit",
 		),
 		new Button(
-		"google",
-		"full",
-		"google-login",
-		"google-login",
-		"secondary",
-		"button",
+			"google",
+			"full",
+			"google-login",
+			"google-login",
+			"secondary",
+			"button",
 		)
 
 	]
 	formInstance = new Form("LoginForm", inputs, buttons)
-return `
+	return `
 <div class="flex flex-col font-title text-responsive-size dark:text-dtertiary justify-center items-center mt-15 mb-10">
 
 	${headerPage("login", "public")}
@@ -69,7 +69,7 @@ return `
 // ${messageWithLink("no-account", "register", "loadregister")}
 
 export default function loginPage() {
-  return renderLoginPage();
+	return renderLoginPage();
 }
 
 export async function loginUser() {
@@ -78,15 +78,15 @@ export async function loginUser() {
 	 * Verification si le formulaire est pas corrompu
 	 */
 	const values = formInstance?.getValues("LoginForm");
-	
+
 	if (!values) { return; }
-	
+
 	if (values.username === "" || values.password === "") {
 		return;
 	}
 
 	formInstance = null;
-	
+
 	const user = {
 		username: values.username,
 		password: values.password
@@ -102,10 +102,10 @@ export async function loginUser() {
 		 * entre le client et le serveur qui ont besoin d'etre en temps reel
 		 */
 		await socketConnection();
-		
+
 		renderPrivatePage('dashboard');
 		localStorage.removeItem('lang');
 		return;
 	}
-	
+
 }

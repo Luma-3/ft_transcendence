@@ -2,22 +2,21 @@ import Swal, { SweetAlertIcon } from "sweetalert2";
 import { getCustomAlertTheme } from "./alertTheme";
 import { loadTranslation } from "../../../controllers/Translate";
 
-export async function alertTemporary(level: string, message: string, theme: string, needUser = true, trad = false) {
+export async function alertTemporary(level: string, message: string, needUser = false) {
 
-	const customTheme = await getCustomAlertTheme(needUser, theme);
+	const customTheme = await getCustomAlertTheme(needUser);
 	if (!customTheme) {
-		await alertTemporary(level, message, "dark", false, true);
+		await alertTemporary(level, message, false);
 		return;
 	}
+
 	const allowedIcons = ['success', 'error', 'warning', 'info', 'question'];
 	if (!allowedIcons.includes(level)) {
-		console.error(`Invalid alert level: ${level}. Allowed levels are: ${allowedIcons.join(', ')}`);
 		return;
 	}
-	if (trad) {
-		const trad = await loadTranslation(customTheme.lang ?? 'en');
-		message = trad[message] || message;
-	}
+
+	const trad = await loadTranslation(customTheme.lang ?? 'en');
+	message = trad[message] || message;
 
 	return Swal.fire({
 		position: "center-end",
@@ -29,5 +28,5 @@ export async function alertTemporary(level: string, message: string, theme: stri
 		title: message,
 		showConfirmButton: false,
 		timer: 2000
-		});
+	});
 }

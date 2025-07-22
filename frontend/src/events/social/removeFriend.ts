@@ -14,7 +14,7 @@ export async function unfriendUser(target: HTMLElement) {
 		return;
 	}
 
-	const success = FetchInterface.removeFriend(user, friendId)
+	const success = FetchInterface.removeFriend(friendId)
 	if (!success) {
 		return;
 	}
@@ -22,6 +22,4 @@ export async function unfriendUser(target: HTMLElement) {
 	setTimeout(async () => {
 		await updateAllLists();
 	}, 1000);
-	// await updateFriendsList();
-	// await updateAllUserLists();
 }

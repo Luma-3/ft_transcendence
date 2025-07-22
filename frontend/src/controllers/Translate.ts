@@ -1,5 +1,3 @@
-import { API_USER } from "../api/routes";
-import { fetchApi } from "../api/fetch";
 import { alertTemporary } from "../components/ui/alert/alertTemporary";
 import { FetchInterface } from "../api/FetchInterface";
 
@@ -81,24 +79,20 @@ export function changeLanguageSettings(dataset: DOMStringMap) {
 * Changement de langue sur la page settings avec preference user et verification si la langue est autorisée
 */
 export async function saveLanguage(lang_select: string) {
-	//TODO: Traduction
 	if (!autorizedLangs.includes(lang_select)) {
-		alertTemporary("error", 'Language not autorized', 'dark', true, true);
+		alertTemporary("error", 'language-not-supported');
 	}
 
-	//TODO: Traduction
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
-		return await alertTemporary("error", 'Error while getting user info', 'dark', false, true);
+		return;
 	}
 
 	const response = await FetchInterface.updatePreferences("lang", lang_select);
 	if (!response) {
-		//TODO: Traduction
-		return await alertTemporary("error", 'Error while updating language', 'dark', false, true);
+		return await alertTemporary("error", 'error-while-updating-language', true);
 	}
-	const trad = await loadTranslation(lang_select);
-	alertTemporary("success", trad['language-update'], user.preferences.theme, true, true);
+	alertTemporary("success", 'language-update', true);
 }
 
 

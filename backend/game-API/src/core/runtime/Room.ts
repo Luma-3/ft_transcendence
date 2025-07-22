@@ -9,6 +9,7 @@ import { InputManager } from '../../game/InputManager.js';
 import { randomNameGenerator } from './randomName.js';
 import { RoomManager } from './RoomManager.js';
 import { RoomModelInstance } from '../../room/model.js';
+import { RoomService } from '../../room/room.service.js';
 
 type StatusType = 'waiting' | 'roomReady' | 'playing' | 'finished';
 
@@ -32,7 +33,6 @@ export class Room {
   constructor(gameInfos: IGameInfos) {
     this.id = uuidv4();
     this.name = gameInfos.name;
-    console.log(`Creating room with id: ${this.id}`);
     this.gameType = gameInfos.type_game;
     this.privateRoom = gameInfos.privateRoom;
 
@@ -98,7 +98,6 @@ export class Room {
     if (action !== 'ready' || !player) return;
     player.ready = true;
 
-    console.log(`Player ${user_id} is ready in room ${this.id}`);
     IOInterface.broadcast(
       JSON.stringify({ action: 'playerReady', data: this.toJSON() }),
       [...this.players.keys()]
@@ -133,7 +132,6 @@ export class Room {
     if (this.players.get(user_id) === undefined) return; // Message is not for me
     if (type !== 'error') return; // Message is not for me
 
-    console.error(`Error in room ${this.id} for player ${user_id}:`, payload);
     IOInterface.broadcast(
       JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
       [...this.players.keys()]
@@ -146,7 +144,6 @@ export class Room {
     if (this.players.get(user_id) === undefined) return; // Message is not for me
     if (type !== 'disconnected') return; // Message is not for me
 
-    console.log(`Player ${user_id} disconnected from room ${this.id}`);
     IOInterface.broadcast(
       JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
       [...this.players.keys()]
@@ -174,8 +171,10 @@ export class Room {
         type: scene.gameType,
       }
       RoomModelInstance.addMatch(payload)
+      RoomService.addRank(players[0].id, players[0].win ? 'win' : 'loss');
+      RoomService.addRank(players[1].id, players[1].win ? 'win' : 'loss');
+      this.players.clear();
     }
-    this.players.clear();
   }
 
   toJSON() {

@@ -24,7 +24,6 @@ const authorizationUrl = oauth2Client.generateAuthUrl({
 
 export class Oauth2Service {
   static getGoogleAuthUrl() {
-    console.log('URL: ', authorizationUrl);
     return authorizationUrl;
   }
 
@@ -35,7 +34,6 @@ export class Oauth2Service {
     else if (query.state !== state) {
       throw new Error('State mismatch during OAuth2 callback, potential CSRF attack');
     }
-    console.log('State matches, proceeding with OAuth2 callback');
     const { tokens } = await oauth2Client.getToken(query.code);
     oauth2Client.setCredentials(tokens)
 

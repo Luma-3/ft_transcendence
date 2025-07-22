@@ -2,8 +2,7 @@ import { FetchInterface } from "../../../api/FetchInterface";
 import { alertTemporary } from "./alertTemporary";
 
 export async function getCustomAlertTheme(
-	needUser: boolean = true,
-	theme: string = "dark"
+	needUser: boolean = false,
 ): Promise<{
 	theme: string;
 	lang: string;
@@ -14,11 +13,12 @@ export async function getCustomAlertTheme(
 	cancelButtonColor: string;
 } | undefined> {
 	let lang = localStorage.getItem('lang') || 'en';
-	
+	let theme = 'dark';
+
 	if (needUser) {
 		const user = await FetchInterface.getUserInfo()
 		if (user === undefined) {
-			return await alertTemporary("error", "Error while fetching user info",'dark', false);
+			return;
 		}
 		lang = user.preferences.lang ?? 'en';
 		theme = user.preferences.theme ?? 'dark';
