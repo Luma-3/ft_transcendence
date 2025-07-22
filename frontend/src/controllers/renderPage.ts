@@ -11,7 +11,7 @@ import profile from '../pages/Profile/Profile'
 import friends from '../pages/Friends/Friends'
 import documentation from '../pages/Documentation'
 import { verifyEmailPrivate } from '../pages/VerifyEmail'
-import RGPD from '../pages/RGPD'
+import RGPD from '../pages/RGPD/RGPD'
 import twoFaPage, { init2FAPage } from '../pages/2FA'
 
 /**

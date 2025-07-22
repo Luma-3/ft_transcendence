@@ -223,5 +223,6 @@
 	"rgpd": "RGPD",
 	"terms-of-service": "Términos de servicio",
 	"cookie-policy": "Política de cookies",
-	"contact": "Contacto"
+	"contact": "Contacto",
+	"file-not-found-reload": "Archivo no encontrado, recarga la página"
 }

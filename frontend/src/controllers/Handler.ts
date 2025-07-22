@@ -31,6 +31,7 @@ import { sendEmail } from '../components/utils/sendEmail'
 
 import { FetchInterface } from '../api/FetchInterface'
 import { toggleGameStats } from '../pages/Dashboard/Dashboard'
+import { insertRgpdContent } from '../pages/RGPD/RGPD'
 
 /** Si l'utilisateur click sur l'element id = key on appelle la fonction associée */
 const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
@@ -42,6 +43,10 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'loadlogin': () => renderPublicPage('login'),
 	'loadregister': () => renderPublicPage('register'),
 	'loaddocumentation': () => renderPublicPage('documentation'),
+	'loadrgpd': () => renderPublicPage('rgpd'),
+	'rgpd-fr': () => insertRgpdContent('fr'),
+	'rgpd-es': () => insertRgpdContent('es'),
+	'rgpd-en': () => insertRgpdContent('en'),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 🔐 AUTHENTIFICATION
@@ -59,7 +64,6 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	'loadprofile': () => renderPrivatePage('profile'),
 	'loadsettings': () => renderPrivatePage('settings'),
 	'loadfriends': () => renderPrivatePage('friends'),
-	'loadrgpd': () => renderPrivatePage('rgpd'),
 
 	// ═══════════════════════════════════════════════════════════════
 	// 👤 GESTION UTILISATEUR
@@ -131,6 +135,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	// 🔄 NAVIGATION
 	// ═══════════════════════════════════════════════════════════════
 	'loadBackPage': () => renderBackPage(),
+	// ═══════════════════════════════════════════════════════════════
 
 };
 

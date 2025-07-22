@@ -2,7 +2,7 @@ import { alertTemporary } from "../../components/ui/alert/alertTemporary";
 import { headerPage } from "../../components/ui/headerPage";
 import RGPD_EN from "./RGPD_en";
 import RGPD_ES from "./RGPD_es";
-import RGPD_FR from "./RGPD/RGPD_fr";
+import RGPD_FR from "./RGPD_fr";
 
 const files: { [key: string]: () => string } = {
 	"fr": RGPD_FR,
@@ -24,12 +24,12 @@ export default function RGPD() {
 	return `
 	<div class="flex flex-col w-full h-full min-h-screen">
 		
-		<div class="flex flex-col w-full justify-center items-center mt-4 p-12">
+		<div class="flex flex-col w-full justify-center items-center">
 			${headerPage("rgpd", "private")}
 
 				</div>
 				
-				<div id="rgpd-content" class="flex flex-col items-center space-y-6">
+				<div id="rgpd-content" class="flex flex-col items-center space-y-6 p-24">
 				
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl">
 						
@@ -82,7 +82,6 @@ export default function RGPD() {
 		</div>
 		
 		<!-- Espacement en bas -->
-		<div class="h-20"></div>
 		
 	</div>`;
 }
