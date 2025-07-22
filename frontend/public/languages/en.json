@@ -65,6 +65,7 @@
 	"profil": "Profile",
 	"profile": "Profile",
 	"your-informations": "Your informations",
+	"image-too-big": "The image is too big, Avatar max 4Mo and Banner max 10Mo",
 	"image-is-empty": "Cannot save image: Image is empty",
 	"save-changes": "Save changes",
 	"change-image": "Change image",

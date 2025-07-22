@@ -3,7 +3,7 @@ import { alertTemporary } from '../ui/alert/alertTemporary';
 import { loadTranslation } from '../../controllers/Translate';
 import { dataURLToBlob } from './convertImage';
 import { API_USER } from '../../api/routes';
-import { fetchApi } from '../../api/fetch';
+import { fetchApi, fetchApiWithNoError } from '../../api/fetch';
 import { FetchInterface } from '../../api/FetchInterface';
 
 /**
@@ -78,12 +78,16 @@ export async function saveNewPicture() {
 	}
 	const formData = new FormData();
 	formData.append('tmp', dataURLToBlob(new_image), 'tmp.png');
-	const response = await fetchApi(API_USER.UPDATE.PREF[statusEditor], {
+	const response = await fetchApiWithNoError(API_USER.UPDATE.PREF[statusEditor], {
 		method: 'PATCH',
 		headers: {},
 		body: formData
 	});
-	(response.status === "error") ? alertTemporary("error", "Error while saving new picture: " + response.message, true) : alertTemporary("success", "New picture saved successfully!", true);
+	if (response.status === "error") {
+		alertTemporary("error", "image-too-big", true);
+		return;
+	}
+	alertTemporary("success", "New picture saved successfully!", true);
 	setTimeout(() => {
 		window.location.reload();
 	}, 1000);

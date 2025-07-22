@@ -67,6 +67,7 @@
 	"profile": "Profil",
 	"your-informations": "Vos informations",
 	"image-is-empty": "Impossible de sauvegarder l'image : L'image est vide",
+	"image-too-big": "L'image est trop grande, Avatar max 4Mo et Banniere max 10Mo",
 	"save-changes": "Sauvegarder les modifications",
 	"change-image": "Changer l'image",
 	"stats": "Statistiques de jeux",

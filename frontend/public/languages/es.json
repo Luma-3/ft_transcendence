@@ -66,6 +66,7 @@
 	"profile": "Perfil",
 	"your-informations": "Tu información",
 	"save-changes": "Guardar cambios",
+	"image-too-big": "La imagen es demasiado grande, Avatar max 4Mo y Banner max 10Mo",
 	"image-is-empty": "No se puede guardar la imagen: La imagen está vacía",
 	"change-image": "Cambiar imagen",
 	"stats": "Estadísticas de juegos",
