@@ -61,7 +61,7 @@ export class UserService {
     }).catch(console.error)
   }
 
-  static async createUserO2Auth(data: { username: string, email: string, avatar?: string }) {
+  static async createUserO2Auth(data: { username: string, email: string, googleId: string,  avatar?: string }) {
 
     await verifyConflict(data.username, data.email);
 
@@ -69,6 +69,7 @@ export class UserService {
       username: data.username,
       password: null,
       email: data.email,
+      google_id: data.googleId,
       validated: true
     }
 
@@ -84,7 +85,7 @@ export class UserService {
 
     const transactionData = await knexInstance.transaction(async (trx: Knex.Transaction) => {
       const userID = uuidV4();
-      const [user] = await userModelInstance.create(trx, userID, user_obj);
+      const [user] = await userModelInstance.create(trx, userID, user_obj, [...USER_PRIVATE_COLUMNS, 'google_id']);
 
       const [preferences] = await preferencesModelInstance.create(trx, userID, user_preferences);
 
@@ -204,6 +205,14 @@ export class UserService {
     columns: string[] = USER_PUBLIC_COLUMNS
   ): Promise<UserBaseType | undefined> {
     return await userModelInstance.findByEmail(email, true, columns) as UserBaseType | undefined;
+  }
+
+
+  static async getUserByEmailOrGoogleId(
+    googleId: string,
+    columns: string[] = USER_PUBLIC_COLUMNS
+  ): Promise<UserBaseType | undefined> {
+    return await userModelInstance.findByGoogleId(googleId, true, columns) as UserBaseType | undefined;
   }
 
   static async updateUserPassword(

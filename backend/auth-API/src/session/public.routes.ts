@@ -61,15 +61,15 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
       summary: 'Delete current user session',
       description: 'This endpoint allows users to delete their current session.',
       tags: ['Sessions'],
-      headers: UserHeaderAuthentication,
       response: {
         200: ResponseSchema(undefined, 'Session deleted successfully')
       }
     }
   }, async (req, rep) => {
     const tokenId = req.cookies.refreshToken;
-    if (!tokenId) throw new UnauthorizedError();
-    await SessionService.logout(tokenId);
+    if (tokenId){
+      await SessionService.logout(tokenId);
+    }
     return rep.send({ message: 'Session deleted successfully' }).clearCookie("accessToken").clearCookie("refreshToken").redirect(`${process.env.REDIRECT_URI}`);
   });
 

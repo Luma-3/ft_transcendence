@@ -121,6 +121,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 			body: Type.Object({
 				username: Type.String(),
 				email: Type.String(),
+				googleId: Type.String(),
 				avatar: Type.Optional(Type.String({format: 'uri'}))
 			}),
 			response: {
@@ -129,11 +130,12 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
 			}
 		}
 	}, async (req, rep) => {
-	const find = await UserService.getUserByEmail(req.body.email, [...USER_PRIVATE_COLUMNS]);
+		const find = await UserService.getUserByEmailOrGoogleId(req.body.googleId, [...USER_PRIVATE_COLUMNS]);
 		if (!find) {
 			const user = await UserService.createUserO2Auth({
 				username: req.body.username,
 				email: req.body.email,
+				googleId: req.body.googleId,
 				avatar: req.body.avatar ?? '',
 			});
 			return rep.code(201).send({ message: 'User created from OAuth2', data: user });
