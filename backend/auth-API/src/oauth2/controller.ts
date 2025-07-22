@@ -22,10 +22,12 @@ export class Oauth2Controller {
       throw new UnauthorizedError('User-Agent header is required');
 
     const parser = new UAParser(userAgent);
+    console.log(dataUser);
     try {
       const { accessToken, refreshToken } = await SessionService.login({
         username: dataUser.name!,
         email: dataUser.email!,
+        googleId: dataUser.id ?? undefined,
         avatar: dataUser.picture ?? undefined
       }, {
         ip_address: req.headers['x-forwarded-for'] ?? req.ip,
@@ -49,6 +51,8 @@ export class Oauth2Controller {
     } catch (error) {
       if(error instanceof TwoFaError) {
         rep.redirect(`${process.env.REDIRECT_URI}/2FA`);
+      }else{
+        throw error;
       }
     }
   }
