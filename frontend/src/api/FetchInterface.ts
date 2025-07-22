@@ -205,7 +205,7 @@ export class FetchInterface {
       }),
     });
     if (response.status === "error") {
-      return alertTemporary("error", 'wrong-password', true);
+      return alert("error", 'wrong-password', true);
     }
     return alertTemporary("success", 'password-updated', true);
   }

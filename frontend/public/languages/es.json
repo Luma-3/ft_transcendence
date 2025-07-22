@@ -33,7 +33,7 @@
 	"username-or-password-incorrect": "Nombre de usuario o contraseña incorrectos",
 	"Validation Error": "Nombre de usuario incorrecto, mínimo 3 caracteres y máximo 32 caracteres",
 	"username-incorrect": "Nombre de usuario incorrecto, mínimo 3 caracteres y máximo 32 caracteres",
-	"password-must-include": "La contraseña debe hacer mínimo 3 caracteres y debe incluir al menos : 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1 número y 1 carácter especial",
+	"password-must-include": "La contraseña debe incluir al menos : 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1 número y 1 carácter especial",
 	"change-your-password": "Cambiar tu contraseña",
 	"change-your-password-description": "Cambia tu contraseña para asegurar tu cuenta.",
 	"change-password": "Cambiar contraseña",
