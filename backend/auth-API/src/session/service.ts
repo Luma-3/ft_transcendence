@@ -125,7 +125,11 @@ export class SessionService {
           email: data.email,
           avatar: data.avatar
         })
-      })).json()).data;
+      })).json());
+
+      console.log('userInfo:', userInfo);
+      userInfo = userInfo.data;
+
     }
     if(!userInfo){
       throw new UnauthorizedError('Username and password are required for login');
