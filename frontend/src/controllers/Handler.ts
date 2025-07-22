@@ -48,7 +48,7 @@ const clickEvent: { [key: string]: (event: MouseEvent) => void } = {
 	// ═══════════════════════════════════════════════════════════════
 	'loginForm': () => loginUser(),
 	'google': () => {
-		window.location.href = 'https://localhost:5173/api/auth/oauth2/google'
+		window.location.href = '/api/auth/oauth2/google'
 	},
 	'logout': () => FetchInterface.logOutUser(),
 

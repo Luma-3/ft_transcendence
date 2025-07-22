@@ -27,8 +27,13 @@ export class AIController {
         const lookaheadTime = 0.5;
         const projectedPos = this.ball.position.add(this.ball.Ballvelocity.scale(lookaheadTime));
 
-        if (projectedPos.x < 0 || projectedPos.x > this.fieldWidth)
-            return;
+        if (projectedPos.x < 0) {
+            projectedPos.x = 0;
+        }
+
+        if (projectedPos.x > this.fieldWidth) {
+            projectedPos.x = this.fieldWidth;
+        }
 
         const predictedState = {
             position: projectedPos,
