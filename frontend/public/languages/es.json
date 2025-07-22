@@ -32,7 +32,7 @@
 	"password-updated": "Contraseña actualizada",
 	"username-or-password-incorrect": "Nombre de usuario o contraseña incorrectos",
 	"username-incorrect": "Nombre de usuario incorrecto, mínimo 3 caracteres",
-	"password-must-include": "La contraseña debe incluir al menos: 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1 número y 1 carácter especial",
+	"password-must-include": "La contraseña debe incluir min 3 caracteres y max 32 caracteres y al menos: 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1 número y 1 carácter especial",
 	"change-your-password": "Cambiar tu contraseña",
 	"change-your-password-description": "Cambia tu contraseña para asegurar tu cuenta.",
 	"change-password": "Cambiar contraseña",

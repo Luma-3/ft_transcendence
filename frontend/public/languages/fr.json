@@ -33,7 +33,7 @@
 	"password-updated": "Mot de passe mis à jour",
 	"username-or-password-incorrect": "Nom d'utilisateur ou mot de passe incorrect",
 	"username-incorrect": "Nom d'utilisateur incorrect, minimum 3 caractères",
-	"password-must-include": "Le mot de passe doit inclure au moins : 8 caractères, 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
+	"password-must-include": "Le mot de passe doit faire min 3 caractères et max 32 caractères et inclure au moins : 8 caractères, 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
 	"change-your-password": "Changer votre mot de passe",
 	"change-your-password-description": "Changez votre mot de passe regulierement pour sécuriser votre compte.",
 	"change-password": "Changer le mot de passe",

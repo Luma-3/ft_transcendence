@@ -32,7 +32,7 @@
 	"password-updated": "Password updated",
 	"username-or-password-incorrect": "Username or password incorrect",
 	"username-incorrect": "Username incorrect, minimum 3 characters",
-	"password-must-include": "Password must include at least: 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
+	"password-must-include": "Password must include min 3 characters and max 32 characters and at least: 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
 	"change-your-password": "Change your password",
 	"change-your-password-description": "Change your password to secure your account.",
 	"change-password": "Change password",
