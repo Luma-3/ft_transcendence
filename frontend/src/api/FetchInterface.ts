@@ -578,7 +578,7 @@ export class FetchInterface {
       body: JSON.stringify({})
     });
     if (response.status === "error") {
-      alertTemporary("error", "issues-with-invitation-acceptance", true);
+      alertTemporary("error", "issues-with-invitation-accepted", true);
       return false;
     }
 
