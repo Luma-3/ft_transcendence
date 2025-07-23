@@ -3,7 +3,7 @@ import { addAllEventListenOnPage } from './controllers/Handler'
 import { FetchInterface } from './api/FetchInterface'
 import { loginTwoFaPage } from './pages/2FA'
 
-const publicPages = ['home', 'login', 'register', 'verifyEmail']
+const publicPages = ['home', 'login', 'register', 'verifyEmail'];
 
 
 const main_container = document.querySelector<HTMLDivElement>('#app')!
@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (!activeSession) {
 				return renderPublicPage(page);
 			}
+			console.log("activeSession", page);
 			(publicPages.includes(page))
 				? window.location.href = '/dashboard'
 				: renderPrivatePage(page);
