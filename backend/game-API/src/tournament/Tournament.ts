@@ -46,7 +46,7 @@ export class Tournament {
   getStatus(): string { return this.status };
 
   isFinish(): boolean { return this.status === 'finished'; }
-  isJoinable(): boolean { return this.status === 'waiting'; }
+  isJoinable(): boolean { return this.status === 'waiting' && this.players.length < 4 }
 
   nbPlayers(): number { return this.players.length; }
 
