@@ -110,21 +110,18 @@ export class Tournament {
       this.pairs.forEach(async ([p1, p2]) => {
         const roomId = RoomManager.getInstance().createRoom('mma in the pound', 'tournament', true);
         try {
-          await Promise.all([
-            RoomManager.getInstance().joinRoom(p1, roomId),
-            RoomManager.getInstance().joinRoom(p2, roomId)
-          ]);
-          this.activeMatches.set(roomId, [p1, p2]);
+          RoomManager.getInstance().joinRoom(p1, roomId)
         } catch (error) {
-          if (error instanceof Error) {
-            IOInterface.broadcast(
-              JSON.stringify({ action: 'error', data: { message: 'Tournemament Failed' } }),
-              this.playerTournament.map((value) => value.id)
-            );
-            TournamentManager.getInstance().deleteTournament(this.id);
-          }
-          RoomManager.getInstance().stopRoom(roomId, false);
+          this.disconnected(p1.id);
+          return;
         }
+        try {
+          RoomManager.getInstance().joinRoom(p2, roomId)
+        } catch (error) {
+          this.disconnected(p2.id);
+          return;
+        }
+        this.activeMatches.set(roomId, [p1, p2]);
       });
 
       this.pairs = [];
