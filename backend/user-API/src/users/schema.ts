@@ -27,6 +27,7 @@ const UserSharedFields = {
 
 export const UserBase = Type.Object({
   ...UserSharedFields,
+  google_id: Type.Optional(Type.String()),
   email: Type.String({ format: 'email' }),
   password: Type.Union([passwordField, Type.Null()]),
   validated: Type.Boolean({

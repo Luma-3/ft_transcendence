@@ -4,6 +4,7 @@ import { UserHeaderIdType } from '../users/schema.js';
 import { PREFERENCES_PRIVATE_COLUMNS } from './model.js';
 
 import server from '../fastify.js';
+import { BadRequestError, PayloadTooLargeError} from '@transcenduck/error';
 
 export async function updateAvatarPreferences(req: FastifyRequest<{
 	Headers: UserHeaderIdType;
@@ -13,12 +14,15 @@ export async function updateAvatarPreferences(req: FastifyRequest<{
 	const oldPreferences = await PreferencesService.getPreferences(userID, ["avatar"]);
 	const file = await req.file({
 		limits: {
-			fileSize: 1024 * 1024 * 4, // 5MB
+			fileSize: 1024 * 1024 * 4, // 4MiB
 			files: 1
 		}
 	});
 	if (!file) {
-		return rep.code(400).send({ message: 'No file uploaded' });
+		throw new BadRequestError("file not send");
+	}
+	if(file.file.truncated){
+		throw new PayloadTooLargeError();
 	}
 	let info;
 	const formData = new FormData();
@@ -29,7 +33,7 @@ export async function updateAvatarPreferences(req: FastifyRequest<{
 			body: formData
 		});
 	info = await fetchUrl.json();
-	if (!fetchUrl.ok) {
+	if (fetchUrl.status > 399) {
 		return rep.code(fetchUrl.status).send(info);
 	}
 	if (oldPreferences.avatar && oldPreferences.avatar !== 'default.png' && !oldPreferences.avatar.includes('googleusercontent.com')) {
@@ -50,12 +54,15 @@ export async function updateBannerPreferences(req: FastifyRequest<{
 	const oldPreferences = await PreferencesService.getPreferences(userID, ["banner"]);
 	const file = await req.file({
 		limits: {
-			fileSize: 20 * 1024 * 1024, // 20Mio for banner
+			fileSize: 20 * 1024 * 1024, // 20MiB for banner
 			files: 1
 		}
 	});
 	if (!file) {
-		return rep.code(400).send({ message: 'No file uploaded' });
+		throw new BadRequestError("file not send");
+	}
+	if(file.file.truncated){
+		throw new PayloadTooLargeError();
 	}
 	let info;
 	const formData = new FormData();
@@ -66,7 +73,7 @@ export async function updateBannerPreferences(req: FastifyRequest<{
 			body: formData
 		});
 	info = await fetchUrl.json();
-	if (!fetchUrl.ok) {
+	if (fetchUrl.status > 399) {
 		return rep.code(fetchUrl.status).send(info);
 	}
 	if (oldPreferences.banner && oldPreferences.banner !== 'default.png') {

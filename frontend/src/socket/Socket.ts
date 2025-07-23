@@ -1,6 +1,5 @@
 import { dispatchGameSocketMsg } from "../socket/dispatchGameSocketMsg";
 import { dispatchUserSocketMsg } from "./dispatchUserSocketMsg";
-import { alertWithTimer } from "../components/ui/alert/alertGameReady";
 
 export let socket: WebSocket;
 

@@ -8,8 +8,6 @@ export class ValidationError extends BaseError<ErrorObject[]> {
   }
 }
 
-// TODO : change for actual details formating
-
 export const ValidationResponse = Type.Object({
   status: Type.Literal('error'),
   statusCode: Type.Literal(400),

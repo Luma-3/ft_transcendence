@@ -10,5 +10,5 @@ RUN npm i -g knex && \
     npm install && \
     npm run build
 
-ENTRYPOINT ["bash", "-c", "cp -r /tmp/uploads/avatar/* ./uploads/avatar/ && cp -r /tmp/uploads/banner/* ./uploads/banner/ && npm run start"]
+ENTRYPOINT ["bash", "-c", "mkdir -p ./uploads/avatar/ ./uploads/banner/ && cp -r /tmp/uploads/avatar/* ./uploads/avatar/ && cp -r /tmp/uploads/banner/* ./uploads/banner/ && npm run start"]
 

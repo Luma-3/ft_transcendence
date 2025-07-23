@@ -34,7 +34,7 @@
 	"username-or-password-incorrect": "Nom d'utilisateur ou mot de passe incorrect",
 	"Validation Error": "Nom d'utilisateur incorrect, minimum 3 caractères et maximum 32 caractères",
 	"username-incorrect": "Nom d'utilisateur incorrect, minimum 3 caractères et maximum 32 caractères",
-	"password-must-include": "Le mot de passe doit faire minimum 3 caractères et doit inclure au moins : 8 caractères, 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
+	"password-must-include": "Le mot de passe  doit inclure au moins : 8 caractères, 1 lettre majuscule, 1 lettre minuscule, 1 chiffre et 1 caractère spécial",
 	"change-your-password": "Changer votre mot de passe",
 	"change-your-password-description": "Changez votre mot de passe regulierement pour sécuriser votre compte.",
 	"change-password": "Changer le mot de passe",
@@ -126,6 +126,8 @@
 	"social": "Social",
 	"game": "Jeux",
 	"game-invitation-canceled": "Invitation de jeu annulée",
+	"accept-invitation-game": "Accepter l'invitation de jeu",
+	"someone-invited-you-to-play-a-game": "Quelqu'un vous a invité à jouer à un jeu",
 	"game-invitation-to": "Invitation de jeu à",
 	"refused": "refusée",
 	"waiting-operations": "Opérations en attente",
@@ -223,5 +225,6 @@
 	"rgpd": "RGPD",
 	"terms-of-service": "Conditions d'utilisation",
 	"cookie-policy": "Politique de cookies",
-	"contact": "Contact"
+	"contact": "Contact",
+	"file-not-found-reload": "Fichier non trouvé, rechargez la page"
 }

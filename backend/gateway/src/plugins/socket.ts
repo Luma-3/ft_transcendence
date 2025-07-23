@@ -8,7 +8,7 @@ type SocketOptions = Parameters<typeof websocketPlugin>[1];
 declare module 'fastify' {
   interface FastifyInstance {
     socket: typeof websocketPlugin;
-    ws_clients: Map<string, WebSocket>;
+    ws_clients: Map<string, Set<WebSocket>>;
   }
 }
 
@@ -79,7 +79,7 @@ function handleError(socket: WebSocket, error: Error) {
 }
 
 function handleClose(socket: WebSocket, code?: number, reason?: string) {
-  console.log(`[WS] client ${socket.user_id} disconnected: code=${code}, reason=${reason}`);
+  console.warn(`[WS] client ${socket.user_id} disconnected: code=${code}, reason=${reason}`);
   redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
     type: 'disconnected',
     user_id: socket.user_id,
@@ -94,34 +94,43 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
   fastify.decorate('ws_clients', new Map());
 
   fastify.register(async (fastify) => {
-    fastify.get('/ws', { websocket: true }, async (socket, req) => {
+  fastify.get('/ws', { websocket: true }, async (socket, req) => {
 
-      const user_id = req.headers['x-user-id'] as string;
+    const user_id = req.headers['x-user-id'] as string;
       socket.user_id = user_id;
-      if (fastify.ws_clients.has(user_id)) {
-        const existingSocket = fastify.ws_clients.get(user_id);
-        if (existingSocket) {
-          existingSocket.close(1000, 'Replaced by new connection');
-        }
+      if (!fastify.ws_clients.has(user_id)) {
+        fastify.ws_clients.set(user_id, new Set());
+        redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
+          type: 'connected',
+          user_id: user_id
+        }));
       }
-      fastify.ws_clients.set(user_id, socket);
-      redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
-        type: 'connected',
-        user_id: user_id,
-      }));
+      fastify.ws_clients.get(user_id)!.add(socket);
 
       socket.on('message', (raw: string) => {
         handleMessage(socket, raw);
       });
 
       socket.on('error', (error: Error) => {
-        handleError(socket, error);
-        fastify.ws_clients.delete(user_id);
+        const clients = fastify.ws_clients.get(user_id);
+        if (clients) {
+          clients.delete(socket);
+          if (clients.size === 0) {
+            handleError(socket, error);
+            fastify.ws_clients.delete(user_id);
+          }
+        }
       });
 
       socket.on('close', () => {
-        handleClose(socket, socket.closeCode, socket.closeReason);
-        fastify.ws_clients.delete(user_id);
+        const clients = fastify.ws_clients.get(user_id);
+        if (clients) {
+          clients.delete(socket);
+          if (clients.size === 0) {
+            handleClose(socket, socket.closeCode, socket.closeReason);
+            fastify.ws_clients.delete(user_id);
+          }
+        }
       });
     })
   });
@@ -133,15 +142,21 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
 
       const user_id = target;
       
-      const socket = fastify.ws_clients.get(user_id);
-      if (socket) {
-        socket.send(JSON.stringify({
-          from: from,
-          service: service,
-          scope: scope,
-          target: user_id,
-          payload: payload
-        }));
+      const sockets = fastify.ws_clients.get(user_id);
+      if (sockets) {
+        sockets.forEach((socket) => {
+          if (socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({
+              from: from,
+              service: service,
+              scope: scope,
+              target: user_id,
+              payload: payload
+            }));
+          } else {
+            console.warn(`[WS] Socket for user ${user_id} is not open, skipping send.`);
+          }
+        });
       }
     }
     catch (err) {

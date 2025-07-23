@@ -105,5 +105,3 @@ export default async function gameHtml(gameInfo: IGame, userId: string) {
 		</div>
 		`
 }
-// <!-- Graphique de l'alpha -->
-// <canvas id="alphaGraph" width="300" height="100" class="absolute top-2 right-2 border border-gray-500 bg-black"></canvas>

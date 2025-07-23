@@ -109,7 +109,9 @@ export class RoomService {
         throw new ConflictError('User is playing');
       }
       RoomManager.getInstance().stopRoom(room.id, false);
-    } else if (roomType === 'tournament') {
+      return
+    }
+    if (roomType === 'tournament') {
       const tournament = TournamentManager.getInstance().findCurrentTournament(tmpPlayer);
       if (tournament === undefined) {
         throw new NotFoundError('User');
@@ -118,7 +120,9 @@ export class RoomService {
         throw new ConflictError('User is playing');
       }
       TournamentManager.getInstance().removePlayer(tmpPlayer);
+      return
     }
+    throw new ConflictError('Invalid room type');
   }
 
   static async getRank(userId: string) {
@@ -129,8 +133,6 @@ export class RoomService {
     }
 
     const rank = Math.abs(kd_stats.wins / kd_stats.total_games * (1 - Math.pow(2.71828, kd_stats.total_games / 10)));
-    console.log(`User ${userId} has a rank of ${rank}`);
-    console.log(`Wins: ${kd_stats.wins}, Losses: ${kd_stats.losses}, Total Games: ${kd_stats.total_games}`);
     return {
       wins: kd_stats.wins,
       losses: kd_stats.losses,

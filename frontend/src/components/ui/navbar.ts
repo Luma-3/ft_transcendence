@@ -15,7 +15,6 @@ export async function updateNavbar() {
 	if (user) {
 		setTimeout(async () => {
 			navbarDiv.innerHTML = await navbar(user);
-			console.log("Navbar updated for user:", user.preferences.lang);
 			translatePage(user.preferences.lang);
 		}, 50);
 		status = true;

@@ -67,7 +67,7 @@ export class UserModel {
   }
 
   async findByUsername(username: string, validated?:boolean, columns = USER_PUBLIC_COLUMNS) {
-    if (validated !== undefined) {
+    if (validated != undefined) {
       return (await knexInstance<UserBaseType, UserBaseType>('users')
         .select(columns)
         .where('username', username)
@@ -81,7 +81,7 @@ export class UserModel {
   }
 
   async findByEmail(email: string, validated?:boolean, columns = USER_PRIVATE_COLUMNS): Promise<UserBaseType | undefined> {
-  if (validated !== undefined) {
+  if (validated != undefined) {
       return await knexInstance<UserBaseType>('users')
         .select(columns)
         .where('email', email)
@@ -96,10 +96,27 @@ export class UserModel {
       .first();
   }
 
+
+  async findByGoogleId(googleId: string, validated?:boolean, columns = USER_PRIVATE_COLUMNS): Promise<UserBaseType | undefined> {
+  if (validated != undefined) {
+      return await knexInstance<UserBaseType>('users')
+        .select(columns)
+        .orWhere('google_id', googleId)
+        .andWhere('validated', validated)
+        .join('preferences', 'users.id', 'preferences.user_id')
+        .first();
+    }
+    return await knexInstance<UserBaseType>('users')
+      .select(columns)
+      .orWhere('google_id', googleId)
+      .join('preferences', 'users.id', 'preferences.user_id')
+      .first();
+  }
+
   async create(
     trx: Knex.Transaction,
     id: string,
-    data: Partial<Pick<UserBaseType, 'username' | 'email' | 'password'| 'validated'>>,
+    data: Partial<Pick<UserBaseType, 'username' | 'email' | 'password'| 'validated' | 'google_id'>>,
     columns = USER_PRIVATE_COLUMNS
   ) {
     return await trx<UserBaseType>('users').insert({
@@ -107,6 +124,7 @@ export class UserModel {
       username: data.username,
       email: data.email,
       password: data.password,
+      google_id: data.google_id,
       created_at: knexInstance.fn.now(),
       validated: data.validated ?? false
     }, columns);

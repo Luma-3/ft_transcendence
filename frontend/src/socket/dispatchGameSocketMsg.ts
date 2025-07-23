@@ -54,7 +54,6 @@ async function handleGameInvitation(data: any) {
 
 export async function dispatchGameSocketMsg(payload: any) {
   const handler = socketHandler[payload.action];
-
   if (handler) {
     await handler(payload.data);
     return;

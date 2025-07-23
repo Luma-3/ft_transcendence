@@ -33,7 +33,7 @@
 	"username-or-password-incorrect": "Nombre de usuario o contraseña incorrectos",
 	"Validation Error": "Nombre de usuario incorrecto, mínimo 3 caracteres y máximo 32 caracteres",
 	"username-incorrect": "Nombre de usuario incorrecto, mínimo 3 caracteres y máximo 32 caracteres",
-	"password-must-include": "La contraseña debe hacer mínimo 3 caracteres y debe incluir al menos : 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1 número y 1 carácter especial",
+	"password-must-include": "La contraseña debe incluir al menos : 8 caracteres, 1 letra mayúscula, 1 letra minúscula, 1 número y 1 carácter especial",
 	"change-your-password": "Cambiar tu contraseña",
 	"change-your-password-description": "Cambia tu contraseña para asegurar tu cuenta.",
 	"change-password": "Cambiar contraseña",
@@ -127,6 +127,8 @@
 	"other-duck-disconnected": "Un otro pato se ha desconectado, volviendo a la página de inicio",
 	"game-invitation-to": "Invitación de juego a",
 	"game-invitation-canceled": "Invitación de juego cancelada",
+	"accept-invitation-game": "Aceptar invitación de juego",
+	"someone-invited-you-to-play-a-game": "Alguien te ha invitado a jugar un juego",
 	"refused": "rechazada",
 	"waiting-operations": "Operaciones en espera",
 	"manage-your-invitations": "Gestionar tus invitaciones",
@@ -223,5 +225,6 @@
 	"rgpd": "RGPD",
 	"terms-of-service": "Términos de servicio",
 	"cookie-policy": "Política de cookies",
-	"contact": "Contacto"
+	"contact": "Contacto",
+	"file-not-found-reload": "Archivo no encontrado, recarga la página"
 }

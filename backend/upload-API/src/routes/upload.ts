@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 import * as Controller from '../controllers/uploadController.js'
 import { ResponseSchema } from '../utils/schema.js';
 import { CdnQuery, proxyCDN, UploadFileParams, UploadFileValidation } from '../schema/upload.schema.js';
-import { ConflictResponse , ForbiddenResponse, InvalidTypeResponse, NotFoundResponse, PayloadTooLargeResponse } from '@transcenduck/error';
+import { ConflictResponse, ForbiddenResponse, InvalidTypeResponse, NotFoundResponse, PayloadTooLargeResponse } from '@transcenduck/error';
 import { Type } from '@sinclair/typebox';
 /**
  * typePath: c'est le type de fichier que l'on veux manipuler
@@ -17,7 +17,6 @@ export default async function uploadRoute(fastify: FastifyInstance) {
       summary: 'Upload file',
       description: 'Endpoint to upload file',
       tags: ['Upload'],
-      //body: { $ref: 'uploadFilePublic' },//TODO: regle le proble du schema pour le multipart form
       params: UploadFileParams,
       response: {
         201: ResponseSchema(UploadFileValidation),
@@ -35,7 +34,7 @@ export default async function uploadRoute(fastify: FastifyInstance) {
       description: 'Endpoint to proxy file from CDN',
       tags: ['Upload'],
       querystring: proxyCDN
-  },
+    },
   }, Controller.getProxyFile
   )
 

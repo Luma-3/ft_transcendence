@@ -51,6 +51,9 @@ export class Tournament {
   nbPlayers(): number { return this.players.length; }
 
   async addPlayer(player: Player) {
+    if(this.players.find(aPlayer => aPlayer.id === player.id) !== undefined) {
+      return;
+    }
     this.players.push(player);
     this.playerTournament.push(player);
 
@@ -111,13 +114,20 @@ export class Tournament {
     setTimeout(() => {
       this.pairs.forEach(async ([p1, p2]) => {
         const roomId = RoomManager.getInstance().createRoom('mma in the pound', 'tournament', true);
-        await Promise.all([
-          RoomManager.getInstance().joinRoom(p1, roomId),
-          RoomManager.getInstance().joinRoom(p2, roomId)
-        ]);
-        this.activeMatches.set(roomId, [p1, p2]);
-      })
- 
+        try {
+          await Promise.all([
+            RoomManager.getInstance().joinRoom(p1, roomId),
+            RoomManager.getInstance().joinRoom(p2, roomId)
+          ]);
+          this.activeMatches.set(roomId, [p1, p2]);
+        } catch (error) {
+          if(error instanceof Error) {
+            this.error('Tournament Failed');
+          }
+          RoomManager.getInstance().stopRoom(roomId, false);
+        }
+      });
+
       this.pairs = [];
   
       RoomManager.getInstance().on('room:end', (roomId, winner) => {
@@ -141,7 +151,6 @@ export class Tournament {
       this.playerTournament = [...this.winners];
       this.winners = [];
 
-      IOInterface.unsubscribe(`ws:all:broadcast:all`);
       IOInterface.unsubscribe(`ws:all:broadcast:all`);
       this.NextPool(this.playerTournament);
     }
