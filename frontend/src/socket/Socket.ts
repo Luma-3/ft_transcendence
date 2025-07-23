@@ -29,14 +29,11 @@ export async function socketConnection() {
 
 	socket.addEventListener('error', async () => {
 		socket.close();
-		window.location.href = "/login";
-
-
-		socket.addEventListener('close', () => {
-			window.location.href = "/login";
-		});
 	});
 
+	socket.addEventListener('close', () => {
+		window.location.href = "/login";
+	});
 }
 
 export function sendInSocket(service: string, scope: string, target: string, action: string, data: any) {
