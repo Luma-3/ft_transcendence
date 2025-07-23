@@ -598,7 +598,6 @@ export class FetchInterface {
       alertTemporary("error", "issues-with-invitation-refusal", true);
       return false;
     }
-
     await updateAllLists();
     return true;
   }

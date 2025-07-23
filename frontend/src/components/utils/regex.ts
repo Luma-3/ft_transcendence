@@ -1,6 +1,6 @@
 import { alert } from "../ui/alert/alert";
 
-const regex = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$';
+const regex = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&/])[A-Za-z\\d@$!%*?&/]{8,}$';
 
 /**
  * Verification des normes etablies pour le mot de passe
