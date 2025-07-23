@@ -12,7 +12,7 @@ import {
 
 
 const passwordField = Type.String({
-  pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&/])[A-Za-z\\d@$!%*?&/]{8,}$',
+  pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&/\\-])[A-Za-z\\d@$!%*?&/\\-]{8,}$',
   minLength: 8,
   maxLength: 255
 });
