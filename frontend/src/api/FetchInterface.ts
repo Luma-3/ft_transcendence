@@ -418,15 +418,21 @@ export class FetchInterface {
         method: 'DELETE',
         body: JSON.stringify({})
       });
+
     } else if (gameType === "pending") {
 
       const otherId = sessionStorage.getItem("opponentId");
-      response = await fetchApiWithNoError(API.API_GAME.GET_ALL_DATA + `pending/${otherId}`, {
+      response = await fetchApiWithNoError(API.API_GAME.INVITE + `/${otherId}`, {
         method: 'DELETE',
         body: JSON.stringify({})
       });
     }
-    return response.status === "success";
+    if (response.status === "success") {
+      updateNavbar();
+      alertTemporary("success", "game-cancelled-successfully", true);
+      return true;
+    }
+    return false;
   }
 
   /**
