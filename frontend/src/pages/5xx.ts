@@ -14,8 +14,8 @@ function messageErrorFromTheServer(messageServer?: string) {
 
 export default function errorPage(code?: string, message?: string, messageServer?: string) {
 
-	const error_code = code || '500';
-	const message_error = message || 'internal-server-error';
+	const error_code = code || '';
+	const message_error = message || '';
 
 	return `
 <div class="flex flex-col font-title justify-center items-center mt-20 mb-20 text-center  text-secondary dark:text-dtertiary">

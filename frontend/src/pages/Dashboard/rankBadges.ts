@@ -73,6 +73,9 @@ export async function generateRankBadge(_user: IUserInfo, myUserLang: string = '
 				<p class="text-sm text-gray-600 dark:text-gray-400 mt-1 transition-colors duration-300">
 					<img src="/images/trophy.png" alt="Trophy Icon" class="inline-block invert w-4 h-4 mr-1" />
 					${(ranks && ranks.wins) ? ranks.wins : 0}
+          <span class="mx-1">/</span>
+          <img src="/images/lose.png" alt="Defeat Icon" class="inline-block invert w-5 h-5 mr-1" />
+          ${(ranks && ranks.losses) ? ranks.losses : 0}
 				</p>
   </div>
   </div>

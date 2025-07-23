@@ -1,8 +1,8 @@
 import { FetchInterface, IGameFormInfo } from "../api/FetchInterface";
-import { renderErrorPage } from "./renderPage";
 import { IOtherUser } from "../interfaces/IUser";
 import { addFriendButton } from "../pages/Friends/Lists/allUsersList";
 import { createRoomInServer } from "../events/game/gameInit";
+import { updateNavbar } from "../components/ui/navbar";
 
 export async function handleSearchUserGame(value: string) {
 	const container = document.getElementById("search-user-list");
@@ -99,7 +99,7 @@ export async function invitePlayerToPlay(gameFormInfo: IGameFormInfo) {
 
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
-		return renderErrorPage('401');
+		return;
 	}
 	const choice = (document.querySelector('input[name="invite-game"]:checked') as HTMLInputElement)
 	if (!choice) {
@@ -112,5 +112,9 @@ export async function invitePlayerToPlay(gameFormInfo: IGameFormInfo) {
 	if (!success) {
 		return;
 	}
+	sessionStorage.setItem("gameType", 'pending');
+	sessionStorage.setItem("opponentId", player_select);
+
 	document.getElementById("initGame")?.classList.add("opacity-0", "pointer-events-none");
+	updateNavbar();
 }

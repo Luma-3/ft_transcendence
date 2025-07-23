@@ -6,7 +6,7 @@ export async function refuseFriendInvitation(target: HTMLElement, type: "alert" 
 
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
-		return renderErrorPage('401');
+		return;
 	}
 	const friendId = target.dataset.id;
 	if (!friendId) {

@@ -1,5 +1,4 @@
 import { FetchInterface } from "../../api/FetchInterface";
-import { renderErrorPage } from "../../controllers/renderPage";
 import { updateAllLists } from "../../pages/Friends/Lists/updatersList";
 // import { updateAllUserLists, updateFriendsList } from "../../pages/Friends/Lists/updatersList";
 
@@ -7,7 +6,7 @@ export async function unfriendUser(target: HTMLElement) {
 
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
-		return renderErrorPage('401');
+		return;
 	}
 	const friendId = target.dataset.id;
 	if (!friendId) {
