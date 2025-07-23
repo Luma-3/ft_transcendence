@@ -2,7 +2,6 @@ import { PendingService } from "./services.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AcceptParamType, PendingDBHydrateType, PendingParamType, TypePendingQueryType, UserHeaderIdType } from "./schema.js";
 import { redisCache, redisPub } from "../utils/redis.js";
-import { UserStatus } from "../preferences/status.js";
 
 export class PendingsController {
 
@@ -16,10 +15,10 @@ export class PendingsController {
             const pending = JSON.parse(data) as PendingDBHydrateType[];
             return rep.status(200).send({
                 message: 'Pending requests retrieved successfully',
-                data: pending.map((p) => ({
+                data: await Promise.all(pending.map(async (p) => ({
                     ...p,
-                    online: UserStatus.isUserOnline(p.id)
-                }))
+                    online: (await redisCache.sCard('sockets:' + p.id) as number > 0 )
+                })))
             });
         }
         const pending = await PendingService.findByID(userId, req.query.action);
@@ -27,10 +26,10 @@ export class PendingsController {
         
         return rep.status(200).send({
             message: 'Pending requests retrieved successfully',
-            data: pending.map(p => ({
-                ...p,
-                online: UserStatus.isUserOnline(p.id)
-            }))
+            data: await Promise.all(pending.map(async (p) => ({
+                    ...p,
+                    online: (await redisCache.sCard('sockets:' + p.id) as number > 0 )
+                })))
         });
     };
 

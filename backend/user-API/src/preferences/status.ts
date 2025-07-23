@@ -1,4 +1,3 @@
-import { redisSub } from "../utils/redis.js";
 
 export class UserStatus {
 
@@ -16,16 +15,6 @@ export class UserStatus {
         return this._connectedUsers.has(userId);
     }
 
-    static listenToUserStatusChanges(): void {
-        redisSub.subscribe('ws:all:broadcast:all', (message) => {
-            const { user_id, type } = JSON.parse(message);
-            if (type === 'connected') {
-                UserStatus.addUser(user_id);
-            } else if (type === 'disconnected' || type === 'error') {
-                UserStatus.removeUser(user_id);
-            }
-        });
-    }
 }
 
 

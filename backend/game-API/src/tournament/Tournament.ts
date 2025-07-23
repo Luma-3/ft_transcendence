@@ -51,7 +51,7 @@ export class Tournament {
   nbPlayers(): number { return this.players.length; }
 
   async addPlayer(player: Player) {
-    if(this.players.find(aPlayer => aPlayer.id === player.id) !== undefined) {
+    if (this.players.find(aPlayer => aPlayer.id === player.id) !== undefined) {
       return;
     }
     this.players.push(player);
@@ -101,12 +101,12 @@ export class Tournament {
       return;
     }
     this.pairs = this.createPairs(players);
-    
+
     IOInterface.broadcast(
       JSON.stringify({ action: 'nextPool', data: this.toJSON() }),
       players.map((value) => value.id)
-	  );
-    
+    );
+
     players.forEach(player => {
       player.reset();
     })
@@ -121,7 +121,7 @@ export class Tournament {
           ]);
           this.activeMatches.set(roomId, [p1, p2]);
         } catch (error) {
-          if(error instanceof Error) {
+          if (error instanceof Error) {
             this.error('Tournament Failed');
           }
           RoomManager.getInstance().stopRoom(roomId, false);
@@ -129,7 +129,7 @@ export class Tournament {
       });
 
       this.pairs = [];
-  
+
       RoomManager.getInstance().on('room:end', (roomId, winner) => {
         this.endRoom(roomId, winner);
       })
@@ -161,7 +161,7 @@ export class Tournament {
       throw new ConflictError('User Already playing');
     }
 
-    this.players = this.players.filter(aPlayer => aPlayer !== player);
+    this.players = this.players.filter(aPlayer => aPlayer.id !== player.id);
     if (this.players.length === 0) {
       this.stop();
       return;
@@ -203,7 +203,7 @@ export class Tournament {
     const { type, user_id } = JSON.parse(message);
     if (this.playerTournament.find(player => player.id === user_id) === undefined) return; // Message is not for me
     if (type !== 'disconnected') return; // Message is not for me
-    
+
     IOInterface.broadcast(
       JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
       this.playerTournament.map((value) => value.id)
@@ -214,7 +214,7 @@ export class Tournament {
 
   toJSON() {
     return {
-		  rooms: this.matchHistory.map(([p1, p2]) => [p1.toJSON(), p2.toJSON()])
+      rooms: this.matchHistory.map(([p1, p2]) => [p1.toJSON(), p2.toJSON()])
     }
   }
 }

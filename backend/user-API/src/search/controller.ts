@@ -1,7 +1,7 @@
 import { SearchService } from "./services.js";
 import { SearchQueryType, UserHeaderIdType } from "./schema.js";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { UserStatus } from "../preferences/status.js";
+import { redisCache } from "../utils/redis.js";
 
 
 
@@ -21,7 +21,7 @@ export class SearchController {
                 page,
                 limit,
                 total: users.length,
-                users: users.map(user => ({...user, online: UserStatus.isUserOnline(user.id)}))
+                users: await Promise.all(users.map(async (user) => ({...user, online: (await redisCache.sCard('sockets:' + user.id) > 0 )})))
             }
         });
     };

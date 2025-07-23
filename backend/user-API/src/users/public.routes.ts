@@ -26,7 +26,7 @@ import {
   UsersQueryGetAll
 } from './schema.js';
 import { SearchResponseSchema } from '../search/schema.js';
-import { UserStatus } from '../preferences/status.js';
+import { redisCache } from '../utils/redis.js';
 
 // ======================= ROUTE DEFINITION =======================
 const route: FastifyPluginAsyncTypebox = async (fastify) => {
@@ -53,10 +53,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
         page,
         limit,
         total: users.length,
-        users: users.map(user => ({
-          ...user,
-          online: UserStatus.isUserOnline(user.id)
-        }))
+        users: await Promise.all(users.map(async (user) => ({...user, online: ( await redisCache.sCard('sockets:' + user.id) > 0 )})))
       }
     });
   });
@@ -79,7 +76,7 @@ const route: FastifyPluginAsyncTypebox = async (fastify) => {
     const { includePreferences } = req.query;
 
     const user = await UserService.getUserByID(id, includePreferences, USER_PUBLIC_COLUMNS, PREFERENCES_PUBLIC_COLUMNS);
-    return rep.code(200).send({ message: 'Ok', data: { ...user, online: UserStatus.isUserOnline(id) } })
+    return rep.code(200).send({ message: 'Ok', data: { ...user, online: (await redisCache.sCard('sockets:' + id ) > 0)} })
   });
 
   // ---------- GET CURRENT USER ----------
