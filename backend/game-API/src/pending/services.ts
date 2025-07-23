@@ -17,7 +17,7 @@ export class PendingService {
                 }
                 await pendingModel.deleteByRoomId(trx, roomId);
                 server.log.info(`Removed pending requests for room ${roomId}`);
-            }).catch(console.error);
+            }).catch(console.log);
         });
         RoomManager.getInstance().on('room:playerleft', (roomId: string) => {
             knexInstance.transaction(async (trx) => {
@@ -26,7 +26,7 @@ export class PendingService {
                 }
                 await pendingModel.deleteByRoomId(trx, roomId);
                 server.log.info(`Removed pending requests for room ${roomId}`);
-            }).catch(console.error);
+            }).catch(console.log);
         });
     }
 

@@ -31,7 +31,6 @@ function navbarLogo() {
 
 export async function navbar(user: IUserInfo) {
 	const gameInProgress = await FetchInterface.getWaitingGame(sessionStorage.getItem("gameType"))
-	console.log("Game in progress:", gameInProgress);
 	return `
  <nav id="navbar" class="flex flex-row navbar-responsive-size items-center w-full mt-2 flex-wrap justify-between p-2 relative">
 				<div class="flex items-center">

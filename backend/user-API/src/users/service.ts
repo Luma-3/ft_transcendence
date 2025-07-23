@@ -58,7 +58,7 @@ export class UserService {
       },
       body: JSON.stringify({ email: user_obj.email, lang: user_preferences.lang, token: userID }),
       agent: httpsAgent
-    }).catch(console.error)
+    }).catch(console.log)
   }
 
   static async createUserO2Auth(data: { username: string, email: string, googleId: string, avatar?: string }) {
@@ -128,7 +128,7 @@ export class UserService {
     const multi = redisCache.multi();
     multi.del(`users:data:${id}`);
     multi.del(`users:data:${id}:hydrate`);
-    multi.exec().catch(console.error);
+    multi.exec().catch(console.log);
 
     fetch(`https://${process.env.AUTH_IP}/internal/session/${id}`, {
       method: 'DELETE',
@@ -136,7 +136,7 @@ export class UserService {
         'accept': 'application/json'
       },
       agent: new https.Agent({ rejectUnauthorized: false })
-    }).catch(console.error);
+    }).catch(console.log);
   }
 
   static async createUserRedis(userId: string) {
@@ -151,7 +151,7 @@ export class UserService {
     const multi = redisCache.multi();
     multi.del(`users:pendingUser:${userId}`);
     multi.del(`users:pendingUser:${userData.user_obj.email}`)
-    multi.exec().catch(console.error);
+    multi.exec().catch(console.log);
 
     return await knexInstance.transaction(async (trx: Knex.Transaction) => {
       const userID = userId;
@@ -261,7 +261,7 @@ export class UserService {
       },
       body: JSON.stringify({ email: email, lang: user.preferences!.lang, token: tokenMail }),
       agent: httpsAgent
-    }).catch(console.error);
+    }).catch(console.log);
   }
 
   static async updateUserEmailRedis(userID: string) {
@@ -280,7 +280,7 @@ export class UserService {
     multi.DEL(`users:data:${userID}:hydrate:public`);
     multi.DEL(`users:data:${userID}:private`);
     multi.DEL(`users:data:${userID}:public`);
-    multi.exec().catch(console.error);
+    multi.exec().catch(console.log);
 
     return updatedUser;
   }
@@ -302,7 +302,7 @@ export class UserService {
     multi.DEL(`users:data:${id}:hydrate:public`);
     multi.DEL(`users:data:${id}:private`);
     multi.DEL(`users:data:${id}:public`);
-    multi.exec().catch(console.error);
+    multi.exec().catch(console.log);
     return updatedUser;
   }
 

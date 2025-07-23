@@ -54,13 +54,6 @@ export function tournamentHtml(data: any) {
 	// Point d'arrêt horizontal (avant la verticale)
 	const midX = finalX - 60;
 
-	let finalPlayer1 = "?";
-	let finalPlayer2 = "?";
-	if (data.rooms[2] !== undefined) {
-		finalPlayer1 = data.rooms[2][0].player_name;
-		finalPlayer2 = data.rooms[2][1].player_name;
-	}
-
 	const winners = ["?", "?"];
 	const winnerImages = ["/images/duckHappy.png", "/images/duckHappy.png"];
 	if (data.rooms[0][0].win !== undefined || data.rooms[0][1].win !== undefined) {
@@ -130,12 +123,12 @@ export function tournamentHtml(data: any) {
 		  <div class="flex flex-row gap-2 justify-center items-center">
 			<div class="flex flex-col items-center">
 				<img src=${winnerImages[0]} alt="Match Image" class="w-24 h-24 rounded-full mb-2">
-				<span class="truncate">${finalPlayer1}</span>
+				<span class="truncate">${winners[0]}</span>
 			</div>
 			<span class="text-center text-md text-gray-400">vs</span>
 			<div class="flex flex-col items-center">
 			  <img src=${winnerImages[1]} alt="Match Image" class="w-24 h-24 rounded-full mb-2">
-			  <span class="truncate">${finalPlayer2}</span>
+			  <span class="truncate">${winners[1]}</span>
 			</div>
 		  </div>
 		</div>

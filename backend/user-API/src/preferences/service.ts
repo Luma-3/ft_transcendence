@@ -33,7 +33,7 @@ export class PreferencesService {
     multi.del(`preferences:data:${userID}:private`);
     multi.del(`users:data:${userID}:hydrate:private`);
     multi.del(`users:data:${userID}:hydrate:public`);
-    multi.exec().catch(console.error);
+    multi.exec().catch(console.log);
     return updatePreferences;
   }
 }

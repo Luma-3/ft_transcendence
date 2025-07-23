@@ -127,7 +127,6 @@ export class SessionService {
         })
       })).json());
 
-      console.log('userInfo:', userInfo);
       userInfo = userInfo.data;
 
     }

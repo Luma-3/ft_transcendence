@@ -31,8 +31,9 @@ export async function socketConnection() {
 		socket.close();
 	});
 
-	socket.addEventListener('close', () => {
-		window.location.href = localStorage.getItem('lastVisitedPage') ?? '/login';
+	socket.addEventListener('close', (event) => {
+		if (event.code === 1006 || event.code === 1000)
+			window.location.href = '/login'
 	});
 }
 

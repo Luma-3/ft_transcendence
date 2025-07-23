@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 			if (!activeSession) {
 				return renderPublicPage(page);
 			}
-			console.log("activeSession", page);
 			(publicPages.includes(page))
 				? window.location.href = '/dashboard'
 				: renderPrivatePage(page);

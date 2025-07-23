@@ -24,7 +24,7 @@ export class FriendsController {
             });
         }
         const friends = await FriendsService.findFriendsByID(userId);
-        redisCache.setEx(`users:data:${userId}:friends`, 3600 , JSON.stringify(friends)).catch(console.error);
+        redisCache.setEx(`users:data:${userId}:friends`, 3600 , JSON.stringify(friends)).catch(console.log);
         return rep.status(200).send({
             message: 'Friends retrieved successfully',
             data: await Promise.all(friends.map(async (p) => ({
@@ -45,12 +45,12 @@ export class FriendsController {
         const multi = redisCache.multi();
         multi.del(`users:data:${userId}:friends`);
         multi.del(`users:data:${friendId}:friends`);
-        multi.exec().catch(console.error);
+        multi.exec().catch(console.log);
         redisPub.publish(`user:gateway:out:${friendId}`, JSON.stringify({
             type: 'friend',
             action: 'remove',
             data: userId
-        })).catch(console.error);
+        })).catch(console.log);
         return rep.status(200).send({ message: 'Friendship removed successfully' });
     }
 }

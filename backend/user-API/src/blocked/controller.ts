@@ -17,7 +17,7 @@ export class BlockedController {
             return rep.status(200).send({ message: 'Blocked users retrieved successfully', data: blocked });
         }
         const blocked = await BlockedService.findByID(userId, req.query.hydrate);
-        redisCache.setEx(key, 3600, JSON.stringify(blocked)).catch(console.error);
+        redisCache.setEx(key, 3600, JSON.stringify(blocked)).catch(console.log);
 
         return rep.status(200).send({ message: 'Blocked users retrieved successfully', data: blocked});
     };
@@ -36,7 +36,7 @@ export class BlockedController {
         multi.del(`users:data:${blockedId}:blocked:hydrate`);
         multi.del(`users:data:${userId}:friends`);
         multi.del(`users:data:${blockedId}:friends`);
-        multi.exec().catch(console.error);
+        multi.exec().catch(console.log);
         return rep.status(201).send({ message: 'Blocked user added successfully' });
     }
 
@@ -54,7 +54,7 @@ export class BlockedController {
         multi.del(`users:data:${blockedId}:blocked:hydrate`);
         multi.del(`users:data:${userId}:friends`);
         multi.del(`users:data:${blockedId}:friends`);
-        multi.exec().catch(console.error);
+        multi.exec().catch(console.log);
         return rep.status(200).send({ message: 'Blocked user removed successfully' });
     }
 }

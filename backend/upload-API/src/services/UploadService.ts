@@ -125,9 +125,8 @@ public async getProxyFile(url: string) {
         value: 60 * 60 * 24 // 24 hours
       }
       }).then(() => {
-        console.log("File cached in Redis");
       }).catch((err) => {
-        console.error("Error caching file in Redis", err);
+        console.log("Error caching file in Redis", err);
       });
     });
     

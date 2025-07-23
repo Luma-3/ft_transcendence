@@ -125,7 +125,7 @@ export class TwoFaService {
 		multi.setEx(`users:check:token:${token}`, 600, email);
 		multi.setEx(`users:check:email:${email}`, 600, token);
 		multi.setEx(`users:email_cooldown:${email}`, TIMEOUT_MAIL, '1');
-		multi.exec().catch(console.error);
+		multi.exec().catch(console.log);
 	}
 
 	// Génère et envoie le code 2FA
@@ -141,7 +141,7 @@ export class TwoFaService {
 		multi.setEx(`users:check:code:${code}`, 600, email);
 		multi.setEx(`users:check:email:${email}`, 600, code);
 		multi.setEx(`users:token_cooldown:${email}`, TIMEOUT_TOKEN, '1');
-		multi.exec().catch(console.error);
+		multi.exec().catch(console.log);
 	}
 
 	// Renvoie l'email si non expiré
@@ -165,7 +165,7 @@ export class TwoFaService {
 		const multi = redisCache.multi();
 		multi.del(`users:check:token:${token}`);
 		multi.del(`users:check:email:${email}`);
-		multi.exec().catch(console.error);
+		multi.exec().catch(console.log);
 	}
 
 	// Vérifie le code 2FA

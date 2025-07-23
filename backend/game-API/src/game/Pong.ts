@@ -94,7 +94,6 @@ export class Pong extends GameObject {
 
     const WinnerPlayer = SceneContext.get().players.get(winner);
     if (!winner) {
-      console.warn("Winner not found in players map");
       return;
     }
     WinnerPlayer.addScore();

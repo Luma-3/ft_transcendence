@@ -382,14 +382,12 @@ export class FetchInterface {
    * ! Get Waiting Game
    */
   public static async getWaitingGame(typeGame: string | null) {
-    console.log("Fetching waiting game for type:", typeGame);
     if (!typeGame) {
       return false;
     }
     let response = { status: "error" };
     if (typeGame === "pending") {
       const responsetab = await FetchInterface.getGameInvitations();
-      console.log("Game invitations:", responsetab);
       if (!responsetab || !responsetab[0]) {
         return false;
       }
@@ -572,7 +570,6 @@ export class FetchInterface {
     if (!id) {
       return false;
     }
-    console.log("Accepting game invitation for ID:", id);
     const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/receiver/${id}`, {
       method: 'POST',
       body: JSON.stringify({})

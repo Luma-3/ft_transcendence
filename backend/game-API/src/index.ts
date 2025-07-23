@@ -35,7 +35,7 @@ const start = async () => {
 	server.listen({ port: 3003, host: '0.0.0.0' }).then((address) => {
 		console.log(`Server listening on ${address}`)
 	}).catch((err) => {
-		console.error(err)
+		console.log(err)
 		process.exit(1)
 	});
 }

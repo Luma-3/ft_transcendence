@@ -170,7 +170,6 @@ export class Game {
           this.paddles.get((snapshotsA.objects[i] as IPaddle).id)?.interpolate(snapshotsA.objects[i] as IPaddle, snapshotsB.objects[i] as IPaddle, t);
           break;
         default:
-          console.warn(`Unknown object type: ${snapshotsA.objects[i].type}`);
           break;
       }
     }

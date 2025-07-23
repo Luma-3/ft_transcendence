@@ -41,7 +41,6 @@ export class GameManager {
 
 	static async addSnapshot(snapshot: any) {
 		if (!GameManager.instance) {
-			console.warn("Game instance not initialized");
 			return;
 		}
 		GameManager.instance.addSnapshot(snapshot);
@@ -49,7 +48,6 @@ export class GameManager {
 
 	static async addScore(data: any) {
 		if (!GameManager.instance) {
-			console.warn("Game instance not initialized");
 			return;
 		}
 		GameManager.instance.addScore(data);
@@ -58,7 +56,6 @@ export class GameManager {
 
 	static stop() {
 		if (!GameManager.instance) {
-			console.warn("Game instance not initialized");
 			return;
 		}
 		GameManager.instance.end();
@@ -67,7 +64,6 @@ export class GameManager {
 
 	static async endGame(data: any) {
 		if (!GameManager.instance) {
-			console.warn("Game instance not initialized");
 			return;
 		}
 		DisplayGameWinLose(data)

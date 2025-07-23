@@ -68,7 +68,6 @@ function handleMessage(socket: WebSocket, raw: string) {
       ...payload
     }));
   } catch (err) {
-    console.error('Error parsing message:', err);
   }
 }
 
@@ -82,11 +81,11 @@ function handleError(socket: WebSocket, error: Error) {
 }
 
 function handleClose(socket: WebSocket, code?: number, reason?: string) {
-  console.warn(`[WS] client ${socket.user_id} disconnected: code=${code}, reason=${reason}`);
   redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
     type: 'disconnected',
     user_id: socket.user_id,
   }));
+  console.log(code, reason);
 }
 
 const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
@@ -165,14 +164,12 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
               target: user_id,
               payload: payload
             }));
-          } else {
-            console.warn(`[WS] Socket for user ${user_id} is not open, skipping send.`);
           }
         });
       }
     }
     catch (err) {
-      console.error('Error when handle outgoing message', err);
+      console.log('Error when handle outgoing message', err);
     }
   });
 

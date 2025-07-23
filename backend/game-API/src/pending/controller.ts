@@ -35,7 +35,7 @@ export class PendingsController {
         redisPub.publish(`game:gateway:out:${pendingId}`, JSON.stringify({
             action: 'pendingAdd',
             data: userId
-        })).catch(console.error);
+        })).catch(console.log);
         return rep.status(201).send({ message: 'Pending request added successfully' });
     }
 
@@ -50,7 +50,7 @@ export class PendingsController {
         redisPub.publish(`game:gateway:out:${pendingId}`, JSON.stringify({
             action: 'pendingRemove',
             data: userId
-        })).catch(console.error);
+        })).catch(console.log);
         return rep.status(201).send({ message: 'Pending request removed successfully' });
     }
 
@@ -76,7 +76,7 @@ export class PendingsController {
         redisPub.publish(`game:gateway:out:${senderId}`, JSON.stringify({
             action: 'pendingRefuse',
             data: userId
-        })).catch(console.error);
+        })).catch(console.log);
         return rep.status(200).send({ message: 'Pending request refused successfully' });
     }
 

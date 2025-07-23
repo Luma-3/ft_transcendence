@@ -188,7 +188,6 @@ export async function renderErrorPage(code: string, messageServer?: string) {
 	fadeOut();
 
 	setTimeout(async () => {
-		console.log(`Error ${code}: ${messageServer || 'Unknown error'}`);
 		const page_content = dispatchError(code, messageServer || '');
 
 		main_container.innerHTML = page_content;

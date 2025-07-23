@@ -42,7 +42,7 @@ export class twofaService {
       },
       body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
       agent: httpsAgent
-    }).catch(console.error)
+    }).catch(console.log)
 
     redisCache.setEx("users:2fa:update:" + user.email , 600, userId);
   }
@@ -61,7 +61,7 @@ export class twofaService {
       },
       body: JSON.stringify({ email: user.email, lang: user.preferences?.lang }),
       agent: httpsAgent
-    }).catch(console.error)
+    }).catch(console.log)
 
     redisCache.setEx("users:2fa:update:" + user.email, 600, userId);
   }
