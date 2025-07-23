@@ -3,6 +3,7 @@ import fp from 'fastify-plugin';
 import { redisPub, redisSub } from '../config/redis.js';
 import { FastifyPluginCallback } from 'fastify';
 import { randomUUID } from 'node:crypto';
+import process from 'node:process';
 
 type SocketOptions = Parameters<typeof websocketPlugin>[1];
 
@@ -93,19 +94,21 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
     fastify.register(websocketPlugin, opts);
   }
 
-  fastify.decorate('ws_clients', new Map());
+  const ws_clients: Map<string, Set<WebSocket>> = new Map();
+
+  fastify.decorate('ws_clients', ws_clients);
 
   fastify.register(async (fastify) => {
-  fastify.get('/ws', { websocket: true }, async (socket, req) => {
+    fastify.get('/ws', { websocket: true }, async (socket, req) => {
 
-    const user_id = req.headers['x-user-id'] as string;
+      const user_id = req.headers['x-user-id'] as string;
       socket.user_id = user_id;
       socket.id = randomUUID();
       if (!fastify.ws_clients.has(user_id)) {
         fastify.ws_clients.set(user_id, new Set());
       }
       const keyRedis = 'sockets:' + user_id;
-      if(await redisPub.sCard(keyRedis) == 0){
+      if (await redisPub.sCard(keyRedis) == 0) {
         redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
           type: 'connected',
           user_id: user_id
@@ -127,9 +130,7 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
             fastify.ws_clients.delete(user_id);
           }
         }
-        if((await redisPub.sCard('sockets:' + socket.user_id) )=== 0){
-            handleError(socket, error);
-        }
+        handleError(socket, error);
       });
 
       socket.on('close', async () => {
@@ -141,9 +142,7 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
             fastify.ws_clients.delete(user_id);
           }
         }
-        if((await redisPub.sCard('sockets:' + socket.user_id) )=== 0){
-            handleClose(socket, socket.closeCode, socket.closeReason);
-        }
+        handleClose(socket, socket.closeCode, socket.closeReason);
       });
     })
   });
@@ -154,7 +153,7 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
       const payload = JSON.parse(message);
 
       const user_id = target;
-      
+
       const sockets = fastify.ws_clients.get(user_id);
       if (sockets) {
         sockets.forEach((socket) => {
@@ -176,6 +175,16 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
       console.error('Error when handle outgoing message', err);
     }
   });
+
+  process.on("SIGTERM", () => {
+    for (const sockets of ws_clients.values()) {
+      for (const socket of sockets) {
+        redisPub.sRem('sockets:' + socket.user_id, socket.id);
+        socket.close(1000, "Gateway closed");
+      }
+    }
+  })
+
   done();
 }
 

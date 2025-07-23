@@ -8,14 +8,14 @@ import { friendsList } from "./Lists/friendsList";
 import { notificationList } from "./Lists/notificationsList";
 
 async function renderFriendsPage(user: IUserInfo) {
-return `
+	return `
 ${await navbar(user)}
 ${backButton("dashboard")}
 
 
 <div class="flex flex-col justify-center items-center p-6 min-h-screen font-title">
 
-	<div class="grid grid-cols-2 lg:grid-cols-2 gap-8 w-full max-w-[1000px] mb-8">
+	<div class="grid grid-cols-2 lg:grid-cols-2 gap-8  max-w-[1000px] mb-8">
 
 		<!-- Section All Users -->
 		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl ">
@@ -56,7 +56,7 @@ ${backButton("dashboard")}
 
 		
 		<!-- Section Friends -->
-		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl">
+		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl col-span-2">
 			<div class="bg-gradient-to-r from-dprimary to-gray-400 p-6 text-white">
 				<div class="flex justify-center items-center space-x-3">
 					<div class="bg-white/20 rounded-full p-2">
@@ -77,40 +77,40 @@ ${backButton("dashboard")}
 
 
 
-
-	<!-- Section Blocked List User -->
-		<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl">
-			<div class="bg-gradient-to-r from-dprimary to-dsecondary p-6 text-white">
-				<div class="flex items-center justify-center space-x-3">
-					<div class="bg-white/20 rounded-full p-2">
-						<img src="/images/duckPolice.png" alt="Duck Friends" class="w-20 h-20 invert" />
-					</div>
-					<div class="text-center">
-						<div class="text-2xl font-bold" translate="blocked-users">Utilisateurs Bloqués</div>
-						<div class="text-red-100 text-sm" translate="manage-your-block-list">Gérez votre liste de blocage</div>
-					</div>
-				</div>
-			</div>
-			<div id="block-div" class="p-6">
-				${await blockList()}
-			</div>
+		
+		<!-- Spacer -->
+		<div class="h-20"></div>
+		
 		</div>
+		`
+}
 
-	<!-- Spacer -->
-	<div class="h-20"></div>
-
-</div>
-`
-	}
+// <!-- Section Blocked List User -->
+// 	<div class="bg-white/20 rounded-2xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl">
+// 		<div class="bg-gradient-to-r from-dprimary to-dsecondary p-6 text-white">
+// 			<div class="flex items-center justify-center space-x-3">
+// 				<div class="bg-white/20 rounded-full p-2">
+// 					<img src="/images/duckPolice.png" alt="Duck Friends" class="w-20 h-20 invert" />
+// 				</div>
+// 				<div class="text-center">
+// 					<div class="text-2xl font-bold" translate="blocked-users">Utilisateurs Bloqués</div>
+// 					<div class="text-red-100 text-sm" translate="manage-your-block-list">Gérez votre liste de blocage</div>
+// 				</div>
+// 			</div>
+// 		</div>
+// 		<div id="block-div" class="p-6">
+// 			${await blockList()}
+// 		</div>
+// 	</div>
 
 export default function friends(user: IUserInfo) {
 	const container = renderFriendsPage(user);
 	return container;
 }
 
-	// <div class="flex flex-col w-full max-w-[1000px] items-center justify-center pt-5">
+// <div class="flex flex-col w-full max-w-[1000px] items-center justify-center pt-5">
 
-	// 	<img src="/images/duckBell.png" alt="Duck Bell" class="w-20 h-20" />
-	// 	${await notifications()}
+// 	<img src="/images/duckBell.png" alt="Duck Bell" class="w-20 h-20" />
+// 	${await notifications()}
 
-	// </div>
+// </div>

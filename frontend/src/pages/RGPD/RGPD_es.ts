@@ -17,7 +17,7 @@ export default function RGPD_ES() {
         <img src="/images/duckCollect.png" alt="Política de Privacidad" class="w-40 h-40 rounded-lg mb-4" />
       </div>
 
-      <h2 class="text-xl font-semibold mt-6 mb-2">Recogida y uso de datos personales</h2>
+      <h2 class="text-xl font-semibold mt-6 mb-2">Recogida y uso de datos personales</h2>P
       <p class="mb-2">
         Nuestra aplicación de juego en línea (juego de Pong) permite a los usuarios crear una cuenta e iniciar sesión.
         Los datos personales recogidos durante el registro son necesarios para gestionar tu cuenta

@@ -33,7 +33,7 @@ export async function acceptGameInvitation(target: HTMLElement) {
 
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
-		return renderErrorPage('401');
+		return;
 	}
 
 	const invitationId = target.dataset.id;

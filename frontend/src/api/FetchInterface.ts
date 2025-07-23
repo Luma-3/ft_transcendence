@@ -383,12 +383,23 @@ export class FetchInterface {
    * ! Get Waiting Game
    */
   public static async getWaitingGame(typeGame: string | null) {
+    console.log("Fetching waiting game for type:", typeGame);
     if (!typeGame) {
       return false;
     }
-    const response = await fetchApiWithNoError(API.API_GAME.GET_ALL_DATA + `player/${typeGame}`, {
-      method: 'GET',
-    });
+    let response = { status: "error" };
+    if (typeGame === "pending") {
+      const responsetab = await FetchInterface.getGameInvitations();
+      console.log("Game invitations:", responsetab);
+      if (!responsetab || !responsetab[0]) {
+        return false;
+      }
+      return true;
+    } else {
+      response = await fetchApiWithNoError(API.API_GAME.GET_ALL_DATA + `player/${typeGame}`, {
+        method: 'GET',
+      });
+    }
     return response.status === "success";
   }
 
@@ -400,13 +411,20 @@ export class FetchInterface {
     if (!gameType) {
       return false;
     }
-    const response = await fetchApiWithNoError(API.API_GAME.GET_ALL_DATA + `player/${gameType}`, {
-      method: 'DELETE',
-      body: JSON.stringify({})
-    });
-    sessionStorage.removeItem("gameType");
-    if (await updateNavbar()) {
-      alertTemporary("success", "game-cancelled-successfully", true);
+    let response = { status: "error" };
+
+    if (gameType !== "pending") {
+      response = await fetchApiWithNoError(API.API_GAME.GET_ALL_DATA + `player/${gameType}`, {
+        method: 'DELETE',
+        body: JSON.stringify({})
+      });
+    } else if (gameType === "pending") {
+
+      const otherId = sessionStorage.getItem("opponentId");
+      response = await fetchApiWithNoError(API.API_GAME.GET_ALL_DATA + `pending/${otherId}`, {
+        method: 'DELETE',
+        body: JSON.stringify({})
+      });
     }
     return response.status === "success";
   }
@@ -415,7 +433,7 @@ export class FetchInterface {
    * ! Get Game Invitation
    */
   public static async getGameInvitations(params: "sender" | "receiver" = "sender") {
-    const response = await fetchApi<{ id: string }[]>(API.API_GAME.NOTIFICATIONS + `?action=${params}`, {
+    const response = await fetchApi<{ id: string }[]>(API.API_GAME.NOTIFICATIONS + `? action = ${params}`, {
       method: 'GET',
     });
     return response.data ?? undefined;
@@ -549,6 +567,7 @@ export class FetchInterface {
     if (!id) {
       return false;
     }
+    console.log("Accepting game invitation for ID:", id);
     const response = await fetchApiWithNoError(API.API_GAME.INVITE + `/receiver/${id}`, {
       method: 'POST',
       body: JSON.stringify({})
@@ -557,6 +576,7 @@ export class FetchInterface {
       alertTemporary("error", "issues-with-invitation-acceptance", true);
       return false;
     }
+
     return true;
   }
 

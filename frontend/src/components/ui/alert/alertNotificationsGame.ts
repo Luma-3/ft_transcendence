@@ -31,7 +31,7 @@ export async function alertNotificationsGames(data: any) {
 		width: '350px',
 		customClass: {
 			popup: 'notification-game--alert',
-			confirmButton: trad['accept-invitation-game']
+			confirmButton: 'accept-invitation-game',
 		},
 		didRender: () => {
 			const confirmButton = document.querySelector('.accept-invitation-game') as HTMLElement;

@@ -115,7 +115,6 @@ export async function changeUserPassword() {
 export async function changeUserNameEmail() {
 	const user = await FetchInterface.getUserInfo();
 	if (user === undefined) {
-		window.location.href = '/login';
 		return;
 	}
 

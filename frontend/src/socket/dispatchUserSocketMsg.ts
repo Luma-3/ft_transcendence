@@ -15,7 +15,7 @@ export async function dispatchUserSocketMsg(payload: PayloadUserSocketMsg) {
 
 	const myUser = await FetchInterface.getUserInfo();
 	if (myUser === undefined) {
-		return window.location.href = '/login';
+		return;
 	}
 	const trad = await loadTranslation(myUser.preferences.lang);
 
