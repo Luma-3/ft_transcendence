@@ -122,7 +122,12 @@ export class Tournament {
           this.activeMatches.set(roomId, [p1, p2]);
         } catch (error) {
           if (error instanceof Error) {
-            this.error('Tournament Failed');
+              IOInterface.broadcast(
+                JSON.stringify({ action: 'error', data: { message: 'Tournemament Failed'}}),
+                this.playerTournament.map((value) => value.id)
+              );
+              IOInterface.unsubscribe(`ws:all:broadcast:all`);
+              TournamentManager.getInstance().deleteTournament(this.id);
           }
           RoomManager.getInstance().stopRoom(roomId, false);
         }
