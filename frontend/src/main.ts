@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			break;
 
 		default:
+			localStorage.setItem('lastVisitedPage', window.location.pathname);
 			const activeSession = await FetchInterface.verifySession();
 			if (!activeSession) {
 				return renderPublicPage(page);
