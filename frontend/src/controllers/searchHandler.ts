@@ -115,6 +115,6 @@ export async function invitePlayerToPlay(gameFormInfo: IGameFormInfo) {
 	sessionStorage.setItem("gameType", 'pending');
 	sessionStorage.setItem("opponentId", player_select);
 
-	document.getElementById("initGame")?.classList.add("opacity-0", "pointer-events-none");
+	// document.getElementById("initGame")?.classList.add("opacity-0", "pointer-events-none");
 	updateNavbar();
 }

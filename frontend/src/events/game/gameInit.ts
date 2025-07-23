@@ -63,4 +63,5 @@ export async function createRoomInServer(gameFormInfo: IGameFormInfo) {
   }
   document.getElementById("create-game")?.classList.add("disabled");
   alertTemporary("success", "game-created-successfully", true);
+  updateNavbar();
 }
