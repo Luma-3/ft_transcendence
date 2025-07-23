@@ -38,9 +38,6 @@ export class Tournament {
 
   constructor() {
     this.id = uuidv4();
-
-    IOInterface.subscribe(`ws:all:broadcast:all`, this.error.bind(this));
-    IOInterface.subscribe(`ws:all:broadcast:all`, this.deconnexion.bind(this));
   }
 
   getStatus(): string { return this.status };
@@ -94,8 +91,6 @@ export class Tournament {
   }
 
   NextPool(players: Player[]) {
-    IOInterface.subscribe(`ws:all:broadcast:all`, this.error.bind(this));
-    IOInterface.subscribe(`ws:all:broadcast:all`, this.deconnexion.bind(this));
 
     if (this.status === 'finished') {
       return;
@@ -122,12 +117,11 @@ export class Tournament {
           this.activeMatches.set(roomId, [p1, p2]);
         } catch (error) {
           if (error instanceof Error) {
-              IOInterface.broadcast(
-                JSON.stringify({ action: 'error', data: { message: 'Tournemament Failed'}}),
-                this.playerTournament.map((value) => value.id)
-              );
-              IOInterface.unsubscribe(`ws:all:broadcast:all`);
-              TournamentManager.getInstance().deleteTournament(this.id);
+            IOInterface.broadcast(
+              JSON.stringify({ action: 'error', data: { message: 'Tournemament Failed' } }),
+              this.playerTournament.map((value) => value.id)
+            );
+            TournamentManager.getInstance().deleteTournament(this.id);
           }
           RoomManager.getInstance().stopRoom(roomId, false);
         }
@@ -156,7 +150,6 @@ export class Tournament {
       this.playerTournament = [...this.winners];
       this.winners = [];
 
-      IOInterface.unsubscribe(`ws:all:broadcast:all`);
       this.NextPool(this.playerTournament);
     }
   }
@@ -191,29 +184,23 @@ export class Tournament {
     return pairs;
   }
 
-  error(message: string) {
-    const { type, user_id, payload } = JSON.parse(message);
+  error(user_id: string, payload: any) {
     if (this.playerTournament.find(player => player.id === user_id) === undefined) return; // Message is not for me
-    if (type !== 'error') return; // Message is not for me
 
     IOInterface.broadcast(
       JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
       this.playerTournament.map((value) => value.id)
     );
-    IOInterface.unsubscribe(`ws:all:broadcast:all`);
     TournamentManager.getInstance().deleteTournament(this.id);
   }
 
-  deconnexion(message: string) {
-    const { type, user_id } = JSON.parse(message);
+  disconnected(user_id: string) {
     if (this.playerTournament.find(player => player.id === user_id) === undefined) return; // Message is not for me
-    if (type !== 'disconnected') return; // Message is not for me
 
     IOInterface.broadcast(
       JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
       this.playerTournament.map((value) => value.id)
     );
-    IOInterface.unsubscribe(`ws:all:broadcast:all`);
     TournamentManager.getInstance().deleteTournament(this.id);
   }
 

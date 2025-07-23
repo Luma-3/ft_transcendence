@@ -6,7 +6,7 @@ export default async function verifyEmailPublic() {
 	return `
 <div class="flex flex-col w-full h-full rounded-lg justify-center mt-5">
 	
-	${headerPage("verify-email", "public")}
+	${headerPage("verify-email", "private")}
 	
 	<div class="flex flex-col w-full h-full rounded-lg justify-center items-center mt-5 mb-10">
 		

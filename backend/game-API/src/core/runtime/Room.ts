@@ -52,9 +52,6 @@ export class Room {
       player!.ready = true;
       this.privateRoom = true;
     }
-
-    IOInterface.subscribe(`ws:all:broadcast:all`, this.error.bind(this));
-    IOInterface.subscribe(`ws:all:broadcast:all`, this.deconnexion.bind(this));
   }
 
   getStatus(): string { return this.status };
@@ -127,10 +124,8 @@ export class Room {
     SceneContext.run(ctx, game);
   }
 
-  error(message: string) {
-    const { type, user_id, payload } = JSON.parse(message);
+  error(user_id: string, payload: any) {
     if (this.players.get(user_id) === undefined) return; // Message is not for me
-    if (type !== 'error') return; // Message is not for me
 
     IOInterface.broadcast(
       JSON.stringify({ action: 'error', data: { message: `An error occurred with player: ${user_id} details: ${payload}` } }),
@@ -139,10 +134,8 @@ export class Room {
     RoomManager.getInstance().emit('room:error', this.id);
   }
 
-  deconnexion(message: string) {
-    const { type, user_id } = JSON.parse(message);
+  disconnected(user_id: string) {
     if (this.players.get(user_id) === undefined) return; // Message is not for me
-    if (type !== 'disconnected') return; // Message is not for me
 
     IOInterface.broadcast(
       JSON.stringify({ action: 'disconnected', data: { message: `${user_id} has disconnected.` } }),
@@ -154,7 +147,6 @@ export class Room {
   public stop(addData: boolean = true) {
     this.loopManager.stop();
     this.inputManager.stop();
-    IOInterface.unsubscribe(`ws:all:broadcast:all`);
     IOInterface.unsubscribe(`ws:game:room:${this.id}`);
 
     if (addData) {
