@@ -200,7 +200,7 @@ export class FetchInterface {
     const response = await fetchApiWithNoError(API.API_USER.UPDATE.PASSWORD, {
       method: "PATCH",
       body: JSON.stringify({
-        oldPassword: oldPassword,
+        oldPassword: oldPassword.length > 0 ? oldPassword : undefined,
         password: newPassword,
       }),
     });
