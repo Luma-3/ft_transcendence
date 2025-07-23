@@ -9,7 +9,6 @@ import { IApiResponse } from "../interfaces/IApi";
 import { startEmailCooldown } from "../components/utils/sendEmail";
 import { updateAllLists } from "../pages/Friends/Lists/updatersList";
 import { updateNavbar } from "../components/ui/navbar";
-import { IRankInfo } from "../pages/Dashboard/rankBadges";
 
 export class FetchInterface {
   private constructor() { }
@@ -439,7 +438,7 @@ export class FetchInterface {
    * ! Get Game Invitation
    */
   public static async getGameInvitations(params: "sender" | "receiver" = "sender") {
-    const response = await fetchApi<{ id: string }[]>(API.API_GAME.NOTIFICATIONS + `? action = ${params}`, {
+    const response = await fetchApi<{ id: string }[]>(API.API_GAME.NOTIFICATIONS + `?action=${params}`, {
       method: 'GET',
     });
     return response.data ?? undefined;
@@ -618,6 +617,10 @@ export class FetchInterface {
       alertTemporary("error", "issues-with-invitation-cancellation", true);
       return false;
     }
+    element.parentElement?.parentElement?.remove();
+    alertTemporary("success", "invitation-cancelled", true);
+    await updateAllLists();
+    updateNavbar();
     return true;
   }
 
