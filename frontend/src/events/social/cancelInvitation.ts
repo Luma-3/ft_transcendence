@@ -1,12 +1,11 @@
 import { FetchInterface } from "../../api/FetchInterface";
 
-import { renderErrorPage } from "../../controllers/renderPage";
 import { updateAllUserLists, updateNotificationAlert, updateNotificationsList } from "../../pages/Friends/Lists/updatersList";
 
 export async function cancelFriendInvitation(target: HTMLElement, type: "alert" | "page" = "page") {
 	const user = await FetchInterface.getUserInfo();
 	if (!user) {
-		return renderErrorPage('401');
+		return;
 	}
 	const friendId = target.dataset.id;
 	if (!friendId) {

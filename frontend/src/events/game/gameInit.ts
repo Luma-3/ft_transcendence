@@ -25,7 +25,6 @@ export async function initGame() {
   if (!gameType) {
     return alert("error", "no-gametype-selected", true);
   }
-  sessionStorage.setItem("gameType", gameType.id);
 
   const player2 = (gameType.id === "local") ? getPlayer2Name() : "";
   if (player2 === undefined) {
@@ -37,13 +36,17 @@ export async function initGame() {
     roomName: randomRoomNameGenerator(),
     gameType: gameType.id,
   }
-  if (gameType.id === "online" || gameType.id === "tournament") {
-    updateNavbar();
-  }
+  sessionStorage.removeItem("gameType");
+  sessionStorage.removeItem("opponentId");
+  sessionStorage.setItem("gameType", gameType.id);
 
-  if (gameType.id === "online" && gameFormInfo.playerName === "") {
+  if (gameType.id === "online") {
     invitePlayerToPlay(gameFormInfo);
     return;
+  }
+
+  if (gameType.id === "online" || gameType.id === "tournament") {
+    updateNavbar();
   }
   await createRoomInServer(gameFormInfo);
 }
