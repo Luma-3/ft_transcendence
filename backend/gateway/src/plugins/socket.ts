@@ -2,6 +2,7 @@ import websocketPlugin from '@fastify/websocket';
 import fp from 'fastify-plugin';
 import { redisPub, redisSub } from '../config/redis.js';
 import { FastifyPluginCallback } from 'fastify';
+import { randomUUID } from 'node:crypto';
 
 type SocketOptions = Parameters<typeof websocketPlugin>[1];
 
@@ -51,6 +52,7 @@ declare module 'fastify' {
 
 interface WebSocket extends globalThis.WebSocket {
   user_id: string; // User ID for the WebSocket connection
+  id: string;
 }
 
 function handleMessage(socket: WebSocket, raw: string) {
@@ -98,38 +100,49 @@ const plugin: FastifyPluginCallback<SocketOptions> = (fastify, opts, done) => {
 
     const user_id = req.headers['x-user-id'] as string;
       socket.user_id = user_id;
+      socket.id = randomUUID();
       if (!fastify.ws_clients.has(user_id)) {
         fastify.ws_clients.set(user_id, new Set());
+      }
+      const keyRedis = 'sockets:' + user_id;
+      if(await redisPub.sCard(keyRedis) == 0){
         redisPub.publish(`ws:all:broadcast:all`, JSON.stringify({
           type: 'connected',
           user_id: user_id
         }));
       }
+      await redisPub.sAdd(keyRedis, socket.id);
       fastify.ws_clients.get(user_id)!.add(socket);
 
       socket.on('message', (raw: string) => {
         handleMessage(socket, raw);
       });
 
-      socket.on('error', (error: Error) => {
+      socket.on('error', async (error: Error) => {
         const clients = fastify.ws_clients.get(user_id);
+        await redisPub.sRem('sockets:' + user_id, socket.id);
         if (clients) {
           clients.delete(socket);
           if (clients.size === 0) {
-            handleError(socket, error);
             fastify.ws_clients.delete(user_id);
           }
         }
+        if((await redisPub.sCard('sockets:' + socket.user_id) )=== 0){
+            handleError(socket, error);
+        }
       });
 
-      socket.on('close', () => {
+      socket.on('close', async () => {
         const clients = fastify.ws_clients.get(user_id);
+        await redisPub.sRem('sockets:' + socket.user_id, socket.id);
         if (clients) {
           clients.delete(socket);
           if (clients.size === 0) {
-            handleClose(socket, socket.closeCode, socket.closeReason);
             fastify.ws_clients.delete(user_id);
           }
+        }
+        if((await redisPub.sCard('sockets:' + socket.user_id) )=== 0){
+            handleClose(socket, socket.closeCode, socket.closeReason);
         }
       });
     })

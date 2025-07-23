@@ -14,7 +14,6 @@ import searchRoutes from './search/public.routes.js'
 // 2FA Routes
 import twofaRoute from './twofa/public.routes.js'
 import twofaRouteInternal from './twofa/internal.routes.js'
-import { UserStatus } from './preferences/status.js'
 
 dotenv.config()
 
@@ -35,7 +34,6 @@ const start = async () => {
       process.exit(1)
     }
 
-    UserStatus.listenToUserStatusChanges();
     console.log(`Server listening at ${address}`)
   })
 }

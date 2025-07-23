@@ -1,8 +1,7 @@
 import { PendingService } from "./services.js";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AcceptParamType, PendingParamType, TypePendingQueryType, UserHeaderIdType } from "./schema.js";
-import { redisPub } from "../utils/redis.js";
-import { UserStatus } from "../utils/status.js";
+import { redisCache, redisPub } from "../utils/redis.js";
 import { RoomBodyType } from "../room/room.schema.js";
 
 export class PendingsController {
@@ -16,10 +15,12 @@ export class PendingsController {
         
         return rep.status(200).send({
             message: 'Pending requests retrieved successfully',
-            data: pending.map(p => ({
+            data: await Promise.all(
+                pending.map(async (p) => ({
                 ...p,
-                online: UserStatus.isUserOnline(p.id)
+                online: (await redisCache.sCard('sockets:' + p.id) as number > 0 )
             }))
+            )
         });
     };
 

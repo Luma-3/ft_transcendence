@@ -89,7 +89,7 @@ h
             } */ else if(id === pendingId) {
                 await pendingModel.delete(trx, id, pendingId);
                 throw new ConflictError(`You cannot accept a pending request from yourself`);
-            } else if(!UserStatus.isUserOnline(id)) {
+            } else if(!await UserStatus.isUserOnline(id)) {
                 throw new ConflictError(`user sender is offline`);
             }
             const {room_id} = await pendingModel.findRoomByUserIdAndPendingId(trx, id, pendingId);
