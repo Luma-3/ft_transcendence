@@ -12,14 +12,14 @@ import {
 
 
 const passwordField = Type.String({
-  pattern: '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$',
+  pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&/])[A-Za-z\\d@$!%*?&/]{8,}$',
   minLength: 8,
   maxLength: 255
 });
 
 const UserSharedFields = {
   id: Type.String({ format: 'uuid' }),
-  username: Type.String({ minLength: 2, maxLength: 32 }),
+  username: Type.String({ minLength: 2, maxLength: 10 }),
   created_at: Type.String({ format: 'date-time' }),
 };
 
@@ -82,7 +82,7 @@ export type UserPrivateResponseType = Static<typeof UserPrivateResponse>;
 // These schemas are used for creating and updating user data, including validation for fields like username, email, and password.
 
 export const UserCreateBody = Type.Object({
-  username: Type.String({ minLength: 2, maxLength: 32 }),
+  username: Type.String({ minLength: 2, maxLength: 10 }),
   email: Type.String({ format: 'email' }),
   password: passwordField,
   preferences: Type.Optional(PreferencesUpdateBody)
@@ -92,7 +92,7 @@ export const UserCreateBody = Type.Object({
 export type UserCreateBodyType = Static<typeof UserCreateBody>;
 
 export const UserCreateBodyInternal = Type.Object({
-  username: Type.String({ minLength: 2, maxLength: 32 }),
+  username: Type.String({ minLength: 2, maxLength: 10 }),
   email: Type.String({ format: 'email' }),
   googleId: Type.Optional(Type.String({ format: 'uuid' })),
   lang: Type.Optional(Type.Union([Type.Literal('en'), Type.Literal('fr'), Type.Literal('es')], {
@@ -120,7 +120,7 @@ export const UserEmailUpdateBody = Type.Object({
 export type UserEmailUpdateBodyType = Static<typeof UserEmailUpdateBody>;
 
 export const UserUsernameUpdateBody = Type.Object({
-  username: Type.String({ minLength: 2, maxLength: 32 })
+  username: Type.String({ minLength: 2, maxLength: 10 })
 });
 export type UserUsernameUpdateBodyType = Static<typeof UserUsernameUpdateBody>;
 
@@ -172,7 +172,7 @@ export const UsersQueryGetAll = Type.Object({
     description: 'If true, includes pending friend requests in the response.'
   })),
   page: Type.Optional(Type.Number({ description: 'Page number for pagination', default: 1, minimum: 1 })),
-  limit: Type.Optional(Type.Number({ description: 'Number of results per page', default: 10 , minimum: 1, maximum: 100 })),
+  limit: Type.Optional(Type.Number({ description: 'Number of results per page', default: 10, minimum: 1, maximum: 100 })),
   hydrate: Type.Optional(Type.Boolean({
     default: false,
     description: 'If true, includes additional user data such as avatar and banner.'
@@ -186,7 +186,7 @@ export type UserHeaderIdType = Static<typeof UserHeaderAuthentication>;
 // Internal User Schema
 
 export const VerifyCredentials = Type.Object({
-  username: Type.String({ minLength: 2, maxLength: 32 }),
+  username: Type.String({ minLength: 2, maxLength: 10 }),
   password: Type.String()
 }, {
   additionalProperties: false
