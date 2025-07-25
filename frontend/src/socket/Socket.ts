@@ -31,9 +31,9 @@ export async function socketConnection() {
 		socket.close();
 	});
 
-	socket.addEventListener('close', (event) => {
+	socket.addEventListener('close', async (event) => {
 		if (event.code === 1006 || event.code === 1000)
-			window.location.href = '/login'
+			await socketConnection();
 	});
 }
 

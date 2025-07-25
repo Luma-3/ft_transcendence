@@ -140,7 +140,7 @@ export class FetchInterface {
    * ! Get public infos of a user
    */
   public static async getOtherUserInfo(id: string): Promise<IUserInfo | undefined> {
-    const response = await fetchApi<IUserInfo>(API.API_USER.BASIC.BASIC + `/${id}?includePreferences=true`);
+    const response = await fetchApiWithNoError<IUserInfo>(API.API_USER.BASIC.BASIC + `/${id}?includePreferences=true`);
     if (response.status === "error") {
       return undefined;
     }
