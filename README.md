@@ -3,25 +3,6 @@
 </p>
 <h1 align="center">🦆🦆🦆🦆<br>🦆🦆🦆🦆🦆🦆🦆🦆<br>🦆🦆🦆🦆Transcenduck🦆🦆🦆🦆<br>🦆🦆🦆🦆🦆🦆🦆🦆🦆🦆🦆🦆<br>🦆🦆🦆🦆🦆🦆🦆🦆<br></h1>
 
-
-<p align="center">
-  <a href="https://github.com/Luma-3/ft_transcendence">
-    <img src="https://img.shields.io/github/last-commit/Luma-3/ft_transcendence" alt="Last Commit" />
-  </a>
-  <a href="https://github.com/Luma-3/ft_transcendence/commits">
-    <img src="https://img.shields.io/github/commit-activity/m/Luma-3/ft_transcendence" alt="Monthly Commits" />
-  </a>
-  <a href="https://github.com/Luma-3/ft_transcendence">
-    <img src="https://img.shields.io/github/repo-size/Luma-3/ft_transcendence" alt="Repo Size" />
-  </a>
-  <a href="https://github.com/Luma-3/ft_transcendence/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/Luma-3/ft_transcendence" alt="License" />
-  </a>
-  <a href="https://github.com/Luma-3/ft_transcendence/stargazers">
-    <img src="https://img.shields.io/github/stars/Luma-3/ft_transcendence?style=social" alt="GitHub Stars" />
-  </a>
-</p>
-
 ## 👌 Main Features
 
 * ⚙️ Fast backend with Fastify + Knex
